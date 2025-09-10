@@ -44,10 +44,10 @@
                 </div>
 
             </div>
-            <div class="modal-footer justify-content-between">
+            <!-- <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                <!-- <button type="button" class="btn btn-primary btn-sm">Save changes</button> -->
-            </div>
+                 <button type="button" class="btn btn-primary btn-sm">Save changes</button> -->
+            <!-- </div>  -->
         </div>
     </div>
 </div>

@@ -22,9 +22,6 @@
         </div>
     </div>
     <!-- Page-header end -->
-
-
-
     <!-- Profile Form Start -->
     <div class="main-body">
         <div class="page-wrapper">
@@ -49,7 +46,6 @@
                                     <label>Name</label>
                                     <input type="text" name="us_Name" class="form-control"
                                         value="<?= esc($user['us_Name'] ?? '') ?>" required>
-
                                 </div>
                                 <div class="form-group">
                                     <label>Email</label>
@@ -59,7 +55,7 @@
                                 <div class="form-group phn_code ">
                                     <label style="width:100%;">Phone number</label>
                                     <input type="tel" id="phone" name="us_Phone" style="padding-left: 472px;" class="form-control"
-                                        value="<?= esc($user['us_Phone'] ?? '') ?>" required>
+                                        value="<?= esc($user['us_Phone'] ?? '') ?>" maxlength="25" required>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Update Profile</button>
                             </form>

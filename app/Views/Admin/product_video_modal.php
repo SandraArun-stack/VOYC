@@ -27,7 +27,6 @@
                             </div>
                         </div>
                     </div>
-
                     <input type="hidden" id="productVideoName" name="product_name" value="">
                     <input type="hidden" id="productVideoId" name="product_id" value="">
                 </form>
@@ -49,9 +48,9 @@
 </div>
             </div>
 
-            <div class="modal-footer">
+            <!-- <div class="modal-footer">
                 <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
