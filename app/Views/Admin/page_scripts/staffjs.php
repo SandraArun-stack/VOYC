@@ -214,19 +214,20 @@
     //  eye icon toggle password 
 
     function togglePassword(inputId, iconElement) {
-        const input = document.getElementById(inputId);
+    const input = document.getElementById(inputId);
+    const icon = iconElement.querySelector("i");
 
-        // Toggle input type
-        if (input.type === "password") {
-            input.type = "text";
-            iconElement.classList.remove("fa-eye-slash");
-            iconElement.classList.add("fa-eye");
-        } else {
-            input.type = "password";
-            iconElement.classList.remove("fa-eye");
-            iconElement.classList.add("fa-eye-slash");
-        }
+    if (input.type === "password") {
+        input.type = "text";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+    } else {
+        input.type = "password";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
     }
+}
+
 
     /*************************************/
     //Active and Inactive status
