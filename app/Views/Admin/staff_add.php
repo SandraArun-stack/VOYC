@@ -1,4 +1,17 @@
+
 <div class="pcoded-content">
+    <style>
+.input-group .form-control {
+    border-right: none !important;   
+    box-shadow: none !important;   
+}
+
+.input-group .input-group-text {
+    border-left: none !important;   
+    background-color: #fff;         
+    cursor: pointer;           
+}
+</style>
     <!-- Page-header start -->
     <div class="page-header">
         <div class="page-block">
@@ -6,7 +19,7 @@
                 <div class="col-md-8">
                     <div class="page-header-title">
                         <h5 class="m-b-10"><?= isset($staff) ? 'Update Staff' : 'Add Staff'; ?></h5>
-                        <p class="m-b-0">Welcome to VOYC</p>
+                        <p class="m-b-0">Welcome to Zakhi Designs</p>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -142,18 +155,19 @@
 												</div>
 											</div>
 
-											<div class="form-group row">
-												<label class="col-sm-2 col-form-label">Confirm Password <span style="color: red;">*</span></label>
-												<div class="col-sm-6">
-													<input type="password" class="form-control" name="confirm_password"
-														id="confirm_password" placeholder="Confirm password" required autocomplete="off">
-                                                        <i class="fa fa-eye-slash position-absolute toggle-password"
-                                                        style="top: 50%; right: 20px; transform: translateY(-50%); cursor: pointer;"
-                                                        onclick="togglePassword('confirm_password', this)"></i>
-
-													<span class="text-danger error-msg" id="error-confirm-password"></span>
-												</div>
-											</div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label">Confirm Password <span style="color: red;">*</span></label>
+                                                <div class="col-sm-6">
+                                                    <div class="input-group">
+                                                        <input type="password" class="form-control" name="confirm_password" id="confirm_password" 
+                                                            placeholder="Confirm password" required autocomplete="off">
+                                                        <span class="input-group-text" style="cursor: pointer;" onclick="togglePassword('confirm_password', this)">
+                                                            <i class="fa fa-eye-slash"></i>
+                                                        </span>
+                                                    </div>
+                                                    <span class="text-danger error-msg" id="error-confirm-password"></span>
+                                                </div>
+                                            </div>
 										<?php endif; ?>
 
                                         <div class="row justify-content-center">
