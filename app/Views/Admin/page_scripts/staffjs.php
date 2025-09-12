@@ -72,6 +72,8 @@
             $('#error-staffname').text(value ? '' : 'Name is required.');
         });
         $('#staffemail').on('input', function () {
+
+            this.value = this.value.toLowerCase(); //email validation
             const value = $(this).val().trim();
             if (!value) {
                 $('#error-staffemail').text('Email is required.');
@@ -83,6 +85,7 @@
         });
 
         $('#staffotemail').on('input', function () {
+            this.value = this.value.toLowerCase();
             const value = $(this).val().trim();
             if (!value) {
                 $('#error-staffotemail').text('Email field is required.');

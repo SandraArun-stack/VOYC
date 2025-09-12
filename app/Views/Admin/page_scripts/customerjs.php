@@ -76,6 +76,7 @@ $(document).ready(function () {
         $('#error-custname').text(value ? '' : 'Name is required.');
     });
     $('#custemail').on('input', function () {
+        this.value = this.value.toLowerCase();//email validation
         const value = $(this).val().trim();
         if (!value) {
             $('#error-custemail').text('Email is required.');
@@ -157,18 +158,32 @@ $('#custSubmit').click(function(e) {
 
 /***************************************************** */
 
+// function togglePassword(inputId, iconElement) {
+//     const input = document.getElementById(inputId);
+//     if (!input) return;
+
+//     if (input.type === "password") {
+//         input.type = "text";
+//         iconElement.classList.remove("fa-eye-slash");
+//         iconElement.classList.add("fa-eye");
+//     } else {
+//         input.type = "password";
+//         iconElement.classList.remove("fa-eye");
+//         iconElement.classList.add("fa-eye-slash");
+//     }
+// }
 function togglePassword(inputId, iconElement) {
     const input = document.getElementById(inputId);
-    if (!input) return;
+    const icon = iconElement.querySelector("i");
 
     if (input.type === "password") {
         input.type = "text";
-        iconElement.classList.remove("fa-eye-slash");
-        iconElement.classList.add("fa-eye");
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
     } else {
         input.type = "password";
-        iconElement.classList.remove("fa-eye");
-        iconElement.classList.add("fa-eye-slash");
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
     }
 }
 

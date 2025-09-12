@@ -50,7 +50,8 @@
                                 <div class="form-group">
                                     <label>Email</label>
                                     <input type="text" name="us_Email" class="form-control"
-                                        value="<?= esc($user['us_Email'] ?? '') ?>" required>
+                                        value="<?= esc($user['us_Email'] ?? '') ?>" required
+                                         style="text-transform: lowercase;">
                                 </div>
                                 <div class="form-group phn_code ">
                                     <label style="width:100%;">Phone number</label>
