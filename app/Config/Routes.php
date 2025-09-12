@@ -176,6 +176,10 @@ $routes->get('admin/product/view/(:any)', 'Admin\Product::viewProduct/$1');
 $routes->get('admin/update_stock/(:num)', 'Admin\Stock::updateStockForm/$1');
 $routes->post('admin/update_stock_value/(:num)', 'Admin\Stock::updateStock/$1');
 $routes->get('product/reviews_view/(:num)', 'Product::reviewsView/$1');
+$routes->get('admin/productimage/viewimage/(:num)', 'Admin\ProductImage::viewimage/$1');
+$routes->get('admin/productimage/add/(:num)', 'Admin\ProductImage::addProductImage/$1');
+$routes->post('admin/productimage/save', 'Admin\ProductImage::save');
+
 
 
 
