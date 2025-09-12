@@ -5,7 +5,7 @@
             <div class="row align-items-center">
                 <div class="col-md-8">
                     <div class="page-header-title">
-                        <h5 class="m-b-10">Product</h5>
+                        <h5 class="m-b-10">Product Images</h5>
                         <p class="m-b-0">Welcome to VOYC</p>
                     </div>
                 </div>
@@ -14,7 +14,7 @@
                         <li class="breadcrumb-item">
                             <a href="index.html"> <i class="fa fa-home"></i> </a>
                         </li>
-                        <li class="breadcrumb-item"><a href="#!">Product</a>
+                        <li class="breadcrumb-item"><a href="#!">Product Images</a>
                         </li>
                     </ul>
                 </div>
@@ -45,10 +45,11 @@
                                         <div class="col-md-3">
                                             <div class="row">
                                                 <div class="col-lg-12 d-flex justify-content-end p-2">
-                                                    <a href="<?= base_url('productimage/add'); ?>"
-                                                        class="btn btn-primary">
-                                                        Add Product Image
-                                                    </a>
+                                                   <a href="<?= base_url('admin/productimage/add/' . $pr_id); ?>" 
+   class="btn btn-primary">
+   Add Product Image
+</a>
+
                                                 </div>
                                             </div>
                                         </div>

@@ -21,9 +21,6 @@ class Product extends BaseController
 
         $allproducts = $this->productModel->getAllProducts();
         $data['product'] = $allproducts;
-
-
-
         $template = view('Admin/common/header');
         $template .= view('Admin/common/leftmenu');
         $template .= view('Admin/product', $data);
@@ -83,17 +80,12 @@ class Product extends BaseController
 		</div>';
 
             // Action buttons
-            $row['actions'] = '
-        <img class="img-size open-image-modal"
-			 src="' . base_url(ASSET_PATH . 'Admin/assets/images/image_add.ico') . '"
-			 alt="Image-add"
-			 data-toggle="modal"
-			 data-target="#exampleModal"
-			 data-product-id="' . $row['pr_Id'] . '"
-			 data-product-name="' . htmlspecialchars($row['pr_Name'], ENT_QUOTES) . '"
-			 onclick="openProductModal(' . $row['pr_Id'] . ', \'' . addslashes($row['pr_Name']) . '\')"
-			 style="cursor: pointer;">&nbsp;
-
+           $row['actions'] = '
+    <img class="img-size"
+        src="' . base_url(ASSET_PATH . 'Admin/assets/images/image_add.ico') . '"
+        alt="Image-add"
+        onclick="redirectToProductImage(' . $row['pr_Id'] . ')"
+        style="cursor: pointer;">&nbsp;
       			 
 		<img class="img-size open-video-modal"
 			 src="' . base_url(ASSET_PATH . 'Admin/assets/images/video_add.ico') . '"

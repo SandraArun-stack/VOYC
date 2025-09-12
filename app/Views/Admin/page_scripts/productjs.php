@@ -715,4 +715,9 @@
         }, 3000);
     }
 
+
+function redirectToProductImage(productId) {
+    // Redirect to your ProductImage controller with productId
+    window.location.href = "<?= base_url('admin/productimage/viewimage/'); ?>" + productId;
+}
 </script>

@@ -38,73 +38,26 @@
                                     </div>
                                 </div>
                                 <div class="card-block">
+                                    <div id="messageBox" style="display:none; padding:10px; margin:10px 0; border-radius:5px;"></div>
 
-                                    <form name="createProductImage" id="createProductImage" method="post"
-                                        action="<?= base_url('productimage/save') ?>" enctype="multipart/form-data">
-                                        <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label">Product Name <span
-                                                    style="color: red;">*</span></label>
-                                            <div class="col-sm-7">
-                                                <select class="form-control fs-13" name="pr_id" id="productName"
-                                                    required>
-                                                    <option value="">-- Select Product--</option>
-                                                    <?php if (!empty($products)) : ?>
-                                                    <?php foreach ($products as $product): ?>
-                                                    <option value="<?= esc($product->pr_Id); ?>">
-                                                        <?= esc($product->pr_Name); ?>
-                                                    </option>
-                                                    <?php endforeach; ?>
-                                                    <?php else : ?>
-                                                    <option value="">No Products Available</option>
-                                                    <?php endif; ?>
-                                                </select>
+<form id="productImageForm"  name="productImageForm"
+      method="post" 
+      action="<?= base_url('admin/productimage/save') ?>" 
+      enctype="multipart/form-data">
 
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label">Product File Type <span
-                                                    style="color: red;">*</span></label>
-                                            <div class="col-sm-7">
-                                                <select class="form-control fs-13" name="file_type" id="fileType"
-                                                    required>
-                                                    <option value="">-- Select File Type --</option>
-                                                    <option value="image">
-                                                        Image</option>
-                                                    <option value="video">
-                                                        Video</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label">Upload the Product Image<span
-                                                    style="color: red;">*</span></label>
-                                            <div class="col-sm-7">
-                                                <input type="file" class="form-control" name="media_files[]"
-                                                    id="media_files" multiple required>
-                                            </div>
+    <div id="colorGroupsContainer"></div>
 
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-sm-7 offset-sm-3" id="imagePreview"
-                                                style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
-                                        </div>
+    <input type="hidden" name="pr_id" value="<?= $pr_id ?? '' ?>">
 
 
+    <button type="button" class="btn btn-success mb-3" id="addColorBtn">+ Add Color</button>
 
-                                        <div class="row justify-content-center">
-                                            <input type="hidden" name="pri_id">
-                                            <div class="button-group">
-                                                <button type="button" class="btn btn-secondary"
-                                                    onclick="window.location.href='<?= base_url('productimage'); ?>'">
-                                                    <i class="bi bi-x-circle"></i> Discard
-                                                </button>
-                                                <button type="button" class="btn btn-primary" id="productimageSubmit"
-                                                    name="productimageSubmit">
-                                                    <i class="bi bi-check-circle"></i> Save
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
+    <div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+</form>
+
+
                                 </div>
 
 
