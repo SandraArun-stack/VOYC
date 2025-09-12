@@ -82,22 +82,25 @@
                                                 <input type="email" class="form-control" name="staffemail"
                                                     id="staffemail" size=30
                                                     value="<?= isset($staff) ? esc($staff['us_Email']) : '' ?>"
-                                                    placeholder="Enter the mail id" required autocomplete="off">
+                                                    placeholder="Enter the mail id" required autocomplete="off
+                                                    style="text-transform: lowercase;">
                                                 <span class="text-danger error-msg" id="error-staffemail"></span>
                                             </div>
 
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-sm-2 col-form-label">Order Confirmation Email <span
-                                                    style="color: red;">*</span></label>
+                                            <label class="col-sm-2 col-form-label">Order Confirmation Email <span style="color: red;">*</span></label>
                                             <div class="col-sm-6">
                                                 <input type="email" class="form-control" name="staffotemail" id="staffotemail" size=30
-                                                  value="<?= isset($staff) ? ($staff['us_Email2']) : '' ?>"   placeholder="Enter Alternate Mail Id"><span class="text-danger error-msg"> (Order details will receive to this mail id)</span>
-                                           <br/> <span class="text-danger error-msg" id="error-staffotemail"></span>
-											
-											</div>
-											
+                                                    value="<?= isset($staff) ? ($staff['us_Email2']) : '' ?>"
+                                                    placeholder="Enter Alternate Mail Id"
+                                                    style="text-transform: lowercase;">
+                                                <span class="text-danger error-msg">(Order details will receive to this mail id)</span>
+                                                <br/>
+                                                <span class="text-danger error-msg" id="error-staffotemail"></span>
+                                            </div>
                                         </div>
+
 										<div class="form-group row">
                                             <label class="col-sm-2 col-form-label">Contact Number</label>
                                             <div class="col-sm-6">

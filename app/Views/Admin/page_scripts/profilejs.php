@@ -11,6 +11,7 @@
         phoneInput.value = fullNumber;
     });
   $(document).ready(function () {
+     this.value = this.value.toLowerCase();
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
  
     // Profile Update Validation
