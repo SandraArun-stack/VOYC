@@ -46,7 +46,7 @@
                                 </div>
                                 <div class="card-block">
 
-                                    <form name="createCategory" id="createCategory" method="post">
+                                    <form name="createCategory" id="createCategory" method="post" style="font-size:14px;" >
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label">Category Name <span
                                                     style="color: red;">*</span></label>
@@ -54,7 +54,7 @@
                                                 <input type="text" name="category_name" id="categoryName"
                                                     class="form-control"
                                                     value="<?= isset($category) ? ($category['cat_Name']) : '' ?>"
-                                                    placeholder="Enter the Category name">
+                                                    placeholder="Enter the Category name" style="font-size:14px;">
                                             </div>
                                            
                                         </div>
@@ -62,7 +62,7 @@
                                             <label class="col-sm-2 col-form-label">Discount Type </label>
                                             <div class="col-sm-6">
                                                 <select class="form-control fs-13" name="discount_type"
-                                                    id="discountType" required>
+                                                    id="discountType" style="font-size:14px;" required>
                                                     <option value="">-- Select Discount Type --</option>
                                                     <option value="%"
                                                         <?= (isset($category) && $category['cat_Discount_Type'] == '%') ? 'selected' : '' ?>>
@@ -80,7 +80,7 @@
                                                 <input type="text" class="form-control" name="discount_value"
                                                     id="discountValue"
                                                     value="<?= isset($category) ? ($category['cat_Discount_Value']) : '' ?>"
-                                                    placeholder="Enter the Discount value">
+                                                    placeholder="Enter the Discount value" style="font-size:14px;">
                                             </div>
                                         </div>
 
@@ -89,14 +89,14 @@
                                                 value="<?= isset($category['cat_Id']) ? esc($category['cat_Id']) : '' ?>">
                                             <div class="button-group">
                                                 <button type="button" class="btn btn-secondary"
-                                                    onclick="window.location.href='<?= base_url('admin/category'); ?>'">
+                                                    onclick="window.location.href='<?= base_url('admin/category'); ?>'" style="font-size:14px;">
                                                     <i class="bi bi-x-circle"></i> Discard
                                                 </button>
                                                 <!-- <button type="button" class="btn btn-primary" id="categorySubmit" name="categorySubmit">
                                                     <i class="bi bi-check-circle"></i> Save
                                                 </button> -->
                                                 <button type="button" class="btn btn-primary" id="categorySubmit"
-                                                    name="categorySubmit">
+                                                    name="categorySubmit" style="font-size:14px;">
                                                     <i class="bi bi-check-circle"></i>
                                                     <?= isset($category) ? 'Update' : 'Save'; ?>
                                                 </button>
