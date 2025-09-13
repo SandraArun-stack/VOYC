@@ -40,25 +40,26 @@
                             <?php endif; ?>
 
                             <form method="post" id="updateProfileForm"
-                                action="<?= base_url('admin/profile/update'); ?>">
+                                action="<?= base_url('admin/profile/update'); ?>"
+                                style="font-size:14px;">
 
                                 <div class="form-group">
-                                    <label>Name</label>
-                                    <input type="text" name="us_Name" class="form-control"
+                                    <label >Name</label>
+                                    <input type="text" name="us_Name" class="form-control"style="font-size:14px;"
                                         value="<?= esc($user['us_Name'] ?? '') ?>" required>
                                 </div>
                                 <div class="form-group">
                                     <label>Email</label>
-                                    <input type="text" name="us_Email" class="form-control"
+                                    <input type="text" name="us_Email" class="form-control"style="font-size:14px;"
                                         value="<?= esc($user['us_Email'] ?? '') ?>" required
                                          style="text-transform: lowercase;">
                                 </div>
                                 <div class="form-group phn_code ">
                                     <label style="width:100%;">Phone number</label>
-                                    <input type="tel" id="phone" name="us_Phone" style="padding-left: 472px;" class="form-control"
+                                    <input type="tel" id="phone" name="us_Phone" style="padding-left: 472px; font-size:14px;" class="form-control"
                                         value="<?= esc($user['us_Phone'] ?? '') ?>" maxlength="25" required>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Update Profile</button>
+                                <button type="submit" class="btn btn-primary" style="font-size:14px;">Update Profile</button>
                             </form>
                         </div>
                     </div>
@@ -75,7 +76,8 @@
                         <div class="card-block">
                             <div id="messageBox" class="alert" style="display: none;"></div>
                             <form method="post" id="changePasswordForm"
-                                action="<?= base_url('admin/profile/change_password'); ?>">
+                                action="<?= base_url('admin/profile/change_password'); ?>"
+                                style="font-size:14px;">
                                 <?php
                                 if (session()->getFlashdata('error')): ?>
                                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -88,9 +90,9 @@
                                 endif;
                                 ?>
                                 <div class="form-group" style="position: relative;">
-                                    <label>Current Password <span style="color: red;">*</span></label>
+                                    <label >Current Password <span style="color: red;">*</span></label>
                                     <input type="password" name="current_password" id="current_password"
-                                        class="form-control" maxlength="15" minlength="6" placeholder="Current Password"
+                                        class="form-control" maxlength="15" minlength="6" placeholder="Current Password" style="font-size:14px;"
                                         required>
                                     <i class="toggle-password fa fa-eye-slash position-absolute"
                                         style="top: 45px; right: 10px; cursor: pointer;"
@@ -99,7 +101,7 @@
                                 <div class="form-group" style="position: relative;">
                                     <label>New Password <span style="color: red;">*</span></label>
                                     <input type="password" name="new_password" id="new_password" class="form-control"
-                                        maxlength="15" minlength="6" placeholder="New Password" required>
+                                        maxlength="15" minlength="6" placeholder="New Password" style="font-size:14px;" required>
                                     <i class="toggle-password fa fa-eye-slash  position-absolute"
                                         style="top: 45px; right: 10px; cursor: pointer;" data-target="new_password"></i>
                                 </div>
@@ -108,13 +110,13 @@
                                     <label>Confirm New Password <span style="color: red;">*</span></label>
                                     <input type="password" name="confirm_password" id="confirm_password"
                                         class="form-control" maxlength="15" minlength="6"
-                                        placeholder="Confirm New Password" required>
+                                        placeholder="Confirm New Password" style="font-size:14px;" required>
                                     <i class="toggle-password fa fa-eye-slash position-absolute"
                                         style="top: 45px; right: 10px; cursor: pointer;"
                                         data-target="confirm_password"></i>
                                 </div>
 
-                                <button type="button" id="passUpdate" class="btn btn-primary">Change Password</button>
+                                <button type="button" id="passUpdate" class="btn btn-primary"style="font-size:14px;">Change Password</button>
                             </form>
                         </div>
                     </div>

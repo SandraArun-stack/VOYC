@@ -42,12 +42,12 @@
                                     </div>
                                 </div>
                                 <div class="card-block">
-                                    <form name="createSubcategory" id="createSubcategory" method="post">
+                                    <form name="createSubcategory" id="createSubcategory" method="post" style="font-size:14px;">
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label">Category Name<span
                                             style="color: red;">*</span></label>
                                             <div class="col-sm-6">
-                                                <select class="form-control fs-13" name="cat_id" id="categoryName"
+                                                <select class="form-control fs-13" name="cat_id" id="categoryName" style="font-size:14px;"
                                                     required>
                                                     <option value="">-- Select Category --</option>
                                                     <?php if (!empty($category)) : ?>
@@ -71,7 +71,7 @@
                                                 <input type="text" name="subcategory_name" id="subcatName"
                                                     class="form-control"
                                                     value="<?= isset($subcategory) ? ($subcategory['sub_Category_Name']) : '' ?>"
-                                                    placeholder="Enter the Subcategory name">
+                                                    placeholder="Enter the Subcategory name" style="font-size:14px;">
                                             </div>
                                         </div>
 
@@ -79,7 +79,7 @@
                                             <label class="col-sm-2 col-form-label">Discount Type</label>
                                             <div class="col-sm-6">
                                                 <select class="form-control fs-13" name="discount_type"
-                                                    id="discountType" required>
+                                                    id="discountType" style="font-size:14px;" required>
                                                     <option value="">-- Select Discount Type --</option>
                                                     <option value="%"
                                                         <?= (isset($subcategory) && $subcategory['sub_Discount_Type'] == '%') ? 'selected' : '' ?>>
@@ -96,7 +96,7 @@
                                                 <input type="text" class="form-control" name="discount_value"
                                                     id="discountValue"
                                                     value="<?= isset($subcategory) ? ($subcategory['sub_Discount_Value']) : '' ?>"
-                                                    placeholder="Enter the Discount value">
+                                                    placeholder="Enter the Discount value" style="font-size:14px;">
                                             </div>
                                         </div>
                                      
@@ -104,12 +104,12 @@
                                             <input type="hidden" name="sub_id"
                                                 value="<?= isset($subcategory) ? ($subcategory['sub_Id']) : '' ?>">
                                             <div class="button-group">
-                                                <button type="button" class="btn btn-secondary"
+                                                <button type="button" class="btn btn-secondary" style="font-size:14px;"
                                                 onclick="window.location.href='<?= base_url('admin/subcategory'); ?>'">
                                                     <i class="bi bi-x-circle"></i> Discard
                                                 </button>
                                                 <button type="button" class="btn btn-primary" id="subcategorySubmit"
-                                                    name="subcategorySubmit">
+                                                    name="subcategorySubmit" style="font-size:14px;">
                                                     <i class="bi bi-check-circle"></i>
                                                     <?= isset($subcategory) ? 'Update' : 'Save'; ?>
                                                 </button>

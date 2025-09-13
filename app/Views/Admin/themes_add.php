@@ -47,7 +47,7 @@
 								</div>
 								<div class="card-block">
 
-									<form name="theme_add" id="theme_add" method="post" enctype="multipart/form-data">
+									<form name="theme_add" id="theme_add" method="post" enctype="multipart/form-data" style="font-size:14px;">
 
 
 										<div class="form-group row">
@@ -56,7 +56,7 @@
 											<div class="col-sm-7">
 												<input type="text" class="form-control" name="theme_name"
 													value="<?= isset($banner) ? $banner['theme_Name'] : '' ?>"
-													id="theme_name" maxlength="20" placeholder="Enter the Name"
+													id="theme_name" maxlength="20" placeholder="Enter the Name"  style="font-size:14px;"
 													required>
 											</div>
 										</div>
@@ -65,10 +65,10 @@
 											<label class="col-sm-3 col-form-label">Description<span
 													style="color: red;">*</span></label>
 											<div class="col-sm-7">
-												<input type="text" class="form-control"
+												<input type="text" class="form-control"  style="font-size:14px;"
 													value="<?= isset($banner) ? ($banner['theme_Description']) : '' ?>"
 													name="description" id="description"
-													placeholder="Enter the description">
+													placeholder="Enter the description"  style="font-size:14px;">
 											</div>
 										</div>
 
@@ -84,7 +84,7 @@
 														<div class="card-header p-2" style="cursor: pointer;"
 															data-toggle="collapse" data-target="#sectionOne">
 															<span class="d-block m-0"
-																style="font-size: 16px; color: #000 !important;">
+																style="font-size: 14px; color: #000 !important;">
 																Main Banner and Link
 															</span>
 
@@ -102,7 +102,7 @@
 																						<input type="text" class="form-control"
 																							name="section1_link[]"
 																							value="<?= esc($entry['link'] ?? '') ?>"
-																							placeholder="Link">
+																							placeholder="Link"  style="font-size:14px;">
 																					</div>
 																					<div class="col-6">
 																						<span class="small text-muted">(Image
@@ -140,7 +140,7 @@
 																				<div class="col-6">
 																					<input type="text" class="form-control"
 																						name="section1_link[]"
-																						placeholder="Link">
+																						placeholder="Link"  style="font-size:14px;">
 																				</div>
 																				<div class="col-6">
 																					<span class="small text-muted">(Image
@@ -184,7 +184,7 @@
 												<div class="card mt-2">
 													<div class="card-header p-2" style="cursor: pointer;"
 														data-toggle="collapse" data-target="#sectionTwo">
-														<span class="d-block m-0" style="font-size: 16px;">
+														<span class="d-block m-0" style="font-size: 14px;">
 															Offer Images and Links
 														</span>
 													</div>
@@ -199,13 +199,13 @@
 																					<input type="text" class="form-control"
 																						name="section2_link[]"
 																						value="<?= esc($entry['link'] ?? '') ?>"
-																						placeholder="Link">
+																						placeholder="Link"  style="font-size:14px;">
 																				</div>
 																				<div class="col-6">
 																					<input type="text" class="form-control"
 																						name="section2_name[]"
 																						value="<?= esc($entry['name'] ?? '') ?>"
-																						placeholder="Name">
+																						placeholder="Name"  style="font-size:14px;">
 																				</div>
 																				<div class="col-12 mt-2">
 																					<span class="small text-muted">(Image size
@@ -241,12 +241,12 @@
 																			<div class="col-6">
 																				<input type="text" class="form-control"
 																					name="section2_link[]"
-																					placeholder="Link">
+																					placeholder="Link"  style="font-size:14px;">
 																			</div>
 																			<div class="col-6">
 																				<input type="text" class="form-control"
 																					name="section2_name[]"
-																					placeholder="Name">
+																					placeholder="Name"  style="font-size:14px;">
 																			</div>
 																			<div class="col-12 mt-2">
 																				<span class="small text-muted">(Image size
@@ -285,7 +285,7 @@
 													<div class="card-header p-2" style="cursor: pointer;"
 														data-toggle="collapse" data-target="#sectionThree">
 														<span class="d-block m-0"
-															style="text-decoration: none !important; font-size: 16px;">
+															style="text-decoration: none !important; font-size: 14px;">
 															Bottom Image and Link
 														</span>
 													</div>
@@ -301,14 +301,14 @@
 																					<input type="text" class="form-control"
 																						name="section3_link[]"
 																						value="<?= esc($entry['link'] ?? '') ?>"
-																						placeholder="Link">
+																						placeholder="Link"  style="font-size:14px;">
 																				</div>
 																				<div class="col-6">
 																				<input type="text" class="form-control"
 																					name="section3_name[]"
 																					value="<?= esc($entry['name'] ?? '') ?>"
 																					placeholder="Name"
-																					maxlength="12">
+																					maxlength="12"  style="font-size:14px;">
 
 																				</div>
 																				<div class="col-6 mt-2">
@@ -331,7 +331,7 @@
 																							style="width: 100px; height: 100px; display: none;">
 																					<?php endif; ?>
 																				</div>
-																				<div class="col-12 mt-2 text-end">
+																				<div class="col-12 mt-2 text-end"  style="font-size:14px;">
 																					<button type="button"
 																						class="btn btn-danger btn-sm"
 																						onclick="removeEntry(this)">−</button>
@@ -345,12 +345,12 @@
 																			<div class="col-6">
 																				<input type="text" class="form-control"
 																					name="section3_link[]"
-																					placeholder="Link">
+																					placeholder="Link"  style="font-size:14px;">
 																			</div>
 																			<div class="col-6">
 																				<input type="text" class="form-control"
 																					name="section3_name[]" value=""
-																					placeholder="Name">
+																					placeholder="Name"  style="font-size:14px;">
 																			</div>
 																			<div class="col-6 mt-2">
 																				<span class="small text-muted">(Image size
@@ -365,7 +365,7 @@
 																				<img class="preview img-thumbnail"
 																					style="width: 100px; height: 100px; display: none;">
 																			</div>
-																			<div class="col-12 mt-2 text-end">
+																			<div class="col-12 mt-2 text-end"  style="font-size:14px;">
 																				<button type="button"
 																					class="btn btn-danger btn-sm"
 																					onclick="removeEntry(this)">−</button>
@@ -374,7 +374,7 @@
 																	</div>
 																<?php endif; ?>
 															</div>
-															<div class="text-end mt-2 px">
+															<div class="text-end mt-2 px"  style="font-size:14px;">
 																<button type="button" class="btn btn-success btn-sm"
 																	style="background-color: green;" onclick="addEntry('section3')">+</button>
 															</div>
@@ -390,14 +390,14 @@
 					<input type="hidden" name="theme_Section3" id="theme_Section3">
 
 					<!-- Buttons -->
-					<div class="row justify-content-center">
+					<div class="row justify-content-center"  style="font-size:14px;">
 						<input type="hidden" name="theme_id" value="<?= isset($banner) ? $banner['theme_Id'] : '' ?>">
 						<div class="button-group">
-							<button type="button" class="btn btn-secondary"
+							<button type="button" class="btn btn-secondary" style="font-size:14px;"
 								onclick="window.location.href='<?= base_url('admin/themes'); ?>'">
 								<i class="bi bi-x-circle"></i> Discard
 							</button>
-							<button type="button" class="btn btn-primary" id="main_home_submit" name="main_home_submit">
+							<button type="button" class="btn btn-primary" id="main_home_submit" name="main_home_submit" style="font-size:14px;">
 								<i class="bi bi-check-circle"></i>
 								<?= isset($banner) ? 'Update' : 'Save'; ?>
 							</button>

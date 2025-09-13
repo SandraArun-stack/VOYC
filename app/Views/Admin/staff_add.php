@@ -66,46 +66,46 @@
                                     <form name="createstaff" id="createstaff" method="post" autocomplete="off">
 
                                         <div class="form-group row">
-                                            <label class="col-sm-2 col-form-label">Name <span
+                                            <label class="col-sm-2 col-form-label" style="font-size: 14px;">Name <span
                                                     style="color: red;">*</span></label>
                                             <div class="col-sm-6">
                                                 <input type="text" name="staffname" id="staffname" class="form-control" size=30
-                                                    value="<?= isset($staff) ? ($staff['us_Name']) : '' ?>" placeholder="Enter the staff name" * required autocomplete="off" >
+                                                    value="<?= isset($staff) ? ($staff['us_Name']) : '' ?>" placeholder="Enter the staff name" style="font-size: 14px;" * required autocomplete="off" >
 											<span class="text-danger error-msg" id="error-staffname"></span>
 											</div>
 											
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-sm-2 col-form-label">Email <span
+                                            <label class="col-sm-2 col-form-label" style="font-size: 14px;">Email <span
                                                     style="color: red;">*</span></label>
                                             <div class="col-sm-6">
                                                 <input type="email" class="form-control" name="staffemail"
                                                     id="staffemail" size=30
                                                     value="<?= isset($staff) ? esc($staff['us_Email']) : '' ?>"
-                                                    placeholder="Enter the mail id" required autocomplete="off
+                                                    placeholder="Enter the mail id" style="font-size: 14px;" required autocomplete="off
                                                     style="text-transform: lowercase;">
                                                 <span class="text-danger error-msg" id="error-staffemail"></span>
                                             </div>
 
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-sm-2 col-form-label">Order Confirmation Email <span style="color: red;">*</span></label>
+                                            <label class="col-sm-2 col-form-label" style="font-size: 14px;">Order Confirmation Email <span style="color: red;">*</span></label>
                                             <div class="col-sm-6">
                                                 <input type="email" class="form-control" name="staffotemail" id="staffotemail" size=30
                                                     value="<?= isset($staff) ? ($staff['us_Email2']) : '' ?>"
                                                     placeholder="Enter Alternate Mail Id"
-                                                    style="text-transform: lowercase;">
-                                                <span class="text-danger error-msg">(Order details will receive to this mail id)</span>
+                                                    style= font-size:14px;">
+                                                <span class="text-danger error-msg" style="font-size: 14px;">(Order details will receive to this mail id)</span>
                                                 <br/>
                                                 <span class="text-danger error-msg" id="error-staffotemail"></span>
                                             </div>
                                         </div>
 
 										<div class="form-group row">
-                                            <label class="col-sm-2 col-form-label">Contact Number</label>
+                                            <label class="col-sm-2 col-form-label" style="font-size: 14px;">Contact Number</label>
                                             <div class="col-sm-6">
                                                 <input type="text" class="form-control" name="mobile" id="mobile" maxlength="15" minlength="7"
-                                                  value="<?= isset($staff) ? ($staff['us_Phone']) : '' ?>"   placeholder="Enter Contact Number." required autocomplete="off">
+                                                  value="<?= isset($staff) ? ($staff['us_Phone']) : '' ?>"   placeholder="Enter Contact Number." style="font-size: 14px;" required autocomplete="off">
                                             <span class="text-danger error-msg" id="error-mobile"></span>
 											</div>
 											
@@ -116,10 +116,10 @@
 
 											<!-- Old Password Field -->
 											<div class="form-group row">
-												<label class="col-sm-2 col-form-label">Old Password</label>
+												<label class="col-sm-2 col-form-label" style="font-size: 14px;">Old Password</label>
 												<div class="col-sm-6">
 													<input type="password" class="form-control" name="old_password"
-														id="old_password" placeholder="Enter old password" required >
+														id="old_password" placeholder="Enter old password" style="font-size: 14px;" required >
 
                                                     <i class="fa fa-eye-slash position-absolute toggle-password"
                                                         style="top: 50%; right: 20px; transform: translateY(-50%); cursor: pointer;"
@@ -131,10 +131,10 @@
 
 											<!-- New Password Field -->
 											<div class="form-group row">
-												<label class="col-sm-2 col-form-label">New Password </label>
+												<label class="col-sm-2 col-form-label" style="font-size: 14px;">New Password </label>
 												<div class="col-sm-6">
 													<input type="password" class="form-control" name="new_password"
-														id="new_password" placeholder="Enter new password" required autocomplete="off">
+														id="new_password" placeholder="Enter new password" style="font-size: 14px;" required autocomplete="off">
 
                                                         <i class="fa fa-eye-slash position-absolute toggle-password"
                                                         style="top: 50%; right: 20px; transform: translateY(-50%); cursor: pointer;"
@@ -146,12 +146,12 @@
 										<?php else : ?>
 											<!-- Default Add Password Fields -->
 											<div class="form-group row">
-												<label class="col-sm-2 col-form-label">Password <span style="color: red;">*</span></label>
+												<label class="col-sm-2 col-form-label" style="font-size: 14px;">Password <span style="color: red;">*</span></label>
 												<div class="col-sm-6">
 													<input type="password" class="form-control" name="password" 
-														id="password" placeholder="Enter password" required autocomplete="off">
+														id="password" placeholder="Enter password" style="font-size: 14px;" required autocomplete="off">
                                                         <i class="fa fa-eye-slash position-absolute toggle-password"
-                                                        style="top: 50%; right: 20px; transform: translateY(-50%); cursor: pointer;"
+                                                        style="top: 50%; right: 23px; transform: translateY(-50%); cursor: pointer;"
                                                         onclick="togglePassword('password', this)"></i>
 
 													<span class="text-danger error-msg" id="error-password"></span>
@@ -159,11 +159,11 @@
 											</div>
 
                                             <div class="form-group row">
-                                                <label class="col-sm-2 col-form-label">Confirm Password <span style="color: red;">*</span></label>
+                                                <label class="col-sm-2 col-form-label" style="font-size: 14px;">Confirm Password <span style="color: red;">*</span></label>
                                                 <div class="col-sm-6">
                                                     <div class="input-group">
                                                         <input type="password" class="form-control" name="confirm_password" id="confirm_password" 
-                                                            placeholder="Confirm password" required autocomplete="off">
+                                                            placeholder="Confirm password" style="font-size: 14px;" required autocomplete="off">
                                                         <span class="input-group-text" style="cursor: pointer;" onclick="togglePassword('confirm_password', this)">
                                                             <i class="fa fa-eye-slash"></i>
                                                         </span>
@@ -177,11 +177,11 @@
                                             <input type="hidden" name="us_id"
                                                 value="<?= isset($staff['us_Id']) ? esc($staff['us_Id']) : '' ?>">
                                             <div class="button-group">
-                                                <button type="button" class="btn btn-secondary"
+                                                <button type="button" class="btn btn-secondary" style="font-size: 14px;"
                                                     onclick="window.location.href='<?= base_url('admin/staff/'); ?>'">
                                                     <i class="bi bi-x-circle"></i> Discard
                                                 </button>
-													<button type="button" class="btn btn-primary" id="staffSubmit" name="staffSubmit" >
+													<button type="button" class="btn btn-primary" id="staffSubmit" name="staffSubmit" style="font-size: 14px;" >
 														<i class="bi bi-check-circle"></i>
 														<?= isset($staff) ? 'Update Staff' : 'Add Staff'; ?>
 														
