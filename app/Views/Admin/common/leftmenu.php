@@ -93,7 +93,12 @@
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>
+                            <li class="<?= ($segment == 'courses') ? 'active' : '' ?>">
+                                <a href="<?= base_url('admin/courses') ?>" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="bi bi-journal-bookmark"></i><b>C</b></span>
+                                    <span class="pcoded-mtext" data-i18n="nav.form-components.main">Courses</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
                           </ul>
-                     
-                          
                   </nav>
