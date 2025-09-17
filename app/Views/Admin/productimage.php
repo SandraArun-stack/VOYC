@@ -87,7 +87,7 @@
                                                                 ?>
                                                             </td>
 
-                                                            <td><?= $prodimg->pri_File_Type; ?></td>
+                                                            <td><?= $prodimg->color_details; ?></td>
                                                             <td>
 
                                                             </td>
