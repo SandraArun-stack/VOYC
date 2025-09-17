@@ -54,6 +54,11 @@ class ProductImageModel extends Model
     {
           return $this->db->table('product_image')->insert($data);
     }
+//added by spg
+    public function insertVariant($data)
+    {
+        return $this->db->table('product_variants')->insert($data);
+    }
 
 }
 

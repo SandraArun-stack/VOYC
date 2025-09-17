@@ -111,7 +111,8 @@ function createColorBlock(index) {
                     <label><input type="checkbox" name="colors[${index}][sizes][]" value="M"> M</label>
                     <label><input type="checkbox" name="colors[${index}][sizes][]" value="L"> L</label>
                     <label><input type="checkbox" name="colors[${index}][sizes][]" value="XL"> XL</label>
-                </div>
+               <label><input type="checkbox" name="colors[${index}][sizes][]" value="XXL"> XL</label>
+                    </div>
             </div>
 
             <!-- Multiple Images Upload -->
@@ -163,40 +164,63 @@ $(document).ready(function(){
     let colorGroupCount = 0;
 
     // Function to create a color group
-    function createColorGroup(index){
-        return `
-            <div class="color-group card p-3 mb-3" data-index="${index}">
-                <h5>Color Group ${index+1} 
-                    <button type="button" class="btn btn-danger btn-sm float-right remove-color-group">Remove Color</button>
-                </h5>
+// Function to create a color group
+function createColorGroup(index){
+    return `
+        <div class="color-group card p-3 mb-3" data-index="${index}">
+            <h5>Color Group ${index+1} 
+                <button type="button" class="btn btn-danger btn-sm float-right remove-color-group">Remove Color</button>
+            </h5>
 
-                <!-- Color Picker -->
-                <div class="form-group col-md-6">
-                    <label>Choose Color:</label>
-                    <input type="color" class="form-control col-md-2" name="colors[${index}][color]" required>
-                </div>
+            <!-- Color Picker -->
+            <div class="form-group col-md-6">
+                <label>Choose Color:</label>
+                <input type="color" class="form-control col-md-2" name="colors[${index}][color]" required>
+            </div>
 
-                <!-- Sizes -->
-                <div class="form-group col-md-6">
-                    <label>Available Sizes:</label><br>
-                    <label><input type="checkbox" name="colors[${index}][sizes][]" value="S"> S</label>
-                    <label><input type="checkbox" name="colors[${index}][sizes][]" value="M"> M</label>
-                    <label><input type="checkbox" name="colors[${index}][sizes][]" value="L"> L</label>
-                    <label><input type="checkbox" name="colors[${index}][sizes][]" value="XL"> XL</label>
-                </div>
-
-                <!-- File Inputs Container -->
-                <div class="fileInputContainer col-md-6" data-color-index="${index}">
-                    <div class="file-input-row mb-2" data-input-index="0">
-                        <input type="file" class="form-control image-input" name="colors[${index}][images][]" multiple accept="image/*">
+            <!-- Sizes with Price -->
+            <div class="form-group col-md-12">
+                <label>Available Sizes with Price:</label>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label><input type="checkbox" name="colors[${index}][sizes][]" value="S"> S</label>
+                        <input type="number" class="form-control mt-1" name="colors[${index}][prices][S]" placeholder="Price for S">
+                    </div>
+                    <div class="col-md-3">
+                        <label><input type="checkbox" name="colors[${index}][sizes][]" value="M"> M</label>
+                        <input type="number" class="form-control mt-1" name="colors[${index}][prices][M]" placeholder="Price for M">
+                    </div>
+                    <div class="col-md-3">
+                        <label><input type="checkbox" name="colors[${index}][sizes][]" value="L"> L</label>
+                        <input type="number" class="form-control mt-1" name="colors[${index}][prices][L]" placeholder="Price for L">
+                    </div>
+                    <div class="col-md-3">
+                        <label><input type="checkbox" name="colors[${index}][sizes][]" value="XL"> XL</label>
+                        <input type="number" class="form-control mt-1" name="colors[${index}][prices][XL]" placeholder="Price for XL">
+                    </div>
+                    <div class="col-md-3">
+                        <label><input type="checkbox" name="colors[${index}][sizes][]" value="XXL"> XXL</label>
+                        <input type="number" class="form-control mt-1" name="colors[${index}][prices][XXL]" placeholder="Price for XXL">
                     </div>
                 </div>
-
-                <!-- Image Preview -->
-                <div class="imagePreview" style="display:flex; flex-wrap: wrap; gap:10px;"></div>
             </div>
-        `;
-    }
+
+            <!-- File Inputs -->
+            <div class="fileInputContainer col-md-6" data-color-index="${index}">
+                <div class="file-input-row mb-2" data-input-index="0">
+                    <input type="file" class="form-control image-input" name="colors[${index}][images][]" multiple accept="image/*">
+                </div>
+            </div>
+
+            <!-- Image Preview -->
+            <div class="imagePreview" style="display:flex; flex-wrap: wrap; gap:10px;"></div>
+        </div>
+    `;
+}
+
+
+
+
 
     // Add first color group initially
     addColorGroup();
