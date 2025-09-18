@@ -71,50 +71,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label">Maximum Retail Price(MRP)<span
-                                                    style="color: red;">*</span></label>
-                                            <div class="col-sm-7">
-                                                <input type="text" class="form-control"style="font-size:14px;"
-                                                    value="<?= isset($product) ? ($product['mrp']) : '' ?>" name="mrp"
-                                                    id="mRp" placeholder="Enter the MRP"
-                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '')">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label">Discount Type</label>
-                                            <div class="col-sm-7">
-                                                <select class="form-control fs-13" name="discount_type"
-                                                    id="discountType" style="font-size:14px;" required>
-                                                    <option value="">-- Select Discount Type --</option>
-                                                    <option value="%"
-                                                        <?= (isset($product) && $product['pr_Discount_Type'] == '%') ? 'selected' : '' ?>>
-                                                        %</option>
-                                                    <option value="Rs"
-                                                        <?= (isset($product) && $product['pr_Discount_Type'] == 'Rs') ? 'selected' : '' ?>>
-                                                        Rs</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label">Discount Value</label>
-                                            <div class="col-sm-7">
-                                                <input type="text" class="form-control" style="font-size:14px;"
-                                                    value="<?= isset($product) ? ($product['pr_Discount_Value']) : '' ?>"
-                                                    name="discount_value" id="discountValue"
-                                                    placeholder="Enter the Discount value"
-                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '')">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label">Selling Price</label>
-                                            <div class="col-sm-7">
-                                                <input type="text" class="form-control" style="font-size:14px;"
-                                                    value="<?= isset($product) ? ($product['pr_Selling_Price']) : '' ?>"
-                                                    name="selling_price" id="sellingPrice" readonly placeholder="0">
-                                            </div>
-                                        </div>
+                                       
 
                                         <div class="form-group row">
                                             <label class="col-sm-3 col-form-label">Category Name<span
@@ -168,45 +125,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label">Available Colors <span
-                                                    style="color: red;">*</span></label>
-                                            <div class="col-sm-7">
-                                                <input type="text" class="form-control" style="font-size:14px;"
-                                                    value="<?= isset($product) ? ($product['pr_Aval_Colors']) : '' ?>"
-                                                    name="aval_colors" id="avalColors"
-                                                    placeholder="Enter avalilabe colors (Comma Seperated)" />
-                                                <small>Colors seperated with comma. Hash code not required.</small>
-                                            </div>
-                                        </div>
-
-                                        <?php
-                                        $sizes = isset($product['pr_Size']) ? 
-                                        array_map('trim', explode(',',$product['pr_Size'])) 
-                                        : [];
-                                        ?>
-
-
-                                        <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label">Available Size <span
-                                                    style="color: red;">*</span></label>
-                                            <div class="col-sm-7 prod-size" style="font-size:14px;">
-                                                <input type="checkbox" name="size[]" value="S"
-                                                    <?= in_array('S', $sizes) ? 'checked' : '' ?> />&nbsp;S
-                                                <input type="checkbox" name="size[]" value="M"
-                                                    <?= in_array('M', $sizes) ? 'checked' : '' ?> />&nbsp;M
-                                                <input type="checkbox" name="size[]" value="L"
-                                                    <?= in_array('L', $sizes) ? 'checked' : '' ?> />&nbsp;L
-                                                <input type="checkbox" name="size[]" value="XL"
-                                                    <?= in_array('XL', $sizes) ? 'checked' : '' ?> />&nbsp;XL
-                                                <input type="checkbox" name="size[]" value="XXL"
-                                                    <?= in_array('XXL', $sizes) ? 'checked' : '' ?> />&nbsp;XXL
-                                                <input type="checkbox" name="size[]" value="Free Size"
-                                                    <?= in_array('Free Size', $sizes) ? 'checked' : '' ?> />&nbsp;Free
-                                                Size
-                                            </div>
-                                        </div>
-
+                                      
 
                                         <div class="form-group row">
                                             <label class="col-sm-3 col-form-label">Sleeve Style</label>
