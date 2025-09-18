@@ -160,10 +160,30 @@ class ProductModel extends Model
 
     }
 
-    public function deleteProductById($pr_status, $pr_id, $modified_by)
-    {
-        return $this->db->query("update product set pr_Status = '" . $pr_status . "', pr_modifyon=NOW(), pr_modifyby='" . $modified_by . "' where pr_Id = '" . $pr_id . "'");
-    }
+   public function deleteProductById($pr_status, $pr_id, $modified_by)
+{
+    // Soft delete the product (status = 3)
+    $this->db->table('product')
+        ->where('pr_Id', $pr_id)
+        ->update([
+            'pr_Status'   => $pr_status,   // pass 3 here for delete
+            'pr_modifyon' => date('Y-m-d H:i:s'),
+            'pr_modifyby' => $modified_by
+        ]);
+
+    // Hard delete product images
+    $this->db->table('product_image')
+        ->where('pr_Id', $pr_id)
+        ->delete();
+
+    // Hard delete product variants
+    $this->db->table('product_variants')
+        ->where('pr_Id', $pr_id)
+        ->delete();
+
+    return true;
+}
+
 
 
     public function updateProductVideo($productId, $video)
@@ -209,7 +229,7 @@ class ProductModel extends Model
                 ->groupEnd();
         }
         if (!empty($postData['order'])) {
-            $columns = ['pr_Name', 'mrp', 'pr_Selling_Price', 'pr_Discount_Value', 'pr_Stock', 'pr_Status'];
+            $columns = ['pr_Name','pr_Code', 'pr_Stock', 'pr_Status'];
             $orderColIndex = $postData['order'][0]['column'];
             $orderDir = $postData['order'][0]['dir'];
             $orderCol = $columns[$orderColIndex] ?? 'pr_modifyon';

@@ -42,31 +42,10 @@ class Product extends BaseController
         foreach ($data as &$row) {
             // Default fallbacks
             $row['pr_Name'] = $row['pr_Name'] ?? 'N/A';
-            $row['mrp'] = isset($row['mrp']) ? number_format($row['mrp'], 2) : 'N/A';
-            $row['pr_Selling_Price'] = isset($row['pr_Selling_Price']) ? number_format($row['pr_Selling_Price'], 2) : 'N/A';
-
-            $row['pr_Discount_Value'] = $row['pr_Discount_Value'] ?? 'N/A';
+            $row['pr_Code'] = $row['pr_Code'] ?? 'N/A';
+           
             $row['pr_Stock'] = $row['pr_Stock'] ?? 'N/A';
 
-
-            $imageArray = json_decode($row['product_images'], true);
-            $firstImage = (!empty($imageArray[0]['name'][0])) ? $imageArray[0]['name'][0] : null;
-
-
-            if ($firstImage) {
-                $imagePath = base_url('uploads/productmedia/' . $firstImage);
-                $row['image'] = '
-        <a href="#" class="view-large-image" data-image="' . $imagePath . '" data-bs-toggle="modal" data-bs-target="#imageModal">
-            <img src="' . $imagePath . '" alt="Product Image" class="img-thumbnail" width="60">
-        </a>';
-            } else {
-                //$row['image'] = '<span class="text-muted">No image</span>';
-                $defaultImage = base_url('public/Admin/assets/images/default.jpg');
-                $row['image'] = '
-        <a href="#" onclick="showImageToastAtCursor(event); return false;">
-            <img src="' . $defaultImage . '" alt="No Image" class="img-thumbnail" width="60">
-        </a>';
-            }
 
 
             // Status toggle switch
@@ -101,9 +80,6 @@ class Product extends BaseController
 			<i class="bi bi-pencil-square"></i>
 		</a>&nbsp;
 
-           	<a href="' . base_url('admin/product/view/' . $row['pr_Id']) . '">
-			<i class="bi bi-card-list text-info icon-clickable"></i>
-		</a>&nbsp;
         
         <i class="bi bi-trash text-danger icon-clickable" style="cursor: pointer;" 
 		   onclick="confirmDelete(' . $row['pr_Id'] . ')"></i>&nbsp;';
@@ -176,22 +152,16 @@ class Product extends BaseController
                                             fn($m) => $m[1] . strtoupper($m[2]), 
                                             ucfirst(strtolower(trim($product_description))));
 
-        $mrp = $this->input->getPost('mrp');
-        $selling_price = $this->input->getPost('selling_price');
+
         $product_stock = $this->input->getPost('product_stock');
         $reset_stock = $this->input->getPost('reset_stock');
-        $discount_value = $this->input->getPost('discount_value');
-        $discount_type = $this->input->getPost('discount_type');
-        $available_color = $this->input->getPost('aval_colors');
-        $size = $this->input->getPost('size');
-
         $sleeve_style   = ucwords(strtolower(trim($this->request->getPost('sleeve_style'))));
         $fabric   = ucwords(strtolower(trim($this->request->getPost('fabric'))));
         $stitching   = ucwords(strtolower(trim($this->request->getPost('stitching'))));
         
         $DisCountFrom = 0;     
         
-        if (empty($cat_id) || empty($product_name) || empty($product_code) || empty($product_stock) || empty($reset_stock) || empty($mrp) || empty($available_color) || empty($size)) {
+        if (empty($cat_id) || empty($product_name) || empty($product_code) || empty($product_stock)) {
             return $this->response->setJSON([
                 'status' => 'error',
                 'message' => 'All Required Fields Must Be Filled.'
@@ -236,23 +206,7 @@ if (!ctype_digit($reset_stock)) {
         'message' => 'Reset Stock Must be a Number.'
     ]);
 }
-if(!empty($discount_value)){
-if (!preg_match('/^[0-9]+$/', $discount_value)) {
-    return $this->response->setJSON([
-        'status' => 'error',
-        'field' => 'discount_value',
-        'message' => 'Please Enter a Number Value.'
-    ]);
-}
-}
 
-if (!preg_match('/^[a-zA-Z, ]+$/', $available_color)) {
-    return $this->response->setJSON([
-        'status' => 'error',
-        'field' => 'aval_colors',
-        'message' => 'Invalid colors.'
-    ]);
-}
 $allowedPattern = '/^[a-zA-Z0-9\s\-\&\/()]+$/';
 if(!empty($sleeve_style)){
 if (!preg_match($allowedPattern, $sleeve_style)) {
@@ -301,64 +255,15 @@ if (!preg_match($allowedPattern, $stitching)) {
         }
 
 
-        if (($discount_type == "%" && $discount_value > 100) || ($discount_type == "Rs" && $discount_value >= $mrp) || ($discount_value >= $mrp)) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Enter A Valid Discount'
-            ]);
-        }
-
-        if (empty($discount_value) || empty($discount_type) || $discount_value == '0') {
-            $sub_DiscountExist = false;
-            if (!empty($sub_id)) {
-                $subcategory = $this->productModel->isDiscountInSub($sub_id);
-
-                if (($subcategory->sub_Discount_Value !== null && $subcategory->sub_Discount_Value !== '') && !empty($subcategory->sub_Discount_Type) && $subcategory->sub_Discount_Value > 0) {
-                    $discount_value = $subcategory->sub_Discount_Value;
-                    $discount_type = $subcategory->sub_Discount_Type;
-                    if ($discount_type === '%') {
-                        $selling_price = $mrp - ($mrp * $discount_value / 100);
-                    } elseif ($discount_type === 'Rs') {
-                        $selling_price = $mrp - $discount_value;
-                    }
-                    $sub_DiscountExist = true;
-                    $DisCountFrom = 2;
-                }
-            }
-
-            if (!$sub_DiscountExist) {
-                $category = $this->productModel->isDiscountInCat($cat_id);
-
-                if (($category->cat_Discount_Value !== null && $category->cat_Discount_Value !== '') && !empty($category->cat_Discount_Type)) {
-                    $discount_value = $category->cat_Discount_Value;
-                    $discount_type = $category->cat_Discount_Type;
-                    if ($discount_type === '%') {
-                        $selling_price = $mrp - ($mrp * $discount_value / 100);
-                    } elseif ($discount_type === 'Rs') {
-                        $selling_price = $mrp - $discount_value;
-                    }
-                    $DisCountFrom = 3;
-                }
-            }
-        } else {
-            $DisCountFrom = 1;
-        }
-
 
         $data = [
             'pr_Name' => $product_name,
             'pr_Code' => $product_code,
             'pr_Description' => $product_description,
-            'mrp' => $mrp,
-            'pr_Selling_Price' => isset($selling_price) ? $selling_price : null,
-            'pr_Discount_Value' => isset($discount_value) ? $discount_value : null,
-            'pr_Discount_Type' => isset($discount_type) ? $discount_type : null,
             'cat_Id' => $cat_id,
             'sub_Id' => $sub_id,
             'pr_Stock' => $product_stock,
             'pr_Reset_Stock' => $reset_stock,
-            'pr_Aval_Colors' => $available_color,
-            'pr_Size' => is_array($size) ? implode(',', $size) : '',
             'pr_Sleeve_Style' => $sleeve_style,
             'pr_Fabric' => $fabric,
             'pr_Stitch_Type' => $stitching,

@@ -65,9 +65,12 @@
                                                         <tr>
                                                             <th>Slno</th>
                                                             <th>Name</th>
-                                                           <th>Code</th>
+                                                            <th>MRP</th>
+                                                            <th>Selling Price</th>
+                                                            <!-- <th>Discount Type</th> -->
+                                                            <th>Discount</th>
                                                             <th>Stock</th>
-                                               
+                                                            <th>Image</th>
                                                             <th>Status</th>
                                                             <th>Action</th>
                                                         </tr>
