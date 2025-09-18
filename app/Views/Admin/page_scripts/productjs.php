@@ -26,56 +26,31 @@
             {
                 data: 'pr_Name',
                 render: function (data, type, row) {
-                    return data.length > 20 ? '<span title="' + data + '">' + data.substring(0, 20) + '...' + '</span>' : data;
+                    return data.length > 20
+                        ? '<span title="' + data + '">' + data.substring(0, 20) + '...' + '</span>'
+                        : data;
                 }
             },
-            {
-                data: 'mrp'
-            },
-            {
-                data: 'pr_Selling_Price'
-            },
-            {
-                data: null,
+              {
+                data: 'pr_Code',
                 render: function (data, type, row) {
-                    if (row.pr_Discount_Type === '%') {
-                        return row.pr_Discount_Value + ' ' + row.pr_Discount_Type; // e.g. "10 %"
-                    } else if (row.pr_Discount_Type === 'Rs') {
-                        return row.pr_Discount_Type + ' ' + row.pr_Discount_Value; // e.g. "Rs 100"
-                    } else {
-                        return 'N/A'; // fallback if type is missing
-                    }
+                    return data.length > 20
+                        ? '<span title="' + data + '">' + data.substring(0, 20) + '...' + '</span>'
+                        : data;
                 }
-
             },
-            {
-                data: 'pr_Stock'
-            },
-            {
-                data: 'image'
-            },
-            {
-                data: 'status_switch'
-            },
-            {
-                data: 'actions'
-            }
+            { data: 'pr_Stock' },
+            { data: 'status_switch' },
+            { data: 'actions' }
         ],
         columnDefs: [
             {
-                targets: [6, 7, 8],
+                targets: [4, 5], 
                 orderable: false,
                 searchable: false
-            },
-            {
-                targets: 6,
-                render: function (data, type, row) {
-                    return data;
-                }
             }
         ]
     });
-
 
     //Add product
 
@@ -183,85 +158,6 @@
 
     //File Upload
 
-    function handleFiles(files) {
-        const allowedTypes = ['image/jpeg', 'image/png'];
-
-        const formData = new FormData();
-        const productId = document.getElementById('productId').value;
-
-        let validatedFiles = 0;
-
-        function showMessage(message, type = 'danger') {
-            $('#uploadMsg')
-                .removeClass('alert-success alert-danger')
-                .addClass('alert-' + type)
-                .html(message)
-                .fadeIn();
-
-            setTimeout(() => {
-                $('#uploadMsg').fadeOut();
-            }, 3000);
-        }
-
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-
-            if (!allowedTypes.includes(file.type)) {
-                showMessage(`File "${file.name}" is not allowed. Only JPEG and PNG formats are accepted.`, 'danger');
-                return;
-            }
-
-            const reader = new FileReader();
-
-            reader.onload = function (e) {
-                const img = new Image();
-                img.onload = function () {
-                    if (
-                        img.width < 300 || img.width > 500 ||
-                        img.height < 400 || img.height > 600
-                    ) {
-                        showMessage("Only images with width between 300–500 px and height between 400–600 px are allowed.", 'danger');
-                        return;
-                    }
-
-                    formData.append('files[]', file);
-                    validatedFiles++;
-
-                    if (validatedFiles === files.length) {
-                        formData.append('product_id', productId);
-
-                        fetch("<?= base_url('admin/product/upload-media') ?>", {
-                            method: 'POST',
-                            body: formData,
-                        })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.success === true) {
-                                    showMessage(data.msg || 'Images uploaded successfully!', 'success');
-                                    loadProductImages(productId);
-                                    $('#productList').DataTable().ajax.reload(null, false);
-                                } else {
-                                    showMessage(data.msg || 'Upload failed.', 'danger');
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Upload error:', error);
-                                showMessage('Something went wrong. Try again later.', 'danger');
-                            });
-                    }
-                };
-                img.src = e.target.result;
-            };
-
-            reader.readAsDataURL(file);
-        }
-    }
-
-    function handleDrop(event) {
-        event.preventDefault();
-        handleFiles(event.dataTransfer.files);
-    }
-
 
 
     //Open the modal
@@ -289,97 +185,6 @@
             $('.modal-backdrop').remove();
         });
     });
-
-
-
-    //Image listed the Modal
-    function loadProductImages(productId) {
-        fetch(`<?= base_url('admin/product/get-product-images') ?>/${productId}`)
-            .then(response => response.json())
-            .then(data => {
-                const imageContainer = document.getElementById('imagePreview');
-                imageContainer.innerHTML = '';
-
-                if (data && Array.isArray(data)) {
-                    data.forEach(imgName => {
-                        const wrapper = document.createElement('div');
-                        wrapper.style.position = 'relative';
-                        wrapper.style.display = 'inline-block';
-                        wrapper.style.margin = '5px';
-
-                        const img = document.createElement('img');
-                        img.src = `<?= base_url('uploads/productmedia/') ?>/${imgName}`;
-                        img.alt = "Product Image";
-                        img.style.width = '100px';
-                        img.style.height = '150px';
-                        img.classList.add('rounded', 'border');
-
-                        // Create delete icon
-
-                        const delIcon = document.createElement('i');
-                        delIcon.className = 'fa fa-trash';
-                        delIcon.style.position = 'absolute';
-                        delIcon.style.top = '-10px';
-                        delIcon.style.right = '-10px';
-                        delIcon.style.cursor = 'pointer';
-                        delIcon.style.color = 'red';
-                        delIcon.style.fontSize = '18px';
-                        delIcon.title = 'Delete this image';
-
-                        // Delete click event
-                        delIcon.onclick = function () {
-
-                            Swal.fire({
-                                title: 'Are you sure?',
-                                text: 'You want to delete this image?',
-                                icon: 'warning',
-                                showCancelButton: true,
-                                confirmButtonText: 'Delete',
-                                cancelButtonText: 'Cancel',
-                                reverseButtons: true,
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    fetch(`<?= base_url('admin/product/delete-product-image') ?>`, {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/json',
-                                            'X-Requested-With': 'XMLHttpRequest'
-                                        },
-                                        body: JSON.stringify({
-                                            product_id: productId,
-                                            image: imgName
-                                        })
-                                    })
-                                        .then(res => res.json())
-                                        .then(response => {
-                                            if (response.success) {
-                                                Swal.fire('Deleted!', 'Image has been deleted.', 'success');
-                                                wrapper.remove(); // Remove image from DOM
-                                                $('#productList').DataTable().ajax.reload(null, false);
-                                            } else {
-                                                Swal.fire('Error!', 'Failed to delete the image.', 'error');
-                                            }
-                                        })
-                                        .catch(() => {
-                                            Swal.fire('Error!', 'Something went wrong.', 'error');
-                                        });
-                                }
-                            });
-                        };
-                        wrapper.appendChild(img);
-                        wrapper.appendChild(delIcon);
-                        imageContainer.appendChild(wrapper);
-                    });
-                } else {
-                    imageContainer.innerHTML = '<p class="text-muted">No images found.</p>';
-                }
-            })
-            .catch(err => {
-                console.error('Image load error:', err);
-                document.getElementById('imagePreview').innerHTML = '<p class="text-danger">Failed to load images.</p>';
-            });
-    }
-
 
     //Delete whole Product
     function confirmDelete(prId) {
@@ -673,51 +478,9 @@
             }
         });
     });
-
-    function calculateSellingPrice() {
-        const mrp = parseFloat(document.getElementById('mRp').value) || 0;
-        const discountType = document.getElementById('discountType').value;
-        const discountValue = parseFloat(document.getElementById('discountValue').value) || 0;
-
-        let sellingPrice = mrp;
-
-        if (discountType === '%') {
-            sellingPrice = mrp - (mrp * discountValue / 100);
-        } else if (discountType === 'Rs') {
-            sellingPrice = mrp - discountValue;
-        }
-
-
-        if (sellingPrice < 0) sellingPrice = 0;
-
-
-        document.getElementById('sellingPrice').value = sellingPrice.toFixed(2);
-
-    }
-
-    document.getElementById('mRp')?.addEventListener('input', calculateSellingPrice);
-    document.getElementById(
-        'discountType')?.addEventListener('change', calculateSellingPrice);
-    document.getElementById('discountValue')
-        ?.addEventListener('input', calculateSellingPrice);
-
-    function showImageToastAtCursor(event) {
-        const toastEl = document.getElementById('imageToast');
-        const toast = new bootstrap.Toast(toastEl);
-
-        toastEl.style.top = (event.pageY + 5) + 'px';
-        toastEl.style.left = (event.pageX + 5) + 'px';
-        toastEl.style.display = 'block';
-
-        toast.show();
-        setTimeout(() => {
-            toast.hide();
-        }, 3000);
-    }
-
-
-function redirectToProductImage(productId) {
-    // Redirect to your ProductImage controller with productId
-    window.location.href = "<?= base_url('admin/productimage/viewimage/'); ?>" + productId;
+    function redirectToProductImage($pr_id) {
+    window.location.href = baseUrl + "admin/productimage/viewimage/" + $pr_id;
 }
+
+
 </script>
