@@ -163,7 +163,7 @@ $(document).ready(function(){
 
     let colorGroupCount = 0;
 
-    // Function to create a color group
+    
 // Function to create a color group
 function createColorGroup(index){
     return `
@@ -205,6 +205,16 @@ function createColorGroup(index){
                 </div>
             </div>
 
+            <!-- Stock & Reset Stock -->
+            <div class="form-group col-md-6">
+                <label>Stock:</label>
+                <input type="number" class="form-control" name="colors[${index}][stock]" placeholder="Enter stock" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label>Reset Stock:</label>
+                <input type="number" class="form-control" name="colors[${index}][reset_stock]" placeholder="Enter reset stock" required>
+            </div>
+
             <!-- File Inputs -->
             <div class="fileInputContainer col-md-6" data-color-index="${index}">
                 <div class="file-input-row mb-2" data-input-index="0">
@@ -217,6 +227,7 @@ function createColorGroup(index){
         </div>
     `;
 }
+
 
 
 
@@ -389,6 +400,7 @@ function showMessage(msg, type) {
 });
 
 });
+
 </script>
 
 

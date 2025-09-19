@@ -45,11 +45,10 @@
                                         <div class="col-md-3">
                                             <div class="row">
                                                 <div class="col-lg-12 d-flex justify-content-end p-2">
-                                                   <a href="<?= base_url('admin/productimage/add/' . $pr_id); ?>" 
-   class="btn btn-primary">
-   Add Product Image
-</a>
-
+                                                    <a href="<?= base_url('admin/productimage/add/' . $pr_id); ?>"
+                                                        class="btn btn-primary">
+                                                        Add Product Image
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
@@ -65,41 +64,101 @@
                                                         <tr>
                                                             <th>Slno</th>
                                                             <th>Product Name</th>
-                                                            <th>Thumbnail image</th>
-                                                            <th>File Type</th>
+                                                            <th>Size</th>
+                                                            <th>Color</th>
+                                                            <th>Stock</th>
+                                                            <th>Reset Stock</th>
+                                                            <th>Price</th>
                                                             <th>Status</th>
                                                             <th>Action</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <?php foreach($productimages as $index => $prodimg) : ?>
-                                                        <tr>
-                                                            <td><?= $index + 1; ?></td>
-                                                            <td><?= ucwords($prodimg->pr_Name); ?></td>
-                                                            <td>
-                                                                <?php 
-                                                               $thumbnails = json_decode($prodimg->pri_Thumbnail, true);
-                                                                if (!empty($thumbnails)) {
-                                                                    foreach ($thumbnails as $thumb) {
-                                                                         echo '<img src="' . base_url('uploads/productmedia/' . $thumb['name']) . '" width="80" height="80" style="object-fit: cover; margin-right: 5px;" />';
+                                                        <?php foreach ($productimages as $index => $prodimg): ?>
+                                                            <tr>
+                                                                <td><?= $index + 1; ?></td>
+                                                                <td><?= ucwords($prodimg->pr_Name); ?></td>
+                                                                <td>
+                                                                    <?php
+                                                                    $sizes = !empty($prodimg->sizes) ? explode(',', $prodimg->sizes) : [];
+                                                                    $prices = !empty($prodimg->prices) ? explode(',', $prodimg->prices) : [];
+
+                                                                    if (!empty($sizes)) {
+                                                                        foreach ($sizes as $i => $size) {
+                                                                            $price = $prices[$i] ?? '-';
+                                                                            echo "<div>{$size}</div>";
                                                                         }
+                                                                    } else {
+                                                                        echo '-N/A-';
                                                                     }
-                                                                ?>
-                                                            </td>
-
-                                                            <td><?= $prodimg->color_details; ?></td>
-                                                            <td>
-
-                                                            </td>
-                                                            <td>
+                                                                    ?>
+                                                                </td>
 
 
-                                                            </td>
-                                                        </tr>
+                                                                <!-- <td><?= $prodimg->color_details; ?></td> -->
+                                                                <td>
+                                                                    <?php
+                                                                    $colors = json_decode($prodimg->color_details, true);
+                                                                    if (!empty($colors)) {
+                                                                        // Handle single color object or array of colors
+                                                                        if (isset($colors['color'])) {
+                                                                            // Single color
+                                                                            $colorCode = $colors['color'];
+                                                                            echo '<span title="' . htmlspecialchars($colorCode) . '" style="
+                                                                        display:inline-block;
+                                                                        width:25px;
+                                                                        height:25px;
+                                                                        background:' . $colorCode . ';
+                                                                        border:1px solid #ccc;
+                                                                        margin-right:5px;
+                                                                        vertical-align:middle;
+                                                                    "></span>';
+                                                                        } elseif (is_array($colors)) {
+                                                                            // Multiple colors stored as array of objects
+                                                                            foreach ($colors as $color) {
+                                                                                if (isset($color['color'])) {
+                                                                                    $colorCode = $color['color'];
+                                                                                    echo '<span title="' . htmlspecialchars($colorCode) . '" style="
+                                                                                display:inline-block;
+                                                                                width:25px;
+                                                                                height:25px;
+                                                                                background:' . $colorCode . ';
+                                                                                border:1px solid #ccc;
+                                                                                margin-right:5px;
+                                                                                vertical-align:middle;
+                                                                            "></span>';
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    } else {
+                                                                        echo '-N/A-';
+                                                                    }
+                                                                    ?>
+                                                                </td>
+                                                                <td><?= $prodimg->stock ?? '-N/A-'; ?></td>
+                                                                <td><?= $prodimg->reset_stock ?? '-N/A-'; ?></td>
+                                                                <!-- Price -->
+                                                                <td>
+                                                                    <?php
+                                                                    if (!empty($prodimg->prices)) {
+                                                                        $prices = explode(',', $prodimg->prices);
+                                                                        foreach ($prices as $price) {
+                                                                            echo "<div>₹{$price}</div>";
+                                                                        }
+                                                                    } else {
+                                                                        echo '-N/A-';
+                                                                    }
+                                                                    ?>
+                                                                </td>
+
+                                                                <!-- Status -->
+                                                                <td><?= $prodimg->pri_Status ?? '-N/A-'; ?></td>
+
+                                                            </tr>
                                                         <?php endforeach; ?>
                                                     </tbody>
 
-                                                    </tbody>
+
 
                                                 </table>
                                             </div>
@@ -108,10 +167,7 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
-
-
                 </div>
                 <!-- Page-body end -->
             </div>

@@ -112,7 +112,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
-                                                        <label class="col-sm-2 col-form-label">Lesson Video</label>
+                                                        <label class="col-sm-2 col-form-label">Lesson Videos</label>
                                                         <div class="col-sm-6">
                                                             <input type="file" name="lesson_video[]" class="form-control-file">
                                                         </div>
