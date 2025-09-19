@@ -67,7 +67,6 @@
                                                             <th>Name</th>
                                                            <th>Code</th>
                                                             <th>Stock</th>
-                                               
                                                             <th>Status</th>
                                                             <th>Action</th>
                                                         </tr>
