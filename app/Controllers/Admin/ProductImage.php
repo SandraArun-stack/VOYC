@@ -70,73 +70,71 @@ class ProductImage extends BaseController
 
     
 
-    public function save()
-    {
-        $colorsData = $this->request->getPost('colors');
-        $pr_id = $this->request->getPost('pr_id');
+public function save()
+{
+    $colorsData = $this->request->getPost('colors');
+    $pr_id = $this->request->getPost('pr_id');
 
-        if (!empty($colorsData)) {
-            foreach ($colorsData as $colorIndex => $colorGroup) {
-                $color = $colorGroup['color'] ?? null;
-                $sizes = $colorGroup['sizes'] ?? [];
-                $prices = $colorGroup['prices'] ?? [];
-                $stock = $colorGroup['stock'] ?? 0;         // <-- new
-                $reset_stock = $colorGroup['reset_stock'] ?? 0;
-                $imagesUploaded = [];
+    if (!empty($colorsData)) {
+        foreach ($colorsData as $colorIndex => $colorGroup) {
 
-                // --- Handle file uploads ---
-                if (isset($_FILES['colors']['name'][$colorIndex]['images'])) {
-                    $fileNames = $_FILES['colors']['name'][$colorIndex]['images'];
-                    $tmpNames = $_FILES['colors']['tmp_name'][$colorIndex]['images'];
-                    $errors = $_FILES['colors']['error'][$colorIndex]['images'];
+            $color = $colorGroup['color'] ?? null;
+            $sizes = $colorGroup['sizes'] ?? [];
+            $prices = $colorGroup['prices'] ?? [];
+            $stock = $colorGroup['stock'] ?? [];
+            $reset_stock = $colorGroup['reset_stock'] ?? [];
+            $imagesUploaded = [];
 
-                    for ($i = 0; $i < count($fileNames); $i++) {
-                        if ($errors[$i] === 0) {
-                            $ext = pathinfo($fileNames[$i], PATHINFO_EXTENSION);
-                            $newName = uniqid('', true) . '.' . $ext;
-                            $destination = FCPATH . 'uploads/productmedia/' . $newName;
+            // --- Handle uploaded files ---
+            if (!empty($_FILES['colors']['name'][$colorIndex]['images'])) {
+                $fileNames = $_FILES['colors']['name'][$colorIndex]['images'];
+                $tmpNames = $_FILES['colors']['tmp_name'][$colorIndex]['images'];
+                $errors = $_FILES['colors']['error'][$colorIndex]['images'];
 
-                            if (move_uploaded_file($tmpNames[$i], $destination)) {
-                                $imagesUploaded[] = $newName;
-                            }
+                for ($i = 0; $i < count($fileNames); $i++) {
+                    if ($errors[$i] === 0) {
+                        $ext = pathinfo($fileNames[$i], PATHINFO_EXTENSION);
+                        $newName = uniqid('', true) . '.' . $ext;
+                        $destination = FCPATH . 'uploads/productmedia/' . $newName;
+                        if (move_uploaded_file($tmpNames[$i], $destination)) {
+                            $imagesUploaded[] = $newName;
                         }
                     }
                 }
+            }
 
-                // --- Insert into product_image ---
-                $imageData = [
-                    'pr_Id' => $pr_id,
-                    'pri_Thumbnail' => !empty($imagesUploaded) ? $imagesUploaded[0] : null,
-                    'pri_File_Name' => !empty($imagesUploaded) ? json_encode($imagesUploaded) : null,
-                    'color_details' => json_encode(['color' => $color]),
-                    'stock' => $stock,               // <-- new column in product_images table
-                    'reset_stock' => $reset_stock,
-                    'pri_createdon' => date('Y-m-d H:i:s'),
-                    'pri_createdby' => $this->session->get('ad_uid'),
-                    'pri_Status' => 1
-                ];
+            // --- Insert into product_image ---
+            $imageData = [
+                'pr_Id' => $pr_id,
+                'pri_Thumbnail' => $imagesUploaded[0] ?? null,
+                'pri_File_Name' => !empty($imagesUploaded) ? json_encode($imagesUploaded) : null,
+                'color_details' => json_encode(['color' => $color]),
+                'pri_createdon' => date('Y-m-d H:i:s'),
+                'pri_createdby' => $this->session->get('ad_uid'),
+                'pri_Status' => 1
+            ];
 
-                $pri_id = $this->productimageModel->insertProductImages($imageData);
+            $pri_id = $this->productimageModel->insertProductImages($imageData);
 
-                // --- Insert sizes + prices into product_variants ---
-                if (!empty($sizes)) {
-                    foreach ($sizes as $size) {
-                        $variantData = [
-                            'pr_id' => $pr_id,
-                            'pri_id' => $pri_id,
-                            'prv_size' => $size,
-                            'prv_price' => $prices[$size] ?? 0,
-                            'stock' => $stock,              
-                            'reset_stock' => $reset_stock
-                        ];
-                        $this->productimageModel->insertVariant($variantData);
-                    }
+            // --- Insert sizes + prices + stock per size ---
+            if (!empty($sizes)) {
+                foreach ($sizes as $size) {
+                    $variantData = [
+                        'pr_id' => $pr_id,
+                        'pri_id' => $pri_id,
+                        'prv_size' => $size,
+                        'prv_price' => $prices[$size] ?? 0,
+                        'stock' => $stock[$size] ?? 0,
+                        'reset_stock' => $reset_stock[$size] ?? 0
+                    ];
+                    $this->productimageModel->insertVariant($variantData);
                 }
-
             }
         }
-
-        return $this->response->setJSON(['status' => 'success']);
     }
+
+    return $this->response->setJSON(['status' => 'success']);
+}
+
 
 }

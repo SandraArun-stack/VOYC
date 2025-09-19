@@ -56,7 +56,6 @@
                                 </div>
                                 <div class="card-block">
                                     <div class="card">
-
                                         <div class="card-block table-border-style">
                                             <div class="table-responsive">
                                                 <table class="table table-hover" id="productList">
@@ -73,7 +72,7 @@
                                                             <th>Action</th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody>
+                                                    <tbody></tbody>
                                                         <?php foreach ($productimages as $index => $prodimg): ?>
                                                             <tr>
                                                                 <td><?= $index + 1; ?></td>
@@ -82,7 +81,6 @@
                                                                     <?php
                                                                     $sizes = !empty($prodimg->sizes) ? explode(',', $prodimg->sizes) : [];
                                                                     $prices = !empty($prodimg->prices) ? explode(',', $prodimg->prices) : [];
-
                                                                     if (!empty($sizes)) {
                                                                         foreach ($sizes as $i => $size) {
                                                                             $price = $prices[$i] ?? '-';
@@ -93,9 +91,6 @@
                                                                     }
                                                                     ?>
                                                                 </td>
-
-
-                                                                <!-- <td><?= $prodimg->color_details; ?></td> -->
                                                                 <td>
                                                                     <?php
                                                                     $colors = json_decode($prodimg->color_details, true);
@@ -135,8 +130,32 @@
                                                                     }
                                                                     ?>
                                                                 </td>
-                                                                <td><?= $prodimg->stock ?? '-N/A-'; ?></td>
-                                                                <td><?= $prodimg->reset_stock ?? '-N/A-'; ?></td>
+                                                                <td>
+                                                                    <?php
+                                                                    $stocks = !empty($prodimg->stock) ? explode(',', $prodimg->stock) : [];
+                                                                    if (!empty($sizes)) {
+                                                                        foreach ($sizes as $i => $size) {
+                                                                            $stock = $stocks[$i] ?? 0;
+                                                                            echo "<div>{$stock}</div>";
+                                                                        }
+                                                                    } else {
+                                                                        echo '-N/A-';
+                                                                    }
+                                                                    ?>
+                                                                </td>
+                                                                <td>
+                                                                    <?php
+                                                                    $reset_stocks = !empty($prodimg->reset_stock) ? explode(',', $prodimg->reset_stock) : [];
+                                                                    if (!empty($sizes)) {
+                                                                        foreach ($sizes as $i => $size) {
+                                                                            $reset = $reset_stocks[$i] ?? 0;
+                                                                            echo "<div>{$reset}</div>";
+                                                                        }
+                                                                    } else {
+                                                                        echo '-N/A-';
+                                                                    }
+                                                                    ?>
+                                                                </td>
                                                                 <!-- Price -->
                                                                 <td>
                                                                     <?php
@@ -153,13 +172,9 @@
 
                                                                 <!-- Status -->
                                                                 <td><?= $prodimg->pri_Status ?? '-N/A-'; ?></td>
-
                                                             </tr>
                                                         <?php endforeach; ?>
                                                     </tbody>
-
-
-
                                                 </table>
                                             </div>
                                         </div>
