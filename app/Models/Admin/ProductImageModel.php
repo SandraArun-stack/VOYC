@@ -17,9 +17,10 @@ class ProductImageModel extends Model
         ->select('product_image.*, product.pr_Name, 
                   GROUP_CONCAT(product_variants.prv_Size) as sizes, 
                   GROUP_CONCAT(product_variants.prv_price) as prices,
-                  MAX(product_variants.stock) as stock,
-                  MAX(product_variants.reset_stock) as reset_stock,
-                  MAX(product_variants.prv_Status) as prv_Status')
+                  GROUP_CONCAT(product_variants.stock) as stock,
+                  GROUP_CONCAT(product_variants.reset_stock) as reset_stock,
+
+                  GROUP_CONCAT(product_variants.prv_Status) as prv_Status')
         ->join('product', 'product.pr_Id = product_image.pr_Id')
         ->join('product_variants', 'product_variants.pri_id = product_image.pri_Id', 'left')
         ->where('product.pr_Status !=', 3)
@@ -33,8 +34,9 @@ class ProductImageModel extends Model
         ->select('product_image.*, product.pr_Name, 
                   GROUP_CONCAT(product_variants.prv_Size) as sizes, 
                   GROUP_CONCAT(product_variants.prv_price) as prices,
-                  MAX(product_variants.stock) as stock,
-                  MAX(product_variants.reset_stock) as reset_stock,
+                 GROUP_CONCAT(product_variants.stock) as stock,
+                 GROUP_CONCAT(product_variants.reset_stock) as reset_stock,
+
                   MAX(product_variants.prv_Status) as prv_Status')
         ->join('product', 'product.pr_Id = product_image.pr_Id')
         ->join('product_variants', 'product_variants.pri_id = product_image.pri_Id', 'left')
