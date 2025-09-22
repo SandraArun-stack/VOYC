@@ -1,50 +1,74 @@
 <script>
     var baseUrl = "<?= base_url() ?>";
-var csrfTokenName = "<?= csrf_token() ?>";
-var csrfHash = "<?= csrf_hash() ?>";
+        // alert('haii')
+        // debugger;
+        var csrfTokenName = "<?= csrf_token() ?>";
+        var csrfHash = "<?= csrf_hash() ?>";
 
-$('#productList').DataTable({
-    processing: true,
-    serverSide: true,
-    order: [],
-    ajax: {
-        url: baseUrl + "admin/productimage/ajaxList",
-        type: "POST",
-        data: function (d) {
-            d[csrfTokenName] = csrfHash;
-        }
-    },
-    columns: [
-        { // Serial number
-            data: null,
-            render: function (data, type, row, meta) {
-                return meta.row + meta.settings._iDisplayStart + 1;
+        $('#productList').DataTable({
+
+            processing: true,
+            serverSide: true,
+            order: [],
+            ajax: {
+                url: baseUrl + "admin/productimage/list", // match your route
+                type: "POST",
+                data: function (d) {
+                    d[csrfTokenName] = csrfHash;
+                }
             },
-            orderable: false,
-            searchable: false
-        },
-        { data: "pr_Name" },
-        { data: "sizes" },
-        { data: "colors" },
-        { data: "stocks" },
-        { data: "reset_stocks" },
-        { data: "prices" },
-        { data: "pri_Status" },
-        { data: "actions" }
-    ],
-    columnDefs: [
-        {
-            targets: [8], // action column
-            orderable: false,
-            searchable: false
-        }
-    ]
-});
 
+            columns: [
+                { // Serial number
+                    data: null,
+                    render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    },
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'pr_Name',
+                    render: function (data, type, row) {
+                        return data.length > 20 ? data.substring(0, 20) + '...' : data;
+                    }
+                },
+  // Product Name
+                { data: 'sizes' },          // Sizes
+                { // Colors as colored boxes
+                    data: 'colors',
+                    render: function (data) {
+                        if (!data || data == 'N/A') return '-N/A-';
+                        let html = '';
+                        if (Array.isArray(data)) {
+                            data.forEach(c => {
+                                if (c) html += `<span title="${c}" style="display:inline-block;width:25px;height:25px;background:${c};border:1px solid #ccc;margin-right:5px;"></span>`;
+                            });
+                        } else {
+                            html += `<span title="${data}" style="display:inline-block;width:25px;height:25px;background:${data};border:1px solid #ccc;margin-right:5px;"></span>`;
+                        }
+                        return html;
+                    }
+                },
+                { data: 'stocks' },         // Stock
+                { data: 'reset_stocks' },   // Reset Stock
+                { data: 'prices' },         // Prices
+                { data: 'status_switch' },  // Status toggle
+                { data: 'actions' }         // Action buttons
+            ],
+            columnDefs: [
+                {
+                    targets: [1, 2, 3, 4, 5, 6, 7, 8],
+                    orderable: false,
+                    searchable: false
+                }
+            ]
+        });
+    
 
     //Add product
 
-    var baseUrl = "<?= base_url() ?>";
+    // var baseUrl = "<?= base_url() ?>";
 
     $('#productimageSubmit').click(function (e) {
         e.preventDefault();
@@ -433,6 +457,7 @@ $('#productList').DataTable({
 
         });
 
+        
     });
 
 </script>

@@ -26,11 +26,144 @@ class ProductImage extends BaseController
         $template .= view('Admin/common/leftmenu');
         $template .= view('Admin/productimage', $data);
         $template .= view('Admin/common/footer');
+        $template .= view('Admin/page_scripts/productimagejs');
         return $template;
 
     }
+
+public function ajaxList()
+{
+    
+    $model = new \App\Models\Admin\ProductImageModel();
+    $data = $model->getDatatables();
+    $total = $model->countAll();
+    $filtered = $model->countFiltered();
+
+    // Aggregate variants per product image
+    $aggregated = [];
+    foreach ($data as $row) {
+        $id = $row['pri_Id'];
+
+        if (!isset($aggregated[$id])) {
+            $aggregated[$id] = [
+                'pri_Id' => $row['pri_Id'],
+                'pr_Id' => $row['pr_id'],
+                'pr_Name' => $row['pr_name'] ?? 'N/A',
+                'colors' => json_decode($row['color_details'], true)['color'] ?? 'N/A',
+                'sizes' => [],
+                'prices' => [],
+                'stocks' => [],
+                'reset_stocks' => [],
+                'pri_Status' => $row['pri_Status'],
+            ];
+        }
+
+        // Collect variants
+        $aggregated[$id]['sizes'][] = $row['prv_Size'] ?? 'N/A';
+        $aggregated[$id]['prices'][] = $row['prv_price'] ?? 'N/A';
+        $aggregated[$id]['stocks'][] = $row['stock'] ?? 'N/A';
+        $aggregated[$id]['reset_stocks'][] = $row['reset_stock'] ?? 'N/A';
+    }
+
+    // Convert arrays to comma-separated strings and add actions/status
+    foreach ($aggregated as &$row) {
+        $row['sizes'] = implode(', ', $row['sizes']);
+        $row['prices'] = implode(', ', $row['prices']);
+        $row['stocks'] = implode(', ', $row['stocks']);
+        $row['reset_stocks'] = implode(', ', $row['reset_stocks']);
+
+        // Status toggle
+        $row['status_switch'] = '<div class="form-check form-switch">
+            <input class="form-check-input checkactive"
+                   type="checkbox"
+                   id="statusSwitch-' . $row['pri_Id'] . '"
+                   value="' . $row['pri_Id'] . '" ' . ($row['pri_Status'] == 1 ? 'checked' : '') . '>
+            <label class="form-check-label pl-0 label-check"
+                   for="statusSwitch-' . $row['pri_Id'] . '"></label>
+        </div>';
+
+        // Action buttons
+       $row['actions'] = '
+    <a href="' . base_url('admin/productimage/edit/' . $row['pri_Id']) . '">
+        <i class="bi bi-pencil-square"></i>
+    </a>&nbsp;
+    <i class="bi bi-trash text-danger icon-clickable" style="cursor: pointer;" 
+       onclick="confirmDelete(' . $row['pri_Id'] . ')"></i>&nbsp;';
+    }
+
+    return $this->response->setJSON([
+    'draw' => intval($this->request->getPost('draw')),
+    'recordsTotal' => $total,
+    'recordsFiltered' => $filtered,
+    'data' => array_values($aggregated)
+]);
+}
+public function edit($pri_id = null)
+{
+    if (!$this->session->get('ad_uid')) {
+        return redirect()->to(base_url('admin'));
+    }
+
+    if ($pri_id === null) {
+        return redirect()->to(base_url('admin/productimage'));
+    }
+
+    $productImage = $this->productimageModel->getProductImageById($pri_id);
+    $variants = $this->productimageModel->getVariantsByPriId($pri_id);
+
+    $colorsData = [];
+
+    if ($productImage) {
+        // Decode color details, default to empty array if null
+        $colorDetails = json_decode($productImage['color_details'], true) ?: [];
+        $colorName = $colorDetails['color'] ?? ''; // can be empty
+
+        // Prepare associative arrays keyed by size
+        $prices = [];
+        $stock = [];
+        $reset_stock = [];
+
+        foreach ($variants as $v) {
+            $size = $v['prv_size'] ?? '';
+            if ($size) {
+                $prices[$size] = $v['prv_price'] ?? '';
+                $stock[$size] = $v['stock'] ?? '';
+                $reset_stock[$size] = $v['reset_stock'] ?? '';
+            }
+        }
+
+        // Prepare images array with full URL
+        $images = !empty($productImage['pri_File_Name']) ? json_decode($productImage['pri_File_Name'], true) : [];
+        $images = array_map(fn($img) => base_url('uploads/productmedia/' . $img), $images);
+
+        // Always push one color group, even if color is empty
+        $colorsData[] = [
+            'color' => $colorName,
+            'sizes' => array_keys($prices),
+            'prices' => $prices,
+            'stock' => $stock,
+            'reset_stock' => $reset_stock,
+            'images' => $images
+        ];
+    }
+
+    $data['productimages'] = [$productImage];
+    $data['colorsData'] = $colorsData;
+
+    $template = view('Admin/common/header');
+    $template .= view('Admin/common/leftmenu');
+    $template .= view('Admin/productimage_add', $data);
+    $template .= view('Admin/common/footer');
+    $template .= view('Admin/page_scripts/productimagejs');
+
+    return $template;
+}
+
+
+
     public function viewimage($pr_id = null)
     {
+        
         if (!$this->session->get('ad_uid')) {
             return redirect()->to(base_url('admin'));
         }
@@ -41,7 +174,9 @@ class ProductImage extends BaseController
         $template = view('Admin/common/header');
         $template .= view('Admin/common/leftmenu');
         $template .= view('Admin/productimage', $data);
+         
         $template .= view('Admin/common/footer');
+         $template .= view('Admin/page_scripts/productimagejs');    
         return $template;
 
     }
