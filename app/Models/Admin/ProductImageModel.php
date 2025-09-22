@@ -77,7 +77,118 @@ class ProductImageModel extends Model
         return $this->db->table('product_variants')->insert($data);
     }
 
+    //datatable 
+public function getDatatables()
+{
+    $builder = $this->db->table('product_image pi');
+    $builder->select('
+    pi.pri_id AS pri_Id,
+    p.pr_id,
+    p.pr_name,
+    pi.color_details,
+    pi.pri_Status,
+    pv.prv_Size,
+    pv.prv_price,
+    pv.stock,
+    pv.reset_stock
+');
+
+    $builder->join('product p', 'pi.pr_id = p.pr_id', 'left');
+    $builder->join('product_variants pv', 'pi.pri_id = pv.pri_id', 'left');
+    $builder->where('p.pr_Status !=', 3);
+
+    $postData = service('request')->getPost();
+
+    // Search
+    if (!empty($postData['search']['value'])) {
+        $search = trim($postData['search']['value']);
+        $escaped = $this->db->escapeLikeString($search);
+        $searchNoSpace = str_replace(' ', '', $search);
+
+        $builder->groupStart()
+            // normal fields
+            ->like('p.pr_name', $escaped)
+            ->orLike('pi.color_details', $escaped)
+            ->orLike('pv.prv_Size', $escaped)
+            ->orLike('pv.prv_price', $escaped)
+            ->orLike('pv.stock', $escaped)
+            ->orLike('pv.reset_stock', $escaped)
+
+            // space-insensitive search (manual)
+            ->orWhere("REPLACE(p.pr_name, ' ', '') LIKE", "%{$searchNoSpace}%")
+        ->groupEnd();
+    }
+
+
+
+    // Ordering
+    if (!empty($postData['order'])) {
+        $columns = ['p.pr_name', 'pi.color_details', 'pv.prv_Size', 'pv.prv_price', 'pv.stock', 'pv.reset_stock'];
+        $orderColIndex = $postData['order'][0]['column'];
+        $orderDir = $postData['order'][0]['dir'];
+        $orderCol = $columns[$orderColIndex] ?? 'pi.pri_Id';
+        $builder->orderBy($orderCol, $orderDir);
+    } else {
+        $builder->orderBy('pi.pri_Id', 'DESC');
+    }
+
+    // Pagination
+    if (!empty($postData['length']) && $postData['length'] != -1) {
+        $builder->limit($postData['length'], $postData['start']);
+    }
+
+    return $builder->get()->getResultArray();
 }
 
 
-?>
+public function countAll()
+{
+    return $this->db->table('product_image pi')
+        ->join('product p', 'pi.pr_id = p.pr_id', 'left')
+        ->join('product_variants pv', 'pi.pri_id = pv.pri_id', 'left')
+        ->where('p.pr_Status !=', 3)
+        ->countAllResults();
+}
+
+public function countFiltered()
+{
+    $postData = service('request')->getPost();
+    $builder = $this->db->table('product_image pi')
+        ->join('product p', 'pi.pr_id = p.pr_id', 'left')
+        ->join('product_variants pv', 'pi.pri_id = pv.pri_id', 'left')
+        ->where('p.pr_Status !=', 3);
+
+    if (!empty($postData['search']['value'])) {
+        $search = trim($postData['search']['value']);
+        $escaped = $this->db->escapeLikeString($search);
+
+        $builder->groupStart()
+            ->like('p.pr_name', $escaped)
+            ->orLike('pi.color_details', $escaped)
+            ->orLike('pv.prv_Size', $escaped)
+            ->orLike('pv.prv_price', $escaped)
+            ->orLike('pv.stock', $escaped)
+            ->orLike('pv.reset_stock', $escaped)
+            ->groupEnd();
+    }
+
+    return $builder->countAllResults();
+}
+public function getProductImageById($pri_id)
+{
+    return $this->db->table('product_image')
+                    ->where('pri_Id', $pri_id)
+                    ->get()
+                    ->getRowArray();
+}
+
+public function getVariantsByPriId($pri_id)
+{
+    return $this->db->table('product_variants')
+                    ->where('pri_id', $pri_id)
+                    ->get()
+                    ->getResultArray();
+}
+
+}
+
