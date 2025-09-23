@@ -98,66 +98,7 @@ public function ajaxList()
     'data' => array_values($aggregated)
 ]);
 }
-public function edit($pri_id = null)
-{
-    if (!$this->session->get('ad_uid')) {
-        return redirect()->to(base_url('admin'));
-    }
 
-    if ($pri_id === null) {
-        return redirect()->to(base_url('admin/productimage'));
-    }
-
-    $productImage = $this->productimageModel->getProductImageById($pri_id);
-    $variants = $this->productimageModel->getVariantsByPriId($pri_id);
-
-    $colorsData = [];
-
-    if ($productImage) {
-        // Decode color details, default to empty array if null
-        $colorDetails = json_decode($productImage['color_details'], true) ?: [];
-        $colorName = $colorDetails['color'] ?? ''; // can be empty
-
-        // Prepare associative arrays keyed by size
-        $prices = [];
-        $stock = [];
-        $reset_stock = [];
-
-        foreach ($variants as $v) {
-            $size = $v['prv_size'] ?? '';
-            if ($size) {
-                $prices[$size] = $v['prv_price'] ?? '';
-                $stock[$size] = $v['stock'] ?? '';
-                $reset_stock[$size] = $v['reset_stock'] ?? '';
-            }
-        }
-
-        // Prepare images array with full URL
-        $images = !empty($productImage['pri_File_Name']) ? json_decode($productImage['pri_File_Name'], true) : [];
-        $images = array_map(fn($img) => base_url('uploads/productmedia/' . $img), $images);
-
-        // Always push one color group, even if color is empty
-        $colorsData[] = [
-            'color' => $colorName,
-            'sizes' => array_keys($prices),
-            'prices' => $prices,
-            'stock' => $stock,
-            'reset_stock' => $reset_stock,
-            'images' => $images
-        ];
-    }
-
-    $data['productimages'] = [$productImage];
-    $data['colorsData'] = $colorsData;
-
-    $template = view('Admin/common/header');
-    $template .= view('Admin/common/leftmenu');
-    $template .= view('Admin/productimage_add', $data);
-    $template .= view('Admin/common/footer');
-    $template .= view('Admin/page_scripts/productimagejs');
-
-    return $template;
-}
 
 
 
@@ -257,7 +198,7 @@ public function save()
                     $variantData = [
                         'pr_id' => $pr_id,
                         'pri_id' => $pri_id,
-                        'prv_size' => $size,
+                        'prv_Size' => $size,
                         'prv_price' => $prices[$size] ?? 0,
                         'stock' => $stock[$size] ?? 0,
                         'reset_stock' => $reset_stock[$size] ?? 0
@@ -269,6 +210,24 @@ public function save()
     }
 
     return $this->response->setJSON(['status' => 'success']);
+}
+public function delete($pri_id = null)
+{
+    if (!$this->session->get('ad_uid')) {
+        return $this->response->setJSON(['status' => 'error', 'msg' => 'Unauthorized']);
+    }
+
+    if ($pri_id === null) {
+        return $this->response->setJSON(['status' => 'error', 'msg' => 'Invalid ID']);
+    }
+
+    $deleted = $this->productimageModel->deleteProductImage($pri_id);
+
+    if ($deleted) {
+        return $this->response->setJSON(['status' => 'success', 'msg' => 'Deleted successfully']);
+    } else {
+        return $this->response->setJSON(['status' => 'error', 'msg' => 'Delete failed']);
+    }
 }
 
 
