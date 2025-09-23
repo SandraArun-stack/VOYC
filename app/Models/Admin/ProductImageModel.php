@@ -176,19 +176,40 @@ public function countFiltered()
 }
 public function getProductImageById($pri_id)
 {
-    return $this->db->table('product_image')
+    $result= $this->db->table('product_image')
                     ->where('pri_Id', $pri_id)
                     ->get()
                     ->getRowArray();
+                    // echo '<pre>';
+    // print_r($result); 
+    // echo '</pre>';
+    // exit; 
+    return $result;
+
 }
 
 public function getVariantsByPriId($pri_id)
 {
-    return $this->db->table('product_variants')
-                    ->where('pri_id', $pri_id)
-                    ->get()
-                    ->getResultArray();
+    $result = $this->db->table('product_variants')
+                       ->where('pri_id', $pri_id)
+                       ->get()
+                       ->getResultArray();
+
+    // echo '<pre>';
+    // print_r($result); 
+    // echo '</pre>';
+    // exit; 
+
+    return $result;
 }
+
+
+public function deleteProductImage($pri_id)
+{
+    return $this->db->table('product_image')->where('pri_Id', $pri_id)->delete();
+}
+
+
 
 }
 
