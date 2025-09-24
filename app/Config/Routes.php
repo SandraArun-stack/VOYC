@@ -181,7 +181,7 @@ $routes->get('admin/productimage/viewimage/(:num)', 'Admin\ProductImage::viewima
 $routes->get('admin/productimage/add/(:num)', 'Admin\ProductImage::addProductImage/$1');
 $routes->post('admin/productimage/save', 'Admin\ProductImage::save');
 $routes->post('admin/productimage/list', 'Admin\ProductImage::ajaxList');
-$routes->get('admin/productimage/edit/(:num)', 'Admin\ProductImage::addProductImage/$1');
+$routes->get('admin/productimage/edit/(:num)', 'Admin\ProductImage::edit/$1');
 $routes->post('admin/productimage/delete/(:num)', 'Admin\ProductImage::delete/$1');
 
 

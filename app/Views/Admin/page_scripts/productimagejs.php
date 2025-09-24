@@ -1,70 +1,70 @@
 <script>
     var baseUrl = "<?= base_url() ?>";
-        // alert('haii')
-        // debugger;
-        var csrfTokenName = "<?= csrf_token() ?>";
-        var csrfHash = "<?= csrf_hash() ?>";
+    // alert('haii')
+    // debugger;
+    var csrfTokenName = "<?= csrf_token() ?>";
+    var csrfHash = "<?= csrf_hash() ?>";
 
-        $('#productList').DataTable({
+    $('#productList').DataTable({
 
-            processing: true,
-            serverSide: true,
-            order: [],
-            ajax: {
-                url: baseUrl + "admin/productimage/list", // match your route
-                type: "POST",
-                data: function (d) {
-                    d[csrfTokenName] = csrfHash;
+        processing: true,
+        serverSide: true,
+        order: [],
+        ajax: {
+            url: baseUrl + "admin/productimage/list", // match your route
+            type: "POST",
+            data: function (d) {
+                d[csrfTokenName] = csrfHash;
+            }
+        },
+
+        columns: [
+            { // Serial number
+                data: null,
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                },
+                orderable: false,
+                searchable: false
+            },
+            {
+                data: 'pr_Name',
+                render: function (data, type, row) {
+                    return data.length > 20 ? data.substring(0, 20) + '...' : data;
                 }
             },
-
-            columns: [
-                { // Serial number
-                    data: null,
-                    render: function (data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    },
-                    orderable: false,
-                    searchable: false
-                },
-                {
-                    data: 'pr_Name',
-                    render: function (data, type, row) {
-                        return data.length > 20 ? data.substring(0, 20) + '...' : data;
+            // Product Name
+            { data: 'sizes' },          // Sizes
+            { // Colors as colored boxes
+                data: 'colors',
+                render: function (data) {
+                    if (!data || data == 'N/A') return '-N/A-';
+                    let html = '';
+                    if (Array.isArray(data)) {
+                        data.forEach(c => {
+                            if (c) html += `<span title="${c}" style="display:inline-block;width:25px;height:25px;background:${c};border:1px solid #ccc;margin-right:5px;"></span>`;
+                        });
+                    } else {
+                        html += `<span title="${data}" style="display:inline-block;width:25px;height:25px;background:${data};border:1px solid #ccc;margin-right:5px;"></span>`;
                     }
-                },
-  // Product Name
-                { data: 'sizes' },          // Sizes
-                { // Colors as colored boxes
-                    data: 'colors',
-                    render: function (data) {
-                        if (!data || data == 'N/A') return '-N/A-';
-                        let html = '';
-                        if (Array.isArray(data)) {
-                            data.forEach(c => {
-                                if (c) html += `<span title="${c}" style="display:inline-block;width:25px;height:25px;background:${c};border:1px solid #ccc;margin-right:5px;"></span>`;
-                            });
-                        } else {
-                            html += `<span title="${data}" style="display:inline-block;width:25px;height:25px;background:${data};border:1px solid #ccc;margin-right:5px;"></span>`;
-                        }
-                        return html;
-                    }
-                },
-                { data: 'stocks' },         // Stock
-                { data: 'reset_stocks' },   // Reset Stock
-                { data: 'prices' },         // Prices
-                { data: 'status_switch' },  // Status toggle
-                { data: 'actions' }         // Action buttons
-            ],
-            columnDefs: [
-                {
-                    targets: [1, 2, 3, 4, 5, 6, 7, 8],
-                    orderable: false,
-                    searchable: false
+                    return html;
                 }
-            ]
-        });
-    
+            },
+            { data: 'stocks' },         // Stock
+            { data: 'reset_stocks' },   // Reset Stock
+            { data: 'prices' },         // Prices
+            { data: 'status_switch' },  // Status toggle
+            { data: 'actions' }         // Action buttons
+        ],
+        columnDefs: [
+            {
+                targets: [1, 2, 3, 4, 5, 6, 7, 8],
+                orderable: false,
+                searchable: false
+            }
+        ]
+    });
+
 
     //Add product
 
@@ -140,45 +140,45 @@
     });
 
     function confirmDelete(priId) {
-    Swal.fire({
-        title: 'Are you sure?',
-        text: 'You want to delete this Product Image?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Delete',
-        cancelButtonText: 'Cancel',
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: baseUrl + 'admin/productimage/delete/' + priId,
-                method: 'POST',
-                data: {
-                    "<?= csrf_token() ?>": "<?= csrf_hash() ?>"
-                },
-                dataType: 'json',
-                success: function(response) {
-                    if (response.status === 'success') {
-                        Swal.fire('Deleted!', response.msg, 'success');
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You want to delete this Product Image?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Delete',
+            cancelButtonText: 'Cancel',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: baseUrl + 'admin/productimage/delete/' + priId,
+                    method: 'POST',
+                    data: {
+                        "<?= csrf_token() ?>": "<?= csrf_hash() ?>"
+                    },
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.status === 'success') {
+                            Swal.fire('Deleted!', response.msg, 'success');
 
-                        let table = $('#productList').DataTable();
-                        let currentPage = table.page();
+                            let table = $('#productList').DataTable();
+                            let currentPage = table.page();
 
-                        table.ajax.reload(function() {
-                            if (table.data().count() === 0 && currentPage > 0) {
-                                table.page(currentPage - 1).draw(false);
-                            }
-                        }, false);
-                    } else {
-                        Swal.fire('Error', response.msg, 'error');
+                            table.ajax.reload(function () {
+                                if (table.data().count() === 0 && currentPage > 0) {
+                                    table.page(currentPage - 1).draw(false);
+                                }
+                            }, false);
+                        } else {
+                            Swal.fire('Error', response.msg, 'error');
+                        }
+                    },
+                    error: function () {
+                        Swal.fire('Error', 'Something went wrong.', 'error');
                     }
-                },
-                error: function() {
-                    Swal.fire('Error', 'Something went wrong.', 'error');
-                }
-            });
-        }
-    });
-}
+                });
+            }
+        });
+    }
 
 
 </script>
@@ -264,6 +264,21 @@
 
         // Function to create a color group
         function createColorGroup(index) {
+           let S_price = '<?php print_r($colorsData[0]['prices']['S']) ?>';
+           let M_price = '<?php print_r($colorsData[0]['prices']['M']) ?>';
+           let L_price = '<?php print_r($colorsData[0]['prices']['L']) ?>';
+           let XL_price = '<?php print_r($colorsData[0]['prices']['XL']) ?>';
+           let XXL_price = '<?php print_r($colorsData[0]['prices']['XXL']) ?>';
+
+           let S_stock = '<?php print_r($colorsData[0]['stock']['S']) ?>';
+           let M_stock = '<?php print_r($colorsData[0]['stock']['M']) ?>';
+           let L_stock = '<?php print_r($colorsData[0]['stock']['L']) ?>';
+           let XL_stock = '<?php print_r($colorsData[0]['stock']['XL']) ?>';
+           let XXL_stock = '<?php print_r($colorsData[0]['stock']['XXL']) ?>';
+
+           
+           
+           //console.log(dbresult);
             return `
         <div class="color-group card p-3 mb-3" data-index="${index}">
             <h5>Color Group ${index + 1} 
@@ -282,33 +297,33 @@
                 <div class="row">
                    <div class="col-md-3">
                         <label><input type="checkbox" name="colors[${index}][sizes][]" value="S"> S</label>
-                        <input type="number" class="form-control mt-1" name="colors[${index}][prices][S]" placeholder="Price for S">
-                        <input type="number" class="form-control mt-1" name="colors[${index}][stock][S]" placeholder="Stock for S">
+                        <input type="number" class="form-control mt-1" name="colors[${index}][prices][S]" placeholder="Price for S" value="`+S_price+`">
+                        <input type="number" class="form-control mt-1" name="colors[${index}][stock][S]" placeholder="Stock for S" value="`+S_stock+`">
                         <input type="number" class="form-control mt-1" name="colors[${index}][reset_stock][S]" placeholder="Reset Stock for S">
                     </div>
 
                     <div class="col-md-3">
                         <label><input type="checkbox" name="colors[${index}][sizes][]" value="M"> M</label>
-                        <input type="number" class="form-control mt-1" name="colors[${index}][prices][M]" placeholder="Price for M">
-                        <input type="number" class="form-control mt-1" name="colors[${index}][stock][M]" placeholder="Stock for M">
+                        <input type="number" class="form-control mt-1" name="colors[${index}][prices][M]" placeholder="Price for M" value="`+M_price+`">
+                        <input type="number" class="form-control mt-1" name="colors[${index}][stock][M]" placeholder="Stock for M" value="`+M_stock+`">
                         <input type="number" class="form-control mt-1" name="colors[${index}][reset_stock][M]" placeholder="Reset Stock for M">
                     </div>
                     <div class="col-md-3">
                         <label><input type="checkbox" name="colors[${index}][sizes][]" value="L"> L</label>
-                        <input type="number" class="form-control mt-1" name="colors[${index}][prices][L]" placeholder="Price for L">
-                        <input type="number" class="form-control mt-1" name="colors[${index}][stock][L]" placeholder="Stock for L">
+                        <input type="number" class="form-control mt-1" name="colors[${index}][prices][L]" placeholder="Price for L" value="`+L_price+`">
+                        <input type="number" class="form-control mt-1" name="colors[${index}][stock][L]" placeholder="Stock for L" value="`+L_stock+`">
                         <input type="number" class="form-control mt-1" name="colors[${index}][reset_stock][L]" placeholder="Reset Stock for L">
                     </div>
                     <div class="col-md-3">
                         <label><input type="checkbox" name="colors[${index}][sizes][]" value="XL"> XL</label>
-                        <input type="number" class="form-control mt-1" name="colors[${index}][prices][XL]" placeholder="Price for XL">
-                        <input type="number" class="form-control mt-1" name="colors[${index}][stock][XL]" placeholder="Stock for XL">
+                        <input type="number" class="form-control mt-1" name="colors[${index}][prices][XL]" placeholder="Price for XL" value="`+XL_price+`">
+                        <input type="number" class="form-control mt-1" name="colors[${index}][stock][XL]" placeholder="Stock for XL" value="`+XL_stock+`">
                         <input type="number" class="form-control mt-1" name="colors[${index}][reset_stock][XL]" placeholder="Reset Stock for XL">
                     </div>
                     <div class="col-md-3">
                         <label><input type="checkbox" name="colors[${index}][sizes][]" value="XXL"> XXL</label>
-                        <input type="number" class="form-control mt-1" name="colors[${index}][prices][XXL]" placeholder="Price for XXL">
-                       <input type="number" class="form-control mt-1" name="colors[${index}][stock][XXL]" placeholder="Stock for XXL">
+                        <input type="number" class="form-control mt-1" name="colors[${index}][prices][XXL]" placeholder="Price for XXL" value="`+XXL_price+`">
+                       <input type="number" class="form-control mt-1" name="colors[${index}][stock][XXL]" placeholder="Stock for XXL" value="`+XXL_stock+`">
                        <input type="number" class="form-control mt-1" name="colors[${index}][reset_stock][XXL]" placeholder="Reset Stock for XXL">
                     </div>
                 </div>
@@ -500,7 +515,109 @@
 
         });
 
-        
+
+    });
+    // $(document).on('click', '.edit-btn-prd-img', function (e) {
+    //     e.preventDefault();
+
+    //     var pri_id = $(this).data('id');
+    //     var baseUrl = "<?= base_url() ?>";
+    //     var url = baseUrl + "admin/productimage/edit/" + pri_id;
+
+    //     // Send POST request (form serialization not needed unless you have form data)
+    //     $.get(url, {}, function (response) {
+
+
+    //         if (response.status == 1) {
+    //             $('#messageBox')
+    //                 .removeClass('alert-danger')
+    //                 .addClass('alert-success')
+    //                 .text(response.msg || 'Product Loaded Successfully!')
+    //                 .show();
+
+    //             setTimeout(function () {
+    //                 // Redirect to edit page (or show modal)
+    //                 window.location.href = baseUrl + "admin/productimage/edit/" + pri_id;
+    //             }, 1500);
+    //         } else {
+    //             let message = response.message || 'Unable to load product data.';
+    //             $('#messageBox')
+    //                 .removeClass('alert-success')
+    //                 .addClass('alert-danger')
+    //                 .text(message)
+    //                 .show();
+    //         }
+
+    //         setTimeout(function () {
+    //             $('#messageBox').empty().hide();
+    //         }, 3000);
+    //     }, 'json');
+    // });
+
+    $(document).on('click', '.edit-btn-prd-img', function (e) {
+       
+        e.preventDefault();
+
+        var pri_id = $(this).data('id');
+        var baseUrl = "<?= base_url() ?>";
+        var url = baseUrl + "admin/productimage/edit/" + pri_id;
+
+        $.get(url, {}, function (response) {    
+
+            if (response.status == 1) {
+                $('#messageBox')
+                    .removeClass('alert-danger')
+                    .addClass('alert-success')
+                    .text(response.msg || 'Product Loaded Successfully!')
+                    .show();
+
+                // Clear any existing color groups
+                $('#colorGroupsContainer').empty();
+
+                const colorsData = response.colorsData;
+
+                colorsData.forEach((colorGroup, index) => {
+                    // 1. Create the HTML block
+                    const html = createColorGroup(index);
+
+                    // 2. Append it to the container
+                    $('#colorGroupsContainer').append(html);
+
+                    // 3. Set the color
+                    $(`div.color-group[data-index="${index}"] input[type="color"]`).val(colorGroup.color);
+
+                    // 4. Check sizes and set their values
+                    (colorGroup.sizes || []).forEach(size => {
+                        $(`div.color-group[data-index="${index}"] input[name="colors[${index}][sizes][]"][value="${size}"]`).prop('checked', true);
+
+                        $(`input[name="colors[${index}][prices][${size}]"]`).val(colorGroup.prices[size] || '');
+                        $(`input[name="colors[${index}][stock][${size}]"]`).val(colorGroup.stock[size] || '');
+                        $(`input[name="colors[${index}][reset_stock][${size}]"]`).val(colorGroup.reset_stock[size] || '');
+                    });
+
+                    // 5. Append image previews
+                    if (Array.isArray(colorGroup.images)) {
+                        const previewContainer = $(`div.color-group[data-index="${index}"] .imagePreview`);
+                        colorGroup.images.forEach(imgUrl => {
+                            const imgElement = `<img src="${imgUrl}" style="width:80px;height:80px;object-fit:cover;border:1px solid #ddd;padding:2px;border-radius:4px;">`;
+                            previewContainer.append(imgElement);
+                        });
+                    }
+                });
+
+            } else {
+                let message = response.message || 'Unable to load product data.';
+                $('#messageBox')
+                    .removeClass('alert-success')
+                    .addClass('alert-danger')
+                    .text(message)
+                    .show();
+            }
+
+            setTimeout(function () {
+                $('#messageBox').empty().hide();
+            }, 3000);
+        }, 'json');
     });
 
 </script>
