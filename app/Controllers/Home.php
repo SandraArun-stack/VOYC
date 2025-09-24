@@ -20,7 +20,9 @@ class Home extends BaseController
     }
     public function index()
     {
-        $template = view('index');
-        return $template;
+        $newProductModel = new NewProductModel();
+        $data['newPrdImg'] = $newProductModel->getNewPrdImage();
+        $data['bestSeller'] = $newProductModel->getBestSeller();
+        return view('index', $data);
     }
 }

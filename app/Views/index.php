@@ -173,7 +173,6 @@
             </div>
         </div>
     </section>
-    <!-- Categories Section End -->
 
     <!-- Product Section Begin -->
     <section class="product spad">
@@ -195,207 +194,53 @@
                     </ul>
                 </div>
             </div>
-            <div class="row property__gallery">
-                <div class="col-lg-3 col-md-4 col-sm-6 mix women">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg"
-                            data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/product/fr-6.jpg">
-                            <div class="label new">New</div>
-                            <ul class="product__hover">
-                                <li><a href="<?= base_url() . ASSET_PATH; ?>assets/img/product/fr-6.jpg"
-                                        class="image-popup"><span class="arrow_expand"></span></a></li>
-                                <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                                <li><a href="#"><span class="icon_bag_alt"></span></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">Buttons tweed blazer</a></h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
+
+             <?php if (!empty($newPrdImg)): ?>
+                <div class="row property__gallery">
+                    <?php foreach ($newPrdImg as $item): ?>
+                        <?php $firstImage = $item['prd_first_image'] ?? null; ?>
+                        <div class="col-lg-3 col-md-4 col-sm-6 mb-4"> <!-- 4 per row on large screens -->
+                            <div class="product__item">
+                                <div class="product__item__pic">
+                                    <?php if ($firstImage): ?>
+                                        <img class="product-img" src="<?= base_url('uploads/productmedia/' . $firstImage); ?>"
+                                            alt="Product Image" />
+                                    <?php else: ?>
+                                        <img class="product-img" src="<?= base_url('assets/img/no-image.png'); ?>" alt="No Image" />
+                                    <?php endif; ?>
+                                    <div class="label new">New</div>
+                                    <ul class="product__hover">
+                                        <?php if ($firstImage): ?>
+                                            <li>
+                                                <a href="<?= base_url('uploads/productmedia/' . $firstImage); ?>"
+                                                    class="image-popup"><span class="arrow_expand"></span></a>
+                                            </li>
+                                        <?php endif; ?>
+                                        <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                                        <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                                    </ul>
+                                </div>
+                                <div class="product__item__text">
+                                    <h6><?= esc($item['pr_Name'] ?? 'Product'); ?></h6>
+                                    <div class="rating">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <div class="product__price">₹ <?= round(esc($item['pr_Selling_Price'] ?? '0.0')); ?></div>
+                                </div>
                             </div>
-                            <div class="product__price">₹ 59.0</div>
                         </div>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix men">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg"
-                            data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/product/sd-3.jpg">
-                            <ul class="product__hover">
-                                <li><a href="<?= base_url() . ASSET_PATH; ?>assets/img/product/sd-3.jpg"
-                                        class="image-popup"><span class="arrow_expand"></span></a></li>
-                                <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                                <li><a href="#"><span class="icon_bag_alt"></span></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">Flowy striped skirt</a></h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">₹ 49.0</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix accessories">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg"
-                            data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/product/fr-1.jpg">
-                            <div class="label stockout">out of stock</div>
-                            <ul class="product__hover">
-                                <li><a href="<?= base_url() . ASSET_PATH; ?>assets/img/product/fr-1.jpg"
-                                        class="image-popup"><span class="arrow_expand"></span></a></li>
-                                <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                                <li><a href="#"><span class="icon_bag_alt"></span></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">Cotton T-Shirt</a></h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">₹ 59.0</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix cosmetic">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg"
-                            data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/product/product-1.jpg">
-                            <ul class="product__hover">
-                                <li><a href="<?= base_url() . ASSET_PATH; ?>assets/img/product/product-1.jpg"
-                                        class="image-popup"><span class="arrow_expand"></span></a></li>
-                                <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                                <li><a href="#"><span class="icon_bag_alt"></span></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">Slim striped pocket shirt</a></h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">₹ 59.0</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix kid">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg"
-                            data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/product/fr-2.jpg">
-                            <ul class="product__hover">
-                                <li><a href="<?= base_url() . ASSET_PATH; ?>assets/img/product/fr-2.jpg"
-                                        class="image-popup"><span class="arrow_expand"></span></a></li>
-                                <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                                <li><a href="#"><span class="icon_bag_alt"></span></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">Fit micro corduroy shirt</a></h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">₹ 59.0</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix women men kid accessories cosmetic">
-                    <div class="product__item sale">
-                        <div class="product__item__pic set-bg"
-                            data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/product/fr-5.jpg">
-                            <div class="label sale">Sale</div>
-                            <ul class="product__hover">
-                                <li><a href="<?= base_url() . ASSET_PATH; ?>assets/img/product/fr-5.jpg"
-                                        class="image-popup"><span class="arrow_expand"></span></a></li>
-                                <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                                <li><a href="#"><span class="icon_bag_alt"></span></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">Tropical Kimono</a></h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">₹ 49.0 <span>₹ 59.0</span></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix women men kid accessories cosmetic">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg"
-                            data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/product/fr-4.jpg">
-                            <ul class="product__hover">
-                                <li><a href="<?= base_url() . ASSET_PATH; ?>assets/img/product/fr-4.jpg"
-                                        class="image-popup"><span class="arrow_expand"></span></a></li>
-                                <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                                <li><a href="#"><span class="icon_bag_alt"></span></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">Contrasting sunglasses</a></h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">₹ 59.0</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix women men kid accessories cosmetic">
-                    <div class="product__item sale">
-                        <div class="product__item__pic set-bg"
-                            data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/product/fr-3.jpg">
-                            <div class="label">Sale</div>
-                            <ul class="product__hover">
-                                <li><a href="<?= base_url() . ASSET_PATH; ?>assets/img/product/fr-3.jpg"
-                                        class="image-popup"><span class="arrow_expand"></span></a></li>
-                                <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                                <li><a href="#"><span class="icon_bag_alt"></span></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">Water resistant backpack</a></h6>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">₹ 49.0 <span>₹ 59.0</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <?php else: ?>
+                <p>No products found.</p>
+            <?php endif; ?>
+
         </div>
     </section>
-    <!-- Product Section End -->
 
     <!-- Banner Section Begin -->
     <section class="banner set-bg" data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/banner/banner-1.jpg">
@@ -435,172 +280,54 @@
     <section class="trend spad">
         <div class="container">
             <div class="row">
-                <div class="col-lg-4 col-md-4 col-sm-6">
-                    <div class="trend__content">
-                        <div class="section-title">
-                            <h4>Hot Trend</h4>
-                        </div>
-                        <div class="trend__item">
-                            <div class="trend__item__pic">
-                                <img src="<?= base_url() . ASSET_PATH; ?>assets/img/trend/ab-1.jpg" alt="">
-                            </div>
-                            <div class="trend__item__text">
-                                <h6>Boxy Fit T-Shirt</h6>
-                                <div class="rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
+                <?php if (!empty($bestSeller)): ?>
+                    <?php
+                    $chunks = array_chunk($bestSeller, 3);
+                    $sections = ['Hot Trend', 'Popular Now', 'Spotlight'];
+                    ?>
+
+                    <?php foreach ($chunks as $index => $chunk): ?>
+                        <div class="col-lg-4 col-md-4 col-sm-6">
+                            <div class="trend__content">
+                                <div class="section-title">
+                                    <h4><?= $sections[$index] ?? 'Section'; ?></h4>
                                 </div>
-                                <div class="product__price">₹ 59.0</div>
+
+                                <?php foreach ($chunk as $item): ?>
+                                    <?php $firstImage = $item['prd_first_image'] ?? null; ?>
+                                    <div class="trend__item d-flex">
+                                        <div class="trend__item__pic">
+                                            <?php if ($firstImage): ?>
+                                                <img class="product-img" src="<?= base_url('uploads/productmedia/' . $firstImage); ?>"
+                                                    alt="<?= esc($item['pr_Name'] ?? 'Product'); ?>" />
+                                            <?php else: ?>
+                                                <img class="product-img" src="<?= base_url('assets/img/no-image.png'); ?>"
+                                                    alt="No Image" />
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="trend__item__text">
+                                            <h6><?= esc($item['pr_Name'] ?? 'Product'); ?></h6>
+                                            <div class="rating">
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                            </div>
+                                            <div class="product__price">₹ <?= round(esc($item['pr_Selling_Price'] ?? '0.0')); ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
                             </div>
                         </div>
-                        <div class="trend__item">
-                            <div class="trend__item__pic">
-                                <img src="<?= base_url() . ASSET_PATH; ?>assets/img/trend/ab-2.jpg" alt="">
-                            </div>
-                            <div class="trend__item__text">
-                                <h6>Signature Tees</h6>
-                                <div class="rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="product__price">₹ 59.0</div>
-                            </div>
-                        </div>
-                        <div class="trend__item">
-                            <div class="trend__item__pic">
-                                <img src="<?= base_url() . ASSET_PATH; ?>assets/img/trend/ab-3.jpg" alt="">
-                            </div>
-                            <div class="trend__item__text">
-                                <h6>Cotton T-Shirt</h6>
-                                <div class="rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="product__price">₹ 59.0</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-6">
-                    <div class="trend__content">
-                        <div class="section-title">
-                            <h4>Best seller</h4>
-                        </div>
-                        <div class="trend__item">
-                            <div class="trend__item__pic">
-                                <img src="<?= base_url() . ASSET_PATH; ?>assets/img/trend/bk-1.jpg" alt="">
-                            </div>
-                            <div class="trend__item__text">
-                                <h6>Cotton T-Shirt</h6>
-                                <div class="rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="product__price">₹ 59.0</div>
-                            </div>
-                        </div>
-                        <div class="trend__item">
-                            <div class="trend__item__pic">
-                                <img src="<?= base_url() . ASSET_PATH; ?>assets/img/trend/sd-2.jpg" alt="">
-                            </div>
-                            <div class="trend__item__text">
-                                <h6>Slim Fit</h6>
-                                <div class="rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="product__price">₹ 59.0</div>
-                            </div>
-                        </div>
-                        <div class="trend__item">
-                            <div class="trend__item__pic">
-                                <img src="<?= base_url() . ASSET_PATH; ?>assets/img/trend/fr-4.jpg" alt="">
-                            </div>
-                            <div class="trend__item__text">
-                                <h6>Muscle Fit T-Shirt</h6>
-                                <div class="rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="product__price">₹ 59.0</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-6">
-                    <div class="trend__content">
-                        <div class="section-title">
-                            <h4>Feature</h4>
-                        </div>
-                        <div class="trend__item">
-                            <div class="trend__item__pic">
-                                <img src="<?= base_url() . ASSET_PATH; ?>assets/img/trend/fr-1.jpg" alt="">
-                            </div>
-                            <div class="trend__item__text">
-                                <h6>Regular Fit</h6>
-                                <div class="rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="product__price">₹ 59.0</div>
-                            </div>
-                        </div>
-                        <div class="trend__item">
-                            <div class="trend__item__pic">
-                                <img src="<?= base_url() . ASSET_PATH; ?>assets/img/trend/fr-2.jpg" alt="">
-                            </div>
-                            <div class="trend__item__text">
-                                <h6>Slim Fit</h6>
-                                <div class="rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="product__price">₹ 59.0</div>
-                            </div>
-                        </div>
-                        <div class="trend__item">
-                            <div class="trend__item__pic">
-                                <img src="<?= base_url() . ASSET_PATH; ?>assets/img/trend/fr-3.jpg" alt="">
-                            </div>
-                            <div class="trend__item__text">
-                                <h6>Luxe T-Shirts</h6>
-                                <div class="rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="product__price">₹ 59.0</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    <?php endforeach; ?>
+
+                <?php else: ?>
+                    <p>No products found.</p>
+                <?php endif; ?>
             </div>
+
         </div>
     </section>
     <!-- Trend Section End -->
@@ -754,8 +481,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-7">
                     <div class="footer__about">
                         <div class="footer__logo">
-                            <a href="#"><img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo.png"
-                                    alt=""></a>
+                            <a href="#"><img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo.png" alt=""></a>
                         </div>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
                             cilisis.</p>
