@@ -1,6 +1,6 @@
 /*  ---------------------------------------------------
-Template Name: Ashion
-Description: Ashion ecommerce template
+Template Name: Voyc
+Description: Voyc ecommerce template
 Author: Colorib
 Author URI: https://colorlib.com/
 Version: 1.0
@@ -40,9 +40,9 @@ Created: Colorib
     });
 
     //Search Switch
-    $('.search-switch').on('click', function () {
-        $('.search-model').fadeIn(400);
-    });
+    // $('.search-switch').on('click', function () {
+    //     $('.search-model').fadeIn(400);
+    // });
 
     $('.search-close-switch').on('click', function () {
         $('.search-model').fadeOut(400, function () {

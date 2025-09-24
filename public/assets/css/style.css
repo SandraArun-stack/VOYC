@@ -1,6 +1,6 @@
 /******************************************************************
-  Template Name: Ashion
-  Description: Ashion ecommerce template
+  Template Name: Voyc
+  Description: Voyc ecommerce template
   Author: Colorib
   Author URI: https://colorlib.com/
   Version: 1.0
@@ -517,7 +517,7 @@ ol {
 
 .banner__text span {
 	font-size: 18px;
-	color: #ca1515;
+	color: #000;
 	text-transform: uppercase;
 }
 
@@ -1162,7 +1162,7 @@ ol {
 }
 
 .product__item.sale .product__item__pic .label {
-	background: #ca1515;
+	background: #000;
 }
 
 .product__item.sale .product__item__text .product__price {
@@ -1192,7 +1192,7 @@ ol {
 }
 
 .product__item__pic .label.stockout {
-	background: #111111;
+	background: #ca1515;
 }
 
 .product__item__pic .label.stockblue {

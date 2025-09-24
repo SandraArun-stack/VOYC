@@ -3,11 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="Ashion Template">
-    <meta name="keywords" content="Ashion, unica, creative, html">
+    <meta name="description" content="Voyc Online Shop">
+    <meta name="keywords" content="Voyc Online Shop">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Ashion | Template</title>
+    <title>Voyc - The Online Shop</title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/style.css" type="text/css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+    <link rel="icon" href="<?= base_url() . ASSET_PATH; ?>assets/img/favicon.ico" type="image/x-icon">
 </head>
 
 <body>
@@ -46,7 +47,7 @@
                 </a></li>
         </ul>
         <div class="offcanvas__logo">
-            <a href="./index.html"><img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo.png" alt=""></a>
+            <a href="#"><img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo.png" alt=""></a>
         </div>
         <div id="mobile-menu-wrap"></div>
         <div class="offcanvas__auth">
@@ -62,16 +63,16 @@
             <div class="row">
                 <div class="col-xl-3 col-lg-2">
                     <div class="header__logo">
-                        <a href="./index.html"><img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo.png" alt=""></a>
+                        <a href="#"><img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo.png" alt=""></a>
                     </div>
                 </div>
                 <div class="col-xl-6 col-lg-7">
                     <nav class="header__menu">
                         <ul>
-                            <li class="active"><a href="./index.html">Home</a></li>
+                            <li class="active"><a href="#">Home</a></li>
                             <li><a href="#">Women’s</a></li>
                             <li><a href="#">Men’s</a></li>
-                            <li><a href="./shop.html">Game Arena</a></li>
+                            <li><a href="#">Game Arena</a></li>
                             <!-- <li><a href="#">Pages</a>
                                 <ul class="dropdown">
                                     <li><a href="./product-details.html">Product Details</a></li>
@@ -81,7 +82,7 @@
                                 </ul>
                             </li> -->
                             <!-- <li><a href="./blog.html">Blog</a></li> -->
-                            <li><a href="./contact.html">Contact</a></li>
+                            <li><a href="#">Contact</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -151,7 +152,7 @@
                             <div class="categories__item set-bg"
                                 data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/categories/category-4.jpg">
                                 <div class="categories__text">
-                                    <h4>Cosmetics</h4>
+                                    <h4>Kid’s fashion</h4>
                                     <p>159 items</p>
                                     <a href="#">Shop now</a>
                                 </div>
@@ -161,7 +162,7 @@
                             <div class="categories__item set-bg"
                                 data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/categories/category-5.jpg">
                                 <div class="categories__text">
-                                    <h4>Accessories</h4>
+                                    <h4>Easy Wear</h4>
                                     <p>792 items</p>
                                     <a href="#">Shop now</a>
                                 </div>
@@ -189,8 +190,8 @@
                         <li data-filter=".women">Women’s</li>
                         <!-- <li data-filter=".men">Men’s</li> -->
                         <li data-filter=".kid">Kid’s</li>
-                        <li data-filter=".accessories">Accessories</li>
-                        <li data-filter=".cosmetic">Cosmetics</li>
+                        <!-- <li data-filter=".accessories">Accessories</li>
+                        <li data-filter=".cosmetic">Cosmetics</li> -->
                     </ul>
                 </div>
             </div>
@@ -444,7 +445,7 @@
                                 <img src="<?= base_url() . ASSET_PATH; ?>assets/img/trend/ab-1.jpg" alt="">
                             </div>
                             <div class="trend__item__text">
-                                <h6>Chain bucket bag</h6>
+                                <h6>Boxy Fit T-Shirt</h6>
                                 <div class="rating">
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
@@ -460,7 +461,7 @@
                                 <img src="<?= base_url() . ASSET_PATH; ?>assets/img/trend/ab-2.jpg" alt="">
                             </div>
                             <div class="trend__item__text">
-                                <h6>Pendant earrings</h6>
+                                <h6>Signature Tees</h6>
                                 <div class="rating">
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
@@ -515,7 +516,7 @@
                                 <img src="<?= base_url() . ASSET_PATH; ?>assets/img/trend/sd-2.jpg" alt="">
                             </div>
                             <div class="trend__item__text">
-                                <h6>Zip-pockets pebbled tote <br />briefcase</h6>
+                                <h6>Slim Fit</h6>
                                 <div class="rating">
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
@@ -531,7 +532,7 @@
                                 <img src="<?= base_url() . ASSET_PATH; ?>assets/img/trend/fr-4.jpg" alt="">
                             </div>
                             <div class="trend__item__text">
-                                <h6>Round leather bag</h6>
+                                <h6>Muscle Fit T-Shirt</h6>
                                 <div class="rating">
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
@@ -554,7 +555,7 @@
                                 <img src="<?= base_url() . ASSET_PATH; ?>assets/img/trend/fr-1.jpg" alt="">
                             </div>
                             <div class="trend__item__text">
-                                <h6>Bow wrap skirt</h6>
+                                <h6>Regular Fit</h6>
                                 <div class="rating">
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
@@ -570,7 +571,7 @@
                                 <img src="<?= base_url() . ASSET_PATH; ?>assets/img/trend/fr-2.jpg" alt="">
                             </div>
                             <div class="trend__item__text">
-                                <h6>Metallic earrings</h6>
+                                <h6>Slim Fit</h6>
                                 <div class="rating">
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
@@ -586,7 +587,7 @@
                                 <img src="<?= base_url() . ASSET_PATH; ?>assets/img/trend/fr-3.jpg" alt="">
                             </div>
                             <div class="trend__item__text">
-                                <h6>Flap cross-body bag</h6>
+                                <h6>Luxe T-Shirts</h6>
                                 <div class="rating">
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
@@ -689,55 +690,55 @@
             <div class="row">
                 <div class="col-lg-2 col-md-4 col-sm-4 p-0">
                     <div class="instagram__item set-bg"
-                        data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/footer-banyan/foot-1.jpg">
+                        data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/footer-banyan/footer-7.jpg">
                         <div class="instagram__text">
                             <i class="fa fa-instagram"></i>
-                            <a href="#">@ ashion_shop</a>
+                            <a href="#">Voyc Online Shop</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4 col-sm-4 p-0">
                     <div class="instagram__item set-bg"
-                        data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/footer-banyan/foot-7.jpg">
+                        data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/footer-banyan/footer-6.jpg">
                         <div class="instagram__text">
                             <i class="fa fa-instagram"></i>
-                            <a href="#">@ ashion_shop</a>
+                            <a href="#">Voyc Online Shop</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4 col-sm-4 p-0">
                     <div class="instagram__item set-bg"
-                        data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/footer-banyan/foot-11.jpg">
+                        data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/footer-banyan/footer-5.jpg">
                         <div class="instagram__text">
                             <i class="fa fa-instagram"></i>
-                            <a href="#">@ ashion_shop</a>
+                            <a href="#">Voyc Online Shop</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4 col-sm-4 p-0">
                     <div class="instagram__item set-bg"
-                        data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/footer-banyan/foot-9.jpg">
+                        data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/footer-banyan/footer-9.jpg">
                         <div class="instagram__text">
                             <i class="fa fa-instagram"></i>
-                            <a href="#">@ ashion_shop</a>
+                            <a href="#">Voyc Online Shop</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4 col-sm-4 p-0">
                     <div class="instagram__item set-bg"
-                        data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/footer-banyan/foot-7.jpg">
+                        data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/footer-banyan/footer-8.jpg">
                         <div class="instagram__text">
                             <i class="fa fa-instagram"></i>
-                            <a href="#">@ ashion_shop</a>
+                            <a href="#">Voyc Online Shop</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4 col-sm-4 p-0">
                     <div class="instagram__item set-bg"
-                        data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/footer-banyan/foot-10.jpg">
+                        data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/footer-banyan/footer-10.jpg">
                         <div class="instagram__text">
                             <i class="fa fa-instagram"></i>
-                            <a href="#">@ ashion_shop</a>
+                            <a href="#">Voyc Online Shop</a>
                         </div>
                     </div>
                 </div>
@@ -753,7 +754,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-7">
                     <div class="footer__about">
                         <div class="footer__logo">
-                            <a href="./index.html"><img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo.png"
+                            <a href="#"><img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo.png"
                                     alt=""></a>
                         </div>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
@@ -817,7 +818,7 @@
                         <p>Copyright &copy;
                             <script>document.write(new Date().getFullYear());</script> All rights reserved | This
                             template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a
-                                href="https://colorlib.com" target="_blank">Colorlib</a>
+                                href="https://www.smartlounge.online/" target="_blank">Smartlounge</a>
                         </p>
                     </div>
                 </div>
