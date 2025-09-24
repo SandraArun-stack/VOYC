@@ -44,7 +44,7 @@
                                     <form id="productImageForm" name="productImageForm" method="post"
                                         action="<?= base_url('admin/productimage/save') ?>"
                                         enctype="multipart/form-data">
-
+                                        <?php //print_r($colorsData); ?>
                                         <div id="colorGroupsContainer"></div>
 
                                         <input type="hidden" name="pr_id" value="<?= $pr_id ?? '' ?>">
