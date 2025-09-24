@@ -38,36 +38,30 @@
                                     </div>
                                 </div>
                                 <div class="card-block">
-                                    <div id="messageBox" style="display:none; padding:10px; margin:10px 0; border-radius:5px;"></div>
+                                    <div id="messageBox"
+                                        style="display:none; padding:10px; margin:10px 0; border-radius:5px;"></div>
 
-<form id="productImageForm"  name="productImageForm"
-      method="post" 
-      action="<?= base_url('admin/productimage/save') ?>" 
-      enctype="multipart/form-data">
+                                    <form id="productImageForm" name="productImageForm" method="post"
+                                        action="<?= base_url('admin/productimage/save') ?>"
+                                        enctype="multipart/form-data">
 
-    <div id="colorGroupsContainer"></div>
+                                        <div id="colorGroupsContainer"></div>
 
-    <input type="hidden" name="pr_id" value="<?= $pr_id ?? '' ?>">
-
-
-    <button type="button" class="btn btn-success mb-3" id="addColorBtn">+ Add Color</button>
-
-    <div>
-        <button type="submit" class="btn btn-primary">Save</button>
-    </div>
-</form>
+                                        <input type="hidden" name="pr_id" value="<?= $pr_id ?? '' ?>">
 
 
+                                        <button type="button" class="btn btn-success mb-3" id="addColorBtn">+ Add
+                                            Color</button>
+
+                                        <div>
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                        </div>
+                                    </form>
                                 </div>
-
-
                             </div>
                         </div>
                     </div>
-
                 </div>
-
-
             </div>
             <!-- Page-body end -->
         </div>

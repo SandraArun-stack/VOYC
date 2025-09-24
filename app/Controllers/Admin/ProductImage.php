@@ -26,11 +26,85 @@ class ProductImage extends BaseController
         $template .= view('Admin/common/leftmenu');
         $template .= view('Admin/productimage', $data);
         $template .= view('Admin/common/footer');
+        $template .= view('Admin/page_scripts/productimagejs');
         return $template;
 
     }
+
+public function ajaxList()
+{
+    
+    $model = new \App\Models\Admin\ProductImageModel();
+    $data = $model->getDatatables();
+    $total = $model->countAll();
+    $filtered = $model->countFiltered();
+
+    // Aggregate variants per product image
+    $aggregated = [];
+    foreach ($data as $row) {
+        $id = $row['pri_Id'];
+
+        if (!isset($aggregated[$id])) {
+            $aggregated[$id] = [
+                'pri_Id' => $row['pri_Id'],
+                'pr_Id' => $row['pr_id'],
+                'pr_Name' => $row['pr_name'] ?? 'N/A',
+                'colors' => json_decode($row['color_details'], true)['color'] ?? 'N/A',
+                'sizes' => [],
+                'prices' => [],
+                'stocks' => [],
+                'reset_stocks' => [],
+                'pri_Status' => $row['pri_Status'],
+            ];
+        }
+
+        // Collect variants
+        $aggregated[$id]['sizes'][] = $row['prv_Size'] ?? 'N/A';
+        $aggregated[$id]['prices'][] = $row['prv_price'] ?? 'N/A';
+        $aggregated[$id]['stocks'][] = $row['stock'] ?? 'N/A';
+        $aggregated[$id]['reset_stocks'][] = $row['reset_stock'] ?? 'N/A';
+    }
+
+    // Convert arrays to comma-separated strings and add actions/status
+    foreach ($aggregated as &$row) {
+        $row['sizes'] = implode(', ', $row['sizes']);
+        $row['prices'] = implode(', ', $row['prices']);
+        $row['stocks'] = implode(', ', $row['stocks']);
+        $row['reset_stocks'] = implode(', ', $row['reset_stocks']);
+
+        // Status toggle
+        $row['status_switch'] = '<div class="form-check form-switch">
+            <input class="form-check-input checkactive"
+                   type="checkbox"
+                   id="statusSwitch-' . $row['pri_Id'] . '"
+                   value="' . $row['pri_Id'] . '" ' . ($row['pri_Status'] == 1 ? 'checked' : '') . '>
+            <label class="form-check-label pl-0 label-check"
+                   for="statusSwitch-' . $row['pri_Id'] . '"></label>
+        </div>';
+
+        // Action buttons
+       $row['actions'] = '
+    <a href="' . base_url('admin/productimage/edit/' . $row['pri_Id']) . '">
+        <i class="bi bi-pencil-square"></i>
+    </a>&nbsp;
+    <i class="bi bi-trash text-danger icon-clickable" style="cursor: pointer;" 
+       onclick="confirmDelete(' . $row['pri_Id'] . ')"></i>&nbsp;';
+    }
+
+    return $this->response->setJSON([
+    'draw' => intval($this->request->getPost('draw')),
+    'recordsTotal' => $total,
+    'recordsFiltered' => $filtered,
+    'data' => array_values($aggregated)
+]);
+}
+
+
+
+
     public function viewimage($pr_id = null)
     {
+        
         if (!$this->session->get('ad_uid')) {
             return redirect()->to(base_url('admin'));
         }
@@ -41,7 +115,9 @@ class ProductImage extends BaseController
         $template = view('Admin/common/header');
         $template .= view('Admin/common/leftmenu');
         $template .= view('Admin/productimage', $data);
+         
         $template .= view('Admin/common/footer');
+         $template .= view('Admin/page_scripts/productimagejs');    
         return $template;
 
     }
@@ -68,172 +144,91 @@ class ProductImage extends BaseController
         return $template;
     }
 
-    // public function save()
-// {
-//     $colorsData = $this->request->getPost('colors');
-//     $pr_id      = $this->request->getPost('pr_id');
+    
 
-    //     $finalData = [];
+public function save()
+{
+    $colorsData = $this->request->getPost('colors');
+    $pr_id = $this->request->getPost('pr_id');
 
-    //     if (!empty($colorsData)) {
-//         foreach ($colorsData as $colorIndex => $colorGroup) {
-//             $color = $colorGroup['color'] ?? null;
-//             $sizes = $colorGroup['sizes'] ?? [];
-//             $imagesUploaded = [];
+    if (!empty($colorsData)) {
+        foreach ($colorsData as $colorIndex => $colorGroup) {
 
-    //             // Handle file uploads
-//             if (isset($_FILES['colors']['name'][$colorIndex]['images'])) {
-//                 $fileNames = $_FILES['colors']['name'][$colorIndex]['images'];
-//                 $tmpNames  = $_FILES['colors']['tmp_name'][$colorIndex]['images'];
-//                 $errors    = $_FILES['colors']['error'][$colorIndex]['images'];
+            $color = $colorGroup['color'] ?? null;
+            $sizes = $colorGroup['sizes'] ?? [];
+            $prices = $colorGroup['prices'] ?? [];
+            $stock = $colorGroup['stock'] ?? [];
+            $reset_stock = $colorGroup['reset_stock'] ?? [];
+            $imagesUploaded = [];
 
-    //                 for ($i = 0; $i < count($fileNames); $i++) {
-//                     if ($errors[$i] === 0) {
-//                         $ext = pathinfo($fileNames[$i], PATHINFO_EXTENSION);
-//                         $newName = uniqid() . '.' . $ext;
-//                         $destination = FCPATH . 'uploads/productmedia/' . $newName;
+            // --- Handle uploaded files ---
+            if (!empty($_FILES['colors']['name'][$colorIndex]['images'])) {
+                $fileNames = $_FILES['colors']['name'][$colorIndex]['images'];
+                $tmpNames = $_FILES['colors']['tmp_name'][$colorIndex]['images'];
+                $errors = $_FILES['colors']['error'][$colorIndex]['images'];
 
-    //                         if (move_uploaded_file($tmpNames[$i], $destination)) {
-//                             $imagesUploaded[] = 'uploads/productmedia/' . $newName;
-//                         }
-//                     }
-//                 }
-//             }
-
-    //             $finalData[] = [
-//                 'color'  => $color,
-//                 'sizes'  => $sizes,
-//                 'images' => $imagesUploaded
-//             ];
-//         }
-//     }
-
-    //     // Prepare data
-//     $data = [
-//         'pr_Id'         => $pr_id,
-//         'color_details' => json_encode($finalData),
-//         'pri_createdon' => date('Y-m-d H:i:s'),
-//         'pri_createdby' => $this->session->get('ad_uid'),
-//         'pri_Status'    => 1
-//     ];
-//     // Insert using model
-//     $this->productimageModel->insertProductImages($data);
-
-    //     return $this->response->setJSON(['status' => 'success']);
-// }
-
-
-
-
-
-    // public function saveProductImage()
-    // {
-    //     $pr_id = $this->request->getPost('pr_id');
-    //     $file_type = $this->request->getPost('file_type');
-    //     $files = $this->request->getFiles();
-
-    //     if (!$pr_id || empty($files['media_files'])) {
-    //         return $this->response->setJSON(['status' => 0, 'msg' => 'Product And Files Are Required.']);
-    //     }
-
-    //     $mediaFiles = $files['media_files'];
-    //     $uploadData = [];
-
-    //     if (is_array($mediaFiles)) {
-    //         foreach ($mediaFiles as $file) {
-    //             if ($file->isValid() && !$file->hasMoved()) {
-    //                 $newName = $file->getRandomName();
-    //                 $file->move(FCPATH . 'uploads/productmedia/', $newName);
-
-    //                 $uploadData[] = [
-    //                     'name' => $newName,
-    //                     'type' => $file_type
-    //                 ];
-    //             }
-    //         }
-    //     }
-
-    //     if (!empty($uploadData)) {
-    //         $data = [
-    //             'pr_id' => $pr_id,
-    //             'pri_File_Type'=> $file_type,
-    //             'pri_Thumbnail' => json_encode($uploadData),
-    //             'pri_Status' =>1,
-    //             'pri_createdon' => date('Y-m-d H:i:s'),
-    //             'pri_createdby' => $this->session->get('ad_uid')
-    //         ];
-
-    //         $this->productimageModel->productimageInsert($data);
-
-    //         return $this->response->setJSON(['status' => 1, 'msg' => 'Media Uploaded Successfully.']);
-    //     } else {
-    //         return $this->response->setJSON(['status' => 0, 'msg' => 'No Valid Files Uploaded.']);
-    //     }
-    // }
-
-
-
-    public function save()
-    {
-        $colorsData = $this->request->getPost('colors');
-        $pr_id = $this->request->getPost('pr_id');
-
-        if (!empty($colorsData)) {
-            foreach ($colorsData as $colorIndex => $colorGroup) {
-                $color = $colorGroup['color'] ?? null;
-                $sizes = $colorGroup['sizes'] ?? [];
-                $prices = $colorGroup['prices'] ?? [];
-                $imagesUploaded = [];
-
-                // --- Handle file uploads ---
-                if (isset($_FILES['colors']['name'][$colorIndex]['images'])) {
-                    $fileNames = $_FILES['colors']['name'][$colorIndex]['images'];
-                    $tmpNames = $_FILES['colors']['tmp_name'][$colorIndex]['images'];
-                    $errors = $_FILES['colors']['error'][$colorIndex]['images'];
-
-                    for ($i = 0; $i < count($fileNames); $i++) {
-                        if ($errors[$i] === 0) {
-                            $ext = pathinfo($fileNames[$i], PATHINFO_EXTENSION);
-                            $newName = uniqid('', true) . '.' . $ext;
-                            $destination = FCPATH . 'uploads/productmedia/' . $newName;
-
-                            if (move_uploaded_file($tmpNames[$i], $destination)) {
-                                $imagesUploaded[] = $newName;
-                            }
+                for ($i = 0; $i < count($fileNames); $i++) {
+                    if ($errors[$i] === 0) {
+                        $ext = pathinfo($fileNames[$i], PATHINFO_EXTENSION);
+                        $newName = uniqid('', true) . '.' . $ext;
+                        $destination = FCPATH . 'uploads/productmedia/' . $newName;
+                        if (move_uploaded_file($tmpNames[$i], $destination)) {
+                            $imagesUploaded[] = $newName;
                         }
                     }
                 }
+            }
 
-                // --- Insert into product_image ---
-                $imageData = [
-                    'pr_Id' => $pr_id,
-                    'pri_Thumbnail' => !empty($imagesUploaded) ? $imagesUploaded[0] : null,
-                    'pri_File_Name' => !empty($imagesUploaded) ? json_encode($imagesUploaded) : null,
-                    'color_details' => json_encode(['color' => $color]),
-                    'pri_createdon' => date('Y-m-d H:i:s'),
-                    'pri_createdby' => $this->session->get('ad_uid'),
-                    'pri_Status' => 1
-                ];
+            // --- Insert into product_image ---
+            $imageData = [
+                'pr_Id' => $pr_id,
+                'pri_Thumbnail' => $imagesUploaded[0] ?? null,
+                'pri_File_Name' => !empty($imagesUploaded) ? json_encode($imagesUploaded) : null,
+                'color_details' => json_encode(['color' => $color]),
+                'pri_createdon' => date('Y-m-d H:i:s'),
+                'pri_createdby' => $this->session->get('ad_uid'),
+                'pri_Status' => 1
+            ];
 
-                $pri_id = $this->productimageModel->insertProductImages($imageData);
+            $pri_id = $this->productimageModel->insertProductImages($imageData);
 
-                // --- Insert sizes + prices into product_variants ---
-                if (!empty($sizes)) {
-                    foreach ($sizes as $size) {
-                        $variantData = [
-                            'pr_id' => $pr_id,
-                            'pri_id' => $pri_id,
-                            'prv_size' => $size,
-                            'prv_price' => $prices[$size] ?? 0 // now it matches size
-                        ];
-                        $this->productimageModel->insertVariant($variantData);
-                    }
+            // --- Insert sizes + prices + stock per size ---
+            if (!empty($sizes)) {
+                foreach ($sizes as $size) {
+                    $variantData = [
+                        'pr_id' => $pr_id,
+                        'pri_id' => $pri_id,
+                        'prv_Size' => $size,
+                        'prv_price' => $prices[$size] ?? 0,
+                        'stock' => $stock[$size] ?? 0,
+                        'reset_stock' => $reset_stock[$size] ?? 0
+                    ];
+                    $this->productimageModel->insertVariant($variantData);
                 }
-
             }
         }
-
-        return $this->response->setJSON(['status' => 'success']);
     }
+
+    return $this->response->setJSON(['status' => 'success']);
+}
+public function delete($pri_id = null)
+{
+    if (!$this->session->get('ad_uid')) {
+        return $this->response->setJSON(['status' => 'error', 'msg' => 'Unauthorized']);
+    }
+
+    if ($pri_id === null) {
+        return $this->response->setJSON(['status' => 'error', 'msg' => 'Invalid ID']);
+    }
+
+    $deleted = $this->productimageModel->deleteProductImage($pri_id);
+
+    if ($deleted) {
+        return $this->response->setJSON(['status' => 'success', 'msg' => 'Deleted successfully']);
+    } else {
+        return $this->response->setJSON(['status' => 'error', 'msg' => 'Delete failed']);
+    }
+}
+
 
 }
