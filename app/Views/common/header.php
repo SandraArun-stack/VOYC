@@ -68,17 +68,17 @@
 
                 </div>
                 <div class="col-8 mt-4 main__icon">
-                    <a href="#">Game Arena</a>
-                    <a href="#">Customization</a>
+                    <a href="#"><i class="bi bi-controller"></i></a>
+                    <a href="#"><i class="bi bi-alexa"></i></a>
                 </div>
                 <div class="col-xl-6 col-lg-7 ">
                     <nav class="header__menu">
                         <ul>
-                            <li class="active"><a href="<?= base_url(' '); ?>">Home</a></li>
-                            <li><a href="<?= base_url('shop'); ?>">Women’s</a></li>
-                            <li><a href="<?= base_url('shop'); ?>">Men’s</a></li>
-                            <li><a href="#">Game Arena</a></li>
-                            <li><a href="#">Contact</a></li>
+                            <li class="active"><a href="<?= base_url(' '); ?>" id="home">Home</a></li>
+                            <li><a href="<?= base_url('women'); ?>" id="women">Women’s</a></li>
+                            <li><a href="<?= base_url('men'); ?>" id="men">Men’s</a></li>
+                            <li><a href="#" id="game_arena">Game Arena</a></li>
+                            <li><a href="#" id="contact">Contact</a></li>
                         </ul>
                     </nav>
                 </div>

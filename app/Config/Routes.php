@@ -7,7 +7,8 @@ use CodeIgniter\Router\RouteCollection;
  */
 /* GET METHODS */
 $routes->get('/', 'Home::index');
-$routes->get('shop', 'Shop::index');
+$routes->get('men', 'Shop::index');
+$routes->get('women', 'Shop::index');
 
  
 // login register logout

@@ -17,14 +17,14 @@
     .main__icon {
         display: flex !important;
         justify-content: flex-end;
-        gap: 10px;
+        gap: 2rem;
         color: #fff !important;
         padding-right: 0;
     }
 
     .main__icon a {
         color: #fff !important;
-        font-size: 14px !important;
+        font-size: 24px !important;
         padding: 2px 0px;
         font-weight: 600;
         text-transform: uppercase;
