@@ -7,12 +7,7 @@ use CodeIgniter\Router\RouteCollection;
  */
 /* GET METHODS */
 $routes->get('/', 'Home::index');
-// google sign
-// $routes->post('google-login-callback', 'GoogleLoginCallback::index');
-// $routes->match(['get', 'post'], 'google-login-callback', 'GoogleLoginCallback::index');
-
-//$routes->match(['get', 'post'], 'zakhidesigns/google-login-callback', 'Googlelogincallback::googleLogin');
-$routes->match(['get', 'post'], 'GoogleLoginCallback/googleLogin', 'GoogleLoginCallback::googleLogin');
+$routes->get('shop', 'Shop::index');
 
  
 // login register logout

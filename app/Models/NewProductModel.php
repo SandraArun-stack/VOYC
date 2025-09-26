@@ -23,13 +23,15 @@ class NewProductModel extends Model
     public function getNewPrdImage()
     {
         return $this->db->table('product_image pi')
-            ->select('p.pr_Id, p.pr_Name, p.pr_Selling_Price, pi.pri_Thumbnail AS prd_first_image')
+            ->select('p.pr_Id, p.pr_Name, p.pr_Selling_Price, MIN(pi.pri_Thumbnail) AS prd_first_image')
             ->join('product p', 'p.pr_Id = pi.pr_Id')
             ->where('pi.pri_Status', 1)
-            ->orderBy('pi.pri_createdon', 'DESC')
+            ->groupBy('p.pr_Id, p.pr_Name, p.pr_Selling_Price')
+            ->orderBy('p.pr_Id', 'DESC')
             ->limit(8)
             ->get()
             ->getResultArray();
+
     }
 
     public function getBestSeller()

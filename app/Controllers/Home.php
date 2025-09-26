@@ -1,10 +1,6 @@
 <?php
 
 namespace App\Controllers;
-
-use App\Models\ProductDisplayModel;
-use App\Models\Admin\Theme_Model;
-use App\Models\ReviewModel;
 use App\Models\NewProductModel;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -15,14 +11,16 @@ class Home extends BaseController
     public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
         parent::initController($request, $response, $logger);
-        // $this->productdisplayModel = new ProductDisplayModel();
-        // $this->categories = $this->productdisplayModel->getAllCategoriesAndSub();
     }
     public function index()
     {
         $newProductModel = new NewProductModel();
         $data['newPrdImg'] = $newProductModel->getNewPrdImage();
         $data['bestSeller'] = $newProductModel->getBestSeller();
-        return view('index', $data);
+        return view('common/header')
+            . view('index', $data)
+            . view('common/footer')
+            . view('pagescripts/indexjs');
     }
 }
+
