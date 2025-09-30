@@ -3,7 +3,11 @@
         setTimeout(function () {
             $(".show-after").hide()
             $(".video-section").fadeOut(800, function () {
-                $(".show-after").fadeIn(800);
+                $(".show-after").fadeIn(800, function () {
+                    $("#categoriesModal").fadeIn(600, function () {
+                        AOS.refresh(); 
+                    });
+                });
             });
         }, 1000);
     });

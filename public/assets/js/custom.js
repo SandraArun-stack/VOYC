@@ -1,3 +1,10 @@
+window.onload = function () {
+    AOS.init({
+        duration: 1000,
+        once: false,
+        mirror: true
+    });
+};
 $(document).ready(function () {
     var currentUrl = window.location.href.toLowerCase();
 
@@ -22,4 +29,13 @@ $(document).ready(function () {
         $(".header__menu ul li").removeClass("active");
         $(this).parent().addClass("active");
     });
+    $("#leader_board").on("click", function (e) {
+        e.preventDefault();
+        $("#categoriesModal").fadeIn(600);
+    });
+
+    $(".close-btn").on("click", function () {
+        $("#categoriesModal").hide();
+    });
+
 });

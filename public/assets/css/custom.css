@@ -9,8 +9,147 @@
     z-index: 11;
 }
 
+.categories {
+    position: relative;
+}
+
+.custom-modal {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1111111;
+}
+
+.custom-modal-content {
+    background: #343641;
+    height: calc(100% - 78px);
+    width: 35%;
+    margin: 0px 15px 20px auto;
+    padding: 20px;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.custom-layer {
+    background: #121318db;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 30px;
+    cursor: pointer;
+    color: #fff;
+}
+
+.leaderboard-header {
+    text-align: center;
+}
+
+.leaderboard-title {
+    display: inline-block;
+    position: relative;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.leaderboard-title::after {
+    content: "";
+    display: block;
+    height: 3px;
+    background: #fff;
+    width: 100%;
+    margin: 5px auto 0;
+}
+
+.leaderboard-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 3px solid #9891ac;
+}
+
+.position-icon {
+    text-align: center;
+    font-size: 30px;
+    width: 50px;
+}
+
+.winner-img {
+    width: 70px;
+    height: 70px;
+    border-radius: 12%;
+    margin: 0 15px;
+    object-fit: cover;
+    border: 3px solid #918989;
+}
+
+.winner-first {
+    background: #e9e8e5;
+}
+
+.winner-second {
+    background: rgb(178 187 230);
+
+}
+
+.winner-third {
+    background: #e9e8e5;
+
+}
+
+.winner-fourth {
+    background: rgb(178 187 230);
+}
+
+.winner-five {
+    background: #e9e8e5;
+}
+
+.winner-info {
+    padding: 10px;
+}
+
+.winner-info h4 {
+    margin: 2px;
+    font-size: 16px;
+}
+
+.winner-info p {
+    margin: 2px 0 0;
+    font-size: 14px;
+    color: #555;
+}
+
 .main__icon {
     display: none !important;
+}
+
+@keyframes fadeDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.custom-modal-content {
+    animation: fadeDown 0.6s ease forwards;
 }
 
 @media only screen and (max-width: 991px) {
@@ -28,5 +167,19 @@
         padding: 2px 0px;
         font-weight: 600;
         text-transform: uppercase;
+    }
+
+    .custom-modal-content {
+        width: 100%;
+        height: auto;
+        margin: 0;
+        border-radius: 0;
+        padding: 20px;
+    }
+
+    .offcanvas__logo img {
+        width: 30%;
+        display: block;
+        margin: 0 auto;
     }
 }

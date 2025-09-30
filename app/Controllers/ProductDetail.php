@@ -4,7 +4,7 @@ namespace App\Controllers;
 use App\Models\ShopModel;
 use CodeIgniter\Controller;
 
-class Shop extends Controller
+class ProductDetail extends Controller
 {
     protected $session;
     protected $request;
@@ -20,7 +20,7 @@ class Shop extends Controller
     public function index()
     {
         return view('common/header')
-            . view('shop') 
+            . view('product-details') 
             . view('common/footer');
     }    
 }

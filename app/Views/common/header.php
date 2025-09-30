@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/style.css" type="text/css">
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/custom.css" type="text/css">
+    <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/aos.css" type="text/css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
     <link rel="icon" href="<?= base_url() . ASSET_PATH; ?>assets/img/favicon.ico" type="image/x-icon">
 </head>
@@ -47,9 +48,12 @@
             <li><a href="#"><span class="icon_bag_alt"></span>
                     <div class="tip">2</div>
                 </a></li>
+            <li><a href="#"><i class="bi bi-award"></i>
+                    <div class="tip">2</div>
+                </a></li>
         </ul>
         <div class="offcanvas__logo">
-            <a href="#"><img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo.png" alt=""></a>
+            <a href="#"><img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo.jpg" alt=""></a>
         </div>
         <div id="mobile-menu-wrap"></div>
         <div class="offcanvas__auth">
@@ -65,7 +69,6 @@
                     <div class="header__logo">
                         <a href="<?= base_url(' '); ?>"></a>
                     </div>
-
                 </div>
                 <div class="col-8 mt-4 main__icon">
                     <a href="#"><i class="bi bi-controller"></i></a>
@@ -90,12 +93,21 @@
                         </div>
                         <ul class="header__right__widget">
                             <li><span class="icon_search search-switch"></span></li>
-                            <li><a href="#"><i class="bi bi-wallet2"></i>
+                            <li>
+                                <a href="#"><i class="bi bi-wallet2"></i>
                                     <div class="tip">2</div>
-                                </a></li>
-                            <li><a href="#"><i class="bi bi-cart"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="bi bi-cart"></i>
                                     <div class="tip">2</div>
-                                </a></li>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" id="leader_board"><i class="bi bi-award-fill"></i>
+                                    <div class="tip">2</div>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>

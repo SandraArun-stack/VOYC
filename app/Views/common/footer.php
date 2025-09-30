@@ -27,10 +27,10 @@
                 <div class="footer__widget">
                     <h6>Quick links</h6>
                     <ul>
+                        <li><a href="#">Game Arena</a></li>
+                        <li><a href="#">Customization</a></li>
                         <li><a href="#">About</a></li>
-                        <li><a href="#">Blogs</a></li>
                         <li><a href="#">Contact</a></li>
-                        <li><a href="#">FAQ</a></li>
                     </ul>
                 </div>
             </div>
@@ -98,6 +98,7 @@
 <script src="<?= base_url() . ASSET_PATH; ?>assets/js/owl.carousel.min.js"></script>
 <script src="<?= base_url() . ASSET_PATH; ?>assets/js/jquery.nicescroll.min.js"></script>
 <script src="<?= base_url() . ASSET_PATH; ?>assets/js/main.js"></script>
+<script src="<?= base_url() . ASSET_PATH; ?>assets/js/aos.js"></script>
 <script src="<?= base_url() . ASSET_PATH; ?>assets/js/custom.js"></script>
 </body>
 

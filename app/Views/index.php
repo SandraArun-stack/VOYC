@@ -6,6 +6,52 @@
 <div class="show-after">
     <section class="categories">
         <div class="container-fluid">
+            <div id="categoriesModal" class="custom-modal" data-aos="fade-down" data-aos-delay="100">
+                <div class="custom-modal-content">
+                    <div class="custom-layer">
+                        <span class="close-btn">&times;</span>
+                        <div class="leaderboard-header text-center">
+                            <h3 class="leaderboard-title">Leaderboard</h3>
+                        </div>
+                        <div class="leaderboard-item winner-first">
+                            <div class="position-icon first">🥇</div>
+                            <img src="<?= base_url() . ASSET_PATH; ?>assets/img/winner/kid-first.jpg" alt=" Winner"
+                                class="winner-img">
+                            <div class="winner-info">
+                                <h4>John Doe</h4>
+                                <p>Score: 1500</p>
+                            </div>
+                        </div>
+                        <div class="leaderboard-item winner-second">
+                            <div class="position-icon first">🥈</div>
+                            <img src="<?= base_url() . ASSET_PATH; ?>assets/img/winner/kid-first.jpg" alt=" Winner"
+                                class="winner-img">
+                            <div class="winner-info ">
+                                <h4>John Doe</h4>
+                                <p>Score: 1500</p>
+                            </div>
+                        </div>
+                        <div class="leaderboard-item winner-third">
+                            <div class="position-icon first">🥉</div>
+                            <img src="<?= base_url() . ASSET_PATH; ?>assets/img/winner/kid-first.jpg" alt=" Winner"
+                                class="winner-img">
+                            <div class="winner-info ">
+                                <h4>John Doe</h4>
+                                <p>Score: 1500</p>
+                            </div>
+                        </div>
+                        <div class="leaderboard-item winner-fourth">
+                            <div class="position-icon first">🏅</div>
+                            <img src="<?= base_url() . ASSET_PATH; ?>assets/img/winner/kid-first.jpg" alt=" Winner"
+                                class="winner-img">
+                            <div class="winner-info ">
+                                <h4>John Doe</h4>
+                                <p>Score: 1500</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-lg-6 p-0">
                     <div class="categories__item categories__large__item set-bg"
