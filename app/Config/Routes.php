@@ -181,7 +181,7 @@ $routes->get('admin/productimage/viewimage/(:num)', 'Admin\ProductImage::viewima
 $routes->get('admin/productimage/add/(:num)', 'Admin\ProductImage::addProductImage/$1');
 $routes->post('admin/productimage/save', 'Admin\ProductImage::save');
 $routes->post('admin/productimage/list', 'Admin\ProductImage::ajaxList');
-$routes->get('admin/productimage/edit/(:num)', 'Admin\ProductImage::edit/$1');
+$routes->get('admin/productimage/edit/(:num)', 'Admin\ProductImage::addProductImage/$1');
 $routes->post('admin/productimage/delete/(:num)', 'Admin\ProductImage::delete/$1');
 
 
@@ -239,14 +239,7 @@ $routes->post('admin/orders/List', 'Admin\Orders::ajaxList');
 $routes->get('admin/orders/view/(:num)', 'Admin\Orders::orderView/$1');
 $routes->post('admin/orders/loadStatus/(:num)', 'Admin\Orders::orderStatusUpdation/$1');
 
-//courses
-$routes->get('admin/courses', 'Admin\Course::index');                       // Course list
-$routes->post('admin/courses/list', 'Admin\Course::ajaxList');              // For DataTables
-$routes->get('admin/courses/add', 'Admin\Course::addCourse');               // Create form 
-// $routes->get('admin/courses/add/(:num)', 'Admin\Course::addCourse/$1');     // Edit form
-$routes->post('admin/courses/status', 'Admin\Course::updateStatus');        // Change status
-$routes->post('admin/courses/save', 'Admin\Course::saveCourse');            // Save new/update
-$routes->post('admin/courses/delete/(:any)', 'Admin\Course::deleteCourse/$1'); // Delete
+
 
 
 //profile
