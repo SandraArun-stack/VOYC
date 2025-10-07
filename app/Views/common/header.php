@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/style.css" type="text/css">
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/custom.css" type="text/css">
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/aos.css" type="text/css">
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
     <link rel="icon" href="<?= base_url() . ASSET_PATH; ?>assets/img/favicon.ico" type="image/x-icon">
 </head>
@@ -72,7 +73,7 @@
                 </div>
                 <div class="col-8 mt-4 main__icon">
                     <a href="#"><i class="bi bi-controller"></i></a>
-                    <a href="#"><i class="bi bi-alexa"></i></a>
+                    <a href="<?= base_url('tshirt_Customisation'); ?>"><i class="bi bi-alexa"></i></a>
                 </div>
                 <div class="col-xl-6 col-lg-7 ">
                     <nav class="header__menu">
@@ -81,7 +82,7 @@
                             <li><a href="<?= base_url('women'); ?>" id="women">Women’s</a></li>
                             <li><a href="<?= base_url('men'); ?>" id="men">Men’s</a></li>
                             <li><a href="#" id="game_arena">Game Arena</a></li>
-                            <li><a href="#" id="contact">Contact</a></li>
+                            <li><a href="<?= base_url('contact'); ?>" id="contact">Contact</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -100,6 +101,11 @@
                             </li>
                             <li>
                                 <a href="#"><i class="bi bi-cart"></i>
+                                    <div class="tip">2</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<?= base_url('tshirt_Customisation'); ?>"><i class="bi bi-alexa"></i>
                                     <div class="tip">2</div>
                                 </a>
                             </li>

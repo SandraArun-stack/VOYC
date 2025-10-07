@@ -37,5 +37,36 @@ $(document).ready(function () {
     $(".close-btn").on("click", function () {
         $("#categoriesModal").hide();
     });
+    $(".product__item").on("click", function (e) {
+        if (!$(e.target).closest(".product__hover").length) {
+            window.location.href = $(this).data("url");
+        }
+    });
+    $('.see-more').on('click', function () {
+        var link = $(this);
+        var reviewContainer = link.closest('.review-text');
+        var fullReview = reviewContainer.find('.full-review').text();
+        var isExpanded = link.text() === 'See less';
+
+        if (isExpanded) {
+            reviewContainer.contents().first()[0].textContent = fullReview.substring(0, 150) + '... ';
+            link.text('See more');
+        } else {
+            reviewContainer.contents().first()[0].textContent = fullReview + ' ';
+            link.text('See less');
+        }
+    });
+    let reviewsPerPage = 5;
+    let shown = reviewsPerPage;
+    const totalReviews = $('.reviews-container .review-box').length;
+
+    $('#load-more-reviews').on('click', function () {
+        const nextReviews = $('.reviews-container .review-box').slice(shown, shown + reviewsPerPage);
+        nextReviews.slideDown(); // show next batch
+        shown += reviewsPerPage;
+        if (shown >= totalReviews) {
+            $(this).fadeOut();
+        }
+    });
 
 });

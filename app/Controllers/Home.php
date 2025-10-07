@@ -15,6 +15,8 @@ class Home extends BaseController
     public function index()
     {
         $newProductModel = new NewProductModel();
+        $data['shop'] = $newProductModel->getPaginatedProducts(9);
+        $data['pager']     = $newProductModel->pager;
         $data['newPrdImg'] = $newProductModel->getNewPrdImage();
         $data['bestSeller'] = $newProductModel->getBestSeller();
         return view('common/header')

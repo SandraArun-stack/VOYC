@@ -5,7 +5,7 @@
             <div class="col-lg-4 col-md-6 col-sm-7">
                 <div class="footer__about">
                     <div class="footer__logo">
-                        <a href="#"><img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo.png" alt=""></a>
+                        <a href="#"><img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo.jpg" alt=""></a>
                     </div>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
                         cilisis.</p>
@@ -99,6 +99,7 @@
 <script src="<?= base_url() . ASSET_PATH; ?>assets/js/jquery.nicescroll.min.js"></script>
 <script src="<?= base_url() . ASSET_PATH; ?>assets/js/main.js"></script>
 <script src="<?= base_url() . ASSET_PATH; ?>assets/js/aos.js"></script>
+<script src="<?= base_url() . ASSET_PATH; ?>assets/js/fabric.min.js"></script>
 <script src="<?= base_url() . ASSET_PATH; ?>assets/js/custom.js"></script>
 </body>
 

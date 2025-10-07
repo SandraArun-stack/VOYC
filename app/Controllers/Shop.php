@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Controllers;
 
 use App\Models\ShopModel;
@@ -19,8 +19,22 @@ class Shop extends Controller
 
     public function index()
     {
+        $uri = service('uri');
+        $segment = $uri->getSegment(1); 
+
+        if ($segment !== 'men' && $segment !== 'women') {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        $data = [
+            'category' => $segment,
+            'title' => ucfirst($segment) . ' Shop',
+            'breadcrumb' => ucfirst($segment),
+        ];
+
         return view('common/header')
-            . view('shop') 
+            . view('shop', $data)
             . view('common/footer');
-    }    
+    }
+
 }

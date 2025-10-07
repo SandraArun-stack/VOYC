@@ -10,7 +10,14 @@ $routes->get('/', 'Home::index');
 $routes->get('men', 'Shop::index');
 $routes->get('women', 'Shop::index');
 
- 
+// $routes->get('productdetails/(:num)', 'ProductDetail::index/$1');
+$routes->get('productdetails/(:num)/(:num)', 'ProductDetail::index/$1/$2');
+$routes->get('getColorImage/(:num)', 'ProductDetail::getColorImage/$1');
+
+$routes->get('contact', 'Contact::index');
+$routes->get('tshirt_Customisation', 'Tshirt::index');
+$routes->post('saveDesign', 'Tshirt::saveDesign');
+
 // login register logout
 $routes->get('weblogin', 'Weblogin::index');
 $routes->get('webreg', 'Weblogin::webReg');

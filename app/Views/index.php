@@ -11,7 +11,7 @@
                     <div class="custom-layer">
                         <span class="close-btn">&times;</span>
                         <div class="leaderboard-header text-center">
-                            <h3 class="leaderboard-title">Leaderboard</h3>
+                            <h3 class="leaderboard-title">PLAYERS OF THE DAY</h3>
                         </div>
                         <div class="leaderboard-item winner-first">
                             <div class="position-icon first">🥇</div>
@@ -136,9 +136,13 @@
             <?php if (!empty($newPrdImg)): ?>
                 <div class="row property__gallery">
                     <?php foreach ($newPrdImg as $item): ?>
-                        <?php $firstImage = $item['prd_first_image'] ?? null; ?>
-                        <div class="col-lg-3 col-md-4 col-sm-6 mb-4"> <!-- 4 per row on large screens -->
-                            <div class="product__item">
+                        <?php
+                        $firstImage = $item['prd_first_image'] ?? null;
+                        $prId = $item['pr_Id'];
+                        $priId = $item['pri_Id']; // pass the first image id
+                        ?>
+                        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                            <div class="product__item" data-url="<?= base_url("productdetails/$prId/$priId"); ?>">
                                 <div class="product__item__pic">
                                     <?php if ($firstImage): ?>
                                         <img class="product-img"
@@ -168,7 +172,8 @@
                                         <i class="fa fa-star"></i>
                                         <i class="fa fa-star"></i>
                                     </div>
-                                    <div class="product__price">₹ <?= round(esc($item['pr_Selling_Price'] ?? '0.0')); ?></div>
+                                    <div class="product__price">₹ <?= round(esc($item['pr_Selling_Price'] ?? '0')); ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>
