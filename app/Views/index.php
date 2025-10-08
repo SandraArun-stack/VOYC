@@ -137,9 +137,9 @@
                 <div class="row property__gallery">
                     <?php foreach ($newPrdImg as $item): ?>
                         <?php
-                        $firstImage = $item['prd_first_image'] ?? null;
+                        $firstImage = $item['pri_Thumbnail'] ?? null;
                         $prId = $item['pr_Id'];
-                        $priId = $item['pri_Id']; // pass the first image id
+                        $priId = $item['pri_Id'];
                         ?>
                         <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
                             <div class="product__item" data-url="<?= base_url("productdetails/$prId/$priId"); ?>">
@@ -151,7 +151,15 @@
                                     <?php else: ?>
                                         <img class="product-img" src="<?= base_url('assets/img/no-image.png'); ?>" alt="No Image" />
                                     <?php endif; ?>
-                                    <div class="label new">New</div>
+                                    <div class="label new">
+
+                                        <?php if ($item['pr_custom'] == 1): ?>
+                                            <a href="<?= base_url('tshirt_Customisation'); ?>">
+                                                <img class="design_icon" src="<?= base_url() . ASSET_PATH ?>assets/img/design.png"
+                                                    alt="">
+                                            </a>
+                                        <?php endif; ?>
+                                    </div>
                                     <ul class="product__hover">
                                         <?php if ($firstImage): ?>
                                             <li>
@@ -166,11 +174,18 @@
                                 <div class="product__item__text">
                                     <h6><?= esc($item['pr_Name'] ?? 'Product'); ?></h6>
                                     <div class="rating">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
+                                        <?php
+                                        $avg = (float) $item['average_rating'];
+                                        for ($i = 1; $i <= 5; $i++) {
+                                            if ($i <= floor($avg)) {
+                                                echo '<i class="fa fa-star text-warning"></i>';
+                                            } elseif ($i == ceil($avg) && $avg - floor($avg) >= 0.5) {
+                                                echo '<i class="fa fa-star-half-o text-warning"></i>';
+                                            } else {
+                                                echo '<i class="fa fa-star-o text-muted"></i>';
+                                            }
+                                        }
+                                        ?>
                                     </div>
                                     <div class="product__price">₹ <?= round(esc($item['pr_Selling_Price'] ?? '0')); ?>
                                     </div>
@@ -238,31 +253,43 @@
                                 </div>
 
                                 <?php foreach ($chunk as $item): ?>
-                                    <?php $firstImage = $item['prd_first_image'] ?? null; ?>
-                                    <div class="trend__item d-flex">
-                                        <div class="trend__item__pic">
-                                            <?php if ($firstImage): ?>
-                                                <img class="product-img"
-                                                    src="<?= base_url('uploads/productmedia/' . ($firstImage ?: 'default.jpg')); ?>"
-                                                    alt="<?= esc($item['pr_Name'] ?? 'Product'); ?>" />
-                                            <?php else: ?>
-                                                <img class="product-img" src="<?= base_url('assets/img/no-image.png'); ?>"
-                                                    alt="No Image" />
-                                            <?php endif; ?>
-                                        </div>
-                                        <div class="trend__item__text">
-                                            <h6><?= esc($item['pr_Name'] ?? 'Product'); ?></h6>
-                                            <div class="rating">
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
+                                    <?php $firstImage = $item['prd_first_image'] ?? null;
+                                    $prId = $item['pr_Id'];
+                                    $priId = $item['pri_Id']; ?>
+                                    <div class="product__item" data-url="<?= base_url("productdetails/$prId/$priId"); ?>">
+                                        <div class="trend__item d-flex">
+                                            <div class="trend__item__pic">
+                                                <?php if ($firstImage): ?>
+                                                    <img class="product-img"
+                                                        src="<?= base_url('uploads/productmedia/' . ($firstImage ?: 'default.jpg')); ?>"
+                                                        alt="<?= esc($item['pr_Name'] ?? 'Product'); ?>" />
+                                                <?php else: ?>
+                                                    <img class="product-img" src="<?= base_url('assets/img/no-image.png'); ?>"
+                                                        alt="No Image" />
+                                                <?php endif; ?>
                                             </div>
-                                            <div class="product__price">₹ <?= round(esc($item['pr_Selling_Price'] ?? '0.0')); ?>
+                                            <div class="trend__item__text">
+                                                <h6><?= esc($item['pr_Name'] ?? 'Product'); ?></h6>
+                                                <div class="rating">
+                                                    <?php
+                                                    $avg = (float) $item['average_rating'];
+                                                    for ($i = 1; $i <= 5; $i++) {
+                                                        if ($i <= floor($avg)) {
+                                                            echo '<i class="fa fa-star text-warning"></i>';
+                                                        } elseif ($i == ceil($avg) && $avg - floor($avg) >= 0.5) {
+                                                            echo '<i class="fa fa-star-half-o text-warning"></i>';
+                                                        } else {
+                                                            echo '<i class="fa fa-star-o text-muted"></i>';
+                                                        }
+                                                    }
+                                                    ?>
+                                                </div>
+                                                <div class="product__price">₹ <?= round(esc($item['pr_Selling_Price'] ?? '0.0')); ?>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+
                                 <?php endforeach; ?>
                             </div>
                         </div>

@@ -79,7 +79,7 @@
                                 <input type="text" value="1">
                             </div>
                         </div>
-                        <a href="#" class="cart-btn"><span class="icon_bag_alt"></span> Add to cart</a>
+                        <a href="<?= base_url('cart'); ?>" class="cart-btn"><span class="icon_bag_alt"></span> Add to cart</a>
                         <ul>
                             <li><a href="#"><span class="icon_heart_alt"></span></a></li>
                             <li><a href="#"><span class="icon_adjust-horiz"></span></a></li>
@@ -239,6 +239,7 @@
                     <h5>RELATED PRODUCTS</h5>
                 </div>
             </div>
+            
             <div class="col-lg-3 col-md-4 col-sm-6">
                 <div class="product__item">
                     <div class="product__item__pic set-bg" data-setbg="img/product/related/rp-1.jpg">

@@ -132,7 +132,7 @@ ol {
 	font-weight: 600;
 	padding: 12px 30px 10px;
 	color: #ffffff;
-	background: #ca1515;
+	background: #000;
 }
 
 .site-btn {
@@ -620,7 +620,7 @@ ol {
 .trend__item__text .rating i {
 	font-size: 10px;
 	color: #e3c01c;
-	margin-right: -4px;
+	/* margin-right: -4px; */
 }
 
 .trend__item__text .rating i:last-child {
@@ -1184,12 +1184,13 @@ ol {
 	padding: 2px 8px;
 	text-transform: uppercase;
 	position: absolute;
-	left: 10px;
+	/* left: 10px; */
 	top: 10px;
+	right:10px;
 }
 
 .product__item__pic .label.new {
-	background: #36a300;
+	/* background: #36a300; */
 }
 
 .product__item__pic .label.stockout {
@@ -1298,7 +1299,7 @@ ol {
 .product__item__text .rating i {
 	font-size: 10px;
 	color: #e3c01c;
-	margin-right: -4px;
+	/* margin-right: -4px; */
 }
 
 .product__item__text .rating i:last-child {
@@ -2142,7 +2143,7 @@ ol {
 
 .shop__cart__table tbody tr .cart__price {
 	font-size: 16px;
-	color: #ca1515;
+	color: #000;
 	font-weight: 600;
 	width: 190px;
 }
@@ -2169,7 +2170,7 @@ ol {
 
 .shop__cart__table tbody tr .cart__total {
 	font-size: 16px;
-	color: #ca1515;
+	color: #000;
 	font-weight: 600;
 	width: 150px;
 }
@@ -2211,7 +2212,7 @@ ol {
 }
 
 .cart__btn a span {
-	color: #ca1515;
+	color: #000;
 	font-size: 14px;
 	margin-right: 5px;
 }
@@ -2293,7 +2294,7 @@ ol {
 }
 
 .cart__total__procced ul li span {
-	color: #ca1515;
+	color: #000;
 	float: right;
 }
 

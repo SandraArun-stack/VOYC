@@ -73,7 +73,7 @@
                 </div>
                 <div class="col-8 mt-4 main__icon">
                     <a href="#"><i class="bi bi-controller"></i></a>
-                    <a href="<?= base_url('tshirt_Customisation'); ?>"><i class="bi bi-alexa"></i></a>
+                    <a href="<?= base_url('tshirt_Customisation'); ?>" class="design_icon"></a>
                 </div>
                 <div class="col-xl-6 col-lg-7 ">
                     <nav class="header__menu">
@@ -100,12 +100,12 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#"><i class="bi bi-cart"></i>
+                                <a href="<?= base_url('cart'); ?>"><i class="bi bi-cart"></i>
                                     <div class="tip">2</div>
                                 </a>
                             </li>
                             <li>
-                                <a href="<?= base_url('tshirt_Customisation'); ?>"><i class="bi bi-alexa"></i>
+                                <a href="<?= base_url('tshirt_Customisation'); ?>"><img class="design_icon" src="<?= base_url() . ASSET_PATH; ?>assets/img/design.png" alt="">
                                     <div class="tip">2</div>
                                 </a>
                             </li>
