@@ -479,7 +479,7 @@
         });
     });
     function redirectToProductImage($pr_id) {
-    window.location.href = baseUrl + "admin/productimage/viewimage/" + $pr_id;
+    window.location.href = baseUrl + "admin/product/image/" + $pr_id;
 }
 
 
