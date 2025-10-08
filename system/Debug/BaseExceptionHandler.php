@@ -248,7 +248,6 @@ abstract class BaseExceptionHandler
         if ($viewFile === null) {
             // echo 'The error view file was not specified. Cannot display error view.';
             echo $exception;
-
             exit(1);
         }
 

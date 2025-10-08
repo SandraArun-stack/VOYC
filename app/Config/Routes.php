@@ -180,11 +180,14 @@ $routes->get('admin/update_stock/(:num)', 'Admin\Stock::updateStockForm/$1');
 $routes->post('admin/update_stock_value/(:num)', 'Admin\Stock::updateStock/$1');
 $routes->get('product/reviews_view/(:num)', 'Product::reviewsView/$1');
 
-$routes->get('admin/productimage/viewimage/(:num)', 'Admin\ProductImage::viewimage/$1');
-$routes->get('admin/productimage/add/(:num)', 'Admin\ProductImage::addProductImage/$1');
+
+$routes->get('admin/productimage', 'Admin\ProductImage::index');
+$routes->get('admin/product/image/(:num)', 'Admin\ProductImage::viewimage/$1');
+$routes->get('admin/product/image/add/(:num)', 'Admin\ProductImage::addProductImage/$1');
+$routes->get('admin/product/image/edit/(:num)/(:num)', 'Admin\ProductImage::addProductImage/$1/$2');
 $routes->post('admin/productimage/save', 'Admin\ProductImage::save');
-$routes->post('admin/productimage/list', 'Admin\ProductImage::ajaxList');
-$routes->get('admin/productimage/edit/(:num)', 'Admin\ProductImage::addProductImage/$1');
+
+$routes->post('admin/productimage/ajaxList', 'Admin\ProductImage::ajaxList');
 $routes->post('admin/productimage/delete/(:num)', 'Admin\ProductImage::delete/$1');
 
 

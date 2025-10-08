@@ -35,13 +35,14 @@
                                             <div id="messageBox" class="alert" style="display: none;"></div>
                                         </div>
                                         <div class="col-md-5 d-flex justify-content-end">
-                                            <a href="<?= base_url('admin/productimage/add/' . $pr_id); ?>" class="btn btn-primary">
+                                            <a href="<?= base_url('admin/product/image/add/' . $pr_id); ?>" class="btn btn-primary">
                                                 Add Product Image
                                             </a>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card-block table-border-style">
+                                    <input type="hidden" id="pr_id" value="<?= isset($pr_id) ? $pr_id : '' ?>">
                                     <div class="table-responsive">
                                         <table class="table table-hover" id="productList">
                                             <thead>
