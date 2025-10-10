@@ -1,6 +1,5 @@
 <script>
 $(document).ready(function() {
-    // alert('hi');
     $('input[name="color__radio"]').on('change', function() {
         var priId = $(this).data('pri-id');
         
@@ -10,8 +9,11 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 if (response && response.image_url) {
-                    // Update the main product image
                     $('.product__big__img').attr('src', response.image_url);
+                     $('.product__small__img').each(function(index) {
+                        var smallImageUrl = response.small_image_urls[index] || response.image_url;  
+                        $(this).attr('src', smallImageUrl);
+                    });
                 }
             },
             error: function() {

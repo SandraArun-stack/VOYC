@@ -1,0 +1,47 @@
+<?php
+namespace App\Models;
+
+use CodeIgniter\Model;
+
+class HomeModel extends Model
+{
+    protected $table = 'customer';
+    protected $primaryKey = 'cust_Id';
+    protected $allowedFields = [
+        'cust_Name',
+        'cust_Email',
+        'cust_Password',
+        'cust_Status',
+        'cust_createdon',
+        'cust_createdby',
+        'cust_modifyby',
+        'cust_modifyon',
+        'auth_type',
+        'reset_token_expiry',
+        'reset_token'
+    ];
+
+    public function registerUser($data)
+    {
+        if ($this->where('cust_Email', $data['email'])->first()) {
+            return ['status' => 'error', 'message' => 'Email already registered.'];
+        }
+
+        $insertData = [
+            'cust_Name'     => $data['full_name'],
+            'cust_Email'    => $data['email'],
+            'cust_Password' => $data['password'],
+            'cust_Status'   => 1, 
+            'cust_createdon'=> date('Y-m-d H:i:s'),
+            'cust_createdby'=> 0, 
+        ];
+
+        $inserted = $this->insert($insertData);
+
+        if ($inserted) {
+            return ['status' => 'success', 'message' => 'Registration successful.', 'user_id' => $inserted];
+        } else {
+            return ['status' => 'error', 'message' => 'Database error, please try again.'];
+        }
+    }
+}

@@ -10,7 +10,6 @@ class PrdDetailModel extends Model
 
     public function get_prd_Details($id)
     {
-        // fetch main product
         $product = $this->where('pr_Id', $id)
             ->where('pr_Status', 1)
             ->first();
@@ -27,22 +26,32 @@ class PrdDetailModel extends Model
 
         $images = $builder->get()->getResultArray();
         $product['images'] = $images;
-
-        $relatedProducts = $this->db->table('product p')
-            ->select('p.pr_Id, p.pr_Name, p.cat_Id, pi.pri_Id, pi.pri_Thumbnail')
-            ->join('product_image pi', 'pi.pr_Id = p.pr_Id', 'left')
-            ->where('p.cat_Id', $product['cat_Id'])
-            ->where('p.pr_Id !=', $id)
-            ->where('p.pr_Status', 1)
-            ->where('pi.pri_Status', 1)
-            ->where('pi.pri_Id = (SELECT MAX(pi2.pri_Id) FROM product_image pi2 WHERE pi2.pr_Id = p.pr_Id)', null, false)
-            ->orderBy('p.pr_Id', 'DESC')
-            ->limit(4)
+        $sizePriority = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
+        $selectedPrice = null;
+        $selectedSize = null;
+        $variants = $this->db->table('product_variants pv')
+            ->select('pv.prv_Size, pv.prv_price')
+            ->where('pv.pr_Id', $id)
+            ->where('pv.prv_Status', 1)
             ->get()
             ->getResultArray();
+        foreach ($sizePriority as $size) {
+            foreach ($variants as $variant) {
+                if (strtoupper(trim($variant['prv_Size'])) === $size) {
+                    $selectedPrice = $variant['prv_price'];
+                    $selectedSize = $variant['prv_Size'];
+                    break 2; 
+                }
+            }
+        }
+        if ($selectedPrice === null && !empty($variants)) {
+            $selectedPrice = $variants[0]['prv_price'];
+            $selectedSize = $variants[0]['prv_Size'];
+        }
 
-        $product['related_Images'] = $relatedProducts ?? [];
-
+        $product['selected_price'] = $selectedPrice;
+        $product['selected_size'] = $selectedSize;
+        $product['price_with_size'] = $variants;
 
         return $product;
     }

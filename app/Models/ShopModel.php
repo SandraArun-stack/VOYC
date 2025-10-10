@@ -51,13 +51,12 @@ class ShopModel extends Model
             $selectedPrice = null;
             $selectedSize = null;
 
-            // Loop through size priority and find the first available size
             foreach ($sizePriority as $size) {
                 foreach ($variants as $variant) {
                     if (strtoupper(trim($variant['prv_Size'])) === $size) {
                         $selectedPrice = $variant['prv_price'];
                         $selectedSize = $variant['prv_Size'];
-                        break 2; // Exit both loops once found
+                        break 2;
                     }
                 }
             }

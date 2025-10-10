@@ -1,6 +1,6 @@
 <div class="col-lg-12 p-0 video-section">
     <video class="video-fullscreen" autoplay muted loop playsinline>
-        <source src="<?= base_url() . ASSET_PATH; ?>assets/videos/vr.mp4" type="video/mp4">
+        <source src="<?= base_url() . ASSET_PATH; ?>assets/videos/intro.mp4" type="video/mp4">
     </video>
 </div>
 <div class="show-after">
@@ -187,7 +187,7 @@
                                         }
                                         ?>
                                     </div>
-                                    <div class="product__price">₹ <?= round(esc($item['pr_Selling_Price'] ?? '0')); ?>
+                                    <div class="product__price">₹ <?= round(esc($item['selected_price'] ?? '0')); ?>
                                     </div>
                                 </div>
                             </div>
@@ -284,7 +284,7 @@
                                                     }
                                                     ?>
                                                 </div>
-                                                <div class="product__price">₹ <?= round(esc($item['pr_Selling_Price'] ?? '0.0')); ?>
+                                                <div class="product__price">₹ <?= round(esc($item['selected_price'] ?? '0.0')); ?>
                                                 </div>
                                             </div>
                                         </div>

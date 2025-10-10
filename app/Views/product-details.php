@@ -23,7 +23,7 @@
                         <?php if (!empty($images)): ?>
                             <?php foreach ($images as $i => $img): ?>
                                 <a class="pt <?= $i === 0 ? 'active' : '' ?>" href="#product-<?= $i + 1 ?>">
-                                    <img src="<?= base_url('uploads/productmedia/' . $img); ?>" alt="">
+                                    <img src="<?= base_url('uploads/productmedia/' . $img); ?>" class="product__small__img" alt="">
                                 </a>
                             <?php endforeach; ?>
                         <?php else: ?>
@@ -45,6 +45,7 @@
                                 <img data-hash="product-1" class="product__big__img"
                                     src="<?= base_url('uploads/productmedia/' . ($product['prd_first_image'] ?? 'default.jpg')); ?>"
                                     alt="">
+
                             <?php endif; ?>
                         </div>
                     </div>

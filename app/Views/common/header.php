@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/style.css" type="text/css">
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/custom.css" type="text/css">
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/aos.css" type="text/css">
-    
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
     <link rel="icon" href="<?= base_url() . ASSET_PATH; ?>assets/img/favicon.ico" type="image/x-icon">
 </head>
@@ -58,8 +58,8 @@
         </div>
         <div id="mobile-menu-wrap"></div>
         <div class="offcanvas__auth">
-            <a href="#">Login</a>
-            <a href="#">Register</a>
+            <a>Login</a>
+            <a>Register</a>
         </div>
     </div>
 
@@ -89,8 +89,8 @@
                 <div class="col-lg-3 col-2">
                     <div class="header__right">
                         <div class="header__right__auth">
-                            <a href="#">Login</a>
-                            <a href="#">Register</a>
+                            <a id="login-link">Login</a>
+                            <a id="register-link">Register</a>
                         </div>
                         <ul class="header__right__widget">
                             <li><span class="icon_search search-switch"></span></li>
@@ -105,7 +105,8 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="<?= base_url('tshirt_Customisation'); ?>"><img class="design_icon" src="<?= base_url() . ASSET_PATH; ?>assets/img/design.png" alt="">
+                                <a href="<?= base_url('tshirt_Customisation'); ?>"><img class="design_icon"
+                                        src="<?= base_url() . ASSET_PATH; ?>assets/img/design.png" alt="">
                                     <div class="tip">2</div>
                                 </a>
                             </li>
@@ -123,3 +124,64 @@
             </div>
         </div>
     </header>
+    <!-- Auth Modal -->
+    <div class="modal fade" id="authModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content p-3" style="border-radius: 14px;">
+                <!-- LOGIN VIEW -->
+                <!-- <div id="loginView">
+                    <div class="modal-header border-0">
+                        <h3 class="auth-title mb-0 text-center">Login</h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="alert alert-success mt-2 w-auto d-none" id="login_msg_alert"></div>
+                    <div class="modal-body">
+                        <form id="loginForm">
+                            <input type="text" class="form-control mb-3" placeholder="Username or Email" required>
+                            <input type="password" class="form-control mb-3" placeholder="Password" required>
+                            <button type="button" id="btn_login" class="btn btn-primary w-100">Login</button>
+                        </form>
+                        <div class="text-center mt-3">
+                            Don’t have an account? <a href="#" id="to-register">Register</a>
+                        </div>
+                    </div>
+                </div> -->
+
+                <!-- REGISTER VIEW -->
+                <div id="registerView" style="display:none;">
+                    <div class="modal-header border-0">
+                        <h3 class="auth-title mb-0 text-center">Register</h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="alert alert-success mt-2 w-auto d-none" id="reg_msg_alert"></div>
+                    <div class="modal-body">
+                        <form id="registerForm">
+                            <input type="text" name="fullname" class="form-control mb-3" placeholder="Full Name"
+                                required>
+                            <input type="email" name="email" class="form-control mb-3" placeholder="Email" required>
+
+                            <div class="eye_icon  mb-3">
+                                <input type="password" id="reg_password" name="reg_password" class="form-control"
+                                    placeholder="Password" required>
+                                <i class="bi bi-eye-slash toggle-password toggle_eye_icon"  data-target="#reg_password"></i>
+                            </div>
+
+                            <div class="eye_icon  mb-3">
+                                <input type="password" id="reg_confirm_password" name="reg_confirm_password"
+                                    class="form-control" placeholder="Confirm Password" required>
+                                <i class="bi bi-eye-slash toggle-password toggle_eye_icon"  data-target="#reg_confirm_password"></i>
+                            </div>
+
+                            <button type="button" class="btn btn-primary w-100"
+                                data-url="<?= base_url('registerUser') ?>" id="btn_register">
+                                Register
+                            </button>
+                        </form>
+                        <div class="text-center mt-3">
+                            Already have an account? <a href="#" id="to-login">Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

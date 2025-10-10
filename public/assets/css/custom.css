@@ -18,15 +18,15 @@
     position: absolute;
     top: 0;
     right: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1111111;
+    width: 35vw;
+    height: auto;
+    z-index: 1;
 }
 
 .custom-modal-content {
     background: #343641;
     height: calc(100% - 78px);
-    width: 35%;
+    width: 100%;
     margin: 0px 15px 20px auto;
     padding: 20px;
     box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
@@ -178,15 +178,17 @@ canvas {
     font-size: 12px;
     color: #555;
 }
+
 .design_icon {
     display: inline-block;
-    width: 38px; 
-    height: 35px; 
+    width: 38px;
+    height: 35px;
     /* background-image: url('./img/design.png'); */
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
 }
+
 @keyframes fadeDown {
     0% {
         opacity: 0;
@@ -202,6 +204,111 @@ canvas {
 .custom-modal-content {
     animation: fadeDown 0.6s ease forwards;
 }
+
+.auth-modal-box {
+    padding: 30px;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.auth-title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.auth-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+.auth-btn {
+    width: 100%;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.auth-btn:hover {
+    background-color: #0056b3;
+}
+
+.auth-switch {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.auth-switch a {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.auth-switch a:hover {
+    text-decoration: underline;
+}
+
+.modal-backdrop {
+    z-index: 1040 !important;
+}
+
+.modal {
+    z-index: 1050 !important;
+}
+
+.modal-content {
+    position: relative;
+    z-index: 1055 !important;
+}
+
+.header__right__auth {
+    cursor: pointer;
+}
+
+.eye_icon {
+    position: relative;
+}
+
+.toggle_eye_icon {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+.form-control{
+    border: 1px solid #000 !important;
+}
+#btn_register ,#btn_login{
+    background: #000 !important;
+}
+#to-login, #to-register{
+    color: #000 !important;
+}
+
 
 @media only screen and (max-width: 991px) {
     .main__icon {

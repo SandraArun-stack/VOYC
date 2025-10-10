@@ -1,20 +1,20 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\NewProductModel;
+use App\Models\ProductDetailModel;
 use CodeIgniter\Controller;
 
 class ProductDetail extends Controller
 {
     protected $session;
     protected $request;
-    protected $NewProductModel;
+    protected $ProductDetailModel;
 
     public function __construct()
     {
         $this->session = \Config\Services::session();
         $this->request = \Config\Services::request();
-        $this->NewProductModel = new NewProductModel();
+        $this->ProductDetailModel = new ProductDetailModel();
     }
 
     public function index($prId = null, $priId = null)
@@ -23,7 +23,7 @@ class ProductDetail extends Controller
             return redirect()->to(base_url('/'));
         }
 
-        $product = $this->NewProductModel->get_prd_Details($prId, $priId);
+        $product = $this->ProductDetailModel->get_prd_Details($prId, $priId);
 
         if (!$product) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound("Product not found");
@@ -41,17 +41,21 @@ class ProductDetail extends Controller
     }
     public function getColorImage($priId)
     {
-        // echo "yes"; exit();
-        $image = $this->NewProductModel->getImageByColor($priId);
+        $image = $this->ProductDetailModel->getImageByColor($priId);
 
         if ($image && !empty($image['pri_Thumbnail'])) {
+            $smallImages = json_decode($image['pri_File_Name']);
             return $this->response->setJSON([
-                'image_url' => base_url('uploads/productmedia/' . $image['pri_Thumbnail'])
+                'image_url' => base_url('uploads/productmedia/' . $image['pri_Thumbnail']),
+                'small_image_urls' => $smallImages ? array_map(function ($fileName) {
+                    return base_url('uploads/productmedia/' . $fileName);
+                }, $smallImages) : []
             ]);
         }
 
         return $this->response->setJSON([
-            'image_url' => base_url('uploads/productmedia/default.jpg')
+            'image_url' => base_url('uploads/productmedia/default.jpg'),
+            'small_image_url' => base_url('uploads/productmedia/default.jpg')
         ]);
     }
 

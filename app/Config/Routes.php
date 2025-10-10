@@ -17,30 +17,13 @@ $routes->get('contact', 'Contact::index');
 $routes->get('cart', 'Cart::index');
 $routes->get('tshirt_Customisation', 'Tshirt::index');
 $routes->post('saveDesign', 'Tshirt::saveDesign');
-
-// login register logout
-$routes->get('weblogin', 'Weblogin::index');
-$routes->get('webreg', 'Weblogin::webReg');
-$routes->get('webforgot', 'Weblogin::webForgot');
-//$routes->post('webForgotEmailSend', 'Weblogin::webForgotEmailSend');
-$routes->post('weblogin/webForgotEmailSend', 'Weblogin::webForgotEmailSend');
-$routes->post('customerauth', 'Weblogin::customerAuthen');
-$routes->get('logout', 'Weblogin::logout');
-
-$routes->set404Override('\App\Controllers\ErrorWeb::show404');
-
-$routes->get('forgotPassword/check/(:segment)', 'ForgotPassword::checkingToken/$1');
-
-$routes->post('resetPassword', 'ForgotPassword::resetPassword');
+$routes->post('registerUser', 'Home::registerUser');
 
 
-// testing
 
 
-$routes->get('OrderNow', 'OrderNow::index');
-$routes->get('OrderNow/index', 'OrderNow::index');
-$routes->post('OrderNow/saveNewAddress', 'OrderNow::saveNewAddress');
-$routes->post('OrderNow/submitfrm', 'OrderNow::submitfrm');
+
+
 
 // ordernow user
 

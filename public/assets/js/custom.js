@@ -68,5 +68,171 @@ $(document).ready(function () {
             $(this).fadeOut();
         }
     });
+    const authModal = new bootstrap.Modal(document.getElementById('authModal'), {
+        backdrop: true,
+        keyboard: true
+    });
+
+    $('#login-link').on('click', function (e) {
+        e.preventDefault();
+        $('#registerView').hide();
+        $('#loginView').show();
+        authModal.show();
+    });
+
+    $('#register-link').on('click', function (e) {
+        e.preventDefault();
+        $('#loginView').hide();
+        $('#registerView').show();
+        authModal.show();
+    });
+
+    $(document).on('click', '#to-register', function (e) {
+        e.preventDefault();
+        $('#loginView').fadeOut(200, function () {
+            $('#registerView').fadeIn(200);
+        });
+    });
+
+    $(document).on('click', '#to-login', function (e) {
+        e.preventDefault();
+        $('#registerView').fadeOut(200, function () {
+            $('#loginView').fadeIn(200);
+        });
+    });
+
+    $('.toggle-password').on('click', function () {
+        const target = $($(this).data('target'));
+        const icon = $(this);
+
+        if (target.attr('type') === 'password') {
+            target.attr('type', 'text');
+            icon.removeClass('bi-eye-slash').addClass('bi-eye');
+        } else {
+            target.attr('type', 'password');
+            icon.removeClass('bi-eye').addClass('bi-eye-slash');
+        }
+    });
+
+    $('#btn_register').on('click', function (e) {
+        e.preventDefault();
+        var formData = $('#registerForm').serialize();
+        var registerUrl = $(this).data('url');
+        var $alertBox = $('#reg_msg_alert');
+
+        $alertBox.addClass('d-none').removeClass('alert-success alert-danger').text('');
+
+        $.ajax({
+            url: registerUrl,
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            beforeSend: function () {
+                $('#btn_register').prop('disabled', true).text('Registering...');
+            },
+            success: function (response) {
+                $('#btn_register').prop('disabled', false).text('Register');
+
+                if (response.status === 'success') {
+                    $alertBox
+                        .removeClass('d-none alert-danger')
+                        .addClass('alert alert-success')
+                        .text(response.message || 'Registration successful!')
+                        .fadeIn();
+
+                    $('#registerForm')[0].reset();
+
+                    setTimeout(() => {
+                        $alertBox.fadeOut(500);
+                        $('#registerModal').fadeOut(200);
+                    }, 3000);
+                } else {
+                    $alertBox
+                        .removeClass('d-none alert-success')
+                        .addClass('alert alert-danger')
+                        .text(response.message || 'Registration failed!')
+                        .fadeIn();
+
+                    setTimeout(() => {
+                        $alertBox.fadeOut(500);
+                    }, 3000);
+                }
+            },
+            error: function () {
+                $('#btn_register').prop('disabled', false).text('Register');
+                $alertBox
+                    .removeClass('d-none alert-success')
+                    .addClass('alert alert-danger')
+                    .text('Something went wrong! Please try again.')
+                    .fadeIn();
+
+                setTimeout(() => {
+                    $alertBox.fadeOut(500);
+                }, 3000);
+            }
+
+        });
+    });
+
+    // $('#btn_login').on('click', function (e) {
+    //     e.preventDefault();
+    //     var formDataLogin = $('#loginForm').serialize();
+    //     var registerUrl = $(this).data('url');
+    //     var $alertBox = $('#reg_msg_alert');
+
+    //     $alertBox.addClass('d-none').removeClass('alert-success alert-danger').text('');
+
+    //     $.ajax({
+    //         url: registerUrl,
+    //         type: 'POST',
+    //         data: formDataLogin,
+    //         dataType: 'json',
+    //         beforeSend: function () {
+    //             $('#btn_register').prop('disabled', true).text('Registering...');
+    //         },
+    //         success: function (response) {
+    //             $('#btn_register').prop('disabled', false).text('Register');
+
+    //             if (response.status === 'success') {
+    //                 $alertBox
+    //                     .removeClass('d-none alert-danger')
+    //                     .addClass('alert alert-success')
+    //                     .text(response.message || 'Registration successful!')
+    //                     .fadeIn();
+
+    //                 $('#registerForm')[0].reset();
+
+    //                 setTimeout(() => {
+    //                     $alertBox.fadeOut(500);
+    //                     $('#registerModal').fadeOut(200);
+    //                 }, 3000);
+    //             } else {
+    //                 $alertBox
+    //                     .removeClass('d-none alert-success')
+    //                     .addClass('alert alert-danger')
+    //                     .text(response.message || 'Registration failed!')
+    //                     .fadeIn();
+
+    //                 setTimeout(() => {
+    //                     $alertBox.fadeOut(500);
+    //                 }, 3000);
+    //             }
+    //         },
+    //         error: function () {
+    //             $('#btn_register').prop('disabled', false).text('Register');
+    //             $alertBox
+    //                 .removeClass('d-none alert-success')
+    //                 .addClass('alert alert-danger')
+    //                 .text('Something went wrong! Please try again.')
+    //                 .fadeIn();
+
+    //             setTimeout(() => {
+    //                 $alertBox.fadeOut(500);
+    //             }, 3000);
+    //         }
+
+    //     });
+    // });
+
 
 });
