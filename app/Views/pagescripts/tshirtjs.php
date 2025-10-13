@@ -6,7 +6,7 @@
     // references
     let backgroundImg = null;
     let shirtOverlay = null;
-
+    const defaultOverlay = "<?= base_url('uploads/productmedia/' . $cust_image['pri_Thumbnail']); ?>";
     // 1) Load body.jpg as immovable background
     fabric.Image.fromURL("<?= base_url() . ASSET_PATH; ?>assets/img/shirtimages/body.jpg", function (img) {
         img.scaleToWidth(canvas.width);
@@ -16,9 +16,9 @@
         canvas.setBackgroundImage(img, function () {
             canvas.renderAll();
             // Load a default dress overlay after background is ready
-            addOverlay("<?= base_url() . ASSET_PATH; ?>assets/img/shirtimages/06_1.png");
+            addOverlay(defaultOverlay);
             // highlight the default thumb
-            highlightThumb("<?= base_url() . ASSET_PATH; ?>assets/img/shirtimages/06_1.png");
+            highlightThumb(defaultOverlay);
         });
     });
 
@@ -70,7 +70,7 @@
             canvas.renderAll();
 
             // apply current color tint (if any)
-            applyDressColor(document.getElementById('colorPicker').value);
+            // applyDressColor(document.getElementById('colorPicker').value);
         }, { crossOrigin: 'anonymous' });
     }
 
@@ -234,22 +234,57 @@
         // });
         $("#saveBtn").on("click", function () {
             if (shirtOverlay) canvas.moveTo(shirtOverlay, 1);
-
             const dataURL = canvas.toDataURL({ format: 'png', quality: 1 });
-
+            var $alertBox = $('#design_msg_alert');
             const link = document.createElement("a");
             link.href = dataURL;
-            link.download = "tshirt_design.png";
+            // link.download = "tshirt_design.png";
             link.click();
+
+            const prId = $('input[name="prId"]').val();
+            const priId = $('input[name="priId"]').val();
+            const authModal = new bootstrap.Modal(document.getElementById('authModal'), {
+                backdrop: true,
+                keyboard: true
+            });
 
             // 👉 2. Send to backend via AJAX
             $.ajax({
                 url: "<?= base_url('saveDesign') ?>",
                 type: "POST",
-                data: { image: dataURL },
+                data: {
+                    image: dataURL,
+                    prId: prId,
+                    priId: priId
+                },
+
                 success: function (response) {
-                    console.log("Design saved to server:", response);
-                    alert("Design saved successfully!");
+                    if (response.status === 'login_required') {
+                        authModal.show();
+                        $('#loginView').show();
+                        $('#registerView').hide();
+                        return;
+                    } else if (response.status === 'success') {
+                        $alertBox
+                            .removeClass('d-none alert-danger')
+                            .addClass('alert alert-success')
+                            .text(response.message || 'Registration successful!')
+                            .fadeIn();
+
+                        setTimeout(() => {
+                            $alertBox.fadeOut(400);
+                            window.location.href = response.redirect;
+                        }, 2000);
+                    } else if (response.status === 'error') {
+                        $alertBox
+                            .removeClass('d-none alert-success')
+                            .addClass('alert alert-danger')
+                            .text(response.message || 'Registration failed!')
+                            .fadeIn();
+                        setTimeout(() => {
+                            $alertBox.fadeOut(400);
+                        }, 2000);
+                    }
                 },
                 error: function (xhr, status, error) {
                     console.error("Error saving design:", error);

@@ -14,12 +14,21 @@ $routes->get('productdetails/(:num)/(:num)', 'ProductDetail::index/$1/$2');
 $routes->get('getColorImage/(:num)', 'ProductDetail::getColorImage/$1');
 
 $routes->get('contact', 'Contact::index');
+
+//cart
 $routes->get('cart', 'Cart::index');
+$routes->get('cart/(:num)', 'Cart::index/$1');
+$routes->post('cart/remove', 'Cart::remove');
+
+//Tshirt Customisation
 $routes->get('tshirt_Customisation', 'Tshirt::index');
+$routes->get('tshirt_Customisation/(:num)/(:num)', 'Tshirt::index/$1/$2');
 $routes->post('saveDesign', 'Tshirt::saveDesign');
+
+//user auth
 $routes->post('registerUser', 'Home::registerUser');
-
-
+$routes->post('loginUser', 'Home::loginUser');
+$routes->post('logoutUser', 'Home::logoutUser');
 
 
 

@@ -15,6 +15,8 @@
         rel="stylesheet">
 
     <!-- Css Styles -->
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+HU:wght@100..400&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/elegant-icons.css" type="text/css">
@@ -58,9 +60,11 @@
         </div>
         <div id="mobile-menu-wrap"></div>
         <div class="offcanvas__auth">
-            <a>Login</a>
+            <a>Login/</a>
             <a>Register</a>
         </div>
+
+
     </div>
 
     <header class="header show-after">
@@ -88,10 +92,32 @@
                 </div>
                 <div class="col-lg-3 col-2">
                     <div class="header__right">
-                        <div class="header__right__auth">
+                        <!-- <div class="header__right__auth">
                             <a id="login-link">Login</a>
                             <a id="register-link">Register</a>
+                        </div> -->
+
+                        <div class="header__right__auth">
+                            <?php $session = session(); ?>
+
+                            <?php if ($session->get('isLoggedIn')): ?>
+                                <div class="dropdown" id="userDropDown">
+                                    <a class="dropdown-toggle text-decoration-none" href="#" role="button" id="userDropdown"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        <?= esc($session->get('user_name')) ?>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                                        <li><a class="dropdown-item text-danger" href="#" id="logoutBtn">Logout</a></li>
+                                    </ul>
+                                </div>
+                            <?php else: ?>
+                                <a id="login-link" href="#" data-bs-toggle="modal" data-bs-target="#authModal">Login</a>
+                                <a id="register-link" href="#" data-bs-toggle="modal"
+                                    data-bs-target="#authModal">Register</a>
+                            <?php endif; ?>
                         </div>
+
                         <ul class="header__right__widget">
                             <li><span class="icon_search search-switch"></span></li>
                             <li>
@@ -100,9 +126,12 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="<?= base_url('cart'); ?>"><i class="bi bi-cart"></i>
-                                    <div class="tip">2</div>
-                                </a>
+                                <?php if ($session->get('isLoggedIn')): ?>
+                                    <?php $userId = $session->get('user_id'); ?>
+                                    <a href="<?= base_url('cart/' . $userId); ?>"><i class="bi bi-cart"></i>
+                                        <div class="tip">2</div>
+                                    </a>
+                                <?php endif; ?>
                             </li>
                             <li>
                                 <a href="<?= base_url('tshirt_Customisation'); ?>"><img class="design_icon"
@@ -127,49 +156,65 @@
     <!-- Auth Modal -->
     <div class="modal fade" id="authModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content p-3" style="border-radius: 14px;">
-                <!-- LOGIN VIEW -->
-                <!-- <div id="loginView">
-                    <div class="modal-header border-0">
-                        <h3 class="auth-title mb-0 text-center">Login</h3>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-content p-2">
+                <div id="loginView">
+                    <div
+                        class="modal-header border-0 d-flex justify-content-center align-items-center flex-column pb-0">
+                        <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
+                        <h3 class="auth-title mb-0 w-100 text-center">Sign In</h3>
+                        <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                     </div>
                     <div class="alert alert-success mt-2 w-auto d-none" id="login_msg_alert"></div>
                     <div class="modal-body">
                         <form id="loginForm">
-                            <input type="text" class="form-control mb-3" placeholder="Username or Email" required>
-                            <input type="password" class="form-control mb-3" placeholder="Password" required>
-                            <button type="button" id="btn_login" class="btn btn-primary w-100">Login</button>
+                            <label>Email</label>
+                            <input type="text" name="login_email" class="form-control mb-3"
+                                placeholder="Enter Your Email" required>
+                            <label>Password</label>
+                            <input type="password" name="login_password" class="form-control mb-3"
+                                placeholder="Enter the Password" required>
+                            <button type="button" id="btn_login" class="btn btn-primary w-100"
+                                data-url="<?= base_url('loginUser') ?>">Sign In</button>
                         </form>
                         <div class="text-center mt-3">
-                            Don’t have an account? <a href="#" id="to-register">Register</a>
+                            Don’t have an account? <a href="#" id="to-register">Sign Up</a>
                         </div>
                     </div>
-                </div> -->
+                </div>
 
                 <!-- REGISTER VIEW -->
-                <div id="registerView" style="display:none;">
-                    <div class="modal-header border-0">
-                        <h3 class="auth-title mb-0 text-center">Register</h3>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div id="registerView">
+                    <div
+                        class="modal-header border-0 d-flex justify-content-center align-items-center flex-column pb-0">
+                        <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
+
+                        <h3 class="auth-title mb-0  w-100  text-center">Step Into Your Style</h3>
+                        <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                     </div>
                     <div class="alert alert-success mt-2 w-auto d-none" id="reg_msg_alert"></div>
                     <div class="modal-body">
                         <form id="registerForm">
-                            <input type="text" name="fullname" class="form-control mb-3" placeholder="Full Name"
+                            <label>Name</label><span>&nbsp;*</span>
+                            <input type="text" name="fullname" class="form-control mb-3"
+                                placeholder="Enter Your Full Name" required>
+                            <label>Email</label><span>&nbsp;*</span>
+                            <input type="email" name="email" class="form-control mb-3" placeholder="Enter the Email"
                                 required>
-                            <input type="email" name="email" class="form-control mb-3" placeholder="Email" required>
 
                             <div class="eye_icon  mb-3">
+                                <label>Password</label><span>&nbsp;*</span>
                                 <input type="password" id="reg_password" name="reg_password" class="form-control"
-                                    placeholder="Password" required>
-                                <i class="bi bi-eye-slash toggle-password toggle_eye_icon"  data-target="#reg_password"></i>
+                                    placeholder="Enter a Password" required>
+                                <i class="bi bi-eye-slash toggle-password toggle_eye_icon"
+                                    data-target="#reg_password"></i>
                             </div>
 
                             <div class="eye_icon  mb-3">
+                                <label>Confirm Password</label><span>&nbsp;*</span>
                                 <input type="password" id="reg_confirm_password" name="reg_confirm_password"
-                                    class="form-control" placeholder="Confirm Password" required>
-                                <i class="bi bi-eye-slash toggle-password toggle_eye_icon"  data-target="#reg_confirm_password"></i>
+                                    class="form-control" placeholder="Confirm Your Password" required>
+                                <i class="bi bi-eye-slash toggle-password toggle_eye_icon"
+                                    data-target="#reg_confirm_password"></i>
                             </div>
 
                             <button type="button" class="btn btn-primary w-100"
@@ -178,8 +223,23 @@
                             </button>
                         </form>
                         <div class="text-center mt-3">
-                            Already have an account? <a href="#" id="to-login">Login</a>
+                            Already have an account? <a href="#" id="to-login">Sign In</a>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0">
+                <div class="modal-body text-center p-4">
+                    <h5 class="mb-3">Are you sure you want to log out?</h5>
+                    <div class="d-flex justify-content-center logout_btns_container">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            id="cancel_log_out">Cancel</button>
+                        <button type="button" class="btn" id="confirmLogout"
+                            data-url="<?= base_url('logoutUser') ?>">Yes, Logout</button>
                     </div>
                 </div>
             </div>

@@ -9,34 +9,34 @@
     z-index: 11;
 }
 
-.categories {
+.categorie-container {
     position: relative;
 }
 
 .custom-modal {
     display: none;
     position: absolute;
-    top: 0;
+    top: -10px;
     right: 0;
     width: 35vw;
-    height: auto;
+    height: 98vh;
     z-index: 1;
 }
 
 .custom-modal-content {
-    background: #343641;
+    background: #000;
     height: calc(100% - 78px);
     width: 100%;
     margin: 0px 15px 20px auto;
     padding: 20px;
     box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
+    border-radius: 0;
     overflow: hidden;
 }
 
 .custom-layer {
-    background: #121318db;
-    border-radius: 10px;
+    background: #000;
+    border-radius: 0;
     padding: 20px;
 }
 
@@ -54,6 +54,8 @@
 }
 
 .leaderboard-title {
+    font-family: 'Playwrite HU', sans-serif;
+    font-size: 22px;
     display: inline-block;
     position: relative;
     color: #fff;
@@ -140,19 +142,33 @@
     cursor: pointer !important;
 }
 
-.tshirt-container {
-    /* font-family: Arial, sans-serif; */
-    text-align: center;
-    /* background: #f5f5f5; */
+.custom_design {
+    padding-top: 80px;
+    padding-bottom: 80px;
 }
+
+.custome_design_heading {
+    color: #111111;
+    font-size: 20px;
+    /* font-weight: 600 !important; */
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+
 
 #designer-container {
     position: relative;
     display: inline-block;
 }
 
+#designer-container img {
+    object-fit: contain;
+}
+
 canvas {
     border: 1px solid #ccc;
+    /* background-color: #fff; */
 }
 
 .thumbs img {
@@ -160,6 +176,7 @@ canvas {
     cursor: pointer;
     margin: 5px;
     border: 2px solid transparent;
+
 }
 
 .thumbs img:hover {
@@ -173,7 +190,9 @@ canvas {
 #controls {
     margin: 15px 0;
 }
-
+#controls div{
+    margin-top: 15px;
+}
 .small {
     font-size: 12px;
     color: #555;
@@ -183,12 +202,23 @@ canvas {
     display: inline-block;
     width: 38px;
     height: 35px;
-    /* background-image: url('./img/design.png'); */
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
 }
 
+#controls label {
+    font-size: 14px;
+    font-weight: bold;
+}
+#confirmLogout ,#saveBtn{
+    background: #000 !important;
+    border-color: #000000 !important;
+    color: #fff;
+}
+.upper-canvas {
+    object-fit: contain;
+}
 @keyframes fadeDown {
     0% {
         opacity: 0;
@@ -225,9 +255,9 @@ canvas {
 }
 
 .auth-title {
-    text-align: center;
     margin-bottom: 20px;
     color: #333;
+    font-weight: 500;
 }
 
 .auth-input {
@@ -294,21 +324,69 @@ canvas {
 
 .toggle_eye_icon {
     position: absolute;
-    top: 50%;
+    top: 75%;
     right: 15px;
     transform: translateY(-50%);
     cursor: pointer;
 }
-.form-control{
-    border: 1px solid #000 !important;
+
+.form-control {
+    border: 1px solid #544d4d !important;
 }
-#btn_register ,#btn_login{
+
+#btn_register,
+#btn_login {
     background: #000 !important;
+    border-color: #000000 !important;
 }
-#to-login, #to-register{
+
+#to-login,
+#to-register {
     color: #000 !important;
 }
 
+.form-control:focus {
+    box-shadow: 0 0 0 .2rem rgba(122, 157, 194, 0.25);
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+.modal-dialog-centered {
+    transform: translateY(-50px) !important;
+}
+
+.modal-body label {
+    font-weight: 500 !important;
+    font-size: 14px !important;
+}
+
+.modal-body span {
+    color: #ff0000ed;
+    font-size: 14px;
+}
+
+#registerForm input::placeholder {
+    font-size: 12px !important;
+}
+
+#loginForm input::placeholder {
+    font-size: 12px !important;
+}
+
+#loginView img {
+    width: 90px;
+}
+
+#registerView img {
+    width: 90px;
+}
+
+
+.logout_btns_container {
+    gap: 15px;
+}
 
 @media only screen and (max-width: 991px) {
     .main__icon {

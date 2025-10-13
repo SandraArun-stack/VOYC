@@ -1,12 +1,12 @@
 <div class="col-lg-12 p-0 video-section">
-    <video class="video-fullscreen" autoplay muted loop playsinline>
+    <video class="video-fullscreen" autoplay muted playsinline>
         <source src="<?= base_url() . ASSET_PATH; ?>assets/videos/intro.mp4" type="video/mp4">
     </video>
 </div>
-<div class="show-after">
+<div class="show-after categorie-container">
     <section class="categories">
         <div class="container-fluid">
-            <div id="categoriesModal" class="custom-modal" data-aos="fade-down" data-aos-delay="100">
+            <div id="categoriesModal" class="custom-modal" data-aos="zoom-in" data-aos-duration="600">
                 <div class="custom-modal-content">
                     <div class="custom-layer">
                         <span class="close-btn">&times;</span>
@@ -154,7 +154,7 @@
                                     <div class="label new">
 
                                         <?php if ($item['pr_custom'] == 1): ?>
-                                            <a href="<?= base_url('tshirt_Customisation'); ?>">
+                                            <a href="<?= base_url('tshirt_Customisation/' . $item['pr_Id'] . '/' . $item['pri_Id']); ?>">
                                                 <img class="design_icon" src="<?= base_url() . ASSET_PATH ?>assets/img/design.png"
                                                     alt="">
                                             </a>

@@ -71,5 +71,39 @@ class Home extends BaseController
 
         return $this->response->setJSON($result);
     }
+    public function loginUser()
+    {
+        $email = $this->request->getPost('login_email');
+        $password = md5($this->request->getPost('login_password'));
+
+        $data = [
+            'email' => $email,
+            'password' => $password,
+        ];
+
+        $homeModel = new HomeModel();
+        $result = $homeModel->loginUser_Model($data);
+
+        if ($result['status'] === 'success') {
+            $session = session();
+            $session->set([
+                'user_id' => $result['user']['cust_Id'],
+                'user_email' => $result['user']['cust_Email'],
+                'user_name' => $result['user']['cust_Name'],
+                'isLoggedIn' => true
+            ]);
+        }
+
+        return $this->response->setJSON($result);
+    }
+    public function logoutUser()
+    {
+        // echo "hii";exit();
+        $session = session();
+        $session->destroy();
+
+        return $this->response->setJSON(['status' => 'success', 'message' => 'Logged out successfully']);
+    }
+
 }
 

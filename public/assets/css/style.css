@@ -450,7 +450,7 @@ ol {
 	position: absolute;
 	right: -8px;
 	top: -2px;
-	content: "/";
+	/* content: "/"; */
 	font-size: 13px;
 }
 
@@ -2123,6 +2123,8 @@ ol {
 .shop__cart__table tbody tr .cart__product__item img {
 	float: left;
 	margin-right: 25px;
+	height: 160px;
+    width: 150px;
 }
 
 .shop__cart__table tbody tr .cart__product__item .cart__product__item__title {
@@ -3043,7 +3045,7 @@ ol {
 
 .contact__address ul li h6 i {
 	font-size: 16px;
-	color: #ca1515;
+	color: #000;
 	margin-right: 5px;
 }
 

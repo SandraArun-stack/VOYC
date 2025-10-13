@@ -28,12 +28,12 @@ class HomeModel extends Model
         }
 
         $insertData = [
-            'cust_Name'     => $data['full_name'],
-            'cust_Email'    => $data['email'],
+            'cust_Name' => $data['full_name'],
+            'cust_Email' => $data['email'],
             'cust_Password' => $data['password'],
-            'cust_Status'   => 1, 
-            'cust_createdon'=> date('Y-m-d H:i:s'),
-            'cust_createdby'=> 0, 
+            'cust_Status' => 1,
+            'cust_createdon' => date('Y-m-d H:i:s'),
+            'cust_createdby' => 0,
         ];
 
         $inserted = $this->insert($insertData);
@@ -44,4 +44,23 @@ class HomeModel extends Model
             return ['status' => 'error', 'message' => 'Database error, please try again.'];
         }
     }
+    public function loginUser_Model($data)
+    {
+        $user = $this->where('cust_Email', $data['email'])->first();
+
+        if (!$user) {
+            return ['status' => 'error', 'message' => 'Email not found.'];
+        }
+
+        if ($user['cust_Password'] !== $data['password']) {
+            return ['status' => 'error', 'message' => 'Invalid password.'];
+        }
+
+        return [
+            'status' => 'success',
+            'message' => 'Login successful.',
+            'user' => $user
+        ];
+    }
+
 }

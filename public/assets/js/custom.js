@@ -62,7 +62,7 @@ $(document).ready(function () {
 
     $('#load-more-reviews').on('click', function () {
         const nextReviews = $('.reviews-container .review-box').slice(shown, shown + reviewsPerPage);
-        nextReviews.slideDown(); // show next batch
+        nextReviews.slideDown(); 
         shown += reviewsPerPage;
         if (shown >= totalReviews) {
             $(this).fadeOut();
@@ -101,6 +101,7 @@ $(document).ready(function () {
         });
     });
 
+    //eye icon in register form
     $('.toggle-password').on('click', function () {
         const target = $($(this).data('target'));
         const icon = $(this);
@@ -114,6 +115,7 @@ $(document).ready(function () {
         }
     });
 
+    //register ajax
     $('#btn_register').on('click', function (e) {
         e.preventDefault();
         var formData = $('#registerForm').serialize();
@@ -134,6 +136,7 @@ $(document).ready(function () {
                 $('#btn_register').prop('disabled', false).text('Register');
 
                 if (response.status === 'success') {
+
                     $alertBox
                         .removeClass('d-none alert-danger')
                         .addClass('alert alert-success')
@@ -143,10 +146,15 @@ $(document).ready(function () {
                     $('#registerForm')[0].reset();
 
                     setTimeout(() => {
-                        $alertBox.fadeOut(500);
-                        $('#registerModal').fadeOut(200);
-                    }, 3000);
-                } else {
+                        $alertBox.fadeOut(400, function () {
+                            $('#registerView').fadeOut(200, function () {
+                                $('#loginView').fadeIn(300);
+                            });
+                        });
+                    }, 2000);
+                }
+
+                else {
                     $alertBox
                         .removeClass('d-none alert-success')
                         .addClass('alert alert-danger')
@@ -174,65 +182,94 @@ $(document).ready(function () {
         });
     });
 
-    // $('#btn_login').on('click', function (e) {
-    //     e.preventDefault();
-    //     var formDataLogin = $('#loginForm').serialize();
-    //     var registerUrl = $(this).data('url');
-    //     var $alertBox = $('#reg_msg_alert');
+    //login ajax
+    $('#btn_login').on('click', function (e) {
+        e.preventDefault();
+        var formDataLogin = $('#loginForm').serialize();
+        var loginUrl = $(this).data('url');
+        var $alertBox = $('#login_msg_alert');
 
-    //     $alertBox.addClass('d-none').removeClass('alert-success alert-danger').text('');
+        $alertBox.addClass('d-none').removeClass('alert-success alert-danger').text('');
 
-    //     $.ajax({
-    //         url: registerUrl,
-    //         type: 'POST',
-    //         data: formDataLogin,
-    //         dataType: 'json',
-    //         beforeSend: function () {
-    //             $('#btn_register').prop('disabled', true).text('Registering...');
-    //         },
-    //         success: function (response) {
-    //             $('#btn_register').prop('disabled', false).text('Register');
+        $.ajax({
+            url: loginUrl,
+            type: 'POST',
+            data: formDataLogin,
+            dataType: 'json',
+            beforeSend: function () {
+                $('#btn_login').prop('disabled', true).text('Registering...');
+            },
+            success: function (response) {
+                $('#btn_login').prop('disabled', false).text('Register');
 
-    //             if (response.status === 'success') {
-    //                 $alertBox
-    //                     .removeClass('d-none alert-danger')
-    //                     .addClass('alert alert-success')
-    //                     .text(response.message || 'Registration successful!')
-    //                     .fadeIn();
+                if (response.status === 'success') {
+                    $alertBox
+                        .removeClass('d-none alert-danger')
+                        .addClass('alert alert-success')
+                        .text(response.message || 'Registration successful!')
+                        .fadeIn();
 
-    //                 $('#registerForm')[0].reset();
+                    $('#loginForm')[0].reset();
 
-    //                 setTimeout(() => {
-    //                     $alertBox.fadeOut(500);
-    //                     $('#registerModal').fadeOut(200);
-    //                 }, 3000);
-    //             } else {
-    //                 $alertBox
-    //                     .removeClass('d-none alert-success')
-    //                     .addClass('alert alert-danger')
-    //                     .text(response.message || 'Registration failed!')
-    //                     .fadeIn();
+                    setTimeout(() => {
+                        $alertBox.fadeOut(400, function () {
+                            authModal?.hide();
+                        });
+                        location.reload();
+                    }, 2000);
+                } else {
+                    $alertBox
+                        .removeClass('d-none alert-success')
+                        .addClass('alert alert-danger')
+                        .text(response.message || 'Registration failed!')
+                        .fadeIn();
 
-    //                 setTimeout(() => {
-    //                     $alertBox.fadeOut(500);
-    //                 }, 3000);
-    //             }
-    //         },
-    //         error: function () {
-    //             $('#btn_register').prop('disabled', false).text('Register');
-    //             $alertBox
-    //                 .removeClass('d-none alert-success')
-    //                 .addClass('alert alert-danger')
-    //                 .text('Something went wrong! Please try again.')
-    //                 .fadeIn();
+                    setTimeout(() => {
+                        $alertBox.fadeOut(500);
+                    }, 3000);
+                }
+            },
+            error: function () {
+                $('#btn_login').prop('disabled', false).text('Login');
+                $alertBox
+                    .removeClass('d-none alert-success')
+                    .addClass('alert alert-danger')
+                    .text('Something went wrong! Please try again.')
+                    .fadeIn();
 
-    //             setTimeout(() => {
-    //                 $alertBox.fadeOut(500);
-    //             }, 3000);
-    //         }
+                setTimeout(() => {
+                    $alertBox.fadeOut(500);
+                }, 3000);
+            }
 
-    //     });
-    // });
+        });
+    });
+
+
+    $('#userDropDown').on('click', function (e) {
+        e.preventDefault();
+        $('#logoutModal').modal('show');
+    });
+    $('#cancel_log_out').on('click', function () {
+        $('#logoutModal').modal('hide');
+    });
+    $('#confirmLogout').on('click', function () {
+        var logOut = $(this).data('url');
+
+        $.ajax({
+            url: logOut,
+            type: 'POST',
+            success: function (response) {
+                $('#logoutModal').modal('hide');
+                setTimeout(() => {
+                    location.reload();
+                }, 500);
+            },
+            error: function () {
+                alert('Logout failed. Please try again.');
+            }
+        });
+    });
 
 
 });
