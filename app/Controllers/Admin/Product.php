@@ -133,7 +133,6 @@ class Product extends BaseController
     }
 
 
-    //Product save
 
     // Product save
     public function saveProduct()
