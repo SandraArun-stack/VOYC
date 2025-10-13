@@ -68,79 +68,66 @@
 
                                                             <!-- Choose Color -->
                                                             <div class="mb-3">
-                                                                <label class="form-label">Choose Color:</label>
+                                                                <label class="form-label">Choose Color:   
+                                                                   
+                                                                </label>
+                                                                
                                                                 <input type="color" class="form-control form-control-color"
                                                                     name="colors[<?= $index ?>][color]" value="<?= $color ?>">
                                                             </div>
 
                                                             <!-- Sizes -->
-                                                            <!-- <div class="row g-3">
-                                                        <?php foreach ($sizes as $size):
-                                                            $checked = in_array($size, $sizesExisting) ? 'checked' : '';
-                                                            $priceVal = $prices[$size] ?? '';
-                                                            $stockVal = $stocks[$size] ?? '';
-                                                            $resetStockVal = $reset_stocks[$size] ?? '';
-                                                            ?>
-                                                        <div class="col-md-3">
-                                                            <div class="form-check mb-2">
-                                                                <input class="form-check-input size-checkbox"
-                                                                    type="checkbox" name="colors[<?= $index ?>][sizes][]"
-                                                                    value="<?= $size ?>" <?= $checked ?>>
-                                                                <label class="form-check-label fw-bold"><?= $size ?></label>
-                                                            </div>
-                                                            <input type="number" class="form-control mb-2"
-                                                                placeholder="Price for <?= $size ?>"
-                                                                name="colors[<?= $index ?>][prices][<?= $size ?>]"
-                                                                value="<?= $priceVal ?>" <?= $checked ? '' : 'disabled' ?>>
-                                                            <input type="number" class="form-control mb-2"
-                                                                placeholder="Stock for <?= $size ?>"
-                                                                name="colors[<?= $index ?>][stock][<?= $size ?>]"
-                                                                value="<?= $stockVal ?>" <?= $checked ? '' : 'disabled' ?>>
-                                                            <input type="number" class="form-control"
-                                                                placeholder="Reset Stock for <?= $size ?>"
-                                                                name="colors[<?= $index ?>][reset_stock][<?= $size ?>]"
-                                                                value="<?= $resetStockVal ?>" <?= $checked ? '' : 'disabled' ?>>
-                                                        </div>
-                                                        <?php endforeach; ?>
-                                                    </div> -->
                                                             <div class="row g-3">
                                                                 <?php
-                                                                // ✅ Build variant map from controller data
                                                                 $variantMap = [];
                                                                 if (!empty($variants)) {
                                                                     foreach ($variants as $v) {
                                                                         $variantMap[$v['prv_Size']] = [
-                                                                            'price' => $v['prv_price'],
-                                                                            'stock' => $v['stock'],
-                                                                            'reset_stock' => $v['reset_stock']
+                                                                            'prv_id'     => $v['prv_Id'] ?? '',
+                                                                            'price'      => $v['prv_price'] ?? '',
+                                                                            'stock'      => $v['stock'] ?? '',
+                                                                            'reset_stock'=> $v['reset_stock'] ?? ''
                                                                         ];
                                                                     }
                                                                 }
 
                                                                 foreach ($sizes as $size):
-                                                                    // ✅ Mark size as checked if it exists in variant data
-                                                                    $checked = isset($variantMap[$size]) ? 'checked' : '';
-                                                                    $priceVal = $variantMap[$size]['price'] ?? '';
-                                                                    $stockVal = $variantMap[$size]['stock'] ?? '';
-                                                                    $resetStockVal = $variantMap[$size]['reset_stock'] ?? '';
-                                                                    ?>
+                                                                    // ✅ Safely get variant data
+                                                                    $variant = $variantMap[$size] ?? null;
+
+                                                                    $checked       = $variant ? 'checked' : '';
+                                                                    $priceVal      = $variant['price'] ?? '';
+                                                                    $stockVal      = $variant['stock'] ?? '';
+                                                                    $resetStockVal = $variant['reset_stock'] ?? '';
+                                                                    $prvId         = $variant['prv_id'] ?? '';
+                                                                ?>
                                                                     <div class="col-md-3">
                                                                         <div class="form-check mb-2">
                                                                             <input class="form-check-input size-checkbox"
                                                                                 type="checkbox"
                                                                                 name="colors[<?= $index ?>][sizes][]"
                                                                                 value="<?= $size ?>" <?= $checked ?>>
-                                                                            <label
-                                                                                class="form-check-label fw-bold"><?= $size ?></label>
+                                                                            <label class="form-check-label fw-bold"><?= $size ?></label>
                                                                         </div>
+
+                                                                        <!-- Hidden prv_id (safe) -->
+                                                                        <input type="hidden"
+                                                                            name="colors[<?= $index ?>][prv_id][<?= $size ?>]"
+                                                                            value="<?= $prvId ?>">
+
+                                                                        <!-- Price -->
                                                                         <input type="number" class="form-control mb-2"
                                                                             placeholder="Price for <?= $size ?>"
                                                                             name="colors[<?= $index ?>][prices][<?= $size ?>]"
                                                                             value="<?= $priceVal ?>" <?= $checked ? '' : 'disabled' ?>>
+
+                                                                        <!-- Stock -->
                                                                         <input type="number" class="form-control mb-2"
                                                                             placeholder="Stock for <?= $size ?>"
                                                                             name="colors[<?= $index ?>][stock][<?= $size ?>]"
                                                                             value="<?= $stockVal ?>" <?= $checked ? '' : 'disabled' ?>>
+
+                                                                        <!-- Reset Stock -->
                                                                         <input type="number" class="form-control"
                                                                             placeholder="Reset Stock for <?= $size ?>"
                                                                             name="colors[<?= $index ?>][reset_stock][<?= $size ?>]"
@@ -150,34 +137,35 @@
                                                             </div>
 
 
+
                                                             <!-- File Upload -->
                                                             <div class="mt-3">
-    <label class="form-label">Uploaded Thumbnail:</label>
-    <div class="d-flex flex-wrap gap-2 mb-2">
-        <?php if (!empty($productimages) && !empty($productimages[$index]->pri_Thumbnail)): ?>
-            <img src="<?= base_url('uploads/productmedia/' . $productimages[$index]->pri_Thumbnail) ?>"
-                 width="80" class="border p-1">
-        <?php endif; ?>
-    </div>
-    <input type="file" class="form-control" name="colors[<?= $index ?>][images][]" multiple>
-</div>
+                                                                <label class="form-label">Uploaded Thumbnail:</label>
+                                                                <div class="d-flex flex-wrap gap-2 mb-2">
+                                                                    <?php if (!empty($productimages) && !empty($productimages[$index]->pri_Thumbnail)): ?>
+                                                                        <img src="<?= base_url('uploads/productmedia/' . $productimages[$index]->pri_Thumbnail) ?>"
+                                                                            width="80" class="border p-1">
+                                                                    <?php endif; ?>
+                                                                </div>
+                                                                <input type="file" class="form-control" name="colors[<?= $index ?>][images][]" multiple>
+                                                            </div>
 
-<div class="mt-3">
-    <label class="form-label">Uploaded Side Images:</label>
-    <div class="d-flex flex-wrap gap-2 mb-2">
-        <?php 
-        if (!empty($productimages) && !empty($productimages[$index]->pri_File_Name)) {
-            $sideImages = json_decode($productimages[$index]->pri_File_Name, true);
-            foreach ($sideImages as $img): ?>
-                <img src="<?= base_url('uploads/productmedia/' . $img) ?>" width="80" class="border p-1">
-            <?php endforeach; 
-        } ?>
-    </div>
-    <input type="file" class="form-control" name="colors[<?= $index ?>][side_image][]" multiple>
-</div>
-
+                                                            <div class="mt-3">
+                                                                <label class="form-label">Uploaded Side Images:</label>
+                                                                <div class="d-flex flex-wrap gap-2 mb-2">
+                                                                    <?php 
+                                                                    if (!empty($productimages) && !empty($productimages[$index]->pri_File_Name)) {
+                                                                        $sideImages = json_decode($productimages[$index]->pri_File_Name, true);
+                                                                        foreach ($sideImages as $img): ?>
+                                                                            <img src="<?= base_url('uploads/productmedia/' . $img) ?>" width="80" class="border p-1">
+                                                                        <?php endforeach; 
+                                                                    } ?>
+                                                                </div>
+                                                                <input type="file" class="form-control" name="colors[<?= $index ?>][side_image][]" multiple>
+                                                            </div>
                                                         </div>
                                                     </div>
+                                                    <input type="hidden" name="colors[<?= $index ?>][pri_id]" value="<?= $img->pri_id ?? '' ?>">
                                                 <?php endforeach; ?>
                                             <?php else: ?>
                                                 <!-- If no existing data, show 1 empty color group -->
@@ -237,15 +225,21 @@
 
                                         <!-- Hidden Product ID -->
                                         <input type="hidden" name="pr_id" value="<?= $pr_id ?? '' ?>">
+                                        <input type="hidden" name="pri_id" value="<?= $pri_id ?? '' ?>">
 
 
                                         <!-- Buttons -->
-                                        <button type="button" class="btn btn-success mb-3" id="addColorBtn">+ Add
-                                            Color</button>
-                                        <div>
-                                            <button type="submit" class="btn btn-primary">Save</button>
-                                        </div>
+                                        
+                                        <?php if (!isset($pr_id) || empty($productimages)): ?>
+                                            <button type="button" class="btn btn-success mb-3" id="addColorBtn">+ Add Color</button>
+                                        <?php endif; ?>
 
+                                        <div>
+                                            <button type="submit" class="btn btn-primary">
+                                                <?= isset($pr_id) && !empty($productimages) ? 'Update' : 'Save' ?>
+                                            </button>
+                                        </div>
+                                       
                                     </form>
                                 </div>
                             </div>
