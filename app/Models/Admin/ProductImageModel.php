@@ -11,6 +11,7 @@ class ProductImageModel extends Model
         'pr_Id',
         'pri_Thumbnail',
         'pri_File_Name',
+        'pri_Sleev_Name',
         'color_details',
         'pri_Status',
         'pri_createdon',
@@ -92,9 +93,25 @@ class ProductImageModel extends Model
     // VARIANT METHODS
     // -------------------
 
+    // public function insertVariant($data)
+    // {
+    //     return $this->db->table('product_variants')->insert($data);
+    // }
+
     public function insertVariant($data)
     {
-        return $this->db->table('product_variants')->insert($data);
+        // Insert the variant
+        $this->db->table('product_variants')->insert($data);
+
+        // Get the inserted ID
+        $prv_id = $this->db->insertID();
+
+        // Update the newly inserted variant's status to 1
+        $this->db->table('product_variants')
+            ->where('prv_id', $prv_id)
+            ->update(['prv_Status' => 1]);
+
+        return $prv_id;
     }
 
     public function getVariantByPriIdSizeAndPrvId($pri_id, $size, $prv_id)

@@ -163,6 +163,20 @@
                                                                 </div>
                                                                 <input type="file" class="form-control" name="colors[<?= $index ?>][side_image][]" multiple>
                                                             </div>
+                                                                <div class="mt-3">
+                                                                    <label class="form-label">Uploaded Sleev Images:</label>
+                                                                    <div class="d-flex flex-wrap gap-2 mb-2">
+                                                                        <?php 
+                                                                        if (!empty($productimages) && !empty($productimages[$index]->pri_Sleev_Name)) {
+                                                                            $sideImages = json_decode($productimages[$index]->pri_Sleev_Name, true);
+                                                                            foreach ($sideImages as $img): ?>
+                                                                                <img src="<?= base_url('uploads/productmedia/' . $img) ?>" width="80" class="border p-1">
+                                                                            <?php endforeach; 
+                                                                        } ?>
+                                                                     </div>
+                                                                <input type="file" class="form-control" name="colors[<?= $index ?>][sleev_image][]" multiple>
+                                                            </div>
+
                                                         </div>
                                                     </div>
                                                     <input type="hidden" name="colors[<?= $index ?>][pri_id]" value="<?= $img->pri_id ?? '' ?>">
@@ -209,12 +223,16 @@
 
                                                         <div class="col-6">
                                                             <div class="mt-3">
-                                                                <label class="form-label">Upload Thumbnail</label>
+                                                                <label class="form-label">Upload Front Image</label>
                                                                 <input type="file" class="form-control" name="colors[0][images][]" multiple>
                                                             </div>
                                                             <div class="mt-3">
                                                                 <label class="form-label">Upload Side Image</label>
                                                                 <input type="file" class="form-control" name="colors[0][side_image][]" multiple>
+                                                            </div>
+                                                            <div class="mt-3">
+                                                                <label class="form-label">Upload Sleev Image</label>
+                                                                <input type="file" class="form-control" name="colors[0][sleev_image][]" multiple>
                                                             </div>
                                                         </div>
                                                     </div>
