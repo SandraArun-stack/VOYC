@@ -1,56 +1,26 @@
 <script>
     const canvas = new fabric.Canvas('tshirtCanvas', {
-        preserveObjectStacking: true
+        preserveObjectStacking: true,
+        selection: false
     });
 
-    // references
-    let backgroundImg = null;
     let shirtOverlay = null;
     const defaultOverlay = "<?= base_url('uploads/productmedia/' . $cust_image['pri_Thumbnail']); ?>";
-    // 1) Load body.jpg as immovable background
-    fabric.Image.fromURL("<?= base_url() . ASSET_PATH; ?>assets/img/shirtimages/body.jpg", function (img) {
-        img.scaleToWidth(canvas.width);
-        img.scaleToHeight(canvas.height);
-        img.set({ left: 0, top: 0, selectable: false, evented: false });
-        backgroundImg = img;
-        canvas.setBackgroundImage(img, function () {
-            canvas.renderAll();
-            // Load a default dress overlay after background is ready
-            addOverlay(defaultOverlay);
-            // highlight the default thumb
-            highlightThumb(defaultOverlay);
-        });
-    });
 
-    // 2) Add dress overlay ABOVE body.jpg; make it manually movable/resizable
+    // Removed body.jpg — directly load product image
+    addOverlay(defaultOverlay);
+    highlightThumb(defaultOverlay);
+
+    // 1) Add dress overlay as a static image (not movable/resizable)
     function addOverlay(src) {
         fabric.Image.fromURL(src, function (img) {
-            // start aligned to background
-            if (backgroundImg) {
-                img.set({
-                    left: backgroundImg.left,
-                    top: backgroundImg.top,
-                    scaleX: backgroundImg.scaleX,
-                    scaleY: backgroundImg.scaleY
-                });
-            } else {
-                img.scaleToWidth(canvas.width);
-                img.scaleToHeight(canvas.height);
-                img.set({ left: 0, top: 0 });
-            }
-
-            // Make overlay manually adjustable
+            img.scaleToWidth(canvas.width);
+            img.scaleToHeight(canvas.height);
             img.set({
-                selectable: true,
-                evented: true,
-                hasControls: true,
-                perPixelTargetFind: true,   // click-through transparent areas
-                objectCaching: false,
-                lockUniScaling: true,       // keep aspect ratio
-                transparentCorners: false,
-                cornerStyle: 'circle',
-                cornerColor: '#3b82f6',
-                borderColor: '#3b82f6'
+                left: 0,
+                top: 0,
+                selectable: false,
+                evented: false
             });
 
             // Replace old overlay
@@ -58,67 +28,50 @@
             shirtOverlay = img;
 
             canvas.add(shirtOverlay);
-
-            if (shirtOverlay) {
-                canvas.moveTo(backgroundImg, 0);  // body stays bottom
-                canvas.moveTo(shirtOverlay, 1);   // shirt always right above body
-            }
-
-            // Keep stacking: background (0) → overlay (1) → everything else
-            canvas.moveTo(shirtOverlay, 1);
-            canvas.setActiveObject(shirtOverlay);
+            canvas.sendToBack(shirtOverlay);
             canvas.renderAll();
-
-            // apply current color tint (if any)
-            // applyDressColor(document.getElementById('colorPicker').value);
         }, { crossOrigin: 'anonymous' });
     }
 
-    // 3) Reset dress to exactly match the background again
+    // Keep for backward compatibility but now does nothing
     function resetOverlayToBackground() {
-        if (shirtOverlay && backgroundImg) {
+        if (shirtOverlay) {
             shirtOverlay.set({
-                left: backgroundImg.left,
-                top: backgroundImg.top,
-                scaleX: backgroundImg.scaleX,
-                scaleY: backgroundImg.scaleY,
+                left: 0,
+                top: 0,
+                scaleX: 1,
+                scaleY: 1,
                 angle: 0
             });
             shirtOverlay.setCoords();
-            canvas.moveTo(shirtOverlay, 1);
             canvas.renderAll();
         }
     }
 
-    // 4) Tint/fill dress color
+    // Optional: still usable for future tinting (color change)
     function applyDressColor(color) {
         if (!shirtOverlay) return;
         shirtOverlay.filters = [new fabric.Image.filters.BlendColor({
             color: color,
             mode: 'tint',
-            alpha: 0.6 // stronger/lighter color fill → tweak as needed
+            alpha: 0.6
         })];
         shirtOverlay.applyFilters();
         canvas.renderAll();
     }
-
     // --- UI bindings ---
     $(document).ready(function () {
 
-        // Thumbnails click → load that overlay, keep it adjustable
         $(".thumbs img").on("click", function () {
             const src = $(this).data("src");
             addOverlay(src);
             highlightThumb(src);
         });
 
-        // Change dress color
         $("#colorPicker").on("input", function () {
             applyDressColor($(this).val());
         });
 
-        // Add text above the dress
-        // Add text
         $("#addText").on("click", function () {
             if (!shirtOverlay) return;
 
@@ -217,21 +170,11 @@
         $("#deleteBtn").on("click", function () {
             const active = canvas.getActiveObject();
             if (active) {
-                // prevent deleting the dress with this button? comment out if you want to allow
                 if (active === shirtOverlay) { return; }
                 canvas.remove(active);
             }
         });
 
-        // Save PNG
-        // $("#saveBtn").on("click", function () {
-        //     if (shirtOverlay) canvas.moveTo(shirtOverlay, 1);
-        //     const dataURL = canvas.toDataURL({ format: 'png', quality: 1 });
-        //     const link = document.createElement("a");
-        //     link.href = dataURL;
-        //     link.download = "tshirt_design.png";
-        //     link.click();
-        // });
         $("#saveBtn").on("click", function () {
             if (shirtOverlay) canvas.moveTo(shirtOverlay, 1);
             const dataURL = canvas.toDataURL({ format: 'png', quality: 1 });
@@ -294,8 +237,7 @@
 
     });
 
-    // helper: highlight current thumb
-    function highlightThumb(src) {
+  function highlightThumb(src) {
         $(".thumbs img").removeClass('active');
         $('.thumbs img').each(function () {
             if ($(this).data('src') === src) $(this).addClass('active');
@@ -303,55 +245,6 @@
     }
 
 
-
-    canvas.on('object:scaling', function (e) {
-        const obj = e.target;
-
-        if (obj === shirtOverlay) {
-            const shirtBounds = shirtOverlay.getBoundingRect(true);
-            canvas.getObjects().forEach(o => {
-                if (o.type === 'i-text') {
-                    // calculate a scale factor based on shirt width
-                    const scaleFactor = shirtBounds.width / shirtOverlay.width;
-                    o.scaleX = scaleFactor;
-                    o.scaleY = scaleFactor;
-                    o.setCoords();
-                }
-            });
-            canvas.renderAll();
-        }
-    });
-
-    canvas.on('object:moving', restrictInsideShirt);
-    canvas.on('object:scaling', restrictInsideShirt);
-
-    function restrictInsideShirt(e) {
-        if (!shirtOverlay) return;
-        const obj = e.target;
-        if (obj === shirtOverlay) return; // don't restrict shirt itself
-
-        const shirtBounds = shirtOverlay.getBoundingRect(true);
-        const objBounds = obj.getBoundingRect(true);
-
-        // Horizontal restriction
-        if (objBounds.left < shirtBounds.left) {
-            obj.left += (shirtBounds.left - objBounds.left);
-        }
-        if (objBounds.left + objBounds.width > shirtBounds.left + shirtBounds.width) {
-            obj.left -= (objBounds.left + objBounds.width - (shirtBounds.left + shirtBounds.width));
-        }
-
-        // Vertical restriction
-        if (objBounds.top < shirtBounds.top) {
-            obj.top += (shirtBounds.top - objBounds.top);
-        }
-        if (objBounds.top + objBounds.height > shirtBounds.top + shirtBounds.height) {
-            obj.top -= (objBounds.top + objBounds.height - (shirtBounds.top + shirtBounds.height));
-        }
-
-        obj.setCoords();
-    }
-    canvas.on('object:moving', restrictInsideShirt);
-    canvas.on('object:scaling', restrictInsideShirt);
+    
 
 </script>

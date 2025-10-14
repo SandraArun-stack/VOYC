@@ -201,6 +201,11 @@
                                             <i class="ti-layout-sidebar-left"></i> Logout
                                         </a>
                                     </li>
+                                    <li class="waves-effect waves-light">
+                                        <a href="<?php echo base_url('admin/profile') ?>" >
+                                            <i class="ti-layout-sidebar-left"></i> profile
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>

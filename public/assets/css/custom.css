@@ -155,7 +155,7 @@
     margin-bottom: 20px;
 }
 
-
+/* t shirt customisation */
 
 #designer-container {
     position: relative;
@@ -190,9 +190,11 @@ canvas {
 #controls {
     margin: 15px 0;
 }
-#controls div{
+
+#controls div {
     margin-top: 15px;
 }
+
 .small {
     font-size: 12px;
     color: #555;
@@ -211,14 +213,96 @@ canvas {
     font-size: 14px;
     font-weight: bold;
 }
-#confirmLogout ,#saveBtn{
+
+#confirmLogout,
+#saveBtn {
     background: #000 !important;
     border-color: #000000 !important;
     color: #fff;
 }
+
 .upper-canvas {
     object-fit: contain;
 }
+
+/* side modal for customization */
+
+
+/* .container {
+    display: flex;
+    height: 100vh;
+} */
+
+/* Sidebar */
+.sidebar {
+    background-color: #1e1e1e;
+    width: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+}
+
+.sidebar-item {
+    color: white;
+    text-align: center;
+    font-size: 14px;
+    margin: 25px 0;
+    cursor: pointer;
+}
+
+.sidebar-item:hover {
+    color: #a0a0ff;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 40px;
+}
+
+.options {
+    display: grid;
+    grid-template-columns: repeat(2, 150px);
+    gap: 40px;
+    text-align: center;
+}
+
+.option {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.option:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
+}
+
+.option img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 10px;
+}
+
+.bottom-text {
+    margin-top: 60px;
+    font-size: 14px;
+    color: #555;
+}
+
 @keyframes fadeDown {
     0% {
         opacity: 0;

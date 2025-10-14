@@ -15,30 +15,15 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="tshirt-container">
-
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <h5 class="custome_design_heading"><b>Customize Your Tee</b></h5>
 
-                            <div class="thumbs">
-                                <?php if (isset($cust_image) && !empty($cust_image)): ?>
-                                    <img src="<?= base_url('uploads/productmedia/' . $cust_image['pri_Thumbnail']); ?>"
-                                        data-src="<?= base_url('uploads/productmedia/' . $cust_image['pri_Thumbnail']); ?>" />
-                                    <?php foreach ($cust_image['pri_File_Name'] as $file): ?>
-                                        <img src="<?= base_url('uploads/productmedia/' . $file); ?>"
-                                            data-src="<?= base_url('uploads/productmedia/' . $file); ?>" />
-                                    <?php endforeach; ?>
-
-                                <?php else: ?>
-                                    <p>No images found for this product.</p>
-                                <?php endif; ?>
-                            </div>
-
-                            <div id="designer-container">
-                                <canvas id="tshirtCanvas" width="400" height="500"></canvas>
-                            </div>
                         </div>
-                        <div class="col-md-6">
+                    </div>
+                    <div class="row">
+                        <!-- <div class="col-md-6">
+
                             <div class="alert alert-danger d-none" id="design_msg_alert"></div>
                             <input type="hidden" name="prId" value="<?= isset($prId) ? esc($prId) : ''; ?>">
                             <input type="hidden" name="priId" value="<?= isset($priId) ? esc($priId) : ''; ?>">
@@ -52,8 +37,6 @@
                                         </label>
                                     </div>
                                 </div>
-                                <!-- <label>Dress Color: <input type="color" id="colorPicker" value="#9e9e9e"></label> -->
-
                                 <div class="row">
                                     <div class="col-md-12">
                                         <label>Font:
@@ -83,8 +66,10 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <button id="cropBtn" class="btn" disabled title="(Not implemented in this snippet)">Crop Image</button>
-                                        <button id="resetOverlayBtn" class="btn btn-warning">Reset Dress Position</button>
+                                        <button id="cropBtn" class="btn" disabled
+                                            title="(Not implemented in this snippet)">Crop Image</button>
+                                        <button id="resetOverlayBtn" class="btn btn-warning">Reset Dress
+                                            Position</button>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -99,6 +84,71 @@
                                     </div>
                                 </div>
 
+                            </div>
+                        </div> -->
+                        <!-- <div class="container"> -->
+                        <div class="sidebar">
+                            <div class="sidebar-item">Upload</div>
+                            <div class="sidebar-item">Add Text</div>
+                            <div class="sidebar-item">Add Art</div>
+                            <div class="sidebar-item">Product<br>Colors</div>
+                            <div class="sidebar-item">Add<br>Names</div>
+                        </div>
+
+                        <div class="main-content">
+                            <h2>What's next for you?</h2>
+                            <div class="options">
+                                <div class="option">
+                                    <img src="<?= base_url() . ASSET_PATH; ?>assets/img/customize/upload.png"
+                                        alt="Upload">
+                                    <div>Upload</div>
+                                </div>
+                                <div class="option">
+                                    <img src="<?= base_url() . ASSET_PATH; ?>assets/img/customize/text.png"
+                                        alt="Add Text">
+                                    <div>Add Text</div>
+                                </div>
+                                <div class="option">
+                                    <img src="<?= base_url() . ASSET_PATH; ?>assets/img/customize/landscape.png"
+                                        alt="Add Art">
+                                    <div>Add Art</div>
+                                </div>
+                                <div class="option">
+                                    <img src="<?= base_url() . ASSET_PATH; ?>assets/img/customize/change.png"
+                                        alt="Change Products">
+                                    <div>Change Products</div>
+                                </div>
+                            </div>
+                            <div class="bottom-text">
+                                💡 Drag & drop a file anywhere to upload.
+                            </div>
+                        </div>
+                        <!-- </div> -->
+                        <div class="col-md-6 text-center">
+                            <div class="row">
+                                <div class="col-md-10 text-center">
+                                    <div class="designer-wrapper d-flex flex-column align-items-center">
+                                        <div id="designer-container">
+                                            <canvas id="tshirtCanvas" width="400" height="500"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <div class="thumbs d-flex flex-column align-items-center">
+                                        <?php if (isset($cust_image) && !empty($cust_image)): ?>
+                                            <img src="<?= base_url('uploads/productmedia/' . $cust_image['pri_Thumbnail']); ?>"
+                                                data-src="<?= base_url('uploads/productmedia/' . $cust_image['pri_Thumbnail']); ?>" />
+                                            <?php foreach ($cust_image['pri_File_Name'] as $file): ?>
+                                                <img src="<?= base_url('uploads/productmedia/' . $file); ?>"
+                                                    data-src="<?= base_url('uploads/productmedia/' . $file); ?>" />
+                                            <?php endforeach; ?>
+
+                                        <?php else: ?>
+                                            <p>No images found for this product.</p>
+                                        <?php endif; ?>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     </div>
