@@ -482,5 +482,15 @@
     window.location.href = baseUrl + "admin/product/image/" + $pr_id;
 }
 
+</script>
 
+<script>
+$(document).ready(function() {
+    // Allow only one checkbox to be checked at a time
+    $('#customisable, #nonCustomisable').on('change', function() {
+        if ($(this).is(':checked')) {
+            $('#customisable, #nonCustomisable').not(this).prop('checked', false);
+        }
+    });
+});
 </script>

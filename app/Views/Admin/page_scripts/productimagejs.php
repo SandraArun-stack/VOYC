@@ -339,6 +339,13 @@ $(document).ready(function() {
                     <div class="image-preview mt-2 d-flex flex-wrap gap-2"></div>
                 </div>
 
+                <!-- Sleev Images Upload -->
+                <div class="mb-3">
+                    <label class="form-label">Upload Sleev Images (min 1)</label>
+                    <input type="file" class="form-control image-input" name="colors[${index}][sleev_image][]" multiple accept="image/*">
+                    <div class="image-preview mt-2 d-flex flex-wrap gap-2"></div>
+                </div>
+
                 <!-- Hidden pri_id -->
                 <input type="hidden" name="colors[${index}][pri_id]" value="">
             </div>

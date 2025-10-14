@@ -157,6 +157,8 @@ class Product extends BaseController
         $sleeve_style   = ucwords(strtolower(trim($this->request->getPost('sleeve_style'))));
         $fabric   = ucwords(strtolower(trim($this->request->getPost('fabric'))));
         $stitching   = ucwords(strtolower(trim($this->request->getPost('stitching'))));
+        $pr_for = $this->input->getPost('pr_for');
+        $pr_custom = $this->input->getPost('pr_custom');
         
         $DisCountFrom = 0;     
         
@@ -225,6 +227,8 @@ if (!preg_match($allowedPattern, $fabric)) {
     ]);
 }
 }
+
+
 if(!empty($stitching)){
 
 if (!preg_match($allowedPattern, $stitching)) {
@@ -235,6 +239,23 @@ if (!preg_match($allowedPattern, $stitching)) {
     ]);
 }
     }
+
+    if (empty($pr_for)) {
+    return $this->response->setJSON([
+        'status' => 'error',
+        'field' => 'pr_for',
+        'message' => 'Please select Product For (Men or Women).'
+    ]);
+}
+
+if ($pr_custom === null || $pr_custom === '') {
+    return $this->response->setJSON([
+        'status' => 'error',
+        'field' => 'pr_custom',
+        'message' => 'Please select Customisation type.'
+    ]);
+}
+
         // Check if product name already exists (excluding current ID)
         if ($this->productModel->isProductExists($product_name, $pr_id)) {
             return $this->response->setJSON([
@@ -266,6 +287,8 @@ if (!preg_match($allowedPattern, $stitching)) {
             'pr_Sleeve_Style' => $sleeve_style,
             'pr_Fabric' => $fabric,
             'pr_Stitch_Type' => $stitching,
+            'pr_for' => $pr_for,
+            'pr_custom' => $pr_custom,
             'pr_modifyby' => $this->session->get('ad_uid'),
             'pr_modifyon' => date("Y-m-d H:i:s"),
             'discount_from' => $DisCountFrom,

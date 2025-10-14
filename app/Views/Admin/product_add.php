@@ -39,8 +39,17 @@
                                     </div>
                                 </div>
                                 <div class="card-block">
-
                                     <form name="createProduct" id="createProduct" method="post" style="font-size:14px;">
+                                          <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label">Product For<span style="color: red;">*</span></label>
+                                                <div class="col-sm-7">
+                                                    <select class="form-control" name="pr_for" id="productFor" style="font-size:14px;" required>
+                                                        <option value="">-- Select --</option>
+                                                        <option value="Men" <?= isset($product) && $product['pr_for'] == 'Men' ? 'selected' : '' ?>>Men</option>
+                                                        <option value="Women" <?= isset($product) && $product['pr_for'] == 'Women' ? 'selected' : '' ?>>Women</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         <div class="form-group row">
                                             <label class="col-sm-3 col-form-label">Product Name <span
                                                     style="color: red;">*</span></label>
@@ -125,7 +134,21 @@
                                             </div>
                                         </div>
 
-                                      
+                                      <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label">Customisation</label>
+                                            <div class="col-sm-7 d-flex align-items-center">
+                                                <div class="form-check me-4">
+                                                    <input class="form-check-input" type="checkbox" name="pr_custom" id="customisable"
+                                                        value="1" <?= isset($product) && $product['pr_custom'] == 1 ? 'checked' : '' ?>>
+                                                    <label class="form-check-label" for="customisable">Customisable</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="pr_custom" id="nonCustomisable"
+                                                        value="0" <?= isset($product) && $product['pr_custom'] == 0 ? 'checked' : '' ?>>
+                                                    <label class="form-check-label" for="nonCustomisable">Non-Customisable</label>
+                                                </div>
+                                            </div>
+                                        </div>
 
                                         <div class="form-group row">
                                             <label class="col-sm-3 col-form-label">Sleeve Style</label>

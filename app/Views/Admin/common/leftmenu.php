@@ -48,13 +48,20 @@
                                         <span class="pcoded-mcaret"></span>
                                     </a>
                                 </li>
-                                <li class="<?= ($segment == 'profile') ? 'active' : '' ?>">
+                                <li class="<?= ($segment == 'orders') ? 'active' : '' ?>">
+                                    <a href="<?php echo base_url('admin/orders') ?>" class="waves-effect waves-dark">
+                                        <span class="pcoded-micon"><i class="bi bi-bag-heart"></i><b>D</b></span>
+                                        <span class="pcoded-mtext" data-i18n="nav.dash.main">Orders</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                                <!-- <li class="<?= ($segment == 'profile') ? 'active' : '' ?>">
                                     <a href="<?php echo base_url('admin/profile') ?>" class="waves-effect waves-dark">
                                         <span class="pcoded-micon"><i class="bi bi-person-circle"></i></span>
                                         <span class="pcoded-mtext" data-i18n="nav.form-components.main">Profile</span>
                                         <span class="pcoded-mcaret"></span>
                                     </a>
-                                </li>
+                                </li> -->
                           </ul>
                           <ul class="pcoded-item pcoded-left-item">
                           <li class="<?= ($segment == 'category') ? 'active' : '' ?>">
@@ -83,13 +90,6 @@
                                 <a href="<?php echo base_url('admin/themes') ?>" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="bi bi-circle-half"></i><b>D</b></span>
                                     <span class="pcoded-mtext" data-i18n="nav.dash.main">Themes</span>
-                                    <span class="pcoded-mcaret"></span>
-                                </a>
-                            </li>
-                            <li class="<?= ($segment == 'orders') ? 'active' : '' ?>">
-                                <a href="<?php echo base_url('admin/orders') ?>" class="waves-effect waves-dark">
-                                    <span class="pcoded-micon"><i class="bi bi-bag-heart"></i><b>D</b></span>
-                                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Orders</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>
