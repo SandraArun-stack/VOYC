@@ -6,7 +6,7 @@ class ShopModel extends Model
 {
     protected $table = 'product';
     protected $primaryKey = 'pr_Id';
-    protected $allowedFields = ['pr_Id', 'pr_Name', 'pr_Code', 'pr_Description', 'pr_Status', 'prd_for', 'custom','pr_custom'];
+    protected $allowedFields = ['pr_Id', 'pr_Name', 'pr_Code', 'pr_Description', 'pr_Status', 'pr_for', 'custom','pr_custom'];
     public $timestamps = false;
     public function displayedItem($category)
     {
@@ -14,7 +14,7 @@ class ShopModel extends Model
             ->select('p.pr_Id, p.pr_Name, p.pr_Selling_Price, p.pr_Description, 
                   pi.pri_Id, pi.pri_Thumbnail,p.pr_custom')
             ->join('product_image pi', 'pi.pr_Id = p.pr_Id', 'left')
-            ->where('p.prd_for', $category)
+            ->where('p.pr_for', $category)
             ->where('p.pr_Status', 1)
             ->where('pi.pri_Status', 1)
             ->where('pi.pri_Id = (SELECT MAX(pi2.pri_Id) FROM product_image pi2 WHERE pi2.pr_Id = p.pr_Id)', null, false)
