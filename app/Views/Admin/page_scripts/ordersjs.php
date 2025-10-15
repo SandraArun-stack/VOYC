@@ -28,12 +28,11 @@
     data: 'cust_Name',
     render: function (data, type, row) {
         if (!data) return 'N/A';
-
-        const fullName = data;
         const displayName = data.length > 25 ? data.substring(0, 25) + '...' : data;
- return '<a href="' + baseUrl + 'admin/orders/view/' + row.od_Id + '" style="text-decoration: none;">' + displayName + '</a>';
+        return displayName; // plain text, no <a> tag
     }
 },
+
 
     { data: 'add_Email' },
     { data: 'add_Phone' },
@@ -47,8 +46,17 @@
         searchable: false
         // remove render.html() here
     }
-]
-
+],
+ columnDefs: [
+        { targets: [7, 8], orderable: false, searchable: false }
+    ],
+    createdRow: function(row, data, dataIndex) {
+        // Add click event on the entire row
+        $(row).css('cursor', 'pointer'); // show pointer cursor
+        $(row).on('click', function() {
+            window.location.href = baseUrl + "admin/orders/view/" + data.od_Id;
+        });
+    }
 
     });
 

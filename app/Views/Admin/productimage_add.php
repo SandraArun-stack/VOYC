@@ -5,7 +5,7 @@
             <div class="row align-items-center">
                 <div class="col-md-8">
                     <div class="page-header-title">
-                        <h5 class="m-b-10"><?= isset($pr_id) ? 'Edit Product Image' : 'Add Product Image' ?></h5>
+                        <h5 class="m-b-10"><?= isset($pri_id) ? 'Edit Product Image' : 'Add Product Image' ?></h5>
                         <p class="m-b-0">Welcome to VOYC</p>
                     </div>
                 </div>
@@ -15,7 +15,7 @@
                             <a href="<?= base_url('admin/dashboard') ?>"> <i class="fa fa-home"></i> </a>
                         </li>
                         <li class="breadcrumb-item"><a
-                                href="#!"><?= isset($pr_id) ? 'Edit Product Image' : 'Add Product Image' ?></a></li>
+                                href="#!"><?= isset($pri_id) ? 'Edit Product Image' : 'Add Product Image' ?></a></li>
                     </ul>
                 </div>
             </div>

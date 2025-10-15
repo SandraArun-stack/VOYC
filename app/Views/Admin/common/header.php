@@ -196,14 +196,14 @@
                                           <i class="ti-user"></i> Profile
                                       </a>
                                   </li> -->
-                                    <li class="waves-effect waves-light">
-                                        <a href="#" data-toggle="modal" data-target="#logoutModal">
-                                            <i class="ti-layout-sidebar-left"></i> Logout
+                                  <li class="waves-effect waves-light">
+                                        <a href="<?php echo base_url('admin/profile') ?>" >
+                                            <i class="ti-layout-sidebar-left"></i> profile
                                         </a>
                                     </li>
                                     <li class="waves-effect waves-light">
-                                        <a href="<?php echo base_url('admin/profile') ?>" >
-                                            <i class="ti-layout-sidebar-left"></i> profile
+                                        <a href="#" data-toggle="modal" data-target="#logoutModal">
+                                            <i class="ti-layout-sidebar-left"></i> Logout
                                         </a>
                                     </li>
                                 </ul>

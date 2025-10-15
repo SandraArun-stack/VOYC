@@ -51,7 +51,7 @@
                                 <div class="form-group">
                                     <label>Email</label>
                                     <input type="text" name="us_Email" class="form-control"style="font-size:14px;"
-                                        value="<?= esc($user['us_Email'] ?? '') ?>" required
+                                        value="<?= esc($user['us_Email'] ?? '') ?>" required readonly
                                          style="text-transform: lowercase;">
                                 </div>
                                 <div class="form-group phn_code ">
