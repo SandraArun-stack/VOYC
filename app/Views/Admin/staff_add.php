@@ -183,7 +183,7 @@
                                                 </button>
 													<button type="button" class="btn btn-primary" id="staffSubmit" name="staffSubmit" style="font-size: 14px;" >
 														<i class="bi bi-check-circle"></i>
-														<?= isset($staff) ? 'Update Staff' : 'Add Staff'; ?>
+														<?= isset($staff) ? 'Update' : 'Save'; ?>
 														
 													</button>
 													

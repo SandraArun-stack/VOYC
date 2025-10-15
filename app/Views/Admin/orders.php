@@ -66,8 +66,7 @@
                                                             <th>Action</th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody></tbody>
-
+                                                    <tbody style="font-size: 14px;"></tbody>
                                                 </table>
                                             </div>
                                         </div>
