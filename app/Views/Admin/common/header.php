@@ -198,7 +198,7 @@
                                   </li> -->
                                   <li class="waves-effect waves-light">
                                         <a href="<?php echo base_url('admin/profile') ?>" >
-                                            <i class="ti-layout-sidebar-left"></i> profile
+                                            <i class="bi bi-person-fill"></i>Profile
                                         </a>
                                     </li>
                                     <li class="waves-effect waves-light">

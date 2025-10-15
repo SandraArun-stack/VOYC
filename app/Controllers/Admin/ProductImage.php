@@ -82,10 +82,11 @@ class ProductImage extends BaseController
             } else {
                 // Active / Inactive → show toggle
                 $row['status_switch'] = '<div class="form-check form-switch">
-                    <input class="form-check-input checkactive"
+                    <input class="form-check-input checkactiveimage"
                         type="checkbox"
-                        id="statusSwitch-' . $row['pri_Id'] . '"
+                        id="checkimg-' . $row['pri_Id'] . '"
                         value="' . $row['pri_Id'] . '" ' . ($row['pri_Status'] == 1 ? 'checked' : '') . '>
+
                     <label class="form-check-label pl-0 label-check"
                         for="statusSwitch-' . $row['pri_Id'] . '"></label>
                 </div>';
@@ -490,6 +491,38 @@ class ProductImage extends BaseController
             return $this->response->setJSON(['status' => 'error', 'msg' => 'Delete failed']);
         }
     }
+
+    public function changeStatus()
+    {
+        $priId = $this->request->getPost('pri_Id'); // primary image ID
+        $newStatus = $this->request->getPost('pri_Status'); // 1 = active, 2 = inactive
+
+        $productImageModel = new \App\Models\Admin\ProductImageModel();
+        $image = $productImageModel->getImageById($priId);
+
+        if (!$image) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Image Not Found'
+            ]);
+        }
+
+        $update = $productImageModel->updateImage($priId, ['pri_Status' => $newStatus]);
+
+        if ($update) {
+            return $this->response->setJSON([
+                'success' => true,
+                'message' => 'Product Image Status Updated Successfully!',
+                'new_status' => $newStatus
+            ]);
+        } else {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Failed To Update Product Image Status'
+            ]);
+        }
+    }
+
 
 
 }
