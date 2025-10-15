@@ -255,4 +255,25 @@ class ProductImageModel extends Model
 
         return $builder->countAllResults();
     }
+
+
+    //-----------------------
+    // STATUS CHANGE
+    //--------------------------
+    public function getImageById($id)
+    {
+        return $this->db->table('product_image')
+                        ->where('pri_Id', $id)
+                        ->get()
+                        ->getRow();
+    }
+
+    public function updateImage($id, $data)
+    {
+        $data['pri_modifyon'] = date('Y-m-d H:i:s');
+        return $this->db->table('product_image')
+                        ->where('pri_Id', $id)
+                        ->update($data);
+    }
+
 }

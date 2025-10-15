@@ -76,74 +76,6 @@ $('#productList').DataTable({
 
 
 //add product
-
-// $('#productImageForm').submit(function(e) {
-//     e.preventDefault();
-
-//     $(this).find(':input:disabled').prop('disabled', false);
-
-//     var form = this;
-//     var formData = new FormData(form);
-//     formData.append("<?= csrf_token() ?>", "<?= csrf_hash() ?>");
-
-//     $.ajax({
-//         url: baseUrl + "admin/productimage/save",
-//         type: "POST",
-//         data: formData,
-//         contentType: false,
-//         processData: false,
-//         dataType: 'json',
-//         success: function(response) {
-//             $('html, body').animate({
-//                 scrollTop: 0
-//             }, 'fast');
-
-//             if (response.status === 'success') {
-//                 $('#messageBox')
-//                     .removeClass('alert-danger')
-//                     .addClass('alert-success')
-//                     .text(response.msg || 'Product image created successfully!')
-//                     .show();
-
-//                 setTimeout(function() {
-//                     $('#messageBox').fadeOut('slow', function() {
-//                         $(this).empty().hide(); // reset for next use
-//                     });
-//                     if (response.redirect) {
-//                         window.location.href = response.redirect;
-//                     }
-//                 }, 3000);
-//             } else {
-//                 $('#messageBox')
-//                     .removeClass('alert-success')
-//                     .addClass('alert-danger')
-//                     .text(response.msg || 'Please fill all the data.')
-//                     .show();
-
-//                 setTimeout(function() {
-//                     $('#messageBox').fadeOut('slow', function() {
-//                         $(this).empty().hide(); // reset for next use
-//                     });
-//                 }, 3000);
-//             }
-//         },
-//         error: function(xhr, status, error) {
-//             console.error("AJAX Error:", error);
-//             $('#messageBox')
-//                 .removeClass('alert-success')
-//                 .addClass('alert-danger')
-//                 .text('Something went wrong! Please try again.')
-//                 .show();
-
-//             setTimeout(function() {
-//                 $('#messageBox').fadeOut('slow', function() {
-//                     $(this).empty().hide();
-//                 });
-//             }, 3000);
-//         }
-//     });
-// });
-
 $('#productImageForm').submit(function(e) {
     e.preventDefault();
 
@@ -387,6 +319,53 @@ $(document).ready(function() {
             }
         });
     });
+
+
+    //change status
+    $(document).on('change', '.checkactiveimage', function () {
+    let priId = $(this).attr('id').split('-')[1]; // e.g. id="checkimg-5" → 5
+    let status = $(this).is(':checked') ? 1 : 2;
+    let checkbox = $(this);
+
+    $.ajax({
+        url: baseUrl + '/admin/productimage/status',
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            pri_Id: priId,
+            pri_Status: status,
+            [csrfTokenName]: csrfHash
+        },
+        success: function (response) {
+            if (response.success) {
+                $('#messageBox')
+                    .removeClass('alert-danger')
+                    .addClass('alert-success')
+                    .text(response.message)
+                    .show();
+            } else {
+                checkbox.prop('checked', !checkbox.is(':checked')); // revert if failed
+                $('#messageBox')
+                    .removeClass('alert-success')
+                    .addClass('alert-danger')
+                    .text(response.message)
+                    .show();
+            }
+
+            $('html, body').animate({ scrollTop: 0 }, 'fast');
+            setTimeout(() => $('#messageBox').fadeOut(), 2000);
+        },
+        error: function (xhr, status, error) {
+            checkbox.prop('checked', !checkbox.is(':checked'));
+            $('#messageBox')
+                .removeClass('alert-success')
+                .addClass('alert-danger')
+                .text('AJAX error: ' + error)
+                .show();
+        }
+    });
+});
+
 });
 </script>
 

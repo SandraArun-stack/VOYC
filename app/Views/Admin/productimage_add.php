@@ -224,15 +224,15 @@
                                                         <div class="col-6">
                                                             <div class="mt-3">
                                                                 <label class="form-label">Upload Front Image</label>
-                                                                <input type="file" class="form-control" name="colors[0][images][]" multiple>
+                                                                <input type="file" class="form-control image-input" name="colors[0][images][]" multiple>
                                                             </div>
                                                             <div class="mt-3">
                                                                 <label class="form-label">Upload Side Image</label>
-                                                                <input type="file" class="form-control" name="colors[0][side_image][]" multiple>
+                                                                <input type="file" class="form-control image-input" name="colors[0][side_image][]" multiple>
                                                             </div>
                                                             <div class="mt-3">
                                                                 <label class="form-label">Upload Sleev Image</label>
-                                                                <input type="file" class="form-control" name="colors[0][sleev_image][]" multiple>
+                                                                <input type="file" class="form-control image-input" name="colors[0][sleev_image][]" multiple>
                                                             </div>
                                                         </div>
                                                     </div>
