@@ -9,6 +9,10 @@
     z-index: 11;
 }
 
+#categoriesModal {
+    box-shadow: 0 0 15px 2px #ffffff4d;
+}
+
 .categorie-container {
     position: relative;
 }
@@ -188,12 +192,11 @@ canvas {
 }
 
 #controls {
-    margin: 15px 0;
+    /* margin: 15px 0; */
+    background: #dad4d44a;
 }
 
-#controls div {
-    margin-top: 15px;
-}
+
 
 .small {
     font-size: 12px;
@@ -209,10 +212,7 @@ canvas {
     background-position: center;
 }
 
-#controls label {
-    font-size: 14px;
-    font-weight: bold;
-}
+
 
 #confirmLogout,
 #saveBtn {
@@ -236,7 +236,7 @@ canvas {
 /* Sidebar */
 .sidebar {
     background-color: #1e1e1e;
-    width: 80px;
+    width: 90px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -247,8 +247,22 @@ canvas {
     color: white;
     text-align: center;
     font-size: 14px;
-    margin: 25px 0;
+    margin: 5px 0;
     cursor: pointer;
+    gap: 2px;
+}
+
+.sidebar-item img {
+    width: 55px;
+    height: auto;
+}
+
+.sidebar-item p {
+    color: #fff;
+}
+
+.sidebar-item p:hover {
+    color: #a0a0ff;
 }
 
 .sidebar-item:hover {
@@ -303,6 +317,127 @@ h2 {
     color: #555;
 }
 
+/* view upload */
+/* #view-upload {
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    min-height: 300px;
+} */
+
+/* Custom file upload button */
+.custom-file-upload {
+    display: inline-block;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #000;
+    color: #fff;
+    border-radius: 5px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.custom-file-upload:hover {
+    /* background-color: #0056b3; */
+}
+
+/* Hide the default file input */
+input[type="file"] {
+    display: none;
+}
+
+#view-upload .upload__image {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    cursor: pointer;
+}
+
+/* Style the select dropdown */
+#view-add_text select.form-select {
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 16px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#view-add_text select.form-select:focus {
+    border-color: #343a40;
+    box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.25);
+}
+
+/* Style the color input */
+#textColor.form-control-color {
+    height: 30px;
+    width: 65px;
+    padding: 0;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+}
+
+/* Style the range input */
+#fontSize.form-range {
+    accent-color: #343a40;
+    height: 1.5rem;
+}
+
+/* Style checkboxes */
+.form-check-input {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    border-radius: 4px;
+    border: 1px solid #6c757d;
+    margin-top: 3px;
+    transition: background-color 0.2s ease;
+}
+
+.form-check-input:checked {
+    background-color: #343a40;
+    border-color: #343a40;
+}
+
+.form-check-label {
+    font-size: 15px;
+    margin-left: 6px;
+    cursor: pointer;
+}
+
+
+.font-sample {
+    transition: background-color 0.2s ease;
+}
+
+.font-sample:hover {
+    background-color: #f1f1f1;
+    border-color: #6c757d;
+}
+
+.fontPickerContainer {
+    max-height: 300px;
+    width: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.font-option.active {
+    background-color: #f0f0f0;
+    border-color: #333;
+    font-weight: bold;
+}
+
+#fabric-controls button {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+}
+
+#fabric-controls i {
+    font-size: 1.2rem;
+}
+.my_design_btn{
+    text-align: right;
+}
 @keyframes fadeDown {
     0% {
         opacity: 0;

@@ -55,38 +55,64 @@ class Tshirt extends Controller
                 // 'message' => 'No image received'
             ]);
         }
-        $imageData = $this->request->getPost('image');
+        // $imageData = $this->request->getPost('image');
+        $frontImageData = $this->request->getPost('front');
+        $backImageData = $this->request->getPost('back');
+        $sleeveImageData = $this->request->getPost('sleeve');
+
         $prId = $this->request->getPost('prId');
         $priId = $this->request->getPost('priId');
-        if (!$imageData) {
+
+        if (!$frontImageData && !$backImageData && !$sleeveImageData) {
             return $this->response->setJSON([
                 'status' => 'error',
                 'message' => 'No image received'
             ]);
         }
 
-        $imageParts = explode(";base64,", $imageData);
-        $imageBase64 = base64_decode($imageParts[1]);
-
-        $newName = uniqid('', true) . '.jpg';
-        $destination = FCPATH . 'uploads/designs/' . $newName;
-
-        if (!is_dir(FCPATH . 'uploads/designs')) {
-            mkdir(FCPATH . 'uploads/designs', 0777, true);
+        $uploadDir = FCPATH . 'uploads/designs/';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
         }
 
-        if (!file_put_contents($destination, $imageBase64)) {
+        // Save function
+        function saveBase64Image($imageData, $uploadDir)
+        {
+            if (!$imageData)
+                return null;
+
+            $imageParts = explode(";base64,", $imageData);
+            if (count($imageParts) !== 2)
+                return null;
+
+            $imageBase64 = base64_decode($imageParts[1]);
+            $fileName = uniqid('', true) . '.jpg';
+            $filePath = $uploadDir . $fileName;
+
+            if (file_put_contents($filePath, $imageBase64)) {
+                return $fileName;
+            }
+            return null;
+        }
+
+        // Save images and get filenames
+        $frontFileName = saveBase64Image($frontImageData, $uploadDir);
+        $backFileName = saveBase64Image($backImageData, $uploadDir);
+        $sleeveFileName = saveBase64Image($sleeveImageData, $uploadDir);
+
+        if (!$frontFileName && !$backFileName && !$sleeveFileName) {
             return $this->response->setJSON([
                 'status' => 'error',
-                'message' => 'Failed to save image to server'
+                'message' => 'Failed to save any images.'
             ]);
         }
-
         $imageDataToSave = [
             'pr_Id' => $prId,
             'pri_Id' => $priId,
             'cust_Id' => $userId,
-            'design_Image' => json_encode([$newName]),
+            'front_Image' => $frontFileName ?? null,
+            'back_Image' => $backFileName ?? null,
+            'sleeve_Image' => $sleeveFileName ?? null,
             'created_on' => date('Y-m-d H:i:s')
         ];
 
@@ -102,7 +128,11 @@ class Tshirt extends Controller
         return $this->response->setJSON([
             'status' => 'success',
             'message' => 'Design saved successfully',
-            'file_name' => $newName,
+            'file_name' => [
+                'front' => $frontFileName,
+                'back' => $backFileName,
+                'sleeve' => $sleeveFileName
+            ],
             'design_id' => $designId,
             'redirect' => base_url('cart/' . $userId)
         ]);

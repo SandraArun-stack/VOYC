@@ -1,5 +1,4 @@
 <script>
-
     const fonts = [
         'Arial',
         'Georgia',
@@ -10,22 +9,12 @@
         'Impact',
         'Lucida Console'
     ];
-    
     let selectedFont = 'Arial';
     let isActionInProgress = false;
-
     const canvas = new fabric.Canvas('tshirtCanvas', {
-        preserveObjectStacking: true,
-        selectable: false
+        preserveObjectStacking: true
+        // selection: false
     });
-
-    const canvasStates = {
-        front: { objects: [], overlay: '<?= base_url('uploads/productmedia/' . $cust_image['pri_Thumbnail']); ?>' },
-        back: { objects: [], overlay: '<?= base_url('uploads/productmedia/' . $cust_image['pri_File_Name'][0]); ?>' },
-        sleeve: { objects: [], overlay: '<?= base_url('uploads/productmedia/' . $cust_image['pri_Sleev_Name']); ?>' }
-    };
-
-    let currentView = 'front';
 
     let shirtOverlay = null;
     const defaultOverlay = "<?= base_url('uploads/productmedia/' . $cust_image['pri_Thumbnail']); ?>";
@@ -34,7 +23,7 @@
     addOverlay(defaultOverlay);
     highlightThumb(defaultOverlay);
 
-   
+    // 1) Add dress overlay as a static image (not movable/resizable)
     function addOverlay(src) {
         fabric.Image.fromURL(src, function (img) {
             img.scaleToWidth(canvas.width);
@@ -46,6 +35,7 @@
                 evented: false
             });
 
+            // Replace old overlay
             if (shirtOverlay) canvas.remove(shirtOverlay);
             shirtOverlay = img;
 
@@ -154,18 +144,6 @@
     // --- UI bindings ---
     $(document).ready(function () {
 
-        loadCanvasState(currentView);
-
-        $(".shirt-thumb").on("click", function () {
-            const newView = $(this).data("view");
-
-            if (newView === currentView) return;
-
-            saveCurrentCanvasState();      // save current canvas
-            currentView = newView;         // update view
-            loadCanvasState(currentView);  // load new view
-            highlightThumb($(this).data("src"));
-        });
         $(".thumbs img").on("click", function () {
             const src = $(this).data("src");
             addOverlay(src);
@@ -176,21 +154,27 @@
             applyDressColor($(this).val());
         });
 
-
         $("#addText").on("click", function () {
+            if (!shirtOverlay) return;
+
+            const shirtBounds = shirtOverlay.getBoundingRect(true);
+
             const text = new fabric.IText("Your Text", {
-                left: 50,
-                top: 100,
-                fontSize: parseInt($("#fontSize").val(), 15),
-                fill: $("#textColor").val(),
+                left: shirtBounds.left + 10,
+                top: shirtBounds.top + 10,
+                width: shirtBounds.width - 20,
+                fontSize: parseInt($("#fontSize").val(), 10),
                 fontFamily: selectedFont,
+                fill: $("#textColor").val(),
                 editable: true
             });
+
             canvas.add(text).setActiveObject(text);
+
             canvas.renderAll();
         });
 
-
+        // Text styling
         $("#textColor").on("input", function () {
             const active = canvas.getActiveObject();
             if (active && active.type === "i-text") {
@@ -207,7 +191,6 @@
             }
         });
 
-
         $("#boldToggle").on("change", function () {
             const a = canvas.getActiveObject();
             if (a && a.type === "i-text") {
@@ -215,7 +198,6 @@
                 canvas.renderAll();
             }
         });
-
 
         $("#italicToggle").on("change", function () {
             const a = canvas.getActiveObject();
@@ -225,11 +207,10 @@
             }
         });
 
-
         $("#fontSize").on("input", function () {
-            const active = canvas.getActiveObject();
-            if (active && active.type === "i-text") {
-                active.set("fontSize", parseInt($(this).val(), 10));
+            const a = canvas.getActiveObject();
+            if (a && a.type === "i-text") {
+                a.set("fontSize", parseInt($(this).val(), 10));
                 canvas.renderAll();
             }
         });
@@ -238,19 +219,27 @@
 
         $("#uploadImage").on("change", function (e) {
             const file = e.target.files[0];
-            const reader = new FileReader();
+            if (!file) return;
 
+            const reader = new FileReader();
             reader.onload = function (f) {
                 fabric.Image.fromURL(f.target.result, function (img) {
                     img.scaleToWidth(150);
-                    img.set({ left: 100, top: 150 });
+                    img.set({
+                        left: 120,
+                        top: 200,
+                        selectable: true,
+                        hasControls: true,
+                        hasBorders: true
+                    });
+
                     canvas.add(img).setActiveObject(img);
+                    if (shirtOverlay) canvas.sendToBack(shirtOverlay);
                     canvas.renderAll();
-                });
+                }, { crossOrigin: 'anonymous' });
             };
             reader.readAsDataURL(file);
         });
-
 
         // Reset dress position
         $("#resetOverlayBtn").on("click", resetOverlayToBackground);
@@ -276,144 +265,75 @@
             }
         });
 
-      
-
         $("#saveBtn").on("click", function () {
+            if (shirtOverlay) canvas.moveTo(shirtOverlay, 1);
+            const dataURL = canvas.toDataURL({ format: 'png', quality: 1 });
             var $alertBox = $('#design_msg_alert');
-            saveCurrentCanvasState(); // Save latest changes before export
+            const link = document.createElement("a");
+            link.href = dataURL;
+            // link.download = "tshirt_design.png";
+            link.click();
 
-            const designs = {};
-
-            const exportAll = Object.keys(canvasStates).map(view => {
-                const tempCanvas = new fabric.Canvas(null, {
-                    width: canvas.width,
-                    height: canvas.height
-                });
-
-                return new Promise(resolve => {
-                    tempCanvas.loadFromJSON({ objects: canvasStates[view].objects }, function () {
-                        fabric.Image.fromURL(canvasStates[view].overlay, function (img) {
-                            img.set({ selectable: false, evented: false });
-                            img.scaleToWidth(tempCanvas.width);
-                            img.scaleToHeight(tempCanvas.height);
-                            tempCanvas.add(img);
-                            tempCanvas.sendToBack(img);
-                            tempCanvas.renderAll();
-
-                            const dataURL = tempCanvas.toDataURL({ format: 'png', quality: 1 });
-                            designs[view] = dataURL;
-                            resolve();
-                        });
-                    });
-                });
+            const prId = $('input[name="prId"]').val();
+            const priId = $('input[name="priId"]').val();
+            const authModal = new bootstrap.Modal(document.getElementById('authModal'), {
+                backdrop: true,
+                keyboard: true
             });
 
-            Promise.all(exportAll).then(() => {
-                console.log("Exported designs:", designs);
+            // 👉 2. Send to backend via AJAX
+            $.ajax({
+                url: "<?= base_url('saveDesign') ?>",
+                type: "POST",
+                data: {
+                    image: dataURL,
+                    prId: prId,
+                    priId: priId
+                },
 
-                // Optional: Send to backend
-                $.ajax({
-                    url: "<?= base_url('saveDesign') ?>",
-                    method: "POST",
-                    data: {
-                        front: designs.front,
-                        back: designs.back,
-                        sleeve: designs.sleeve,
-                        prId: $('input[name="prId"]').val(),
-                        priId: $('input[name="priId"]').val()
-                    },
-                    success: function (response) {
-                        if (response.status === 'login_required') {
-                            authModal.show();
-                            $('#loginView').show();
-                            $('#registerView').hide();
-                            return;
-                        } else if (response.status === 'success') {
-                            $alertBox
-                                .removeClass('d-none alert-danger')
-                                .addClass('alert alert-success')
-                                .text(response.message || 'Registration successful!')
-                                .fadeIn();
+                success: function (response) {
+                    if (response.status === 'login_required') {
+                        authModal.show();
+                        $('#loginView').show();
+                        $('#registerView').hide();
+                        return;
+                    } else if (response.status === 'success') {
+                        $alertBox
+                            .removeClass('d-none alert-danger')
+                            .addClass('alert alert-success')
+                            .text(response.message || 'Registration successful!')
+                            .fadeIn();
 
-                            setTimeout(() => {
-                                $alertBox.fadeOut(400);
-                                window.location.href = response.redirect;
-                            }, 2000);
-                        } else if (response.status === 'error') {
-                            $alertBox
-                                .removeClass('d-none alert-success')
-                                .addClass('alert alert-danger')
-                                .text(response.message || 'Registration failed!')
-                                .fadeIn();
-                            setTimeout(() => {
-                                $alertBox.fadeOut(400);
-                            }, 2000);
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.error("Error saving design:", error);
+                        setTimeout(() => {
+                            $alertBox.fadeOut(400);
+                            window.location.href = response.redirect;
+                        }, 2000);
+                    } else if (response.status === 'error') {
+                        $alertBox
+                            .removeClass('d-none alert-success')
+                            .addClass('alert alert-danger')
+                            .text(response.message || 'Registration failed!')
+                            .fadeIn();
+                        setTimeout(() => {
+                            $alertBox.fadeOut(400);
+                        }, 2000);
                     }
-                });
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error saving design:", error);
+                }
             });
         });
+
     });
-
-    function toggleCustomControls(object, visible) {
-        object.setControlsVisibility({
-            deleteControl: visible,
-            duplicateControl: visible,
-            flipControl: visible
-        });
-        canvas.renderAll();
-    }
-
-    canvas.on('object:moving', function (e) {
-        const obj = e.target;
-        if (obj && obj.type !== 'image') {
-            toggleCustomControls(obj, false); // Hide icons while moving
-        }
-    });
-
-    canvas.on('mouse:up', function () {
-        const obj = canvas.getActiveObject();
-        if (obj && obj.type !== 'image') {
-            toggleCustomControls(obj, true); // Show icons again
-        }
-    });
-
-    canvas.on('selection:created', function (e) {
-        const obj = e.target;
-        if (obj && obj.type !== 'image') {
-            toggleCustomControls(obj, true); // Ensure icons are visible when selected
-        }
-    });
-
 
     function highlightThumb(src) {
-        $(".shirt-thumb").removeClass("active");
-        $('.shirt-thumb').each(function () {
-            if ($(this).data('src') === src) {
-                $(this).addClass("active");
-            }
+        $(".thumbs img").removeClass('active');
+        $('.thumbs img').each(function () {
+            if ($(this).data('src') === src) $(this).addClass('active');
         });
     }
-    function saveCurrentCanvasState() {
-        canvas.discardActiveObject();
-        canvasStates[currentView].objects = canvas.toDatalessJSON().objects;
-    }
 
-    function loadCanvasState(view) {
-        canvas.clear();
-
-        // Load objects
-        const objects = canvasStates[view].objects || [];
-        canvas.loadFromJSON({ objects: objects }, function () {
-            canvas.renderAll();
-        });
-
-        // Load shirt overlay
-        addOverlay(canvasStates[view].overlay);
-    }
     $('.sidebar-item, #customize_main_ui .option').on('click', function () {
         const viewId = $(this).data('view');
 
@@ -442,16 +362,10 @@
         container.toggleClass('d-none');
     });
     $('#fontPickerContainer').on('click', '.font-option', function () {
-        selectedFont = $(this).data('font');
+        selectedFont = $(this).data('font'); // Update selected font
 
-        $('.font-option').removeClass('active');
-        $(this).addClass('active');
-        const activeObject = canvas.getActiveObject();
-
-        if (activeObject && activeObject.type === 'i-text') {
-            activeObject.set('fontFamily', selectedFont);
-            canvas.renderAll();
-        }
+        $('.font-option').removeClass('active'); // Remove previous
+        $(this).addClass('active');              // Highlight current
 
     });
 

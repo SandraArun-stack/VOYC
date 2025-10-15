@@ -181,7 +181,7 @@ $routes->post('admin/productimage/save', 'Admin\ProductImage::save');
 
 $routes->post('admin/productimage/ajaxList', 'Admin\ProductImage::ajaxList');
 $routes->post('admin/productimage/delete/(:num)', 'Admin\ProductImage::delete/$1');
-
+$routes->post('admin/productimage/status', 'Admin\ProductImage::changeStatus');
 
 
 

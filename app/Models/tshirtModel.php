@@ -8,7 +8,13 @@ class tshirtModel extends Model
     protected $primaryKey = 'design_Id';
 
     protected $allowedFields = [
-        'design_Image',
+        'design_Id ',
+        'cust_Id',
+        'pr_Id',
+        'pri_Id',
+        'front_Image',
+        'back_Image',
+        'sleeve_Image',
         'created_on'
     ];
 
@@ -20,7 +26,7 @@ class tshirtModel extends Model
     public function get_Image($prId, $priId)
     {
         $image = $this->db->table('product_image')
-            ->select('pri_Thumbnail, pri_File_Name,pri_Id ,pr_Id,stock,reset_stock')
+            ->select('pri_Thumbnail, pri_File_Name,pri_Sleev_Name,pri_Id ,pr_Id,stock,reset_stock')
             ->where('pr_Id', $prId)
             ->where('pri_Id', $priId)
             ->get()

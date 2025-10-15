@@ -1,7 +1,7 @@
 <div class="breadcrumb-option">
     <div class="container">
         <div class="row">
-            <div class="col-lg-12 pl-0">
+            <div class="col-lg-12">
                 <div class="breadcrumb__links">
                     <a href="<?= base_url(' '); ?>"><i class="fa fa-home"></i> Home</a>
                     <span>Design</span>
@@ -16,16 +16,16 @@
             <div class="col-md-12">
                 <div class="tshirt-container">
                     <div class="row">
-                        <div class="col-md-12 pl-0">
+                        <div class="col-md-12">
                             <h5 class="custome_design_heading"><b>Customize Your Tee</b></h5>
-                            <div class="alert alert-danger d-none" id="design_msg_alert"></div>
+
                         </div>
                     </div>
                     <input type="hidden" name="prId" value="<?= isset($prId) ? esc($prId) : ''; ?>">
                     <input type="hidden" name="priId" value="<?= isset($priId) ? esc($priId) : ''; ?>">
                     <div class="row">
-                        <div class="col-md-6 w-100 pr-0 pb-3 my_design_btn">
-                            <button id="saveBtn" class="btn btn-dark text-end">Save My Design</button>
+                        <div class="col-md-12 w-100">
+                            <button id="saveBtn" class="btn btn-dark text-end">Save Design</button>
 
                         </div>
                     </div>
@@ -220,9 +220,9 @@
                                 </div>
                             </div>
 
-                            <!-- <div class="bottom-text">
+                            <div class="bottom-text">
                                 💡 Drag & drop a file anywhere to upload.
-                            </div> -->
+                            </div>
                         </div>
 
                         <div class="col-md-6 text-center">
@@ -231,11 +231,11 @@
                                     <div class="designer-wrapper d-flex flex-column align-items-center">
                                         <div id="designer-container">
                                             <canvas id="tshirtCanvas" width="400" height="500"></canvas>
-
+                                            
                                         </div>
                                     </div>
                                 </div>
-                                <!-- <div class="col-md-2 text-center">
+                                <div class="col-md-2 text-center">
                                     <div class="thumbs d-flex flex-column align-items-center">
                                         <?php if (isset($cust_image) && !empty($cust_image)): ?>
                                             <img src="<?= base_url('uploads/productmedia/' . $cust_image['pri_Thumbnail']); ?>"
@@ -251,25 +251,7 @@
                                         <?php endif; ?>
                                     </div>
 
-                                </div> -->
-                                <div class="col-md-2 text-center">
-                                    <div class="thumbs d-flex flex-column align-items-center">
-                                        <?php if (isset($cust_image) && !empty($cust_image)): ?>
-                                            <img src="<?= base_url('uploads/productmedia/' . $cust_image['pri_Thumbnail']); ?>"
-                                                data-src="<?= base_url('uploads/productmedia/' . $cust_image['pri_Thumbnail']); ?>"
-                                                data-view="front" class="shirt-thumb" />
-                                            <img src="<?= base_url('uploads/productmedia/' . $cust_image['pri_File_Name'][0]); ?>"
-                                                data-src="<?= base_url('uploads/productmedia/' . $cust_image['pri_File_Name'][0]); ?>"
-                                                data-view="back" class="shirt-thumb" />
-                                            <img src="<?= base_url('uploads/productmedia/' . $cust_image['pri_Sleev_Name']); ?>"
-                                                data-src="<?= base_url('uploads/productmedia/' . $cust_image['pri_Sleev_Name']); ?>"
-                                                data-view="sleeve" class="shirt-thumb" />
-                                        <?php else: ?>
-                                            <p>No images found for this product.</p>
-                                        <?php endif; ?>
-                                    </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>

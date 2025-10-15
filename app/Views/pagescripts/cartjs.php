@@ -21,4 +21,16 @@
             }
         });
     });
+    $(document).on('click', '.show-preview', function () {
+        const front = $(this).data('front');
+        const back = $(this).data('back');
+        const sleeve = $(this).data('sleeve');
+
+        $('#previewFront').attr('src', front || '<?= base_url("uploads/productmedia/default.png") ?>');
+        $('#previewBack').attr('src', back || '<?= base_url("uploads/productmedia/default.png") ?>');
+        $('#previewSleeve').attr('src', sleeve || '<?= base_url("uploads/productmedia/default.png") ?>');
+
+        $('#designPreviewModal').modal('show');
+    });
+
 </script>
