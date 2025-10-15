@@ -235,23 +235,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- <div class="col-md-2 text-center">
-                                    <div class="thumbs d-flex flex-column align-items-center">
-                                        <?php if (isset($cust_image) && !empty($cust_image)): ?>
-                                            <img src="<?= base_url('uploads/productmedia/' . $cust_image['pri_Thumbnail']); ?>"
-                                                data-src="<?= base_url('uploads/productmedia/' . $cust_image['pri_Thumbnail']); ?>" />
-                                            <?php foreach ($cust_image['pri_File_Name'] as $file): ?>
-                                                <img src="<?= base_url('uploads/productmedia/' . $file); ?>"
-                                                    data-src="<?= base_url('uploads/productmedia/' . $file); ?>" />
-                                            <?php endforeach; ?>
-                                            <img src="<?= base_url('uploads/productmedia/' . $cust_image['pri_Sleev_Name']); ?>"
-                                                data-src="<?= base_url('uploads/productmedia/' . $cust_image['pri_Sleev_Name']); ?>" />
-                                        <?php else: ?>
-                                            <p>No images found for this product.</p>
-                                        <?php endif; ?>
-                                    </div>
-
-                                </div> -->
+                               
                                 <div class="col-md-2 text-center">
                                     <div class="thumbs d-flex flex-column align-items-center">
                                         <?php if (isset($cust_image) && !empty($cust_image)): ?>
@@ -261,9 +245,9 @@
                                             <img src="<?= base_url('uploads/productmedia/' . $cust_image['pri_File_Name'][0]); ?>"
                                                 data-src="<?= base_url('uploads/productmedia/' . $cust_image['pri_File_Name'][0]); ?>"
                                                 data-view="back" class="shirt-thumb" />
-                                            <img src="<?= base_url('uploads/productmedia/' . $cust_image['pri_Sleev_Name']); ?>"
-                                                data-src="<?= base_url('uploads/productmedia/' . $cust_image['pri_Sleev_Name']); ?>"
-                                                data-view="sleeve" class="shirt-thumb" />
+                                            <img src="<?= base_url('uploads/productmedia/' . $cust_image['pri_Sleev_Name'][0]); ?>"
+                                                data-src="<?= base_url('uploads/productmedia/' . $cust_image['pri_Sleev_Name'][0]); ?>"
+                                                data-view="back" class="shirt-thumb" />
                                         <?php else: ?>
                                             <p>No images found for this product.</p>
                                         <?php endif; ?>

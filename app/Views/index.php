@@ -155,7 +155,7 @@
 
                                         <?php if ($item['pr_custom'] == 1): ?>
                                             <a href="<?= base_url('tshirt_Customisation/' . $item['pr_Id'] . '/' . $item['pri_Id']); ?>">
-                                                <img class="design_icon" src="<?= base_url() . ASSET_PATH ?>assets/img/design.png"
+                                                <img class="design_icon_rounded" src="<?= base_url() . ASSET_PATH ?>assets/img/design-round.png"
                                                     alt="">
                                             </a>
                                         <?php endif; ?>

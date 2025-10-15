@@ -22,7 +22,7 @@
     const canvasStates = {
         front: { objects: [], overlay: '<?= base_url('uploads/productmedia/' . $cust_image['pri_Thumbnail']); ?>' },
         back: { objects: [], overlay: '<?= base_url('uploads/productmedia/' . $cust_image['pri_File_Name'][0]); ?>' },
-        sleeve: { objects: [], overlay: '<?= base_url('uploads/productmedia/' . $cust_image['pri_Sleev_Name']); ?>' }
+        sleeve: { objects: [], overlay: '<?= base_url('uploads/productmedia/' . $cust_image['pri_Sleev_Name'][0]); ?>' }
     };
 
     let currentView = 'front';

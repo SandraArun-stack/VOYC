@@ -34,6 +34,9 @@ class tshirtModel extends Model
         if ($image && isset($image['pri_File_Name'])) {
             $image['pri_File_Name'] = json_decode($image['pri_File_Name']); // If it's a JSON string, decode it
         }
+        if ($image && isset($image['pri_Sleev_Name'])) {
+            $image['pri_Sleev_Name'] = json_decode($image['pri_Sleev_Name']); // If it's a JSON string, decode it
+        }
 
         return $image;
     }

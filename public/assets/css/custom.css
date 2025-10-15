@@ -435,9 +435,21 @@ input[type="file"] {
 #fabric-controls i {
     font-size: 1.2rem;
 }
-.my_design_btn{
+
+.my_design_btn {
     text-align: right;
 }
+
+.design_icon_rounded {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+
+}
+
 @keyframes fadeDown {
     0% {
         opacity: 0;
