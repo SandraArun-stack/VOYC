@@ -576,10 +576,10 @@ $(document).ready(function() {
 
 <script>
     $(document).ready(function() {
-    const minWidth = 100;
-    const maxWidth = 1000;
-    const minHeight = 100;
-    const maxHeight = 1000;
+    const minWidth = 500;
+    const maxWidth = 2000;
+    const minHeight = 500;
+    const maxHeight = 2000;
 
     $(document).on('change', '.image-input', function() {
         const input = this;
