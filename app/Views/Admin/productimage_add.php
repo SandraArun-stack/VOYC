@@ -269,3 +269,20 @@
         <div id="styleSelector"></div>
     </div>
 </div>
+<!-- Image Dimension Error Modal -->
+<div class="modal fade" id="imageErrorModal" tabindex="-1" aria-labelledby="imageErrorModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white p-2">
+        <h5 class="modal-title" id="imageErrorModalLabel">Invalid Image</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-2" id="imageErrorMsg">
+        <!-- Error message will appear here -->
+      </div>
+      <div class="modal-footer p-2">
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

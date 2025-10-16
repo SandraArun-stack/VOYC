@@ -76,18 +76,103 @@ $('#productList').DataTable({
 
 
 //add product
-$('#productImageForm').submit(function(e) {
+// $('#productImageForm').submit(function(e) {
+//     e.preventDefault();
+
+//     const $form = $(this);
+//     const $saveBtn = $form.find('button[type="submit"], #saveBtn'); // adjust selector if your button has a specific ID
+
+//     // Disable the Save button immediately
+//      $saveBtn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Save');
+
+//     $form.find(':input:disabled').prop('disabled', false);
+
+//     var formData = new FormData(this);
+//     formData.append("<?= csrf_token() ?>", "<?= csrf_hash() ?>");
+
+//     $.ajax({
+//         url: baseUrl + "admin/productimage/save",
+//         type: "POST",
+//         data: formData,
+//         contentType: false,
+//         processData: false,
+//         dataType: 'json',
+//         success: function(response) {
+//             $('html, body').animate({ scrollTop: 0 }, 'fast');
+
+//             if (response.status === 'success') {
+//                 $('#messageBox')
+//                     .removeClass('alert-danger')
+//                     .addClass('alert-success')
+//                     .text(response.msg || 'Product image created successfully!')
+//                     .show();
+
+//                 setTimeout(function() {
+//                     $('#messageBox').fadeOut('slow', function() {
+//                         $(this).empty().hide();
+//                     });
+//                     if (response.redirect) {
+//                         window.location.href = response.redirect;
+//                     }
+//                 }, 3000);
+//             } else {
+//                 $('#messageBox')
+//                     .removeClass('alert-success')
+//                     .addClass('alert-danger')
+//                     .text(response.msg || 'Please fill all the data.')
+//                     .show();
+
+//                 // Re-enable Save button if failed
+//                 $saveBtn.prop('disabled', false).text('Save');
+
+//                 setTimeout(function() {
+//                     $('#messageBox').fadeOut('slow', function() {
+//                         $(this).empty().hide();
+//                     });
+//                 }, 3000);
+//             }
+//         },
+//         error: function(xhr, status, error) {
+//             console.error("AJAX Error:", error);
+//             $('#messageBox')
+//                 .removeClass('alert-success')
+//                 .addClass('alert-danger')
+//                 .text('Something went wrong! Please try again.')
+//                 .show();
+
+//             // Re-enable Save button if AJAX error
+//             $saveBtn.prop('disabled', false).text('Save');
+
+//             setTimeout(function() {
+//                 $('#messageBox').fadeOut('slow', function() {
+//                     $(this).empty().hide();
+//                 });
+//             }, 3000);
+//         }
+//     });
+// });
+
+
+let isSubmitting = false; // flag to prevent duplicate submits
+
+$('#productImageForm').on('submit', function(e) {
     e.preventDefault();
 
+    // Stop if already submitting
+    if (isSubmitting) return false;
+    isSubmitting = true;
+
     const $form = $(this);
-    const $saveBtn = $form.find('button[type="submit"], #saveBtn'); // adjust selector if your button has a specific ID
+    const $saveBtn = $form.find('button[type="submit"], #saveBtn');
 
     // Disable the Save button immediately
-    $saveBtn.prop('disabled', true).text('Save');
+    $saveBtn.prop('disabled', true)
+            .html('<i class="fa fa-spinner fa-spin"></i> Saving...');
 
+    // Make sure disabled fields are included
     $form.find(':input:disabled').prop('disabled', false);
 
-    var formData = new FormData(this);
+    const formData = new FormData(this);
     formData.append("<?= csrf_token() ?>", "<?= csrf_hash() ?>");
 
     $.ajax({
@@ -107,13 +192,11 @@ $('#productImageForm').submit(function(e) {
                     .text(response.msg || 'Product image created successfully!')
                     .show();
 
-                setTimeout(function() {
+                setTimeout(() => {
                     $('#messageBox').fadeOut('slow', function() {
                         $(this).empty().hide();
                     });
-                    if (response.redirect) {
-                        window.location.href = response.redirect;
-                    }
+                    if (response.redirect) window.location.href = response.redirect;
                 }, 3000);
             } else {
                 $('#messageBox')
@@ -123,9 +206,10 @@ $('#productImageForm').submit(function(e) {
                     .show();
 
                 // Re-enable Save button if failed
-                $saveBtn.prop('disabled', false).text('Save');
+                $saveBtn.prop('disabled', false).html('Save');
+                isSubmitting = false; // allow retry
 
-                setTimeout(function() {
+                setTimeout(() => {
                     $('#messageBox').fadeOut('slow', function() {
                         $(this).empty().hide();
                     });
@@ -141,9 +225,10 @@ $('#productImageForm').submit(function(e) {
                 .show();
 
             // Re-enable Save button if AJAX error
-            $saveBtn.prop('disabled', false).text('Save');
+            $saveBtn.prop('disabled', false).html('Save');
+            isSubmitting = false; // allow retry
 
-            setTimeout(function() {
+            setTimeout(() => {
                 $('#messageBox').fadeOut('slow', function() {
                     $(this).empty().hide();
                 });
@@ -151,6 +236,7 @@ $('#productImageForm').submit(function(e) {
         }
     });
 });
+
 
 
 $('#media_files').on('change', function(event) {
@@ -302,23 +388,71 @@ $(document).ready(function() {
     });
 
     // Preview images (both thumbnail & side images)
-    $(document).on("change", ".image-input", function() {
-        const previewDiv = $(this).siblings(".image-preview");
-        previewDiv.empty();
-        const files = this.files;
+    // $(document).on("change", ".image-input", function() {
+    //     const previewDiv = $(this).siblings(".image-preview");
+    //     previewDiv.empty();
+    //     const files = this.files;
 
-        Array.from(files).forEach(file => {
-            if (file.type.startsWith("image/")) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    previewDiv.append(`
-                        <img src="${e.target.result}" style="width:100px;height:100px;object-fit:cover;border:1px solid #ddd;border-radius:5px;">
-                    `);
-                };
-                reader.readAsDataURL(file);
+    //     Array.from(files).forEach(file => {
+    //         if (file.type.startsWith("image/")) {
+    //             const reader = new FileReader();
+    //             reader.onload = function(e) {
+    //                 previewDiv.append(`
+    //                     <img src="${e.target.result}" style="width:100px;height:100px;object-fit:cover;border:1px solid #ddd;border-radius:5px;">
+    //                 `);
+    //             };
+    //             reader.readAsDataURL(file);
+    //         }
+    //     });
+    // });
+
+
+    $(document).on('change', '.image-input', function() {
+    const input = this;
+    const previewDiv = $(input).siblings('.image-preview');
+    if (previewDiv.length) previewDiv.empty();
+
+    const files = Array.from(input.files);
+    let valid = true;
+
+    files.forEach(file => {
+        if (!file.type.startsWith("image/")) {
+            alert(`File "${file.name}" is not an image.`);
+            input.value = "";
+            valid = false;
+            return;
+        }
+
+        const img = new Image();
+        const objectURL = URL.createObjectURL(file);
+
+        img.onload = function() {
+            if (img.width !== requiredWidth || img.height !== requiredHeight) {
+                alert(`Image "${file.name}" must be ${requiredWidth}x${requiredHeight}px. Your image is ${img.width}x${img.height}px.`);
+                input.value = "";
+                valid = false;
+            } else if (previewDiv.length) {
+                previewDiv.append($('<img />', {
+                    src: objectURL,
+                    width: 100,
+                    height: 100,
+                    style: 'object-fit: cover; border:1px solid #ddd; border-radius:5px; margin-right:5px;'
+                }));
             }
-        });
+            URL.revokeObjectURL(objectURL);
+        };
+
+        img.onerror = function() {
+            alert(`File "${file.name}" is not a valid image.`);
+            input.value = "";
+            valid = false;
+            URL.revokeObjectURL(objectURL);
+        };
+
+        img.src = objectURL;
     });
+});
+
 
 
     //change status
@@ -387,4 +521,109 @@ $(document).ready(function() {
             $(this).closest(".color-group").remove();
         });
     }); 
+</script>
+
+<!-- <script>
+$(document).ready(function() {
+    // Set required dimensions for validation
+    const requiredWidth = 1600;   // change as needed
+    const requiredHeight = 2000;  // change as needed
+
+    // Delegate event to dynamically added inputs
+    $(document).on('change', '.image-input', function() {
+        const input = this;
+        const previewDiv = $(input).siblings('.image-preview'); // add .image-preview if needed
+        if(previewDiv.length) previewDiv.empty();
+
+        const files = Array.from(input.files);
+        let valid = true;
+
+        files.forEach(file => {
+            const img = new Image();
+            const objectURL = URL.createObjectURL(file);
+
+            img.onload = function() {
+                if(img.width !== requiredWidth || img.height !== requiredHeight) {
+                    alert(`Image "${file.name}" must be ${requiredWidth}x${requiredHeight}px. Your image is ${img.width}x${img.height}px.`);
+                    input.value = ""; // clear invalid file
+                    valid = false;
+                } else if(previewDiv.length) {
+                    // Show preview if valid
+                    const imgEl = $('<img />', {
+                        src: objectURL,
+                        width: 100,
+                        height: 100,
+                        style: 'object-fit: cover; border:1px solid #ddd; border-radius:5px; margin-right:5px;'
+                    });
+                    previewDiv.append(imgEl);
+                }
+                URL.revokeObjectURL(objectURL);
+            };
+
+            img.onerror = function() {
+                alert(`File "${file.name}" is not a valid image.`);
+                input.value = "";
+                URL.revokeObjectURL(objectURL);
+            };
+
+            img.src = objectURL;
+        });
+    });
+});
+</script> -->
+
+
+
+<script>
+    $(document).ready(function() {
+    const minWidth = 100;
+    const maxWidth = 1000;
+    const minHeight = 100;
+    const maxHeight = 1000;
+
+    $(document).on('change', '.image-input', function() {
+        const input = this;
+        const previewDiv = $(input).siblings('.image-preview');
+        if(previewDiv.length) previewDiv.empty();
+
+        const files = Array.from(input.files);
+
+        files.forEach(file => {
+            const img = new Image();
+            const objectURL = URL.createObjectURL(file);
+
+            img.onload = function() {
+                if (img.width < minWidth || img.width > maxWidth || img.height < minHeight || img.height > maxHeight) {
+                    // Show modal with error message
+                    $('#imageErrorMsg').text(`"${file.name}" must be between ${minWidth}x${minHeight} and ${maxWidth}x${maxHeight}px. Your image is ${img.width}x${img.height}px.`);
+                    var myModal = new bootstrap.Modal(document.getElementById('imageErrorModal'));
+                    myModal.show();
+
+                    input.value = ""; // clear invalid file
+                } else if(previewDiv.length) {
+                    const imgEl = $('<img />', {
+                        src: objectURL,
+                        width: 100,
+                        height: 100,
+                        style: 'object-fit: cover; border:1px solid #ddd; border-radius:5px; margin-right:5px;'
+                    });
+                    previewDiv.append(imgEl);
+                }
+                URL.revokeObjectURL(objectURL);
+            };
+
+            img.onerror = function() {
+                $('#imageErrorMsg').text(`"${file.name}" is not a valid image.`);
+                var myModal = new bootstrap.Modal(document.getElementById('imageErrorModal'));
+                myModal.show();
+
+                input.value = "";
+                URL.revokeObjectURL(objectURL);
+            };
+
+            img.src = objectURL;
+        });
+    });
+});
+
 </script>
