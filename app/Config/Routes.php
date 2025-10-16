@@ -157,7 +157,7 @@ $routes->post('admin/product/List', 'Admin\Product::ajaxList');
 $routes->get('admin/product/add', 'Admin\Product::addProduct');
 $routes->get('admin/product/edit/(:num)', 'Admin\Product::addProduct/$1');
 $routes->post('admin/product/save', 'Admin\Product::saveProduct');
-$routes->post('admin/product/delete/(:any)', 'Admin\Product::deleteProduct/$1'); 
+$routes->post('admin/product/delete/(:any)', 'Admin\Product::deleteProduct/$1');
 $routes->post('admin/product/get-subcategories', 'Admin\Product::getSubcategories');
 $routes->post('admin/product/upload-media', 'Admin\Product::uploadMedia');
 $routes->get('admin/product/get-product-images/(:num)', 'Admin\Product::getProductImages/$1');
@@ -181,7 +181,7 @@ $routes->post('admin/productimage/save', 'Admin\ProductImage::save');
 
 $routes->post('admin/productimage/ajaxList', 'Admin\ProductImage::ajaxList');
 $routes->post('admin/productimage/delete/(:num)', 'Admin\ProductImage::delete/$1');
-
+$routes->post('admin/productimage/status', 'Admin\ProductImage::changeStatus');
 
 
 

@@ -35,11 +35,16 @@
                                     <tr>
                                         <td class="cart__product__item">
                                             <?php
-                                            $designImage = !empty($item['design_image']) ? $item['design_image'] : null;
-                                            $image = $designImage ;
+                                            $designImage = !empty($item['front_Image']) ? $item['front_Image'] : null;
+                                            $image = $designImage;
                                             ?>
                                             <?php if (!empty($image)): ?>
-                                                <img src="<?= base_url('uploads/designs/' . $image) ?>" alt="Product Image">
+                                                <a href="javascript:void(0);" class="text-primary show-preview"
+                                                    data-front="<?= base_url('uploads/designs/' . $item['front_Image']) ?>"
+                                                    data-back="<?= base_url('uploads/designs/' . $item['back_Image']) ?>"
+                                                    data-sleeve="<?= base_url('uploads/designs/' . $item['sleeve_Image']) ?>">
+                                                    <img src="<?= base_url('uploads/designs/' . $image) ?>" alt="Product Image">
+                                                </a>
                                             <?php else: ?>
                                                 <img src="<?= base_url('uploads/productmedia/default.png') ?>" alt="Default Image">
                                             <?php endif; ?>
@@ -117,63 +122,88 @@
 <!-- Shop Cart Section End -->
 
 <!-- Instagram Begin -->
- <div class="instagram">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg"
-                        data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/footer-banyan/footer-7.jpg">
-                        <div class="instagram__text">
-                            <i class="fa fa-instagram"></i>
-                            <a href="#">Voyc Online Shop</a>
-                        </div>
+<div class="instagram">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                <div class="instagram__item set-bg"
+                    data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/footer-banyan/footer-7.jpg">
+                    <div class="instagram__text">
+                        <i class="fa fa-instagram"></i>
+                        <a href="#">Voyc Online Shop</a>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg"
-                        data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/footer-banyan/footer-6.jpg">
-                        <div class="instagram__text">
-                            <i class="fa fa-instagram"></i>
-                            <a href="#">Voyc Online Shop</a>
-                        </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                <div class="instagram__item set-bg"
+                    data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/footer-banyan/footer-6.jpg">
+                    <div class="instagram__text">
+                        <i class="fa fa-instagram"></i>
+                        <a href="#">Voyc Online Shop</a>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg"
-                        data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/footer-banyan/footer-5.jpg">
-                        <div class="instagram__text">
-                            <i class="fa fa-instagram"></i>
-                            <a href="#">Voyc Online Shop</a>
-                        </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                <div class="instagram__item set-bg"
+                    data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/footer-banyan/footer-5.jpg">
+                    <div class="instagram__text">
+                        <i class="fa fa-instagram"></i>
+                        <a href="#">Voyc Online Shop</a>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg"
-                        data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/footer-banyan/footer-9.jpg">
-                        <div class="instagram__text">
-                            <i class="fa fa-instagram"></i>
-                            <a href="#">Voyc Online Shop</a>
-                        </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                <div class="instagram__item set-bg"
+                    data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/footer-banyan/footer-9.jpg">
+                    <div class="instagram__text">
+                        <i class="fa fa-instagram"></i>
+                        <a href="#">Voyc Online Shop</a>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg"
-                        data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/footer-banyan/footer-8.jpg">
-                        <div class="instagram__text">
-                            <i class="fa fa-instagram"></i>
-                            <a href="#">Voyc Online Shop</a>
-                        </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                <div class="instagram__item set-bg"
+                    data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/footer-banyan/footer-8.jpg">
+                    <div class="instagram__text">
+                        <i class="fa fa-instagram"></i>
+                        <a href="#">Voyc Online Shop</a>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg"
-                        data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/footer-banyan/footer-10.jpg">
-                        <div class="instagram__text">
-                            <i class="fa fa-instagram"></i>
-                            <a href="#">Voyc Online Shop</a>
-                        </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                <div class="instagram__item set-bg"
+                    data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/footer-banyan/footer-10.jpg">
+                    <div class="instagram__text">
+                        <i class="fa fa-instagram"></i>
+                        <a href="#">Voyc Online Shop</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+<!-- Design Preview Modal -->
+<div class="modal fade" id="designPreviewModal" tabindex="-1" aria-labelledby="designPreviewLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="designPreviewLabel">Design Preview</h5>
+                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+            </div>
+            <div class="modal-body text-center row">
+                <div class="col-md-4">
+                    <p>Front View</p>
+                    <img id="previewFront" src="" alt="Front" class="img-fluid border rounded" />
+                </div>
+                <div class="col-md-4">
+                    <p>Back View</p>
+                    <img id="previewBack" src="" alt="Back" class="img-fluid border rounded" />
+                </div>
+                <div class="col-md-4">
+                    <p>Sleeve View</p>
+                    <img id="previewSleeve" src="" alt="Sleeve" class="img-fluid border rounded" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

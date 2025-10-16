@@ -22,7 +22,7 @@ class CartModel extends Model
         $builder = $this->db->table('my_cart c');
 
         $builder->select('c.*');
-        $builder->select('d.design_image');
+        $builder->select('d.front_Image,d.back_Image,d.sleeve_Image');
         $builder->select('p.pr_Name');
         $builder->select("CASE WHEN c.design_Id IS NULL THEN pi.pri_Thumbnail ELSE NULL END AS pri_Thumbnail", false);
 
