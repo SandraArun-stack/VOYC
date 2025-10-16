@@ -450,6 +450,29 @@ input[type="file"] {
 
 }
 
+.color-card:hover {
+    border-color: #007bff;
+    transform: scale(1.05);
+}
+
+.colors__round {
+    width: 30px;
+    height: 30px;
+    border-radius: 20%;
+    border: 1px solid #999;
+    cursor: pointer;
+}
+.color_small_container{
+    gap:10px;
+}
+.color-preview.selected {
+    border: 2px solid #007bff;
+}
+.size-box {
+    min-width: 60px;
+    text-align: center;
+}
+
 @keyframes fadeDown {
     0% {
         opacity: 0;

@@ -29,6 +29,7 @@
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/aos.css" type="text/css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+    
     <link rel="icon" href="<?= base_url() . ASSET_PATH; ?>assets/img/favicon.ico" type="image/x-icon">
 </head>
 

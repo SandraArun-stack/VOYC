@@ -30,46 +30,6 @@
                         </div>
                     </div>
                     <div class="row">
-                        <!-- <div class="col-md-6 d-none">
-
-                            <div class="alert alert-danger d-none" id="design_msg_alert"></div>
-                            <input type="hidden" name="prId" value="<?= isset($prId) ? esc($prId) : ''; ?>">
-                            <input type="hidden" name="priId" value="<?= isset($priId) ? esc($priId) : ''; ?>">
-
-                            <div id="controls">
-
-                                <button id="addText" class="btn btn-primary">Add Text</button>
-                                <label>Text Color:
-                                    <input type="color" id="textColor" value="#000000">
-                                </label>
-
-                                <label>Font:
-                                    <select class="form-select form-select-lg mb-3" id="fontFamily">
-                                        <option value="Arial">Arial</option>
-                                        <option value="Times New Roman">Times New Roman</option>
-                                        <option value="Courier New">Courier New</option>
-                                        <option value="Georgia">Georgia</option>
-                                        <option value="Comic Sans MS">Comic Sans</option>
-                                    </select>
-                                </label>
-
-                                <label><input type="checkbox" id="boldToggle"> Bold</label>
-                                <label><input type="checkbox" id="italicToggle"> Italic</label>
-
-                                <label>Size: <input type="range" id="fontSize" min="10" max="80" value="20"></label>
-
-
-                                <input type="file" id="uploadImage" accept="image/*">
-                                <button id="cropBtn" class="btn" disabled title="(Not implemented in this snippet)">Crop
-                                    Image</button>
-                                <button id="resetOverlayBtn" class="btn btn-warning">Reset Dress
-                                    Position</button>
-
-                                <label class="small"><input type="checkbox" id="lockOverlay"> Lock Dress</label>
-                                <button id="deleteBtn" class="btn btn-danger">Delete Selected</button>
-                                <button id="saveBtn" class="btn btn-dark">Save Design</button>
-                            </div>
-                        </div> -->
 
                         <div class="sidebar">
                             <div class="sidebar-item" data-view="upload">
@@ -124,7 +84,7 @@
                                     <div class="option" data-view="product_colors">
                                         <img src="<?= base_url() . ASSET_PATH; ?>assets/img/customize/change.png"
                                             alt="Change Products">
-                                        <div>Change Products</div>
+                                        <div>Change Products Color</div>
                                     </div>
                                 </div>
                             </div>
@@ -209,16 +169,77 @@
                             </div>
 
                             <!-- Product Colors View -->
-                            <div id="view-product_colors" class="view-section d-none">
-                                <h2>Choose Product Colors</h2>
-                                <div class="options">
-                                    <div class="option">
-                                        <img src="<?= base_url(ASSET_PATH . 'assets/img/customize/change.png'); ?>"
-                                            alt="Change Products">
-                                        <div>Select different colors for your product.</div>
+                            <!-- <div id="view-product_colors" class="view-section d-none">
+                                <h2>Choose Product Color</h2>
+                                <div class="">
+                                    <lable>Available Colors for this Product:</lable>
+                                    <div class="card">
+                                        color
                                     </div>
                                 </div>
+                            </div> -->
+                            <!-- Product Colors View -->
+                            <div id="view-product_colors" class="view-section d-none">
+                                <h2>Choose Product Color</h2>
+                                <div class="mt-3">
+                                    <label>Available Colors for this Product:</label>
+                                    <div class="card p-3 shadow-sm">
+                                        <div class="d-flex flex-wrap color_small_container">
+                                            <?php if (!empty($allData)): ?>
+                                                <?php foreach ($allData as $item): ?>
+                                                    <?php
+                                                    $colorData = json_decode($item['color_details'], true);
+                                                    $colorHex = isset($colorData['color']) ? $colorData['color'] : '#ccc';
+                                                    ?>
+                                                    <div class="color-preview colors__round"
+                                                        data-priid="<?= esc($item['pri_Id']) ?>"
+                                                        style="background-color: <?= esc($colorHex) ?>;">
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            <?php else: ?>
+                                                <p>No colors available for this product.</p>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Sizes -->
+                                <div class="mt-3">
+                                    <label>Available Sizes</label>
+                                    <div class="card p-3 shadow-sm">
+                                        <div class="d-flex flex-wrap size_container" id="sizeContainer">
+                                           <?php
+                                            $sizeOrder = ["XS", "S", "M", "L", "XL", "XXL", "3XL", "4XL", "5XL", "6XL"];
+
+                                            $currentColorArray = array_filter($allData, function($item) use ($priId) {
+                                                return $item['pri_Id'] == $priId;
+                                            });
+
+                                            if (!empty($currentColorArray)) {
+                                                $currentColor = array_values($currentColorArray)[0];
+
+                                                // Sort variants by sizeOrder
+                                                $variants = $currentColor['variants'];
+                                                usort($variants, function($a, $b) use ($sizeOrder) {
+                                                    return array_search($a['prv_Size'], $sizeOrder) - array_search($b['prv_Size'], $sizeOrder);
+                                                });
+
+                                                foreach ($variants as $variant) {
+                                                    ?>
+                                                    <div class="size-box m-1 p-2 border rounded">
+                                                        <?= esc($variant['prv_Size']) ?> - ₹<?= esc($variant['prv_price']) ?>
+                                                    </div>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
+
+
 
                             <!-- <div class="bottom-text">
                                 💡 Drag & drop a file anywhere to upload.
@@ -235,8 +256,8 @@
                                         </div>
                                     </div>
                                 </div>
-                               
-                                <div class="col-md-2 text-center">
+
+                                <div class="col-md-2 text-center"  id="imageContainer">
                                     <div class="thumbs d-flex flex-column align-items-center">
                                         <?php if (isset($cust_image) && !empty($cust_image)): ?>
                                             <img src="<?= base_url('uploads/productmedia/' . $cust_image['pri_Thumbnail']); ?>"
@@ -247,7 +268,7 @@
                                                 data-view="back" class="shirt-thumb" />
                                             <img src="<?= base_url('uploads/productmedia/' . $cust_image['pri_Sleev_Name'][0]); ?>"
                                                 data-src="<?= base_url('uploads/productmedia/' . $cust_image['pri_Sleev_Name'][0]); ?>"
-                                                data-view="back" class="shirt-thumb" />
+                                                data-view="sleeve" class="shirt-thumb" />
                                         <?php else: ?>
                                             <p>No images found for this product.</p>
                                         <?php endif; ?>

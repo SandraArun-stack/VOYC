@@ -10,7 +10,7 @@
         'Impact',
         'Lucida Console'
     ];
-    
+
     let selectedFont = 'Arial';
     let isActionInProgress = false;
 
@@ -34,7 +34,7 @@
     addOverlay(defaultOverlay);
     highlightThumb(defaultOverlay);
 
-   
+
     function addOverlay(src) {
         fabric.Image.fromURL(src, function (img) {
             img.scaleToWidth(canvas.width);
@@ -81,10 +81,6 @@
         shirtOverlay.applyFilters();
         canvas.renderAll();
     }
-    // Image selector
-    const iconDelete = '<?= base_url(ASSET_PATH . "assets/img/customize/iconDelete.png") ?>';
-    const iconDuplicate = '<?= base_url(ASSET_PATH . "assets/img/customize/iconDuplicate.png") ?>';
-    const iconFlip = '<?= base_url(ASSET_PATH . "assets/img/customize/iconFlip.png") ?>';
 
     fabric.Object.prototype.transparentCorners = false;
     fabric.Object.prototype.cornerColor = 'rgba(0,0,0,0)';
@@ -141,36 +137,61 @@
         return true;
     }
 
-    fabric.Image.prototype.controls.deleteControl =
-        createIconControl(iconDelete, 0.5, -0.5, deleteObjectHandler, 'pointer');
 
-    fabric.Image.prototype.controls.duplicateControl =
-        createIconControl(iconDuplicate, -0.5, 0.5, duplicateObjectHandler, 'pointer');
 
-    fabric.Image.prototype.controls.flipControl =
-        createIconControl(iconFlip, -0.5, -0.5, flipObjectHandler, 'pointer');
+    function createBootstrapIconControl(iconChar, offsetX, offsetY, handler, cursor) {
+        return new fabric.Control({
+            x: offsetX,
+            y: offsetY,
+            cursorStyle: cursor,
+            mouseUpHandler: handler,
+            render: function (ctx, left, top, styleOverride, fabricObject) {
+                const size = 18;
+                ctx.save();
 
+                // Draw circular background
+                ctx.beginPath();
+                ctx.arc(left, top, size / 1.5, 0, Math.PI * 2);
+                ctx.fillStyle = "white";
+                ctx.shadowColor = "rgba(0,0,0,0.2)";
+                ctx.shadowBlur = 4;
+                ctx.fill();
+                ctx.closePath();
+
+                // Draw Bootstrap icon (using Unicode glyph)
+                ctx.font = `${size}px bootstrap-icons`;
+                ctx.fillStyle = "#333";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillText(iconChar, left, top);
+
+                ctx.restore();
+            },
+            cornerSize: 28
+        });
+    }
+
+
+    const ICONS = {
+        delete: '\uF623',    // bi-x-square
+        duplicate: '\uF759', // bi-copy
+        flip: '\uF5A9'       // bi-symmetry-vertical
+    };
+
+    [fabric.Image.prototype, fabric.IText.prototype].forEach(proto => {
+        proto.controls.deleteControl = createBootstrapIconControl(ICONS.delete, 0.5, -0.5, deleteObjectHandler, 'pointer');
+        proto.controls.duplicateControl = createBootstrapIconControl(ICONS.duplicate, -0.5, 0.5, duplicateObjectHandler, 'pointer');
+        proto.controls.flipControl = createBootstrapIconControl(ICONS.flip, -0.5, -0.5, flipObjectHandler, 'pointer');
+    });
 
     // --- UI bindings ---
     $(document).ready(function () {
 
         loadCanvasState(currentView);
+        initThumbClick();
 
-        $(".shirt-thumb").on("click", function () {
-            const newView = $(this).data("view");
+        // $(".shirt-thumb").on("click", function () {
 
-            if (newView === currentView) return;
-
-            saveCurrentCanvasState();      // save current canvas
-            currentView = newView;         // update view
-            loadCanvasState(currentView);  // load new view
-            highlightThumb($(this).data("src"));
-        });
-        $(".thumbs img").on("click", function () {
-            const src = $(this).data("src");
-            addOverlay(src);
-            highlightThumb(src);
-        });
 
         $("#colorPicker").on("input", function () {
             applyDressColor($(this).val());
@@ -276,11 +297,12 @@
             }
         });
 
-      
+
 
         $("#saveBtn").on("click", function () {
+            // debugger;
             var $alertBox = $('#design_msg_alert');
-            saveCurrentCanvasState(); // Save latest changes before export
+            saveCurrentCanvasState();
 
             const designs = {};
 
@@ -300,7 +322,7 @@
                             tempCanvas.sendToBack(img);
                             tempCanvas.renderAll();
 
-                            const dataURL = tempCanvas.toDataURL({ format: 'png', quality: 1 });
+                            const dataURL = tempCanvas.toDataURL({ format: 'jpeg', quality: 0.7 });
                             designs[view] = dataURL;
                             resolve();
                         });
@@ -309,7 +331,7 @@
             });
 
             Promise.all(exportAll).then(() => {
-                console.log("Exported designs:", designs);
+                // console.log("Exported designs:", designs);
 
                 // Optional: Send to backend
                 $.ajax({
@@ -356,6 +378,83 @@
                 });
             });
         });
+
+        $(document).on('click', '.color-card', function () {
+            const priId = $(this).data('priid');
+            const prId = "<?= $prId ?>";
+
+            // Redirect to same design page but with different color (pri_Id)
+            window.location.href = "<?= base_url('tshirt') ?>/" + prId + "/" + priId;
+        });
+
+        const sizeOrder = ["XS", "S", "M", "L", "XL", "XXL", "3XL", "4XL", "5XL", "6XL"];
+
+        $(document).on('click', '.color-preview', function () {
+            $('.color-preview').removeClass('selected');
+            $(this).addClass('selected');
+
+            const priId = $(this).data('priid');
+            const allData = <?= json_encode($allData) ?>;
+
+            const selected = allData.find(item => item.pri_Id == priId);
+
+            if (selected) {
+                const $sizeContainer = $('#sizeContainer');
+                $sizeContainer.empty();
+
+                const sortedVariants = selected.variants.sort((a, b) => {
+                    return sizeOrder.indexOf(a.prv_Size) - sizeOrder.indexOf(b.prv_Size);
+                });
+
+                sortedVariants.forEach(v => {
+                    $sizeContainer.append(`
+                <div class="size-box m-1 p-2 border rounded">
+                    ${v.prv_Size} - ₹${v.prv_price}
+                </div>`);
+                });
+
+
+                const $thumbs = $('.thumbs');
+                $thumbs.empty();
+
+                if (selected.pri_Thumbnail) {
+                    const thumbSrc = "<?= base_url('uploads/productmedia/') ?>" + selected.pri_Thumbnail;
+                    $thumbs.append(`
+                <img src="${thumbSrc}" 
+                     data-src="${thumbSrc}" 
+                     data-view="front" class="shirt-thumb" />`);
+
+                    // ✅ Add front view to canvas and update view state
+                    addOverlay(thumbSrc);
+                    currentView = 'front';
+                    canvasStates[currentView].overlay = thumbSrc;
+                    highlightThumb(thumbSrc);
+                }
+
+                // --- Back Image(s)
+                if (selected.pri_File_Name && Array.isArray(selected.pri_File_Name)) {
+                    selected.pri_File_Name.forEach((image, index) => {
+                        const imgSrc = "<?= base_url('uploads/productmedia/') ?>" + image;
+                        $thumbs.append(` 
+                         <img src="${imgSrc}" data-src="${imgSrc}" data-view="back"  class="shirt-thumb" />
+                        `);
+                    });
+                }
+
+                // --- Sleeve Image(s)
+                if (selected.pri_Sleev_Name && Array.isArray(selected.pri_Sleev_Name)) {
+                    selected.pri_Sleev_Name.forEach(image => {
+                        const imgSrc = "<?= base_url('uploads/productmedia/') ?>" + image;
+                        $thumbs.append(`
+                    <img src="${imgSrc}" 
+                         data-src="${imgSrc}" 
+                         data-view="sleeve" class="shirt-thumb" />`);
+                    });
+                }
+            }
+            initThumbClick();
+        });
+
     });
 
     function toggleCustomControls(object, visible) {
@@ -388,7 +487,6 @@
         }
     });
 
-
     function highlightThumb(src) {
         $(".shirt-thumb").removeClass("active");
         $('.shirt-thumb').each(function () {
@@ -397,6 +495,7 @@
             }
         });
     }
+
     function saveCurrentCanvasState() {
         canvas.discardActiveObject();
         canvasStates[currentView].objects = canvas.toDatalessJSON().objects;
@@ -414,6 +513,19 @@
         // Load shirt overlay
         addOverlay(canvasStates[view].overlay);
     }
+    function initThumbClick() {
+        $(".thumbs img").on("click", function () {
+            const newView = $(this).data("view");
+            if (newView === currentView) return;
+            saveCurrentCanvasState();      // save current canvas
+            currentView = newView;         // update view
+            loadCanvasState(currentView);  // load new view
+            const src = $(this).data("src");
+            addOverlay(src);
+            highlightThumb(src);
+        });
+    }
+
     $('.sidebar-item, #customize_main_ui .option').on('click', function () {
         const viewId = $(this).data('view');
 
@@ -441,6 +553,7 @@
 
         container.toggleClass('d-none');
     });
+
     $('#fontPickerContainer').on('click', '.font-option', function () {
         selectedFont = $(this).data('font');
 
