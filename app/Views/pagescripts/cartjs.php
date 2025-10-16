@@ -32,5 +32,8 @@
 
         $('#designPreviewModal').modal('show');
     });
+    $(document).ready(function () {
+        updateGrandTotal();
+    });
 
 </script>

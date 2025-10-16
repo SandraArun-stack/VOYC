@@ -26,9 +26,13 @@ class CartModel extends Model
         $builder->select('p.pr_Name');
         $builder->select("CASE WHEN c.design_Id IS NULL THEN pi.pri_Thumbnail ELSE NULL END AS pri_Thumbnail", false);
 
+        $builder->select('pv.*');
+
         $builder->join('design d', 'c.design_Id = d.design_Id', 'left');
         $builder->join('product_image pi', 'c.pri_Id = pi.pri_Id AND c.design_Id IS NULL', 'left');
         $builder->join('product p', 'c.pr_Id = p.pr_Id', 'left');
+
+        $builder->join('product_variants pv', 'c.prv_Id = pv.prv_Id', 'left');
 
         $builder->where('c.cust_Id', $custId);
         $builder->where('c.cart_Status', 1);

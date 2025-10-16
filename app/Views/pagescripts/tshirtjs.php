@@ -342,8 +342,13 @@
                         back: designs.back,
                         sleeve: designs.sleeve,
                         prId: $('input[name="prId"]').val(),
-                        priId: $('input[name="priId"]').val()
+                        priId: $('input[name="priId"]').val(),
+                        prvId: selectedSizeId
                     },
+                    // if(!selectedSizeId) {
+                    //     alert("Please select a size before saving.");
+                    //     return;
+                    // }
                     success: function (response) {
                         if (response.status === 'login_required') {
                             authModal.show();
@@ -453,6 +458,14 @@
                 }
             }
             initThumbClick();
+        });
+
+        let selectedSize = null;
+
+        $(document).on('click', '.selectable-size', function () {
+            $('.selectable-size').removeClass('selected'); // remove previous selection
+            $(this).addClass('selected'); // highlight current
+            selectedSizeId = $(this).data('prv-id'); // store size
         });
 
     });

@@ -217,7 +217,6 @@
                                             if (!empty($currentColorArray)) {
                                                 $currentColor = array_values($currentColorArray)[0];
 
-                                                // Sort variants by sizeOrder
                                                 $variants = $currentColor['variants'];
                                                 usort($variants, function($a, $b) use ($sizeOrder) {
                                                     return array_search($a['prv_Size'], $sizeOrder) - array_search($b['prv_Size'], $sizeOrder);
@@ -225,7 +224,7 @@
 
                                                 foreach ($variants as $variant) {
                                                     ?>
-                                                    <div class="size-box m-1 p-2 border rounded">
+                                                    <div class="size-box m-1 p-2 border rounded selectable-size" data-prv-id="<?= esc($variant['prv_Id']) ?>">
                                                         <?= esc($variant['prv_Size']) ?> - ₹<?= esc($variant['prv_price']) ?>
                                                     </div>
                                                     <?php
