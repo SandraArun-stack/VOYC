@@ -35,7 +35,7 @@
                                     <div class="card-block">
                                         <div class="row align-items-center">
                                             <div class="col-8">
-                                                <h4 class="text-c-purple"><?= esc($latestOrderCount); ?></h4>
+                                                <h5 class="text-c-purple"><?= esc($latestOrderCount); ?></h4>
                                                 <h6 class="text-muted m-b-0">Latest Orders (7 days)</h6>
                                             </div>
                                             <div class="col-4 text-right">
@@ -54,7 +54,7 @@
                                     <div class="card-block">
                                         <div class="row align-items-center">
                                             <div class="col-8">
-                                                <h4 class="text-c-green"><?= esc($totalOrderCount); ?></h4>
+                                                <h5 class="text-c-green"><?= esc($totalOrderCount); ?></h4>
                                                 <h6 class="text-muted m-b-0">Total Orders</h6>
 
                                             </div>
@@ -73,7 +73,7 @@
                                     <div class="card-block">
                                         <div class="row align-items-center">
                                             <div class="col-8">
-                                                <h4 class="text-c-red"><?= esc($totalCustomerCount); ?></h4>
+                                                <h5 class="text-c-red"><?= esc($totalCustomerCount); ?></h4>
                                                 <h6 class="text-muted m-b-0">Total Customers</h6>
                                             </div>
                                             <div class="col-4 text-right">
@@ -90,10 +90,10 @@
                                 <div class="card-block">
                                     <div class="row align-items-center">
                                         <div class="col-8">
-                                            <h4 class="text-c-blue">
+                                            <h5 class="text-c-blue">
                                                 <i class="bi bi-currency-rupee"></i>
                                                 <?= number_format($annualRevenue, 2); ?>
-                                            </h4>
+                                            </h5>
                                             <h6 class="text-muted m-b-0">Annual Revenue
                                                 (<?= date('Y', strtotime('-3 months')) ?>-<?= date('Y', strtotime('+9 months')) ?>)
                                             </h6>
@@ -104,8 +104,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                     <div class="row">
