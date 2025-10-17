@@ -285,3 +285,8 @@ $routes->post('admin/banner/delete/(:any)', 'Admin\Banner::deleteBanner/$1');
 $routes->get('/admin', 'Admin::index');
 $routes->post('admin/save', 'Admin::createnew');
 //});
+
+//oreder details
+$routes->get('orderdetails', 'OrderDetails::index');  
+$routes->post('orderdetails/placeOrder', 'OrderDetails::placeOrder');
+$routes->post('orderdetails/saveAddress', 'OrderDetails::saveAddress');
