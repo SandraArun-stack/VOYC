@@ -481,7 +481,9 @@ input[type="file"] {
     color: white;
     border-color: #000;
 }
-
+.proceed_check_out:hover{
+ color:#fff !important;
+}
 @keyframes fadeDown {
     0% {
         opacity: 0;
