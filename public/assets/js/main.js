@@ -205,54 +205,54 @@ Created: Colorib
     /*-------------------
         Quantity change
     --------------------- */
-    var proQty = $('.pro-qty');
-    proQty.prepend('<span class="dec qtybtn">-</span>');
-    proQty.append('<span class="inc qtybtn">+</span>');
+    // var proQty = $('.pro-qty');
+    // proQty.prepend('<span class="dec qtybtn">-</span>');
+    // proQty.append('<span class="inc qtybtn">+</span>');
 
-    proQty.on('click', '.qtybtn', function () {
-        var $button = $(this);
-        var $input = $button.parent().find('input');
-        var oldValue = parseInt($input.val());
-        var newVal = 1;
+    // proQty.on('click', '.qtybtn', function () {
+    //     var $button = $(this);
+    //     var $input = $button.parent().find('input');
+    //     var oldValue = parseInt($input.val());
+    //     var newVal = 1;
 
-        if ($button.hasClass('inc')) {
-            newVal = oldValue + 1;
-        } else {
-            newVal = oldValue > 1 ? oldValue - 1 : 1; // Don't allow 0
-        }
+    //     if ($button.hasClass('inc')) {
+    //         newVal = oldValue + 1;
+    //     } else {
+    //         newVal = oldValue > 1 ? oldValue - 1 : 1; // Don't allow 0
+    //     }
 
-        $input.val(newVal);
+    //     $input.val(newVal);
 
-        // ✅ Recalculate the row total
-        var $row = $button.closest('tr');
-        var price = parseFloat($row.find('.cart__price').text().replace(/[^\d.]/g, ''));
-        var rowTotal = price * newVal;
-        $row.find('.cart__total').text('₹ ' + rowTotal.toFixed(2));
+    //     // ✅ Recalculate the row total
+    //     var $row = $button.closest('tr');
+    //     var price = parseFloat($row.find('.cart__price').text().replace(/[^\d.]/g, ''));
+    //     var rowTotal = price * newVal;
+    //     $row.find('.cart__total').text('₹ ' + rowTotal.toFixed(2));
 
-        // ✅ Recalculate grand total
-        updateGrandTotal();
-    });
+    //     // ✅ Recalculate grand total
+    //     updateGrandTotal();
+    // });
 
-    function updateGrandTotal() {
-        var grandTotal = 0;
+    // function updateGrandTotal() {
+    //     var grandTotal = 0;
 
-        $('.cart__total').each(function () {
-            var amount = parseFloat($(this).text().replace(/[^\d.]/g, '')) || 0;
-            grandTotal += amount;
-        });
+    //     $('.cart__total').each(function () {
+    //         var amount = parseFloat($(this).text().replace(/[^\d.]/g, '')) || 0;
+    //         grandTotal += amount;
+    //     });
 
-        // Update the subtotal and total in the summary box
-        $('#subtotal-amount').text('₹ ' + grandTotal.toFixed(2));
-        $('#total-amount').text('₹ ' + grandTotal.toFixed(2));
-    }
+    //     // Update the subtotal and total in the summary box
+    //     $('#subtotal-amount').text('₹ ' + grandTotal.toFixed(2));
+    //     $('#total-amount').text('₹ ' + grandTotal.toFixed(2));
+    // }
 
 
     /*-------------------
         Radio Btn
     --------------------- */
-    $(".size__btn label").on('click', function () {
-        $(".size__btn label").removeClass('active');
-        $(this).addClass('active');
-    });
+    // $(".size__btn label").on('click', function () {
+    //     $(".size__btn label").removeClass('active');
+    //     $(this).addClass('active');
+    // });
 
 })(jQuery);

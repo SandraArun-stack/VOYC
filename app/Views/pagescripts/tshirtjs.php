@@ -297,9 +297,16 @@
             }
         });
 
+        let selectedSize = null;
 
+        $(document).on('click', '.selectable-size', function () {
+            $('.selectable-size').removeClass('selected');
+            $(this).addClass('selected');
+            selectedSize = $(this).data('prv-id');
+        });
 
         $("#saveBtn").on("click", function () {
+           
             // debugger;
             var $alertBox = $('#design_msg_alert');
             saveCurrentCanvasState();
@@ -330,10 +337,15 @@
                 });
             });
 
+            const authModal = new bootstrap.Modal(document.getElementById('authModal'), {
+                backdrop: true,
+                keyboard: true
+            });
             Promise.all(exportAll).then(() => {
                 // console.log("Exported designs:", designs);
 
                 // Optional: Send to backend
+
                 $.ajax({
                     url: "<?= base_url('saveDesign') ?>",
                     method: "POST",
@@ -343,12 +355,9 @@
                         sleeve: designs.sleeve,
                         prId: $('input[name="prId"]').val(),
                         priId: $('input[name="priId"]').val(),
-                        prvId: selectedSizeId
+                        prvId: selectedSize
                     },
-                    // if(!selectedSizeId) {
-                    //     alert("Please select a size before saving.");
-                    //     return;
-                    // }
+
                     success: function (response) {
                         if (response.status === 'login_required') {
                             authModal.show();
@@ -413,9 +422,9 @@
 
                 sortedVariants.forEach(v => {
                     $sizeContainer.append(`
-                <div class="size-box m-1 p-2 border rounded">
-                    ${v.prv_Size} - ₹${v.prv_price}
-                </div>`);
+                    <div class="size-box m-1 p-2 border rounded selectable-size" data-prv-id="${v.prv_Id}">
+                        ${v.prv_Size} - ₹${v.prv_price}
+                    </div>`);
                 });
 
 
@@ -460,13 +469,7 @@
             initThumbClick();
         });
 
-        let selectedSize = null;
 
-        $(document).on('click', '.selectable-size', function () {
-            $('.selectable-size').removeClass('selected'); // remove previous selection
-            $(this).addClass('selected'); // highlight current
-            selectedSizeId = $(this).data('prv-id'); // store size
-        });
 
     });
 

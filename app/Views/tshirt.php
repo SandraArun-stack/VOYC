@@ -62,7 +62,7 @@
                             </div>
                         </div>
 
-                        <div class="main-content" id="controls">
+                        <div class="main-content p-3" id="controls">
                             <div id="customize_main_ui">
                                 <h2>What's next for you?</h2>
                                 <div class="options">

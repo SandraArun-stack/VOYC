@@ -33,7 +33,7 @@
 
                             <?php if (!empty($cartItems)): ?>
                                 <?php foreach ($cartItems as $item): ?>
-                                    <tr>
+                                    <tr data-cartid="<?= esc($item['cart_Id']) ?>">
                                         <td class="cart__product__item">
                                             <?php
                                             $designImage = !empty($item['front_Image']) ? $item['front_Image'] : null;
@@ -120,9 +120,13 @@
                         }
                     }
                     ?>
-                    <ul>
+                    <!-- <ul>
                         <li>Subtotal <span id="subtotal-amount">₹ <?= number_format($calculatedTotal, 2) ?></span></li>
                         <li>Total <span id="total-amount">₹ <?= number_format($calculatedTotal, 2) ?></span></li>
+                    </ul> -->
+                    <ul>
+                        <li>Subtotal <span id="subtotal-amount">₹ 0.00</span></li>
+                        <li>Total <span id="total-amount">₹ 0.00</span></li>
                     </ul>
 
                     <a href="#" class="primary-btn">Proceed to checkout</a>

@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 class CartModel extends Model
 {
     protected $table = 'my_cart';
-    protected $primaryKey = 'cart_Id ';
+    protected $primaryKey = 'cart_Id';
     protected $allowedFields = [
         'cart_Id',
         'cust_Id',
@@ -14,7 +14,8 @@ class CartModel extends Model
         'pri_Id',
         'cart_Status',
         'design_Id',
-        'prv_Id'
+        'prv_Id',
+        'cart_Quantity'
     ];
 
     public function getCartItems($custId)
@@ -40,4 +41,26 @@ class CartModel extends Model
         $query = $builder->get();
         return $query->getResultArray();
     }
+    public function getCartPrice($userId)
+    {
+        $builder = $this->db->table('my_cart c');
+
+        $builder->select('c.*,pv.*'); 
+        $builder->join('product_variants pv', 'c.prv_Id = pv.prv_Id', 'left');
+
+        $builder->where('c.cust_Id', $userId);
+        $builder->where('c.cart_Status', 1); // Assuming 1 means active cart items
+
+        $query = $builder->get();
+        $cartItems = $query->getResultArray();
+
+        $totalPrice = 0;
+
+        foreach ($cartItems as $item) {
+            $totalPrice += $item['prv_price'] * $item['cart_Quantity'];
+        }
+
+        return $totalPrice;
+    }
+
 }

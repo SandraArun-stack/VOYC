@@ -42,7 +42,7 @@ class Home extends BaseController
         $confirm = md5($this->request->getPost('reg_confirm_password'));
 
         if (empty($fullName) || empty($email) || empty($password) || empty($confirm)) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'All fields are Required.']);
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Please Fill in All Required Fields.']);
         }
 
         if (!preg_match('/^[a-zA-Z ]+$/', $fullName)) {
@@ -75,7 +75,10 @@ class Home extends BaseController
     {
         $email = $this->request->getPost('login_email');
         $password = md5($this->request->getPost('login_password'));
-
+        
+        if (empty($email) || empty($password)) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Please Fill in All Required Fields.']);
+        }
         $data = [
             'email' => $email,
             'password' => $password,
