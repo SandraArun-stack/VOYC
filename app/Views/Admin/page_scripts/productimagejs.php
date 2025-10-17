@@ -167,7 +167,7 @@ $('#productImageForm').on('submit', function(e) {
 
     // Disable the Save button immediately
     $saveBtn.prop('disabled', true)
-            .html('<i class="fa fa-spinner fa-spin"></i> Saving...');
+            .html('<i class="bi bi-check-circle"></i> Save');
 
     // Make sure disabled fields are included
     $form.find(':input:disabled').prop('disabled', false);
@@ -206,7 +206,7 @@ $('#productImageForm').on('submit', function(e) {
                     .show();
 
                 // Re-enable Save button if failed
-                $saveBtn.prop('disabled', false).html('Save');
+                $saveBtn.prop('disabled', false).html('<i class="bi bi-check-circle"></i> Save');
                 isSubmitting = false; // allow retry
 
                 setTimeout(() => {
@@ -225,7 +225,7 @@ $('#productImageForm').on('submit', function(e) {
                 .show();
 
             // Re-enable Save button if AJAX error
-            $saveBtn.prop('disabled', false).html('Save');
+            $saveBtn.prop('disabled', false).html('<i class="bi bi-check-circle"></i> Save');
             isSubmitting = false; // allow retry
 
             setTimeout(() => {
@@ -350,9 +350,9 @@ $(document).ready(function() {
                     <div class="image-preview mt-2 d-flex flex-wrap gap-2"></div>
                 </div>
 
-                <!-- Side Images Upload -->
+                <!-- Back Images Upload -->
                 <div class="mb-3">
-                    <label class="form-label">Upload Side Images (min 1)</label>
+                    <label class="form-label">Upload Back Images (min 1)</label>
                     <input type="file" class="form-control image-input" name="colors[${index}][side_image][]" multiple accept="image/*">
                     <div class="image-preview mt-2 d-flex flex-wrap gap-2"></div>
                 </div>
@@ -576,9 +576,9 @@ $(document).ready(function() {
 
 <script>
     $(document).ready(function() {
-    const minWidth = 500;
+    const minWidth = 100;
     const maxWidth = 2000;
-    const minHeight = 500;
+    const minHeight = 100;
     const maxHeight = 2000;
 
     $(document).on('change', '.image-input', function() {
