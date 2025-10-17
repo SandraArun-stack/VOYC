@@ -74,6 +74,25 @@ public function update()
 					'msg' => 'Invalid Email Format.'
 				]);
 			}
+
+             $cleanPhone = preg_replace('/[^0-9+\-\s]/', '', $phone); // keep only digits, +, -, spaces
+    $cleanPhone = str_replace(' ', '', $cleanPhone); // remove spaces for length check
+
+    if (strlen($cleanPhone) < 6) {
+        return $this->response->setJSON([
+            'status' => 'error',
+            'msg'    => 'Phone number must be at least 6 digits long.'
+        ]);
+    }
+
+    if (strlen($cleanPhone) > 15) {
+        return $this->response->setJSON([
+            'status' => 'error',
+            'msg'    => 'Phone number cannot exceed 15 digits.'
+        ]);
+    }
+
+    
     $model = new \App\Models\Admin\ProfileModel();
 
     if ($model->updateProfile($us_Id, $data)) {

@@ -227,7 +227,7 @@
                                                                 <input type="file" class="form-control image-input" name="colors[0][images][]" multiple>
                                                             </div>
                                                             <div class="mt-3">
-                                                                <label class="form-label">Upload Side Image</label>
+                                                                <label class="form-label">Upload Back Image</label>
                                                                 <input type="file" class="form-control image-input" name="colors[0][side_image][]" multiple>
                                                             </div>
                                                             <div class="mt-3">
@@ -253,7 +253,13 @@
                                         <?php endif; ?>
 
                                         <div>
+                                           <button type="button" class="btn btn-secondary" style="font-size:14px;"
+                                                    onclick="window.location.href='<?= base_url('admin/product/image/' . $pr_id); ?>'">
+                                                <i class="bi bi-x-circle"></i> Discard
+                                            </button>
+
                                             <button type="submit" class="btn btn-primary">
+                                                <i class="bi bi-check-circle"></i>
                                                 <?= isset($pr_id) && !empty($productimages) ? 'Update' : 'Save' ?>
                                             </button>
                                         </div>
