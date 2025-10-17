@@ -26,8 +26,14 @@ class Cart extends Controller
 
         $cartItems = $this->CartModel->getCartItems($userId);
 
+        $cartpriceTotal = $this->CartModel->getCartPrice($userId);
+
+
         return view('common/header')
-            . view('cart', ['cartItems' => $cartItems])
+            . view('cart', [
+                'cartItems' => $cartItems,
+                'cartpriceTotal' => $cartpriceTotal
+            ])
             . view('common/footer')
             . view('pagescripts/cartjs');
     }
@@ -49,5 +55,26 @@ class Cart extends Controller
             return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to update']);
         }
     }
+    public function updateQuantity()
+    {
+        $cartId = $this->request->getPost('cart_id');
+        $quantity = $this->request->getPost('quantity');
+
+        if (!$cartId || !$quantity) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Invalid input data'
+            ]);
+        }
+
+        $cartModel = new \App\Models\CartModel();
+        $cartModel->update($cartId, ['cart_Quantity' => $quantity]);
+
+        return $this->response->setJSON([
+            'status' => 'success',
+            'message' => 'Quantity updated successfully'
+        ]);
+    }
+
 
 }

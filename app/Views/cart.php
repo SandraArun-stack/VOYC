@@ -30,9 +30,10 @@
                             </tr>
                         </thead>
                         <tbody>
+
                             <?php if (!empty($cartItems)): ?>
                                 <?php foreach ($cartItems as $item): ?>
-                                    <tr>
+                                    <tr data-cartid="<?= esc($item['cart_Id']) ?>">
                                         <td class="cart__product__item">
                                             <?php
                                             $designImage = !empty($item['front_Image']) ? $item['front_Image'] : null;
@@ -60,13 +61,15 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="cart__price">₹ 150.0</td>
+                                        <td class="cart__price">₹ <?= esc($item['prv_price']) ?></td>
                                         <td class="cart__quantity">
                                             <div class="pro-qty">
-                                                <input type="text" value="1">
+                                                <input type="text" value="<?= esc($item['cart_Quantity']) ?>">
                                             </div>
                                         </td>
-                                        <td class="cart__total">₹ 300.0</td>
+                                        <td class="cart__total">₹
+                                            <?= number_format($item['prv_price'] * $item['cart_Quantity'], 2) ?>
+                                        </td>
                                         <td class="cart__close">
                                             <span class="icon_close cart-remove"
                                                 data-cart-id="<?= esc($item['cart_Id']) ?>"></span>
@@ -109,13 +112,27 @@
             <div class="col-lg-4 offset-lg-2">
                 <div class="cart__total__procced">
                     <h6>Cart total</h6>
+                    <?php
+                    $calculatedTotal = 0;
+                    if (!empty($cartItems)) {
+                        foreach ($cartItems as $item) {
+                            $calculatedTotal += $item['prv_price'] * $item['cart_Quantity'];
+                        }
+                    }
+                    ?>
+                    <!-- <ul>
+                        <li>Subtotal <span id="subtotal-amount">₹ <?= number_format($calculatedTotal, 2) ?></span></li>
+                        <li>Total <span id="total-amount">₹ <?= number_format($calculatedTotal, 2) ?></span></li>
+                    </ul> -->
                     <ul>
-                        <li>Subtotal <span>₹ 750.0</span></li>
-                        <li>Total <span>₹ 750.0</span></li>
+                        <li>Subtotal <span id="subtotal-amount">₹ 0.00</span></li>
+                        <li>Total <span id="total-amount">₹ 0.00</span></li>
                     </ul>
+
                     <a href="#" class="primary-btn">Proceed to checkout</a>
                 </div>
             </div>
+
         </div>
     </div>
 </section>

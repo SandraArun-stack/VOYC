@@ -47,7 +47,7 @@ class Tshirt extends Controller
     //     }
 
     // }
-    
+
     public function index($prId = null, $priId = null)
     {
         if (!empty($prId) && !empty($priId)) {
@@ -94,7 +94,17 @@ class Tshirt extends Controller
         $sleeveImageData = $this->request->getPost('sleeve');
         $prId = $this->request->getPost('prId');
         $priId = $this->request->getPost('priId');
+        $prvId = $this->request->getPost('prvId');
 
+        if (empty($prvId)) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Select the Size You Want.'
+            ]);
+        }
+
+
+        // echo $prvId;exit();
         if (!$frontImageData && !$backImageData && !$sleeveImageData) {
             return $this->response->setJSON([
                 'status' => 'error',
@@ -136,7 +146,10 @@ class Tshirt extends Controller
             'pr_Id' => $prId,
             'pri_Id' => $priId,
             'design_Id' => $designId,
-            'created_on' => date('Y-m-d H:i:s')
+            'created_on' => date('Y-m-d H:i:s'),
+            'prv_Id' => $prvId,
+            'cart_Quantity' => 1
+
         ];
 
         $this->CartModel->insert($cartData);

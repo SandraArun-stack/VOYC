@@ -29,7 +29,7 @@
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/aos.css" type="text/css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
-    
+
     <link rel="icon" href="<?= base_url() . ASSET_PATH; ?>assets/img/favicon.ico" type="image/x-icon">
 </head>
 
@@ -126,23 +126,21 @@
                                     <div class="tip">2</div>
                                 </a>
                             </li>
-                            <li>
-                                <?php if ($session->get('isLoggedIn')): ?>
+                            <?php if ($session->get('isLoggedIn')): ?>
+                                <li>
                                     <?php $userId = $session->get('user_id'); ?>
                                     <a href="<?= base_url('cart/' . $userId); ?>"><i class="bi bi-cart"></i>
                                         <div class="tip">2</div>
                                     </a>
-                                <?php endif; ?>
-                            </li>
+                                </li>
+                            <?php endif; ?>
                             <li>
                                 <a href="<?= base_url('tshirt_Customisation'); ?>"><img class="design_icon"
                                         src="<?= base_url() . ASSET_PATH; ?>assets/img/design.png" alt="">
-                                    <div class="tip">2</div>
                                 </a>
                             </li>
                             <li>
                                 <a href="#" id="leader_board"><i class="bi bi-award-fill"></i>
-                                    <div class="tip">2</div>
                                 </a>
                             </li>
                         </ul>
@@ -159,13 +157,12 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content p-2">
                 <div id="loginView">
-                    <div
-                        class="modal-header border-0 d-flex justify-content-center align-items-center flex-column pb-0">
+                    <div class="modal-header border-0 d-flex justify-content-center align-items-center flex-column pb-0">
                         <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
                         <h3 class="auth-title mb-0 w-100 text-center">Sign In</h3>
                         <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                     </div>
-                    <div class="alert alert-success mt-2 w-auto d-none" id="login_msg_alert"></div>
+                    <div class="alert alert-success m-3 p-2 w-auto d-none" id="login_msg_alert"></div>
                     <div class="modal-body">
                         <form id="loginForm">
                             <label>Email</label>
@@ -192,7 +189,7 @@
                         <h3 class="auth-title mb-0  w-100  text-center">Step Into Your Style</h3>
                         <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                     </div>
-                    <div class="alert alert-success mt-2 w-auto d-none" id="reg_msg_alert"></div>
+                    <div class="alert alert-success  m-3 p-2 w-auto d-none" id="reg_msg_alert"></div>
                     <div class="modal-body">
                         <form id="registerForm">
                             <label>Name</label><span>&nbsp;*</span>
@@ -246,3 +243,4 @@
             </div>
         </div>
     </div>
+    

@@ -19,6 +19,7 @@ $routes->get('contact', 'Contact::index');
 $routes->get('cart', 'Cart::index');
 $routes->get('cart/(:num)', 'Cart::index/$1');
 $routes->post('cart/remove', 'Cart::remove');
+$routes->post('cart/updateQuantity', 'Cart::updateQuantity');
 
 //Tshirt Customisation
 $routes->get('tshirt_Customisation', 'Tshirt::index');

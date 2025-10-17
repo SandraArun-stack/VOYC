@@ -197,10 +197,10 @@ $(document).ready(function () {
             data: formDataLogin,
             dataType: 'json',
             beforeSend: function () {
-                $('#btn_login').prop('disabled', true).text('Registering...');
+                $('#btn_login').prop('disabled', true).text('Login...');
             },
             success: function (response) {
-                $('#btn_login').prop('disabled', false).text('Register');
+                $('#btn_login').prop('disabled', false).text('Login');
 
                 if (response.status === 'success') {
                     $alertBox

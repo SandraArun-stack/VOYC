@@ -462,15 +462,24 @@ input[type="file"] {
     border: 1px solid #999;
     cursor: pointer;
 }
-.color_small_container{
-    gap:10px;
+
+.color_small_container {
+    gap: 10px;
 }
+
 .color-preview.selected {
     border: 2px solid #007bff;
 }
+
 .size-box {
     min-width: 60px;
     text-align: center;
+}
+
+.selectable-size.selected {
+    background-color: #000;
+    color: white;
+    border-color: #000;
 }
 
 @keyframes fadeDown {
