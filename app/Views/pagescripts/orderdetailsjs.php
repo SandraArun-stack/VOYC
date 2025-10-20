@@ -1,4 +1,4 @@
-<script>
+<!-- <script>
 $(document).ready(function () {
 
     // Intercept form submission
@@ -20,6 +20,75 @@ $(document).ready(function () {
             },
             error: function () {
                 alert('⚠️ Something went wrong while saving address!');
+            }
+        });
+    });
+
+});
+</script> -->
+
+<script>
+$(document).ready(function () {
+
+    function showMessage(message, type = 'success') {
+        var box = $('#messageBox');
+        box
+            .removeClass('alert-success alert-danger alert-warning')
+            .addClass(type === 'success' ? 'alert-success' :
+                      type === 'error' ? 'alert-danger' : 'alert-warning')
+            .html(message)
+            .fadeIn(300);
+
+        // Auto-hide after 4 seconds
+        setTimeout(function() {
+            box.fadeOut(400);
+        }, 4000);
+    }
+
+    $('.checkout__form').on('submit', function (e) {
+        e.preventDefault();
+
+        // Collect cart items
+        var cartItems = [];
+        $('.checkout__order__product ul li').each(function(index, el){
+            if(index === 0) return; // skip header
+            var totalText = $(el).find('span').last().text().replace('₹','').trim();
+            var qtyMatch = $(el).text().match(/Qty: (\d+)/);
+            var quantity = qtyMatch ? parseInt(qtyMatch[1]) : 1;
+
+            cartItems.push({
+                pr_Id: $(el).data('prid') || null,
+                od_Quantity: quantity,
+                od_Original_Price: $(el).data('price') || 0,
+                od_Selling_Price: $(el).data('price') || 0,
+                od_Grand_Total: parseFloat(totalText)
+            });
+        });
+
+        // Send form + items
+        var formData = $(this).serializeArray();
+        formData.push({name: 'products', value: JSON.stringify(cartItems)});
+
+        $.ajax({
+            url: "<?= base_url('orderdetails/placeOrder') ?>",
+            method: "POST",
+            data: formData,
+            dataType: "json",
+            beforeSend: function() {
+                showMessage('⏳ Placing your order...', 'warning');
+            },
+            success: function(response) {
+                if(response.status === 'success') {
+                    showMessage(' ' + response.message, 'success');
+                    setTimeout(function(){
+                        window.location.href = "<?= base_url('') ?>"; // lets add the paymentgateway
+                    }, 2000);
+                } else {
+                    showMessage('❌ ' + response.message, 'error');
+                }
+            },
+            error: function() {
+                showMessage('⚠️ Something went wrong while placing your order!', 'error');
             }
         });
     });

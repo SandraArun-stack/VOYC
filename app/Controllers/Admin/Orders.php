@@ -77,11 +77,11 @@ class Orders extends BaseController
 
                 'cust_Name' => $row->cust_Name ?? 'N/A', // Send raw name only, not link
                 'od_Id' => $row->od_Id,
-                'add_Email' => $email ?: 'N/A',   // ← Now from od_Shipping_Address
-                'add_Phone' => $phone ?: 'N/A',
+                'add_Email' => $row->add_Email ?? 'N/A',   // ← Now from od_Shipping_Address
+                'add_Phone' => $row->add_Phone ?? 'N/A',
                 'pr_Code' => $row->pr_Code ?? 'N/A',
                 'od_Quantity' => $row->od_Quantity ?? 'N/A',
-                'od_createdon' => !empty($row->od_createdon) ? date('d M Y, h:i A', strtotime($row->od_createdon)) : 'N/A',
+                'od_createdon' => !empty($row->od_createdon) ? date('d M Y', strtotime($row->od_createdon)) : 'N/A',
                 'od_Status' => $this->getStatusLabel($row->od_Status),
                 'actions' => '<a href="' . base_url('admin/orders/view/' . $row->od_Id) . '">
                                     <i class="fa fa-eye"></i></a>'

@@ -63,4 +63,11 @@ class CartModel extends Model
         return $totalPrice;
     }
 
+
+   public function clearCart($userId)
+    {
+        return $this->where('cust_Id', $userId)->delete();
+    }
+
+
 }
