@@ -135,7 +135,7 @@
                                 </li>
                             <?php endif; ?>
                             <li>
-                                <a href="<?= base_url('tshirt_Customisation'); ?>"><img class="design_icon"
+                                <a href="<?= base_url('allCustomizableProducts'); ?>"><img class="design_icon"
                                         src="<?= base_url() . ASSET_PATH; ?>assets/img/design.png" alt="">
                                 </a>
                             </li>
@@ -157,20 +157,43 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content p-2">
                 <div id="loginView">
-                    <div class="modal-header border-0 d-flex justify-content-center align-items-center flex-column pb-0">
+                    <!-- <div class="modal-header border-0 d-flex justify-content-center align-items-center flex-column pb-0 position-relative">
+                        <button type="button" class="btn border-0 bg-transparent position-absolute top-0 end-0 m-2"
+                            data-bs-dismiss="modal" aria-label="Close" style="font-size: 1.5rem;">
+                            <i class="bi bi-x-square text-dark"></i>
+                        </button>
                         <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
                         <h3 class="auth-title mb-0 w-100 text-center">Sign In</h3>
-                        <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+
+                    </div> -->
+                    <div class="modal-header border-0 position-relative p-2">
+                        <button type="button" class="btn border-0 bg-transparent position-absolute login_close"
+                            data-bs-dismiss="modal" aria-label="Close">
+                            <i class="bi bi-x-square text-dark"></i>
+                        </button>
+
+                        <div class="d-flex flex-column justify-content-center align-items-center w-100 pt-3 pb-2">
+                            <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
+                            <h3 class="auth-title mb-0 text-center">Sign In</h3>
+                        </div>
                     </div>
+
                     <div class="alert alert-success m-3 p-2 w-auto d-none" id="login_msg_alert"></div>
                     <div class="modal-body">
                         <form id="loginForm">
-                            <label>Email</label>
+                            <label>Email</label><span>&nbsp;*</span>
                             <input type="text" name="login_email" class="form-control mb-3"
                                 placeholder="Enter Your Email" required>
-                            <label>Password</label>
-                            <input type="password" name="login_password" class="form-control mb-3"
-                                placeholder="Enter the Password" required>
+                            <label>Password</label><span>&nbsp;*</span>
+                            <div class="eye_icon mb-3">
+                                <input type="password" name="login_password" class="form-control"
+                                    id="login_toggle_password" placeholder="Enter the Password" required>
+                                <i class="bi bi-eye-slash toggle-password toggle_eye_icon"
+                                    data-target="#login_toggle_password"></i>
+                            </div>
+
+                            <label>Verification</label>
+                            <div class="g-recaptcha mb-3" data-sitekey="6Le-VXcrAAAAAFdEqJLtM5DxM6GoGl7cJdV6hknL"></div>
                             <button type="button" id="btn_login" class="btn btn-primary w-100"
                                 data-url="<?= base_url('loginUser') ?>">Sign In</button>
                         </form>
@@ -182,12 +205,22 @@
 
                 <!-- REGISTER VIEW -->
                 <div id="registerView">
-                    <div
-                        class="modal-header border-0 d-flex justify-content-center align-items-center flex-column pb-0">
+                    <!-- <div class="modal-header border-0 d-flex justify-content-center align-items-center flex-column pb-0">
                         <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
 
                         <h3 class="auth-title mb-0  w-100  text-center">Step Into Your Style</h3>
-                        <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+
+                    </div> -->
+                    <div class="modal-header border-0 position-relative p-2">
+                        <button type="button" class="btn border-0 bg-transparent position-absolute login_close"
+                            data-bs-dismiss="modal" aria-label="Close">
+                            <i class="bi bi-x-square text-dark"></i>
+                        </button>
+
+                        <div class="d-flex flex-column justify-content-center align-items-center w-100 pt-3 pb-2">
+                            <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
+                            <h3 class="auth-title mb-0 text-center">Step Into Your Style</h3>
+                        </div>
                     </div>
                     <div class="alert alert-success  m-3 p-2 w-auto d-none" id="reg_msg_alert"></div>
                     <div class="modal-body">
@@ -217,7 +250,7 @@
 
                             <button type="button" class="btn btn-primary w-100"
                                 data-url="<?= base_url('registerUser') ?>" id="btn_register">
-                                Register
+                                Sign Up
                             </button>
                         </form>
                         <div class="text-center mt-3">
@@ -243,4 +276,3 @@
             </div>
         </div>
     </div>
-    

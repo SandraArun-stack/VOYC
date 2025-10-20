@@ -481,9 +481,37 @@ input[type="file"] {
     color: white;
     border-color: #000;
 }
-.proceed_check_out:hover{
- color:#fff !important;
+
+.proceed_check_out:hover {
+    color: #fff !important;
 }
+
+.login_close {
+    top: 10px;
+    right: 10px;
+    font-size: 1.5rem;
+}
+
+.login_close:focus {
+    box-shadow: none;
+
+}
+
+.product__details__text p {
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    max-width: 100%;
+
+}
+
+.tab-content p {
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    max-width: 100%;
+}
+
 @keyframes fadeDown {
     0% {
         opacity: 0;
@@ -577,6 +605,7 @@ input[type="file"] {
 .modal-content {
     position: relative;
     z-index: 1055 !important;
+    margin-top: auto;
 }
 
 .header__right__auth {

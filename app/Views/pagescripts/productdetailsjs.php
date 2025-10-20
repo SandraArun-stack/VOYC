@@ -22,30 +22,7 @@
             });
         });
 
-        // const userId = "<?= session()->get('user_id') ?? '' ?>";
-        // const authModal = new bootstrap.Modal($('#authModal')[0], {
-        //     backdrop: true,
-        //     keyboard: true
-        // });
 
-        // $('#addToCartBtn').on('click', function (e) {
-        //     e.preventDefault();
-        //     if (!userId) {
-        // $('#registerView').hide();
-        // $('#loginView').show();
-        // authModal.show();
-        //     } else {
-        //         const selectedSize = $('input[name="product_size"]:checked').val();
-        //         if (!selectedSize) {
-        //             alert("Please select a size before adding to cart.");
-        //             return;
-        //         }
-
-        //         const cartUrl = "<?= base_url('cart'); ?>/" + userId;
-        //         window.location.href = cartUrl;
-        //     }
-        // });
-        
         const userId = "<?= session()->get('user_id') ?? '' ?>";
         const authModal = new bootstrap.Modal($('#authModal')[0], {
             backdrop: true,

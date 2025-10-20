@@ -11,6 +11,7 @@ class ProductDetailModel extends Model
         'pr_Id',
         'pri_Thumbnail',
         'pri_File_Name',
+        'pri_Sleev_Name',
         'pri_Status',
         'pri_createdon',
         'pri_createdby',
@@ -34,7 +35,7 @@ class ProductDetailModel extends Model
         }
 
         $images = $this->db->table('product_image pi')
-            ->select('pi.pri_Id, pi.pri_Thumbnail, pi.pri_File_Name, pi.color_details')
+            ->select('pi.pri_Id, pi.pri_Thumbnail, pi.pri_File_Name,pi.pri_Sleev_Name, pi.color_details')
             ->where('pi.pr_Id', $prId)
             ->where('pi.pri_Id', $priId)
             ->where('pi.pri_Status', 1)
@@ -50,6 +51,14 @@ class ProductDetailModel extends Model
 
             if (!empty($img['pri_File_Name'])) {
                 $fileNames = json_decode($img['pri_File_Name'], true);
+                if (is_array($fileNames)) {
+                    foreach ($fileNames as $file) {
+                        $allImages[] = strtolower(trim($file));
+                    }
+                }
+            }
+            if (!empty($img['pri_Sleev_Name'])) {
+                $fileNames = json_decode($img['pri_Sleev_Name'], true);
                 if (is_array($fileNames)) {
                     foreach ($fileNames as $file) {
                         $allImages[] = strtolower(trim($file));

@@ -39,19 +39,15 @@
         fabric.Image.fromURL(src, function (img) {
             img.scaleToWidth(canvas.width);
             img.scaleToHeight(canvas.height);
-            img.set({
+            canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas), {
                 left: 0,
                 top: 0,
-                selectable: false,
-                evented: false
+                originX: 'left',
+                originY: 'top'
             });
 
-            if (shirtOverlay) canvas.remove(shirtOverlay);
+            // Keep reference if you ever need it for tint/color
             shirtOverlay = img;
-
-            canvas.add(shirtOverlay);
-            canvas.sendToBack(shirtOverlay);
-            canvas.renderAll();
         }, { crossOrigin: 'anonymous' });
     }
 
@@ -257,8 +253,25 @@
 
 
 
+        // $("#uploadImage").on("change", function (e) {
+        //     const file = e.target.files[0];
+        //     const reader = new FileReader();
+
+        //     reader.onload = function (f) {
+        //         fabric.Image.fromURL(f.target.result, function (img) {
+        //             img.scaleToWidth(150);
+        //             img.set({ left: 100, top: 150 });
+        //             canvas.add(img).setActiveObject(img);
+        //             canvas.renderAll();
+        //         });
+        //     };
+        //     reader.readAsDataURL(file);
+        // });
+        
         $("#uploadImage").on("change", function (e) {
             const file = e.target.files[0];
+            if (!file) return;
+
             const reader = new FileReader();
 
             reader.onload = function (f) {
@@ -268,9 +281,13 @@
                     canvas.add(img).setActiveObject(img);
                     canvas.renderAll();
                 });
+
+                $("#uploadImage").val("");
             };
+
             reader.readAsDataURL(file);
         });
+
 
 
         // Reset dress position
@@ -306,7 +323,7 @@
         });
 
         $("#saveBtn").on("click", function () {
-           
+
             // debugger;
             var $alertBox = $('#design_msg_alert');
             saveCurrentCanvasState();
@@ -499,7 +516,7 @@
     canvas.on('selection:created', function (e) {
         const obj = e.target;
         if (obj && obj.type !== 'image') {
-            toggleCustomControls(obj, true); // Ensure icons are visible when selected
+            toggleCustomControls(obj, true);
         }
     });
 
@@ -520,15 +537,14 @@
     function loadCanvasState(view) {
         canvas.clear();
 
-        // Load objects
         const objects = canvasStates[view].objects || [];
         canvas.loadFromJSON({ objects: objects }, function () {
             canvas.renderAll();
         });
 
-        // Load shirt overlay
         addOverlay(canvasStates[view].overlay);
     }
+
     function initThumbClick() {
         $(".thumbs img").on("click", function () {
             const newView = $(this).data("view");

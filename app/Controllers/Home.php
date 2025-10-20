@@ -75,10 +75,20 @@ class Home extends BaseController
     {
         $email = $this->request->getPost('login_email');
         $password = md5($this->request->getPost('login_password'));
-        
+        $captchaResponse = $this->request->getPost('g-recaptcha-response');
+
         if (empty($email) || empty($password)) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Please Fill in All Required Fields.']);
         }
+
+        $secretKey = '6Le-VXcrAAAAAKSXShzC3A8GxolszKELxQ1S-9q9';
+        $verifyResponse = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$secretKey}&response={$captchaResponse}");
+        $responseData = json_decode($verifyResponse);
+
+        if (!$responseData->success) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Captcha verification failed.']);
+        }
+
         $data = [
             'email' => $email,
             'password' => $password,

@@ -58,9 +58,8 @@ $userId = session()->get('user_id');
             </div>
             <div class="col-lg-6">
                 <div class="product__details__text">
-                    <h3><?= esc($product['pr_Name']) ?> <span>Brand: SKMEIMore Men Watches from SKMEI
-
-                        </span></h3>
+                    <h3><?= esc($product['pr_Name']) ?> 
+                    <span>Brand: SKMEIMore Men Watches from SKMEI</span></h3>
                     <div class="rating">
                         <?php
                         $avg = (float) $product['average_rating'];

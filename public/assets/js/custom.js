@@ -62,7 +62,7 @@ $(document).ready(function () {
 
     $('#load-more-reviews').on('click', function () {
         const nextReviews = $('.reviews-container .review-box').slice(shown, shown + reviewsPerPage);
-        nextReviews.slideDown(); 
+        nextReviews.slideDown();
         shown += reviewsPerPage;
         if (shown >= totalReviews) {
             $(this).fadeOut();
@@ -189,6 +189,18 @@ $(document).ready(function () {
         var loginUrl = $(this).data('url');
         var $alertBox = $('#login_msg_alert');
 
+        var captchaResponse = grecaptcha.getResponse();
+        if (!captchaResponse) {
+            $alertBox
+                .removeClass('d-none alert-success')
+                .addClass('alert alert-danger')
+                .text('Please verify you are not a robot.')
+                .fadeIn();
+            return;
+        }
+
+        formDataLogin += '&g-recaptcha-response=' + captchaResponse;
+
         $alertBox.addClass('d-none').removeClass('alert-success alert-danger').text('');
 
         $.ajax({
@@ -200,13 +212,15 @@ $(document).ready(function () {
                 $('#btn_login').prop('disabled', true).text('Login...');
             },
             success: function (response) {
+
                 $('#btn_login').prop('disabled', false).text('Login');
+                grecaptcha.reset();
 
                 if (response.status === 'success') {
                     $alertBox
                         .removeClass('d-none alert-danger')
                         .addClass('alert alert-success')
-                        .text(response.message || 'Registration successful!')
+                        .text(response.message || 'Login successful!')
                         .fadeIn();
 
                     $('#loginForm')[0].reset();
@@ -221,7 +235,7 @@ $(document).ready(function () {
                     $alertBox
                         .removeClass('d-none alert-success')
                         .addClass('alert alert-danger')
-                        .text(response.message || 'Registration failed!')
+                        .text(response.message || 'Login failed!')
                         .fadeIn();
 
                     setTimeout(() => {
@@ -245,7 +259,9 @@ $(document).ready(function () {
         });
     });
 
-
+    $('.login_close').on('click', function (e) {
+         authModal.hide();
+    });
     $('#userDropDown').on('click', function (e) {
         e.preventDefault();
         $('#logoutModal').modal('show');
