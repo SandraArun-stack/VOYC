@@ -140,7 +140,7 @@
 
                                                             <!-- File Upload -->
                                                             <div class="mt-3">
-                                                                <label class="form-label">Uploaded Thumbnail:</label>
+                                                                <label class="form-label">Uploaded Front Images:</label>
                                                                 <div class="d-flex flex-wrap gap-2 mb-2">
                                                                     <?php if (!empty($productimages) && !empty($productimages[$index]->pri_Thumbnail)): ?>
                                                                         <img src="<?= base_url('uploads/productmedia/' . $productimages[$index]->pri_Thumbnail) ?>"
@@ -164,7 +164,7 @@
                                                                 <input type="file" class="form-control" name="colors[<?= $index ?>][side_image][]" multiple>
                                                             </div>
                                                                 <div class="mt-3">
-                                                                    <label class="form-label">Uploaded Sleev Images:</label>
+                                                                    <label class="form-label">Uploaded Sleeve Images:</label>
                                                                     <div class="d-flex flex-wrap gap-2 mb-2">
                                                                         <?php 
                                                                         if (!empty($productimages) && !empty($productimages[$index]->pri_Sleev_Name)) {
@@ -231,7 +231,7 @@
                                                                 <input type="file" class="form-control image-input" name="colors[0][side_image][]" multiple>
                                                             </div>
                                                             <div class="mt-3">
-                                                                <label class="form-label">Upload Sleev Image</label>
+                                                                <label class="form-label">Upload Sleeve Image</label>
                                                                 <input type="file" class="form-control image-input" name="colors[0][sleev_image][]" multiple>
                                                             </div>
                                                         </div>

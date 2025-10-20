@@ -39,7 +39,15 @@
     { data: 'pr_Code' },
     { data: 'od_Quantity' },
     { data: 'od_createdon' },
-    { data: 'od_Status' },
+    {
+    data: 'od_Status',
+    render: function(data, type, row) {
+        if (!data) data = 'Pending'; // default value if empty
+        return data; // just show plain text, no color or button
+    },
+    orderable: false,
+    searchable: false
+},
     {
         data: 'actions',
         orderable: false,

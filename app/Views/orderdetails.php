@@ -22,6 +22,7 @@
                     here to enter your code.</h6>
                 </div> -->
             </div>
+            <div id="messageBox" class="alert alert-success" style="display: none;"></div>
             <form action="#" class="checkout__form">
                 <div class="row">
                     <div class="col-lg-8">
@@ -93,32 +94,58 @@
                         <div class="col-lg-4">
                             <div class="checkout__order">
                                 <h5>Your order</h5>
+
+                                <!-- Order Products -->
                                 <div class="checkout__order__product">
                                     <ul>
                                         <li>
                                             <span class="top__text">Product</span>
                                             <span class="top__text__right">Total</span>
                                         </li>
-                                        <li>01. Chain buck bag <span>$ 300.0</span></li>
-                                        <li>02. Zip-pockets pebbled<br /> tote briefcase <span>$ 170.0</span></li>
-                                        <li>03. Black jean <span>$ 170.0</span></li>
-                                        <li>04. Cotton shirt <span>$ 110.0</span></li>
+                                        <?php
+                                        $subtotal = 0;
+                                        if (!empty($cartItems)):
+                                            $count = 1;
+                                            foreach ($cartItems as $item):
+                                                $total = $item['prv_price'] * $item['cart_Quantity'];
+                                                $subtotal += $total;
+                                        ?>
+                                                <li data-prid="<?= $item['pr_Id'] ?>" data-price="<?= $item['prv_price'] ?>">
+                                                    <?= str_pad($count, 2, '0', STR_PAD_LEFT) ?>.
+                                                    <?= esc($item['pr_Name']) ?> 
+                                                    <small>(Qty: <?= esc($item['cart_Quantity']) ?> × ₹<?= number_format($item['prv_price'], 2) ?>)</small>
+                                                    <span>₹ <?= number_format($total, 2) ?></span>
+                                                </li>
+
+                                        <?php
+                                                $count++;
+                                            endforeach;
+                                        else:
+                                        ?>
+                                            <li>Your cart is empty.</li>
+                                        <?php endif; ?>
                                     </ul>
                                 </div>
+
+                                <!-- Order Totals -->
                                 <div class="checkout__order__total">
                                     <ul>
-                                        <li>Subtotal <span>$ 750.0</span></li>
-                                        <li>Total <span>$ 750.0</span></li>
+                                        <li>Subtotal <span>₹ <?= number_format($subtotal, 2) ?></span></li>
+                                        <li>Total <span>₹ <?= number_format($subtotal, 2) ?></span></li>
                                     </ul>
                                 </div>
-                                <div class="checkout__order__widget">
+
+
+                                <!-- <div class="checkout__order__widget">
                                     <label for="o-acc">
-                                        Create an acount?
+                                        Create an account?
                                         <input type="checkbox" id="o-acc">
                                         <span class="checkmark"></span>
                                     </label>
-                                    <p>Create am acount by entering the information below. If you are a returing customer
-                                    login at the top of the page.</p>
+                                    <p>
+                                        Create an account by entering the information below.
+                                        If you are a returning customer, login at the top of the page.
+                                    </p>
                                     <label for="check-payment">
                                         Cheque payment
                                         <input type="checkbox" id="check-payment">
@@ -129,8 +156,9 @@
                                         <input type="checkbox" id="paypal">
                                         <span class="checkmark"></span>
                                     </label>
-                                </div>
-                                <button type="submit" class="site-btn">Place oder</button>
+                                </div> -->
+
+                                <button type="submit" class="site-btn">Place order</button>
                             </div>
                         </div>
                     </div>

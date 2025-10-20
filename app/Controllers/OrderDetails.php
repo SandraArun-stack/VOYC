@@ -38,61 +38,54 @@ class OrderDetails extends Controller
             . view('pagescripts/orderdetailsjs');
     }
 
-    // Place order
-    public function placeOrder()
-    {
-        $userId = $this->session->get('user_id'); // logged-in user
-        $createdBy = $userId;
 
-        $products = $this->request->getPost('products'); 
-        if (!$products) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'No products found']);
-        }
 
-        // Save billing address
-        $addressData = [
-            'add_Name' => $this->request->getPost('add_Name'),
-            'add_BuldingNo' => $this->request->getPost('add_BuldingNo'),
-            'add_Landmark' => $this->request->getPost('add_Landmark'),
-            'add_Street' => $this->request->getPost('add_Street'),
-            'add_City' => $this->request->getPost('add_City'),
-            'add_State' => $this->request->getPost('add_State'),
-            'add_Pincode' => $this->request->getPost('add_Pincode'),
-            'add_Phone' => $this->request->getPost('add_Phone'),
-            'add_Email' => $this->request->getPost('add_Email'),
-            'add_CustId' => $userId,
-            'add_Status' => 'Active',
-            'add_createdon' => date('Y-m-d H:i:s'),
-            'add_createdby' => $createdBy
-        ];
+public function placeOrder()
+{
+    $userId = $this->session->get('user_id');
+    $createdBy = $userId;
 
-        $addressModel = new AddressModel();
-        $add_Id = $addressModel->insert($addressData); // insert and get new address ID
+    // Decode products JSON from JS
+    $productsJson = $this->request->getPost('products');
+    $products = json_decode($productsJson, true);
 
-        // Save order items
-        foreach ($products as $item) {
-            $orderData = [
-                'cus_Id' => $userId,
-                'add_Id' => $add_Id, // use saved address
-                'od_Shipping_Address' => $item['od_Shipping_Address'] ?? null,
-                'od_createdby' => $createdBy,
-                'pr_Id' => $item['pr_Id'],
-                'od_Quantity' => $item['od_Quantity'],
-                'od_Size' => $item['od_Size'] ?? null,
-                'od_Color' => $item['od_Color'] ?? null,
-                'od_Original_Price' => $item['od_Original_Price'],
-                'od_Selling_Price' => $item['od_Selling_Price'],
-                'od_DiscountValue' => $item['od_DiscountValue'] ?? 0,
-                'od_DiscountType' => $item['od_DiscountType'] ?? null,
-                'pr_Code' => $item['pr_Code'],
-                'od_Grand_Total' => $item['od_Grand_Total']
-            ];
-
-            $this->orderModel->createOrderItem($orderData);
-        }
-
-        return $this->response->setJSON(['status' => 'success', 'message' => 'Order placed successfully']);
+    if (!$products || empty($products)) {
+        return $this->response->setJSON(['status'=>'error','message'=>'No products found']);
     }
+
+    // Save billing address
+    $addressData = [
+        'add_Name' => $this->request->getPost('add_Name'),
+        'add_Landmark' => $this->request->getPost('add_Landmark'),
+        'add_Street' => $this->request->getPost('add_Street'),
+        'add_City' => $this->request->getPost('add_City'),
+        'add_State' => $this->request->getPost('add_State'),
+        'add_Pincode' => $this->request->getPost('add_Pincode'),
+        'add_Phone' => $this->request->getPost('add_Phone'),
+        'add_Email' => $this->request->getPost('add_Email'),
+        'add_CustId' => $userId,
+        'add_Status' => 'Active',
+        'add_createdon' => date('Y-m-d H:i:s'),
+        'add_createdby' => $createdBy
+    ];
+
+    $addressModel = new \App\Models\AddressModel();
+    $add_Id = $addressModel->insert($addressData);
+
+    // Save each order item
+    foreach($products as $item){
+        $item['cus_Id'] = $userId;
+        $item['add_Id'] = $add_Id;
+        $this->orderModel->createOrderItem($item);
+    }
+
+    // Clear cart
+    $cartModel = new \App\Models\CartModel();
+    $cartModel->clearCart($userId);
+
+    return $this->response->setJSON(['status'=>'success','message'=>'Order placed successfully']);
+}
+
 
     public function saveAddress()
 {

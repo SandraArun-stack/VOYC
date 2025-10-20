@@ -2,6 +2,8 @@
     // Order View JS
     $(document).ready(function () {
         var orderId = <?= json_encode($od_Id) ?>;
+        console.log("Order ID:", orderId);
+
         let originalStatus = '';
 
         $.ajax({
@@ -9,6 +11,7 @@
             type: 'GET',
             dataType: 'json',
             success: function (res) {
+                console.log("AJAX response:", res); 
                 if (res.status) {
                     const order = res.data.order;
                     const customer = res.data.customer;
@@ -81,11 +84,16 @@
                     ).join(', ');
 
                     $('#delivery-details').html(`
-                    <p><strong>Name:</strong> ${name}</p>
-                    <p>${middle}</p>
-                    <p><strong>Phone:</strong> ${phone}</p>
-                    <p><strong>Email:</strong> ${email}</p>
-                                    
+                    <p><strong>Name:</strong> ${address.add_Name || 'N/A'}</p>
+                    <p>
+                        ${address.add_BuldingNo || ''} ${address.add_Street || ''},<br>
+                        ${address.add_Landmark || ''},<br>
+                        ${address.add_City || ''}, ${address.add_State || ''},<br>
+                        ${address.add_Pincode || ''}
+                    </p>
+                    <p><strong>Phone:</strong> ${address.add_Phone || 'N/A'}</p>
+                    <p><strong>Email:</strong> ${address.add_Email || 'N/A'}</p>
+                                                    
                 `);
                 }
             },
@@ -110,7 +118,7 @@
                 return;
             }
             $.ajax({
-                url: '<?= base_url('admin/orders/loadStatus/') ?>' + orderId,
+                url: '<?= base_url('admin/orders/orderStatusUpdation/') ?>' + orderId,
                 type: 'POST',
                 dataType: 'json',
                 data: {

@@ -29,7 +29,7 @@ class OrdersModel extends Model
                 'product.pr_Name',
                 'product.pr_Code',
                 'customer.cust_Name',
-                // 'customer.cust_Email',
+                'customer.cust_Email',
                 // 'customer.cust_Phone'
                 'address.add_Email',
                 'address.add_Phone'
@@ -78,18 +78,28 @@ class OrdersModel extends Model
 
 
 
+    // public function getOrder($od_id)
+    // {
+    //     return $this->db->table('order_detail')
+    //         ->select('order_detail.*, product.pr_Code, product.pr_Description, product.pr_Name')
+    //         ->join('product', 'product.pr_Id = order_detail.pr_Id')
+    //         ->where('order_detail.od_Id', $od_id)
+    //         ->whereIn('order_detail.od_Status', [1, 2, 3, 4]) // include only specific statuses
+    //         ->get()
+    //         ->getRow();
+
+    // }
+
+
     public function getOrder($od_id)
     {
         return $this->db->table('order_detail')
             ->select('order_detail.*, product.pr_Code, product.pr_Description, product.pr_Name')
             ->join('product', 'product.pr_Id = order_detail.pr_Id')
             ->where('order_detail.od_Id', $od_id)
-            ->whereIn('order_detail.od_Status', [1, 2, 3, 4]) // include only specific statuses
             ->get()
             ->getRow();
-
     }
-
 
     public function getCustomer($cust_Id)
     {
@@ -102,7 +112,7 @@ class OrdersModel extends Model
     public function getAddress($add_Id)
     {
         return $this->db->table('address')
-            ->where('add_Id ', $add_Id)
+            ->where('add_Id', $add_Id)
             // ->where('add_default', '1')
             ->get()
             ->getRow();
