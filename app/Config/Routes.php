@@ -31,6 +31,8 @@ $routes->post('registerUser', 'Home::registerUser');
 $routes->post('loginUser', 'Home::loginUser');
 $routes->post('logoutUser', 'Home::logoutUser');
 
+//All Customizable Products
+$routes->get('allCustomizableProducts', 'AllCustProduct::index');
 
 
 
@@ -236,8 +238,8 @@ $routes->get('admin/get/themes', 'Admin\Themes::fetch_theme');
 $routes->get('admin/orders', 'Admin\Orders::index');
 $routes->post('admin/orders/List', 'Admin\Orders::ajaxList');
 $routes->get('admin/orders/view/(:num)', 'Admin\Orders::orderView/$1');
-$routes->post('admin/orders/loadStatus/(:num)', 'Admin\Orders::orderStatusUpdation/$1');
-
+// $routes->post('admin/orders/loadStatus/(:num)', 'Admin\Orders::orderStatusUpdation/$1');
+$routes->post('admin/orders/orderStatusUpdation/(:num)', 'Admin\Orders::orderStatusUpdation/$1');
 
 
 
@@ -249,7 +251,8 @@ $routes->post('admin/profile/update', 'Admin\Profile::update');
 $routes->match(['get', 'post'], 'admin/profile/change_password', 'Admin\Profile::change_password');
 $routes->post('admin/profile/list', 'Admin\Profile::ajaxList');
 
-
+//settings
+$routes->get('admin/settings', 'Admin\Settings::index');
 
 
 //logout
