@@ -188,7 +188,7 @@
                             <div class="eye_icon mb-3">
                                 <input type="password" name="login_password" class="form-control"
                                     id="login_toggle_password" placeholder="Enter the Password" required>
-                                <i class="bi bi-eye-slash toggle-password toggle_eye_icon"
+                                <i class="bi bi-eye-slash toggle-password toggle_eye_icon_register"
                                     data-target="#login_toggle_password"></i>
                             </div>
 

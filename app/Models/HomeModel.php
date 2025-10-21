@@ -24,7 +24,7 @@ class HomeModel extends Model
     public function registerUser($data)
     {
         if ($this->where('cust_Email', $data['email'])->first()) {
-            return ['status' => 'error', 'message' => 'Email already registered.'];
+            return ['status' => 'error', 'message' => 'Email Already Registered.'];
         }
 
         $insertData = [
@@ -49,11 +49,11 @@ class HomeModel extends Model
         $user = $this->where('cust_Email', $data['email'])->first();
 
         if (!$user) {
-            return ['status' => 'error', 'message' => 'Email not found.'];
+            return ['status' => 'error', 'message' => 'Incorrect Email Id or Password'];
         }
 
         if ($user['cust_Password'] !== $data['password']) {
-            return ['status' => 'error', 'message' => 'Invalid password.'];
+            return ['status' => 'error', 'message' => 'Incorrect Email Id or Password'];
         }
 
         return [

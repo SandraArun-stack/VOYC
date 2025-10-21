@@ -20,6 +20,7 @@
             <div class="col-lg-12">
                 <div class="shop__cart__table">
                     <table>
+                        <?php if (!empty($cartItems)): ?>
                         <thead>
                             <tr>
                                 <th>Product</th>
@@ -31,7 +32,7 @@
                         </thead>
                         <tbody>
 
-                            <?php if (!empty($cartItems)): ?>
+                            
                                 <?php foreach ($cartItems as $item): ?>
                                     <tr data-cartid="<?= esc($item['cart_Id']) ?>">
                                         <td class="cart__product__item">
@@ -76,13 +77,11 @@
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
+                                
+                            </tbody>
                             <?php else: ?>
-                                <tr>
-                                    <td colspan="2" class="text-center">Your cart is empty.</td>
-                                </tr>
+                                    <p>Your cart is empty.</p>
                             <?php endif; ?>
-
-                        </tbody>
                     </table>
                 </div>
             </div>
