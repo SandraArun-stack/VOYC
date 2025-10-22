@@ -20,18 +20,19 @@
             <div class="col-lg-12">
                 <div class="shop__cart__table">
                     <table>
-                        <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                        <?php if (!empty($cartItems)): ?>
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                            <?php if (!empty($cartItems)): ?>
+
                                 <?php foreach ($cartItems as $item): ?>
                                     <tr data-cartid="<?= esc($item['cart_Id']) ?>">
                                         <td class="cart__product__item">
@@ -71,18 +72,20 @@
                                             <?= number_format($item['prv_price'] * $item['cart_Quantity'], 2) ?>
                                         </td>
                                         <td class="cart__close">
-                                            <span class="icon_close cart-remove"
-                                                data-cart-id="<?= esc($item['cart_Id']) ?>"></span>
+                                            <!-- <span class="icon_close cart-remove"
+                                                data-cart-id="<?= esc($item['cart_Id']) ?>"></span> -->
+                                                <span class="cart-remove" data-cart-id="<?= esc($item['cart_Id']) ?>">
+                                                <i class="bi bi-trash3-fill"  ></i>
+
+                                                </span>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="2" class="text-center">Your cart is empty.</td>
-                                </tr>
-                            <?php endif; ?>
 
-                        </tbody>
+                            </tbody>
+                        <?php else: ?>
+                            <p>Your cart is empty.</p>
+                        <?php endif; ?>
                     </table>
                 </div>
             </div>
@@ -129,7 +132,8 @@
                         <li>Total <span id="total-amount">₹ 0.00</span></li>
                     </ul>
 
-                    <a href="<?= base_url('orderdetails'); ?>" class="primary-btn proceed_check_out">Proceed to checkout</a>
+                    <a href="<?= base_url('orderdetails'); ?>" class="primary-btn proceed_check_out">Proceed to
+                        checkout</a>
                 </div>
             </div>
 

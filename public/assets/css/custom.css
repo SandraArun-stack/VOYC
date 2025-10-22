@@ -475,7 +475,9 @@ input[type="file"] {
     min-width: 60px;
     text-align: center;
 }
-
+.size-box:hover{
+    cursor: pointer;
+}
 .selectable-size.selected {
     background-color: #000;
     color: white;
@@ -605,7 +607,7 @@ input[type="file"] {
 .modal-content {
     position: relative;
     z-index: 1055 !important;
-    margin-top: auto;
+    /* margin-top: auto; */
 }
 
 .header__right__auth {
@@ -619,6 +621,14 @@ input[type="file"] {
 .toggle_eye_icon {
     position: absolute;
     top: 75%;
+    right: 15px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.toggle_eye_icon_register {
+    position: absolute;
+    top: 50%;
     right: 15px;
     transform: translateY(-50%);
     cursor: pointer;

@@ -93,7 +93,7 @@
                             <span class="pcoded-mcaret"></span>
                         </a>
                     </li>
-                    <li class="<?= ($segment == 'themes') ? 'active' : '' ?>">
+                    <li class="<?= ($segment == 'settings') ? 'active' : '' ?>">
                         <a href="<?php echo base_url('admin/settings') ?>" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="bi bi-gear"></i><b>D</b></span>
                             <span class="pcoded-mtext" data-i18n="nav.dash.main">Settings</span>

@@ -41,7 +41,7 @@ class Cart extends Controller
     {
         $cartId = $this->request->getPost('cart_Id');
 
-        if (!$cartId) {
+        if (empty($cartId)) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Cart ID missing']);
         }
 

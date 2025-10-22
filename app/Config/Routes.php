@@ -253,8 +253,7 @@ $routes->post('admin/profile/list', 'Admin\Profile::ajaxList');
 
 //settings
 $routes->get('admin/settings', 'Admin\Settings::index');
-
-
+$routes->post('admin/settings/updateCustomizationCharge', 'Admin\Settings::updateCustomizationCharge');
 //logout
 $routes->post('admin/logout', 'Admin\Auth::logout');
 
@@ -290,6 +289,6 @@ $routes->post('admin/save', 'Admin::createnew');
 //});
 
 //oreder details
-$routes->get('orderdetails', 'OrderDetails::index');  
+$routes->get('orderdetails', 'OrderDetails::index');
 $routes->post('orderdetails/placeOrder', 'OrderDetails::placeOrder');
 $routes->post('orderdetails/saveAddress', 'OrderDetails::saveAddress');
