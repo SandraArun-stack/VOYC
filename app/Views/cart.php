@@ -21,18 +21,18 @@
                 <div class="shop__cart__table">
                     <table>
                         <?php if (!empty($cartItems)): ?>
-                        <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                            
+
                                 <?php foreach ($cartItems as $item): ?>
                                     <tr data-cartid="<?= esc($item['cart_Id']) ?>">
                                         <td class="cart__product__item">
@@ -72,16 +72,20 @@
                                             <?= number_format($item['prv_price'] * $item['cart_Quantity'], 2) ?>
                                         </td>
                                         <td class="cart__close">
-                                            <span class="icon_close cart-remove"
-                                                data-cart-id="<?= esc($item['cart_Id']) ?>"></span>
+                                            <!-- <span class="icon_close cart-remove"
+                                                data-cart-id="<?= esc($item['cart_Id']) ?>"></span> -->
+                                                <span class="cart-remove" data-cart-id="<?= esc($item['cart_Id']) ?>">
+                                                <i class="bi bi-trash3-fill"  ></i>
+
+                                                </span>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
-                                
+
                             </tbody>
-                            <?php else: ?>
-                                    <p>Your cart is empty.</p>
-                            <?php endif; ?>
+                        <?php else: ?>
+                            <p>Your cart is empty.</p>
+                        <?php endif; ?>
                     </table>
                 </div>
             </div>
@@ -128,7 +132,8 @@
                         <li>Total <span id="total-amount">₹ 0.00</span></li>
                     </ul>
 
-                    <a href="<?= base_url('orderdetails'); ?>" class="primary-btn proceed_check_out">Proceed to checkout</a>
+                    <a href="<?= base_url('orderdetails'); ?>" class="primary-btn proceed_check_out">Proceed to
+                        checkout</a>
                 </div>
             </div>
 

@@ -5,23 +5,26 @@ use CodeIgniter\Model;
 
 class SettingsModel extends Model
 {
+    protected $table = 'common_table';
+    protected $primaryKey = 'common_table_Id';
+    protected $allowedFields = ['common_table_Id', 'field', 'value'];
 
-    public function __construct()
+    // Fetch the customization charge row
+    public function getCustomizationCharge()
     {
-        $this->db = \Config\Database::connect();
+        return $this->where('field', 'customization_charge')->first();  // This returns an object
     }
 
-    protected $table = 'category';
-    protected $primaryKey = 'cat_Id';
-    protected $allowedFields = ['cat_Name', 'cat_Discount_Value', 'cat_Discount_Type', 'cat_Status']; // Adjust to your table
-
-
-    
-
-
-
+    // Update or insert customization charge value
+    public function updateCustomizationCharge($value)
+    {
+        $existing = $this->where('field', 'customization_charge')->first();
+        if ($existing) {
+            return $this->update($existing['common_table_Id'], ['value' => $value]);
+        } else {
+            return $this->insert(['field' => 'customization_charge', 'value' => $value]);
+        }
+    }
 }
-
-
 
 ?>

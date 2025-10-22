@@ -475,7 +475,9 @@ input[type="file"] {
     min-width: 60px;
     text-align: center;
 }
-
+.size-box:hover{
+    cursor: pointer;
+}
 .selectable-size.selected {
     background-color: #000;
     color: white;

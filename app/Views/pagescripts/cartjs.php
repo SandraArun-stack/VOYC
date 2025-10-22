@@ -1,6 +1,11 @@
 <script>
     $(document).on('click', '.cart-remove', function () {
-        const cartId = $(this).data('cart-id');
+        // const cartId = $(this).data('cart-id');
+        const cartId = $(this).attr('data-cart-id');
+        if (!cartId) {
+            alert('Cart ID missing');
+            return;
+        }
         const row = $(this).closest('tr');
 
         $.ajax({
@@ -60,10 +65,10 @@
         var proQty = $('.pro-qty');
         proQty.prepend('<span class="dec qtybtn">-</span>');
         proQty.append('<span class="inc qtybtn">+</span>');
- recalcCartTotal();
+        recalcCartTotal();
         updateGrandTotal();
 
-       
+
 
 
     });
@@ -113,7 +118,7 @@
 
     // Initial calculation on page load
     $(document).ready(function () {
-       
+
     });
 
 </script>
