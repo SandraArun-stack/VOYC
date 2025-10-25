@@ -80,7 +80,7 @@
                     <a href="#"><i class="bi bi-controller"></i></a>
                     <a href="<?= base_url('tshirt_Customisation'); ?>" class="design_icon"></a>
                 </div>
-                <div class="col-xl-6 col-lg-7 d-flex align-items-center justify-content-end">
+                <div class="col-xl-6 col-lg-7 d-flex align-items-center">
                     <nav class="header__menu">
                         <ul>
                             <li class="active"><a href="<?= base_url(' '); ?>" id="home">Home</a></li>
