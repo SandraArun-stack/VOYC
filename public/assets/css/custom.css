@@ -384,12 +384,12 @@ input[type="file"] {
 
 /* Style checkboxes */
 .form-check-input {
-    width: 18px;
-    height: 18px;
+    width: 14px;
+    height: 14px;
     cursor: pointer;
     border-radius: 4px;
     border: 1px solid #6c757d;
-    margin-top: 3px;
+    margin-top: 7px;
     transition: background-color 0.2s ease;
 }
 
@@ -397,6 +397,7 @@ input[type="file"] {
     background-color: #343a40;
     border-color: #343a40;
 }
+
 
 .form-check-label {
     font-size: 15px;
@@ -474,6 +475,10 @@ input[type="file"] {
 .size-box {
     min-width: 60px;
     text-align: center;
+}
+
+.size-box:hover {
+    cursor: pointer;
 }
 
 .selectable-size.selected {
@@ -605,7 +610,7 @@ input[type="file"] {
 .modal-content {
     position: relative;
     z-index: 1055 !important;
-    margin-top: auto;
+    /* margin-top: auto; */
 }
 
 .header__right__auth {
@@ -619,6 +624,14 @@ input[type="file"] {
 .toggle_eye_icon {
     position: absolute;
     top: 75%;
+    right: 15px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.toggle_eye_icon_register {
+    position: absolute;
+    top: 50%;
     right: 15px;
     transform: translateY(-50%);
     cursor: pointer;
@@ -680,6 +693,99 @@ input[type="file"] {
 
 .logout_btns_container {
     gap: 15px;
+}
+
+.custom-check:checked {
+    background-color: #000 !important;
+    border-color: #000 !important;
+}
+
+.custom-check:checked[type="checkbox"] {
+    accent-color: #000;
+}
+
+.filter__price {
+    display: block;
+    margin-top: 10px;
+}
+
+.filter__price a {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+
+.size-filter {
+    margin-top: 3px !important;
+}
+
+.form-check-size-filter {
+    margin-bottom: 5px;
+}
+
+/* Search wrapper */
+.search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-left: 15px;
+}
+
+/* Search icon */
+#search-toggle {
+    color: #fff;
+    /* White color */
+    font-size: 18px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+/* Search input */
+#search-bar {
+    width: 0;
+    padding: 5px 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    outline: none;
+    transition: width 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+    margin-left: 10px;
+}
+
+#search-bar.active {
+    width: 200px;
+    opacity: 1;
+}
+
+.size__btn {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.size-option {
+    display: flex;
+    align-items: center;
+}
+
+.size-label {
+    padding: 5px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    user-select: none;
+    transition: 0.2s;
+}
+
+.size-label:hover {
+    background-color: #f0f0f0;
+}
+
+.size-option input:checked+.size-label {
+    background-color: #111111;
+    color: #fff;
+    border-color: #111111;
 }
 
 @media only screen and (max-width: 991px) {

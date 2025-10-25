@@ -1,49 +1,82 @@
 <script>
-$(document).ready(function() {
-    // alert('hello');
-    const itemsPerPage = 16;
-    const $cards = $(".product__card");
-    const totalItems = $cards.length;
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
-    const $pagination = $(".pagination__option");
+ $(document).ready(function () {
+    // Store the initial value of the customization charge field
+    const initialValue = $('#customization_charge').val();
+    const $btnUpdateCharge = $('#btnUpdateCharge');
+    const $msg = $('#update_msg');
+    
+    // Disable the Update button if there are no changes
+    $btnUpdateCharge.prop('disabled', true);
 
-    function showPage(page) {
-        const start = (page - 1) * itemsPerPage;
-        const end = start + itemsPerPage;
+    // Listen for changes in the input field
+    $('#customization_charge').on('input', function () {
+        const currentValue = $(this).val();
 
-        $cards.hide().slice(start, end).fadeIn(400);
-
-        $pagination.find("a").removeClass("active");
-        $pagination.find(`[data-page="${page}"]`).addClass("active");
-    }
-
-    // Generate pagination links
-    for (let i = 1; i <= totalPages; i++) {
-        $pagination.append(`<a href="#" data-page="${i}">${i}</a>`);
-    }
-
-    // Add next button if needed
-    if (totalPages > 1) {
-        $pagination.append(`<a href="#" class="next"><i class="fa fa-angle-right"></i></a>`);
-    }
-
-    // Click event for page numbers
-    $pagination.on("click", "a[data-page]", function(e) {
-        e.preventDefault();
-        const page = $(this).data("page");
-        showPage(page);
-    });
-
-    // Click event for next button
-    $pagination.on("click", ".next", function(e) {
-        e.preventDefault();
-        const currentPage = parseInt($pagination.find("a.active").data("page"));
-        if (currentPage < totalPages) {
-            showPage(currentPage + 1);
+        // Enable the button if the value has changed and is not the same as initial value
+        if (currentValue !== initialValue) {
+            $btnUpdateCharge.prop('disabled', false);
+        } else {
+            $btnUpdateCharge.prop('disabled', true);
         }
     });
 
-    // Initialize first page
-    showPage(1);
+    // Handle button click to send the update
+    $(document).on('click', '#btnUpdateCharge', function () {
+        const chargeValue = $('#customization_charge').val();
+
+        $msg.removeClass('alert-danger alert-success').text('');  // Reset the message, remove alert classes
+
+        if (!chargeValue) {
+            $msg.addClass('alert-danger').text('Please enter a customization price.');
+            $msg.removeClass('d-none').fadeIn();  // Show the message box
+            setTimeout(function () {
+                $msg.fadeOut();  // Fade out the message after 3 seconds
+            }, 3000);
+            return;
+        }
+
+        // Disable the button and change text while sending the request
+        $btnUpdateCharge.prop('disabled', true).text('Updating...');
+
+        $.ajax({
+            url: "<?= base_url('admin/settings/updateCustomizationCharge') ?>",
+            type: "POST",
+            data: { customization_charge: chargeValue },
+            dataType: "json",
+            success: function (response) {
+                // Re-enable the button and reset the text after success
+                $btnUpdateCharge.prop('disabled', true).text('Updated');
+
+                // Show success or error message based on the response
+                if (response.status === 'success') {
+                    $msg.addClass('alert-success').text(response.message);
+                } else {
+                    $msg.addClass('alert-danger').text(response.message);
+                }
+
+                // Show the message box and fade it out after 3 seconds
+                $msg.removeClass('d-none').fadeIn();
+                setTimeout(function () {
+                    $msg.fadeOut();
+                }, 3000);
+            },
+            error: function () {
+                // Re-enable the button if there's an error
+                $btnUpdateCharge.prop('disabled', false).text('Update');
+                $msg.addClass('alert-danger').text('Something went wrong. Please try again.');
+                
+                // Show the message box and fade it out after 3 seconds
+                $msg.removeClass('d-none').fadeIn();
+                setTimeout(function () {
+                    $msg.fadeOut(); 
+                }, 3000);
+            }
+        });
+    });
 });
+
+
+
+
+
 </script>

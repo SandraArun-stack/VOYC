@@ -130,10 +130,10 @@ $(document).ready(function () {
             data: formData,
             dataType: 'json',
             beforeSend: function () {
-                $('#btn_register').prop('disabled', true).text('Registering...');
+                $('#btn_register').prop('disabled', true).text('Sign Up...');
             },
             success: function (response) {
-                $('#btn_register').prop('disabled', false).text('Register');
+                $('#btn_register').prop('disabled', false).text('Sign UP');
 
                 if (response.status === 'success') {
 
@@ -183,37 +183,141 @@ $(document).ready(function () {
     });
 
     //login ajax
+    // $('#btn_login').on('click', function (e) {
+    //     e.preventDefault();
+    //     var formDataLogin = $('#loginForm').serialize();
+    //     var loginUrl = $(this).data('url');
+    //     var $alertBox = $('#login_msg_alert');
+
+
+    //     $alertBox.addClass('d-none').removeClass('alert-success alert-danger').text('');
+
+    //     var captchaResponse = grecaptcha.getResponse();
+    //     if (!captchaResponse) {
+    //         $alertBox
+    //             .removeClass('d-none alert-success')
+    //             .addClass('alert alert-danger')
+    //             .text('Please verify you are not a robot.')
+    //             .fadeIn();
+    //         setTimeout(() => {
+    //             $alertBox.fadeOut(500);
+    //         }, 3000);
+    //         return;
+
+    //     }
+
+    //     formDataLogin += '&g-recaptcha-response=' + captchaResponse;
+
+    //     $.ajax({
+    //         url: loginUrl,
+    //         type: 'POST',
+    //         data: formDataLogin,
+    //         dataType: 'json',
+    //         beforeSend: function () {
+    //             $('#btn_login').prop('disabled', true).text('Sign In...');
+    //         },
+    //         success: function (response) {
+
+    //             $('#btn_login').prop('disabled', false).text('Sign In');
+    //             grecaptcha.reset();
+
+    //             if (response.status === 'success') {
+    //                 $alertBox
+    //                     .removeClass('d-none alert-danger')
+    //                     .addClass('alert alert-success')
+    //                     .text(response.message || 'Login successful!')
+    //                     .fadeIn();
+
+    //                 $('#loginForm')[0].reset();
+
+    //                 setTimeout(() => {
+    //                     $alertBox.fadeOut(400, function () {
+    //                         authModal?.hide();
+    //                     });
+    //                     location.reload();
+    //                 }, 2000);
+    //             } else {
+    //                 $alertBox
+    //                     .removeClass('d-none alert-success')
+    //                     .addClass('alert alert-danger')
+    //                     .text(response.message || 'Login failed!')
+    //                     .fadeIn();
+
+    //                 setTimeout(() => {
+    //                     $alertBox.fadeOut(500);
+    //                 }, 3000);
+    //             }
+    //         },
+    //         error: function () {
+    //             $('#btn_login').prop('disabled', false).text('Login');
+    //             $alertBox
+    //                 .removeClass('d-none alert-success')
+    //                 .addClass('alert alert-danger')
+    //                 .text('Something went wrong! Please try again.')
+    //                 .fadeIn();
+
+    //             setTimeout(() => {
+    //                 $alertBox.fadeOut(500);
+    //             }, 3000);
+    //         }
+
+    //     });
+    // });
+
     $('#btn_login').on('click', function (e) {
         e.preventDefault();
-        var formDataLogin = $('#loginForm').serialize();
-        var loginUrl = $(this).data('url');
-        var $alertBox = $('#login_msg_alert');
 
+        var $alertBox = $('#login_msg_alert');
+        var email = $.trim($('input[name="login_email"]').val());
+        var password = $.trim($('input[name="login_password"]').val());
         var captchaResponse = grecaptcha.getResponse();
+        var loginUrl = $(this).data('url');
+
+        // Hide old messages
+        $alertBox.addClass('d-none').removeClass('alert-success alert-danger').text('');
+
+        // Validate required fields
+        if (!email || !password) {
+            $alertBox
+                .removeClass('d-none alert-success')
+                .addClass('alert alert-danger')
+                .text('All mandatory fields are required.')
+                .fadeIn();
+
+            setTimeout(() => {
+                $alertBox.fadeOut(500);
+            }, 3000);
+            return;
+        }
+
+        // Validate reCAPTCHA
         if (!captchaResponse) {
             $alertBox
                 .removeClass('d-none alert-success')
                 .addClass('alert alert-danger')
                 .text('Please verify you are not a robot.')
                 .fadeIn();
+
+            setTimeout(() => {
+                $alertBox.fadeOut(500);
+            }, 3000);
             return;
         }
 
-        formDataLogin += '&g-recaptcha-response=' + captchaResponse;
+        // Prepare form data
+        var formDataLogin = $('#loginForm').serialize() + '&g-recaptcha-response=' + captchaResponse;
 
-        $alertBox.addClass('d-none').removeClass('alert-success alert-danger').text('');
-
+        // AJAX request
         $.ajax({
             url: loginUrl,
             type: 'POST',
             data: formDataLogin,
             dataType: 'json',
             beforeSend: function () {
-                $('#btn_login').prop('disabled', true).text('Login...');
+                $('#btn_login').prop('disabled', true).text('Signing In...');
             },
             success: function (response) {
-
-                $('#btn_login').prop('disabled', false).text('Login');
+                $('#btn_login').prop('disabled', false).text('Sign In');
                 grecaptcha.reset();
 
                 if (response.status === 'success') {
@@ -235,7 +339,7 @@ $(document).ready(function () {
                     $alertBox
                         .removeClass('d-none alert-success')
                         .addClass('alert alert-danger')
-                        .text(response.message || 'Login failed!')
+                        .text(response.message || 'Login failed! Please try again.')
                         .fadeIn();
 
                     setTimeout(() => {
@@ -244,7 +348,7 @@ $(document).ready(function () {
                 }
             },
             error: function () {
-                $('#btn_login').prop('disabled', false).text('Login');
+                $('#btn_login').prop('disabled', false).text('Sign In');
                 $alertBox
                     .removeClass('d-none alert-success')
                     .addClass('alert alert-danger')
@@ -255,12 +359,12 @@ $(document).ready(function () {
                     $alertBox.fadeOut(500);
                 }, 3000);
             }
-
         });
     });
 
+
     $('.login_close').on('click', function (e) {
-         authModal.hide();
+        authModal.hide();
     });
     $('#userDropDown').on('click', function (e) {
         e.preventDefault();

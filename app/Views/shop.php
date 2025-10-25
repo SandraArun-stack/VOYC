@@ -24,92 +24,44 @@
                         </div>
                         <div class="categories__accordion">
                             <div class="accordion" id="accordionExample">
-                                <div class="card">
-                                    <div class="card-heading active">
-                                        <a data-toggle="collapse" data-target="#collapseOne">Women</a>
-                                    </div>
-                                    <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <ul>
-                                                <li><a href="#">Coats</a></li>
-                                                <li><a href="#">Jackets</a></li>
-                                                <li><a href="#">Dresses</a></li>
-                                                <li><a href="#">Shirts</a></li>
-                                                <li><a href="#">T-shirts</a></li>
-                                                <li><a href="#">Jeans</a></li>
-                                            </ul>
+                                <?php if (!empty($categories)): ?>
+                                    <?php foreach ($categories as $index => $cat): ?>
+                                        <?php
+                                        $collapseId = 'collapse' . $index;
+                                        $isFirst = $index === 0;
+                                        ?>
+                                        <div class="card">
+                                            <?php if (!empty($cat['subcategories'])): ?>
+                                                <div class="card-heading <?= $isFirst ? 'active' : '' ?>">
+                                                    <a data-toggle="collapse" data-target="#<?= $collapseId; ?>">
+                                                        <?= esc($cat['cat_Name']); ?>
+                                                    </a>
+                                                </div>
+                                                <div id="<?= $collapseId; ?>" class="collapse <?= $isFirst ? 'show' : '' ?>"
+                                                    data-parent="#accordionExample">
+                                                    <div class="card-body">
+                                                        <?php foreach ($cat['subcategories'] as $sub): ?>
+                                                            <li class="form-check">
+                                                                <input class="form-check-input custom-check subcategory-filter"
+                                                                    type="checkbox" name="subcategories[]"
+                                                                    value="<?= esc($sub['sub_Id']); ?>" id="sub_<?= $sub['sub_Id']; ?>"
+                                                                    data-subcategory="<?= esc($sub['sub_Id']); ?>">
+                                                                <label class="form-check-label" for="sub_<?= $sub['sub_Id']; ?>">
+                                                                    <?= esc($sub['sub_Category_Name']); ?>
+                                                                </label>
+                                                            </li>
+
+                                                        <?php endforeach; ?>
+                                                    </div>
+                                                </div>
+                                            <?php endif; ?>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseTwo">Men</a>
-                                    </div>
-                                    <div id="collapseTwo" class="collapse" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <ul>
-                                                <li><a href="#">Coats</a></li>
-                                                <li><a href="#">Jackets</a></li>
-                                                <li><a href="#">Dresses</a></li>
-                                                <li><a href="#">Shirts</a></li>
-                                                <li><a href="#">T-shirts</a></li>
-                                                <li><a href="#">Jeans</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseThree">Kids</a>
-                                    </div>
-                                    <div id="collapseThree" class="collapse" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <ul>
-                                                <li><a href="#">Coats</a></li>
-                                                <li><a href="#">Jackets</a></li>
-                                                <li><a href="#">Dresses</a></li>
-                                                <li><a href="#">Shirts</a></li>
-                                                <li><a href="#">T-shirts</a></li>
-                                                <li><a href="#">Jeans</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseFour">Accessories</a>
-                                    </div>
-                                    <div id="collapseFour" class="collapse" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <ul>
-                                                <li><a href="#">Coats</a></li>
-                                                <li><a href="#">Jackets</a></li>
-                                                <li><a href="#">Dresses</a></li>
-                                                <li><a href="#">Shirts</a></li>
-                                                <li><a href="#">T-shirts</a></li>
-                                                <li><a href="#">Jeans</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseFive">Cosmetic</a>
-                                    </div>
-                                    <div id="collapseFive" class="collapse" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <ul>
-                                                <li><a href="#">Coats</a></li>
-                                                <li><a href="#">Jackets</a></li>
-                                                <li><a href="#">Dresses</a></li>
-                                                <li><a href="#">Shirts</a></li>
-                                                <li><a href="#">T-shirts</a></li>
-                                                <li><a href="#">Jeans</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <p>No categories available.</p>
+                                <?php endif; ?>
                             </div>
+
                         </div>
                     </div>
                     <div class="sidebar__filter">
@@ -118,7 +70,7 @@
                         </div>
                         <div class="filter-range-wrap">
                             <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                                data-min="33" data-max="99"></div>
+                                data-min="200" data-max="10000"></div>
                             <div class="range-slider">
                                 <div class="price-input">
                                     <p>Price:</p>
@@ -127,109 +79,90 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="#">Filter</a>
+                        <div class="filter__price">
+                            <!-- <a href= "#">Filter</a> -->
+                            <button type="button" id="filterPriceBtn">Filter</button>
+                        </div>
                     </div>
-                    <div class="sidebar__sizes">
+                    <!-- <div class="sidebar__sizes">
                         <div class="section-title">
                             <h4>Shop by size</h4>
                         </div>
                         <div class="size__list">
-                            <label for="xxs">
-                                xxs
-                                <input type="checkbox" id="xxs">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label for="xs">
-                                xs
-                                <input type="checkbox" id="xs">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label for="xss">
-                                xs-s
-                                <input type="checkbox" id="xss">
-                                <span class="checkmark"></span>
-                            </label>
                             <label for="s">
-                                s
+                                S
                                 <input type="checkbox" id="s">
                                 <span class="checkmark"></span>
                             </label>
                             <label for="m">
-                                m
+                                M
                                 <input type="checkbox" id="m">
                                 <span class="checkmark"></span>
                             </label>
                             <label for="ml">
-                                m-l
+                                L
                                 <input type="checkbox" id="ml">
                                 <span class="checkmark"></span>
                             </label>
                             <label for="l">
-                                l
+                                XL
                                 <input type="checkbox" id="l">
                                 <span class="checkmark"></span>
                             </label>
                             <label for="xl">
-                                xl
+                                XXL
                                 <input type="checkbox" id="xl">
                                 <span class="checkmark"></span>
                             </label>
                         </div>
-                    </div>
-                    <div class="sidebar__color">
+                    </div> -->
+                    <div class="sidebar__sizes">
                         <div class="section-title">
-                            <h4>Shop by size</h4>
+                            <h4>Shop by Size</h4>
                         </div>
-                        <div class="size__list color__list">
-                            <label for="black">
-                                Blacks
-                                <input type="checkbox" id="black">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label for="whites">
-                                Whites
-                                <input type="checkbox" id="whites">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label for="reds">
-                                Reds
-                                <input type="checkbox" id="reds">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label for="greys">
-                                Greys
-                                <input type="checkbox" id="greys">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label for="blues">
-                                Blues
-                                <input type="checkbox" id="blues">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label for="beige">
-                                Beige Tones
-                                <input type="checkbox" id="beige">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label for="greens">
-                                Greens
-                                <input type="checkbox" id="greens">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label for="yellows">
-                                Yellows
-                                <input type="checkbox" id="yellows">
-                                <span class="checkmark"></span>
-                            </label>
-                        </div>
+
+                        <ul class="size__list list-unstyled">
+                            <li class="form-check form-check-size-filter">
+                                <input class="form-check-input custom-check size-filter" type="checkbox" name="sizes[]"
+                                    value="S" id="size_s" data-size="S">
+                                <label class="form-check-label" for="size_s">S</label>
+                            </li>
+
+                            <li class="form-check form-check-size-filter">
+                                <input class="form-check-input custom-check size-filter" type="checkbox" name="sizes[]"
+                                    value="M" id="size_m" data-size="M">
+                                <label class="form-check-label" for="size_m">M</label>
+                            </li>
+
+                            <li class="form-check form-check-size-filter">
+                                <input class="form-check-input custom-check size-filter" type="checkbox" name="sizes[]"
+                                    value="L" id="size_l" data-size="L">
+                                <label class="form-check-label" for="size_l">L</label>
+                            </li>
+
+                            <li class="form-check form-check-size-filter">
+                                <input class="form-check-input custom-check size-filter" type="checkbox" name="sizes[]"
+                                    value="XL" id="size_xl" data-size="XL">
+                                <label class="form-check-label" for="size_xl">XL</label>
+                            </li>
+
+                            <li class="form-check form-check-size-filter">
+                                <input class="form-check-input custom-check size-filter" type="checkbox" name="sizes[]"
+                                    value="XXL" id="size_xxl" data-size="XXL">
+                                <label class="form-check-label" for="size_xxl">XXL</label>
+                            </li>
+                        </ul>
                     </div>
+
+                    
                 </div>
             </div>
             <div class="col-lg-9 col-md-9">
                 <div class="row product-list">
                     <?php if (!empty($display_item)): ?>
+
                         <?php foreach ($display_item as $item): ?>
-                            <div class="col-lg-4 col-md-6 mb-4 product__card">
+                            <div class="col-lg-4 col-md-6 mb-4 product__card" style="opacity:1;">
                                 <div class="product__item"
                                     data-url="<?= base_url('productdetails/' . $item['pr_Id'] . '/' . $item['pri_Id']); ?>">
                                     <div class="product__item">
@@ -237,7 +170,8 @@
                                             data-setbg="<?= base_url('uploads/productmedia/' . ($item['pri_Thumbnail'])) ?>">
                                             <div class="label new">
                                                 <?php if ($item['pr_custom'] == 1): ?>
-                                                    <a href="<?= base_url('tshirt_Customisation/' . $item['pr_Id'] . '/' . $item['pri_Id']); ?>">
+                                                    <a
+                                                        href="<?= base_url('tshirt_Customisation/' . $item['pr_Id'] . '/' . $item['pri_Id']); ?>">
                                                         <img class="design_icon"
                                                             src="<?= base_url() . ASSET_PATH ?>assets/img/design.png" alt="">
                                                     </a>
@@ -286,12 +220,7 @@
                     <?php endif; ?>
 
                     <div class="col-lg-12 text-center">
-                        <div class="pagination__option">
-                            <!-- <a href="#">1</a>
-                            <a href="#">2</a>
-                            <a href="#">3</a>
-                            <a href="#"><i class="fa fa-angle-right"></i></a> -->
-                        </div>
+                        <div class="pagination__option"></div>
                     </div>
                 </div>
             </div>
@@ -299,6 +228,8 @@
     </div>
 </section>
 <!-- Shop Section End -->
+
+
 
 <!-- Instagram Begin -->
 <div class="instagram">

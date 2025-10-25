@@ -5,7 +5,7 @@
             <div class="row align-items-center">
                 <div class="col-md-8">
                     <div class="page-header-title">
-                        <h5 class="m-b-10">Sub Category</h5>
+                        <h5 class="m-b-10">Settings</h5>
                         <p class="m-b-0">Welcome to VOYC</p>
                     </div>
                 </div>
@@ -14,7 +14,7 @@
                         <li class="breadcrumb-item">
                             <a href="<?= base_url('admin/dashboard'); ?>"> <i class="fa fa-home"></i> </a>
                         </li>
-                        <li class="breadcrumb-item"><a href="#">Sub Category</a>
+                        <li class="breadcrumb-item"><a href="#">Settings</a>
                         </li>
                     </ul>
                 </div>
@@ -34,20 +34,45 @@
                             <div class="card">
                                 <div class="card-header">
                                     <div class="row">
-                                        <div class="col-md-2">
-
+                                        <div class="col-md-12">
                                         </div>
-                                        <div class="col-md-7">
-                                            <div id="message" style="display:none;"></div>
 
-                                        </div>
-                                       
+
                                     </div>
                                 </div>
-                                <div class="card-block">
+                                <!-- <div class="card-block">
                                     <div class="card">
-
+                                        
                                        
+                                    </div>
+                                </div> -->
+                                <div class="card-block">
+                                    <div class="card p-4 shadow-sm">
+                                        <h5 class="mb-3">Customization Settings</h5>
+                                        <div id="update_msg" class="alert alert-success mt-3 p-2 d-none"></div>
+
+                                        <div class="form-group mb-3">
+                                            <div class="row">
+                                                <div class="col-md-2">
+                                                    <label for="customization_charge">Customization Price (₹)</label>
+
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <input type="text" class="form-control" id="customization_charge"
+                                                        name="customization_charge"
+                                                        value="<?= esc($customization_charge ?? '') ?>"
+                                                        placeholder="Enter customization price">
+                                                </div>
+                                                <div class="col-md-2 text-end">
+                                                    <button type="button" id="btnUpdateCharge"
+                                                        class="btn btn-primary">Update</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+
                                     </div>
                                 </div>
                             </div>
