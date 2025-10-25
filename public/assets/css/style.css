@@ -1154,7 +1154,7 @@ ol {
 
 .product__item {
 	margin-bottom: 35px;
-	
+
 }
 
 .product__item:hover .product__hover li {
@@ -1186,7 +1186,7 @@ ol {
 	position: absolute;
 	/* left: 10px; */
 	top: 10px;
-	right:10px;
+	right: 10px;
 }
 
 .product__item__pic .label.new {
@@ -1373,7 +1373,7 @@ ol {
 .categories__accordion .card-body li {
 	list-style: none;
 	position: relative;
-	padding-left: 16px;
+	padding-left: 20px;
 }
 
 .categories__accordion .card-body li:before {
@@ -1383,10 +1383,16 @@ ol {
 	height: 1px;
 	width: 4px;
 	background: #666666;
-	content: "";
+	/* content: ""; */
 }
 
-.categories__accordion .card-body li a {
+.categories__accordion .card-body li label {
+	font-size: 14px;
+	color: #666666;
+	line-height: 30px;
+}
+
+.categories__accordion .card-body li input {
 	font-size: 14px;
 	color: #666666;
 	line-height: 30px;
@@ -1426,11 +1432,11 @@ ol {
 
 .sidebar__filter {
 	position: relative;
-	margin-bottom: 60px;
+	margin-bottom: 50px;
 }
 
 .sidebar__filter .section-title {
-	margin-bottom: 50px;
+	margin-bottom: 35px;
 }
 
 .sidebar__filter .section-title h4 {
@@ -1452,12 +1458,27 @@ ol {
 	border-radius: 2px;
 }
 
+.sidebar__filter button {
+	font-size: 12px;
+    color: #0d0d0d;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 700;
+    padding: 5px 6px;
+    border: 2px solid #000;
+    position: absolute;
+    right: 0;
+    bottom: -5px;
+    background: white;
+    border-radius: 2px;
+}
+
 .filter-range-wrap .range-slider .price-input {
 	position: relative;
 }
 
 .filter-range-wrap .range-slider .price-input p {
-	font-size: 16px;
+	font-size: 14px;
 	color: #0d0d0d;
 	font-weight: 500;
 	display: inline-block;
@@ -1466,7 +1487,7 @@ ol {
 
 .filter-range-wrap .range-slider .price-input:after {
 	position: absolute;
-	left: 81px;
+	left: 95px;
 	top: 12px;
 	height: 1px;
 	width: 5px;
@@ -1475,9 +1496,9 @@ ol {
 }
 
 .filter-range-wrap .range-slider .price-input input {
-	font-size: 16px;
+	font-size: 14px;
 	color: #0d0d0d;
-	max-width: 16%;
+	max-width: 25%;
 	border: none;
 }
 
@@ -1487,7 +1508,7 @@ ol {
 
 .filter-range-wrap .price-range {
 	border-radius: 0;
-	margin-bottom: 28px;
+	margin-bottom: 12px;
 }
 
 .filter-range-wrap .price-range.ui-widget-content {
@@ -1529,7 +1550,7 @@ ol {
 .sidebar__sizes .size__list label,
 .sidebar__color .size__list label {
 	display: block;
-	padding-left: 20px;
+	padding-left: 10px;
 	font-size: 14px;
 	text-transform: uppercase;
 	color: #444444;
@@ -2124,7 +2145,7 @@ ol {
 	float: left;
 	margin-right: 25px;
 	height: 160px;
-    width: 150px;
+	width: 150px;
 }
 
 .shop__cart__table tbody tr .cart__product__item .cart__product__item__title {
@@ -2447,6 +2468,8 @@ ol {
 .checkout__order {
 	background: #f5f5f5;
 	padding: 30px;
+	position: sticky;
+	top: 10px;
 }
 
 .checkout__order h5 {
