@@ -47,11 +47,13 @@
                                                     <img src="<?= base_url('uploads/designs/' . $image) ?>" alt="Product Image">
                                                 </a>
                                             <?php else: ?>
-                                                <img src="<?= base_url('uploads/productmedia/default.png') ?>" alt="Default Image">
+                                                <img src="<?= base_url('uploads/productmedia/' . ($item['pri_Thumbnail'] ?? 'default.png')) ?>" alt="Product Image">
                                             <?php endif; ?>
 
                                             <div class="cart__product__item__title">
                                                 <h6><?= esc($item['pr_Name']) ?></h6>
+                                                <p>Size: <?= !empty($item['prv_Size']) ? esc($item['prv_Size']) : '-' ?></p>
+
                                                 <div class="rating">
                                                     <i class="fa fa-star"></i>
                                                     <i class="fa fa-star"></i>
@@ -61,7 +63,8 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="cart__price">₹ <?= esc($item['prv_price']) ?></td>
+                                        <td class="cart__price">₹ <?= !empty($item['prv_price']) ? esc($item['prv_price']) : '0' ?></td>
+
                                         <td class="cart__quantity">
                                             <div class="pro-qty">
                                                 <input type="text" value="<?= esc($item['cart_Quantity']) ?>">

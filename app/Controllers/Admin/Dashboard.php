@@ -30,18 +30,29 @@ class Dashboard extends BaseController
 		$totalOrderCount = $this->dashboardModel->getTotalOrderCount();
 		$totalCustomerCount = $this->dashboardModel->getTotalCustomerCount();
 		$annualRevenue = $this->dashboardModel->getAnnualRevenue();
+		$last7days_orders = $this->dashboardModel->getLast7DaysOrdersCount();
+
 
 		$todaysOrders = $this->dashboardModel->getTodaysOrders();
 		$latestProducts = $this->dashboardModel->getLatestProducts();
 		// Decode images for each product
-		foreach ($latestProducts as &$product) {
-			$images = json_decode($product->product_images, true);
-			if (!empty($images[0]['name'][0])) {
-				$product->main_image = $images[0]['name'][0];
-			} else {
-				$product->main_image = null;
-			}
-		}
+		// After $latestProducts = $this->dashboardModel->getLatestProducts();
+
+foreach ($latestProducts as &$product) {
+    $product->main_image = null;
+
+    if (!empty($product->pri_Thumbnail)) {
+        // Try decode — if valid JSON array, take first element
+        $decoded = json_decode($product->pri_Thumbnail, true);
+
+        if (json_last_error() === JSON_ERROR_NONE && is_array($decoded) && !empty($decoded[0])) {
+            $product->main_image = $decoded[0];
+        } else {
+            // Not JSON or decode failed -> treat as plain filename
+            $product->main_image = $product->pri_Thumbnail;
+        }
+    }
+}
 
 
 
@@ -54,7 +65,8 @@ class Dashboard extends BaseController
 			'totalCustomerCount' => $totalCustomerCount,
 			'annualRevenue' => $annualRevenue,
 			'todaysOrders' => $todaysOrders,
-			'latestProducts' => $latestProducts
+			'latestProducts' => $latestProducts,
+			'last7days_orders' => $last7days_orders
 		]);
 		$template .= view('Admin/common/footer');
 		return $template;

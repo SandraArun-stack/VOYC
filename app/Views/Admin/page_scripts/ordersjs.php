@@ -42,7 +42,7 @@
     {
     data: 'od_Status',
     render: function(data, type, row) {
-        if (!data) data = 'Pending'; // default value if empty
+        if (!data) data = 'New'; // default value if empty
         return data; // just show plain text, no color or button
     },
     orderable: false,

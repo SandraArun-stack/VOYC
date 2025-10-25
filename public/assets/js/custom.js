@@ -289,3 +289,13 @@ $(document).ready(function () {
 
 
 });
+
+$(document).ready(function() {
+    $("#search-toggle").click(function() {
+        $("#search-bar").toggleClass("active");
+        if ($("#search-bar").hasClass("active")) {
+            $("#search-bar").focus();
+        }
+    });
+});
+

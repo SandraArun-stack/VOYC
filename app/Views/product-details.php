@@ -15,10 +15,10 @@ $userId = session()->get('user_id');
     </div>
 </div>
 <!-- Breadcrumb End -->
-
 <!-- Product Details Section Begin -->
 <section class="product-details spad">
     <div class="container">
+        <div id="messageBox" class="alert alert-success" style="display: none;"></div>
         <div class="row">
             <div class="col-lg-6">
                 <div class="product__details__pic">
@@ -77,7 +77,8 @@ $userId = session()->get('user_id');
                     </div>
                     <div class="product__details__price">₹ <?= round(esc($product['pr_Selling_Price'] ?? '0')) ?><span>₹
                             <?= round(esc($product['pr_Selling_Price'])) ?></span></div>
-                    <p><?= esc($product['pr_Description']) ?></p>
+                            <p>Inclusive of all taxes</p>
+                    <!-- <p><?= esc($product['pr_Description']) ?></p> -->
                     <div class="product__details__button">
                         <div class="quantity">
                             <span>Quantity:</span>
@@ -96,7 +97,7 @@ $userId = session()->get('user_id');
                     </div>
                     <div class="product__details__widget">
                         <ul>
-                            <li>
+                            <!-- <li>
                                 <span>Availability:</span>
                                 <div class="stock__checkbox">
                                     <label for="stockin">
@@ -105,9 +106,8 @@ $userId = session()->get('user_id');
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>
-                            </li>
+                            </li> -->
                             <li>
-
                                 <span>Available color:</span>
                                 <div class="color__checkbox">
                                     <?php if (!empty($product['colors'])): ?>
@@ -126,20 +126,24 @@ $userId = session()->get('user_id');
                                 </div>
 
                             </li>
-                            <li>
-                                <span>Available size:</span>
+                            <li class="size-section">
+                                <span class="size-title">Available size:</span>
                                 <div class="size__btn">
-                                    <?php if (!empty($product['sizes'])): ?>
-                                        <?php foreach ($product['sizes'] as $i => $size): ?>
-                                            <label for="xs-btn" class="active">
-                                                <input type="radio" id="xs-btn">
-                                                <?= esc($size) ?>
+                                    <?php foreach ($product['sizes'] as $variant): ?>
+                                        <div class="size-option"
+                                            data-size="<?= $variant['prv_Size']; ?>"
+                                            data-price="<?= $variant['prv_price']; ?>"
+                                            data-size-id="<?= $variant['prv_Id']; ?>">
+                                            <input type="radio"
+                                                name="product_size"
+                                                id="size_<?= $variant['prv_Size']; ?>"
+                                                value="<?= $variant['prv_Id']; ?>" 
+                                                hidden>
+                                            <label for="size_<?= $variant['prv_Size']; ?>" class="size-label">
+                                                <?= $variant['prv_Size']; ?>
                                             </label>
-                                        <?php endforeach; ?>
-                                    <?php else: ?>
-                                        <p>No sizes available</p>
-                                    <?php endif; ?>
-
+                                        </div>
+                                    <?php endforeach; ?>                                   
                                 </div>
                             </li>
                             <li>
@@ -242,7 +246,7 @@ $userId = session()->get('user_id');
                 </div>
             </div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="related__title">
                     <h5>RELATED PRODUCTS</h5>
@@ -343,7 +347,7 @@ $userId = session()->get('user_id');
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </section>
 <!-- Product Details Section End -->

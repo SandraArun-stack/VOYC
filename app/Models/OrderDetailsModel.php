@@ -17,7 +17,7 @@ class OrderDetailsModel extends Model
     // Insert order items
     public function createOrderItem($data)
     {
-        $data['od_Status'] = $data['od_Status'] ?? 'Pending';
+        $data['od_Status'] = $data['od_Status'] ?? 'New';
         $data['od_createdon'] = date('Y-m-d H:i:s');
         return $this->insert($data);
     }

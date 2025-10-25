@@ -24,7 +24,7 @@ class DashboardModel extends Model
 
     public function getTotalOrderCount()
     {
-        return $this->db->table($this->table)->where('od_Status', '1')->countAllResults();
+        return $this->db->table('order_detail')->countAllResults();
     }
 
     public function getTotalCustomerCount()
@@ -59,17 +59,17 @@ class DashboardModel extends Model
     }
 
 
-    public function getTodaysOrders()
+     public function getTodaysOrders()
     {
         $todayStart = date('Y-m-d 00:00:00');
-        $todayEnd = date('Y-m-d 23:59:59');
+        $todayEnd   = date('Y-m-d 23:59:59');
 
-        return $this->db->table('order_detail od')
-            ->select('od.od_Id, od.od_Grand_Total, od.od_Selling_Price, od.od_DiscountValue, od.od_DiscountType, od.od_Status,
-                  c.cust_Name as customer_name, p.pr_Name as product_name')
-            ->join('customer c', 'c.cust_Id = od.cus_Id', 'left')
-            ->join('product p', 'p.pr_Id = od.pr_Id', 'left')
-            ->where('od.od_Status', '1')
+        return $this->db->table('order_detail AS od')
+            ->select('od.od_Id, od.od_Grand_Total, od.od_Selling_Price, od.od_DiscountValue, 
+                    od.od_DiscountType, od.od_Status, c.cust_Name AS customer_name, 
+                    p.pr_Name AS product_name')
+            ->join('customer AS c', 'c.cust_Id = od.cus_Id', 'left')
+            ->join('product AS p', 'p.pr_Id = od.pr_Id', 'left')
             ->where('od.od_createdon >=', $todayStart)
             ->where('od.od_createdon <=', $todayEnd)
             ->orderBy('od.od_createdon', 'DESC')
@@ -77,16 +77,89 @@ class DashboardModel extends Model
             ->getResult();
     }
 
+
+
+    // public function getLatestProducts()
+    // {
+    //     $builder = $this->db->table('product as p');
+    //     $builder->select('p.pr_Id, p.pr_Code, p.pr_Name, p.mrp, p.pr_Selling_Price, p.pr_Stock, pi.pri_File_Name');
+    //     $builder->join('product_image as pi', 'pi.pr_id = p.pr_Id', 'left');
+    //     $builder->where('p.pr_Status', 1);
+    //     $builder->orderBy('p.pr_createdon', 'DESC');
+    //     $builder->limit(10);
+    //     $query = $builder->get();
+    //     return $query->getResult();
+    // }
+
+
     public function getLatestProducts()
-    {
-        return $this->db->table('product')
-            ->where('pr_Status', 1) // Only active products
-            ->orderBy('pr_createdon', 'DESC') // Latest first
-            ->limit(10)
+{
+    $products = $this->db->table('product p')
+        ->select('p.pr_Id, p.pr_Code, p.pr_Name, p.pr_Stock, pi.pri_Thumbnail')
+        ->join('product_image pi', 'pi.pr_id = p.pr_Id', 'left')
+        ->where('p.pr_Status', 1)
+        ->orderBy('p.pr_createdon', 'DESC')
+        ->limit(10)
+        ->get()
+        ->getResult();
+
+    $sizes_order = ['S', 'M', 'L', 'XL', 'XXL'];
+
+    foreach ($products as &$product) {
+        // Get variants for this product
+        $variants = $this->db->table('product_variants')
+            ->select('prv_Size, prv_price')
+            ->where('pr_Id', $product->pr_Id)
+            ->where('prv_Status', 1)
             ->get()
             ->getResult();
+
+        $minPrice = null;
+        $maxPrice = null;
+
+        // Find min price (first available size)
+        foreach ($sizes_order as $size) {
+            foreach ($variants as $v) {
+                if ($v->prv_Size == $size) {
+                    $minPrice = $v->prv_price;
+                    break 2;
+                }
+            }
+        }
+
+        // Find max price (last available size)
+        for ($i = count($sizes_order) - 1; $i >= 0; $i--) {
+            foreach ($variants as $v) {
+                if ($v->prv_Size == $sizes_order[$i]) {
+                    $maxPrice = $v->prv_price;
+                    break 2;
+                }
+            }
+        }
+
+        $product->min_price = $minPrice ?? 0;
+        $product->max_price = $maxPrice ?? 0;
+
+        // Set main image
+        $product->main_image = !empty($product->pri_Thumbnail) ? $product->pri_Thumbnail : null;
     }
 
+    return $products;
+}
+
+
+
+
+    public function getLast7DaysOrdersCount()
+    {
+        $sevenDaysAgo = date('Y-m-d 00:00:00', strtotime('-7 days'));
+        $today = date('Y-m-d 23:59:59');
+
+        return $this->db->table('order_detail')
+            ->where('od_createdon >=', $sevenDaysAgo)
+            ->where('od_createdon <=', $today)
+            ->countAllResults();
+    }
 
 
 

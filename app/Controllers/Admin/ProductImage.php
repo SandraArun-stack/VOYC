@@ -95,20 +95,20 @@ class ProductImage extends BaseController
 
             // Action buttons
             $row['actions'] = '
-    <a href="' . base_url('admin/product/image/edit/' . $row['pr_Id'] . '/' . $row['pri_Id']) . '">
-        <i class="bi bi-pencil-square"></i>
-    </a>&nbsp;
-    <i class="bi bi-trash text-danger icon-clickable" style="cursor: pointer;" 
-       onclick="confirmDelete(' . $row['pri_Id'] . ')"></i>&nbsp;';
-        }
+                <a href="' . base_url('admin/product/image/edit/' . $row['pr_Id'] . '/' . $row['pri_Id']) . '">
+                    <i class="bi bi-pencil-square"></i>
+                </a>&nbsp;
+                <i class="bi bi-trash text-danger icon-clickable" style="cursor: pointer;" 
+                onclick="confirmDelete(' . $row['pri_Id'] . ')"></i>&nbsp;';
+                    }
 
-        return $this->response->setJSON([
-            'draw' => intval($this->request->getPost('draw')),
-            'recordsTotal' => $total,
-            'recordsFiltered' => $filtered,
-            'data' => array_values($aggregated)
-        ]);
-    }
+                    return $this->response->setJSON([
+                        'draw' => intval($this->request->getPost('draw')),
+                        'recordsTotal' => $total,
+                        'recordsFiltered' => $filtered,
+                        'data' => array_values($aggregated)
+                    ]);
+                }
 
 
     public function viewimage($pr_id = null)
@@ -215,42 +215,47 @@ class ProductImage extends BaseController
 
 
             
-            $thumbnailUploaded = [];
-            if (isset($_FILES['colors']['name'][$colorIndex]['images']) && count($_FILES['colors']['name'][$colorIndex]['images']) > 0) {
-                
-                foreach ($_FILES['colors']['name'][$colorIndex]['images'] as $i => $name) {
-                    if ($_FILES['colors']['error'][$colorIndex]['images'][$i] === 0) {
-                        $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
-                        if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
-                            return $this->response->setJSON(['status' => 'error', 'msg' => 'Only JPG, PNG, or WEBP images are allowed.']);
-                        }
-                        $newName = uniqid('', true) . '.' . $ext;
-                        $destination = FCPATH . 'uploads/productmedia/' . $newName;
-                        if (move_uploaded_file($_FILES['colors']['tmp_name'][$colorIndex]['images'][$i], $destination)) {
-                            $thumbnailUploaded[] = $newName;
-                        }
-                    }
-                }
+          // --- Thumbnail ---
+$thumbnailUploaded = !empty($existingData['pri_Thumbnail']) ? [$existingData['pri_Thumbnail']] : [];
+if (!empty($_FILES['colors']['name'][$colorIndex]['images'][0])) {
+    foreach ($_FILES['colors']['name'][$colorIndex]['images'] as $i => $name) {
+        if ($_FILES['colors']['error'][$colorIndex]['images'][$i] === 0) {
+            $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+            if (!in_array($ext, ['jpg','jpeg','png','webp'])) {
+                return $this->response->setJSON(['status'=>'error','msg'=>'Only JPG, PNG, or WEBP images are allowed.']);
             }
+            $newName = uniqid('', true) . '.' . $ext;
+            $destination = FCPATH . 'uploads/productmedia/' . $newName;
+            if (move_uploaded_file($_FILES['colors']['tmp_name'][$colorIndex]['images'][$i], $destination)) {
+                $thumbnailUploaded[] = $newName;
+            }
+        }
+    }
+}
 
-            // Side Images
-            $sideUploaded = !empty($existingData['pri_File_Name']) ? json_decode($existingData['pri_File_Name'], true) : [];
-            if (!empty($_FILES['colors']['name'][$colorIndex]['side_image'][0])) {
-                $sideUploaded = [];
-                foreach ($_FILES['colors']['name'][$colorIndex]['side_image'] as $i => $name) {
-                    if ($_FILES['colors']['error'][$colorIndex]['side_image'][$i] === 0) {
-                        $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
-                        if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
-                            return $this->response->setJSON(['status' => 'error', 'msg' => 'Only JPG, PNG, or WEBP images are allowed.']);
-                        }
-                        $newName = uniqid('', true) . '.' . $ext;
-                        $destination = FCPATH . 'uploads/productmedia/' . $newName;
-                        if (move_uploaded_file($_FILES['colors']['tmp_name'][$colorIndex]['side_image'][$i], $destination)) {
-                            $sideUploaded[] = $newName;
-                        }
-                    }
-                }
+// --- Side Images ---
+$sideUploaded = !empty($existingData['pri_File_Name']) ? json_decode($existingData['pri_File_Name'], true) : [];
+if (!empty($_FILES['colors']['name'][$colorIndex]['side_image'][0])) {
+    $newSideUploaded = [];
+    foreach ($_FILES['colors']['name'][$colorIndex]['side_image'] as $i => $name) {
+        if ($_FILES['colors']['error'][$colorIndex]['side_image'][$i] === 0) {
+            $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+            if (!in_array($ext, ['jpg','jpeg','png','webp'])) {
+                return $this->response->setJSON(['status'=>'error','msg'=>'Only JPG, PNG, or WEBP images are allowed.']);
             }
+            $newName = uniqid('', true) . '.' . $ext;
+            $destination = FCPATH . 'uploads/productmedia/' . $newName;
+            if (move_uploaded_file($_FILES['colors']['tmp_name'][$colorIndex]['side_image'][$i], $destination)) {
+                $newSideUploaded[] = $newName;
+            }
+        }
+    }
+    // Only overwrite if new files uploaded
+    if (!empty($newSideUploaded)) {
+        $sideUploaded = $newSideUploaded;
+    }
+}
+
 
             // Sleeve Images
             $sleeveUploaded = !empty($existingData['pri_Sleev_Name']) ? json_decode($existingData['pri_Sleev_Name'], true) : [];

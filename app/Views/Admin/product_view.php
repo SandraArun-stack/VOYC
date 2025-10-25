@@ -34,66 +34,65 @@
                         <div id="messageBox" class="alert alert-success d-none"></div>
 
                         <div class="row">
-                            <div class="col-md-6 mb-4">
+    <!-- LEFT COLUMN: Basic product details -->
+    <div class="col-md-6 mb-4">
+        <p style="font-size: 15px;"><strong>Code:</strong> <?= esc($product->pr_Code); ?></p>
+        <p style="font-size: 14px;">
+            <strong>Description:</strong>
+            <?= ucwords(strtolower(esc($product->pr_Description))); ?>
+        </p>
+        <p style="font-size: 14px;"><strong>Category:</strong> <?= esc($product->cat_Name); ?></p>
+        <p style="font-size: 14px;"><strong>Subcategory:</strong> <?= esc($product->sub_Category_Name); ?></p>
+        <p style="font-size: 14px;">
+            <strong>Sleeve Style:</strong>
+            <?= !empty($product->pr_Sleeve_Style) ? esc($product->pr_Sleeve_Style) : 'N/A'; ?>
+        </p>
+        <p style="font-size: 14px;">
+            <strong>Fabric:</strong>
+            <?= !empty($product->pr_Fabric) ? esc($product->pr_Fabric) : 'N/A'; ?>
+        </p>
+        <p style="font-size: 14px;">
+            <strong>Stitch Type:</strong>
+            <?= !empty($product->pr_Stitch_Type) ? esc($product->pr_Stitch_Type) : 'N/A'; ?>
+        </p>
+    </div>
 
-                                <p style="font-size: 15px;"><strong>Code:</strong> <?= esc($product->pr_Code); ?></p>
-                                <p style="font-size: 14px;">
-                                    <strong>Description:</strong>
-                                    <?= ucwords(strtolower(esc($product->pr_Description))); ?>
-                                </p>
-                                <p style="font-size: 14px;"><strong>Category:</strong> <?= esc($product->cat_Name); ?>
-                                </p>
-                                <p style="font-size: 14px;"><strong>Subcategory:</strong>
-                                    <?= esc($product->sub_Category_Name); ?></p>
-                                <p style="font-size: 14px;"><strong>Selling Price:</strong>
-                                    ₹<?= esc($product->pr_Selling_Price); ?></p>
-                                <p style="font-size: 14px;"><strong>MRP:</strong> ₹<?= esc($product->mrp); ?></p>
-                            </div>
+    <!-- RIGHT COLUMN: Sizes and Colors -->
+    <div class="col-md-6 mb-4">
+        
+            <p style="font-size: 14px;"><strong>Sizes with Price:</strong></p>
+            <?php if (!empty($product->sizes)): ?>
+                <?php foreach ($product->sizes as $size => $price): ?>
+                    <p><?= esc($size) ?> - ₹<?= number_format($price, 2) ?></p>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>N/A</p>
+            <?php endif; ?>
 
-                            <div class="col-md-6 mb-3">
+            
 
-                                <p style="font-size: 14px;"><strong>Stock:</strong> <?= esc($product->pr_Stock); ?></p>
-                                <p style="font-size: 14px;"><strong>Discount:</strong>
-                                    <?= esc($product->pr_Discount_Value); ?>
-                                    <?= esc($product->pr_Discount_Type); ?>
-                                </p>
-                                <p style="font-size: 14px;"><strong>Available Colors:</strong>
-                                    <?php
-                                    $colors = explode(',', $product->pr_Aval_Colors);
-                                    foreach ($colors as $color):
-                                        ?>
-                                        <span class="badge badge-info me-1"><?= esc(trim($color)); ?></span>
-                                    <?php endforeach; ?>
-                                </p>
-                                <p style="font-size: 14px;"><strong>Size:</strong>
-                                    <?php
-                                    $sizes = explode(',', $product->pr_Size);
-                                    foreach ($sizes as $size):
-                                        ?>
-                                        <span class="d-inline-flex justify-content-center align-items-center rounded-circle border bg-light text-dark me-2
-                                                                               text-center"
-                                            style="width: 43px; height: 40px; font-size: 10px; line-height:1px; white-space: normal ">
-                                            <?= esc(trim($size)); ?>
-                                        </span>
-                                    <?php endforeach; ?>
-                                </p>
-                                <p style="font-size: 14px;">
-                                    <strong>Sleeve Style:</strong>
-                                    <?= !empty($product->pr_Sleeve_Style) ? esc($product->pr_Sleeve_Style) : 'N/A'; ?>
-                                </p>
+            <p style="font-size: 14px;"><strong>Available Colors:</strong></p>
+            <?php if (!empty($product->colors)): ?>
+                <div class="d-flex flex-wrap align-items-center">
+                    <?php foreach ($product->colors as $color): ?>
+                        <?php 
+                            $decodedColor = trim($color);
+                            if (strpos($decodedColor, '#') === false) {
+                                $decodedColor = '#' . $decodedColor;
+                            }
+                        ?>
+                        <span title="<?= esc($decodedColor) ?>" 
+                              style="display:inline-block; width:20px; height:20px; border-radius:50%; background-color:<?= esc($decodedColor) ?>; border:1px solid #ccc; margin:3px;">
+                        </span>
+                    <?php endforeach; ?>
+                </div>
+            <?php else: ?>
+                <p>N/A</p>
+            <?php endif; ?>
+      
+    </div>
+</div>
 
-                                <p style="font-size: 14px;">
-                                    <strong>Fabric:</strong>
-                                    <?= !empty($product->pr_Fabric) ? esc($product->pr_Fabric) : 'N/A'; ?>
-                                </p>
-
-                                <p style="font-size: 14px;">
-                                    <strong>Stitch Type:</strong>
-                                    <?= !empty($product->pr_Stitch_Type) ? esc($product->pr_Stitch_Type) : 'N/A'; ?>
-                                </p>
-
-                            </div>
-                        </div>
                     </div>
                     <div class="card-footer text-end bg-light">
                         <a href="<?= base_url('admin/product'); ?>" class="btn btn-outline-secondary">

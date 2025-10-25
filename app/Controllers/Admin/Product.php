@@ -588,23 +588,21 @@ if ($pr_custom === null || $pr_custom === '') {
     //View Product
 
     public function viewProduct($id)
-    {
-        if (!$this->session->get('ad_uid')) {
-            return redirect()->to(base_url('admin'));
-        }
-
-        $product = $this->productModel->getProductByid($id);
-        $data['product'] = $product;
-        // print_r($data['product']);
-        // exit;
-
-        $template = view('Admin/common/header');
-        $template .= view('Admin/common/leftmenu');
-        $template .= view('Admin/product_view', $data);
-        $template .= view('Admin/common/footer');
-
-        return $template;
-
+{
+    if (!$this->session->get('ad_uid')) {
+        return redirect()->to(base_url('admin'));
     }
+
+    $product = $this->productModel->getProductByIdFull($id);
+    $data['product'] = $product;
+
+    $template = view('Admin/common/header');
+    $template .= view('Admin/common/leftmenu');
+    $template .= view('Admin/product_view', $data);
+    $template .= view('Admin/common/footer');
+
+    return $template;
+}
+
 
 }
