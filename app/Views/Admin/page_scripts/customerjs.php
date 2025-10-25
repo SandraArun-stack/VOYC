@@ -172,9 +172,31 @@ $('#custSubmit').click(function(e) {
 //         iconElement.classList.add("fa-eye-slash");
 //     }
 // }
+// function togglePassword(inputId, iconElement) {
+//     const input = document.getElementById(inputId);
+//     const icon = iconElement.querySelector("i");
+
+//     if (input.type === "password") {
+//         input.type = "text";
+//         icon.classList.remove("fa-eye-slash");
+//         icon.classList.add("fa-eye");
+//     } else {
+//         input.type = "password";
+//         icon.classList.remove("fa-eye");
+//         icon.classList.add("fa-eye-slash");
+//     }
+// }
+
+
 function togglePassword(inputId, iconElement) {
     const input = document.getElementById(inputId);
-    const icon = iconElement.querySelector("i");
+
+    // If iconElement is <i>, use it directly. If it's a wrapper (like <span><i></i></span>), find the inner <i>.
+    const icon = iconElement.tagName.toLowerCase() === "i"
+        ? iconElement
+        : iconElement.querySelector("i");
+
+    if (!icon) return; // safety check
 
     if (input.type === "password") {
         input.type = "text";

@@ -9,6 +9,7 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::index');
 $routes->get('men', 'Shop::index');
 $routes->get('women', 'Shop::index');
+$routes->post('fetchProductsBySubcategory', 'Shop::index');
 
 $routes->get('productdetails/(:num)/(:num)', 'ProductDetail::index/$1/$2');
 $routes->get('getColorImage/(:num)', 'ProductDetail::getColorImage/$1');
@@ -20,6 +21,7 @@ $routes->get('cart', 'Cart::index');
 $routes->get('cart/(:num)', 'Cart::index/$1');
 $routes->post('cart/remove', 'Cart::remove');
 $routes->post('cart/updateQuantity', 'Cart::updateQuantity');
+$routes->post('addToCart', 'ProductDetail::addToCart');
 
 //Tshirt Customisation
 $routes->get('tshirt_Customisation', 'Tshirt::index');
@@ -66,6 +68,9 @@ $routes->get('product/load-more-reviews/(:num)', 'Product::loadMoreReviews/$1');
 $routes->get('subcategory/subcategoryProducts/(:num)/(:num)', 'Subcategory::subcategoryProducts/$1/$2');
 $routes->get('subcategory/loadMoreSubcategoryProducts/(:num)/(:num)', 'Subcategory::loadMoreSubcategoryProducts/$1/$2');
 
+
+$routes->get('getSizesByColor/(:num)', 'ProductDetail::getSizesByColor/$1');
+
 $routes->match(['get', 'post'], 'weblogin/create', 'Weblogin::createnew');
 
 
@@ -106,6 +111,7 @@ $routes->get('product/product_list', 'Product::products_lists');
 $routes->get('ordernow', 'OrderNow::index');
 $routes->get('ordernow/product/(:any)', 'OrderNow::orderproduct/$1');
 $routes->post('ordernow/submitfrm', 'OrderNow::submitfrm');
+
 //$routes->post('ordernow/submitfrm', 'OrderNow::submitfrm');
 
 $routes->get('category/category_list', 'Category::category_list');
@@ -119,6 +125,19 @@ $routes->get('delivery', 'Delivery::index');
 $routes->get('Privacypolicy', 'Privacypolicy::index');
 $routes->get('Termsandconditions', 'Termsandconditions::index');
 $routes->get('Return_refundpolicy', 'ReturnAndRefundPolicy::index');
+
+
+
+//oreder details
+$routes->get('orderdetails', 'OrderDetails::index');  
+$routes->post('orderdetails/placeOrder', 'OrderDetails::placeOrder');
+$routes->post('orderdetails/saveAddress', 'OrderDetails::saveAddress');
+
+
+
+
+
+
 
 
 
@@ -170,12 +189,11 @@ $routes->post('admin/product/getVideo', 'Admin\Product::getVideo');
 $routes->post('admin/product/deletevideo', 'Admin\Product::deleteVideo');
 $routes->post('admin/product/status', 'Admin\Product::changeStatus');
 $routes->get('admin/product/view/(:any)', 'Admin\Product::viewProduct/$1');
-//$routes->get('admin/update_stock/(:any)', 'Admin\Product::updateStock/$1');
 $routes->get('admin/update_stock/(:num)', 'Admin\Stock::updateStockForm/$1');
 $routes->post('admin/update_stock_value/(:num)', 'Admin\Stock::updateStock/$1');
 $routes->get('product/reviews_view/(:num)', 'Product::reviewsView/$1');
 
-
+//product images
 $routes->get('admin/productimage', 'Admin\ProductImage::index');
 $routes->get('admin/product/image/(:num)', 'Admin\ProductImage::viewimage/$1');
 $routes->get('admin/product/image/add/(:num)', 'Admin\ProductImage::addProductImage/$1');
@@ -212,8 +230,6 @@ $routes->get('admin/customer/customer_address', 'Admin\Customer::customer_addres
 $routes->get('admin/customer/view/(:num)', 'Admin\Customer::view_cust/$1'); // Edit Page
 $routes->post('admin/customer/save', 'Admin\Customer::createnew');
 $routes->post('admin/customer/delete/(:any)', 'Admin\Customer::deleteCust/$1');
-
-//$routes->post('customer/updateStatus', 'Customer::updateStatus');
 $routes->post('admin/customer/status', 'Admin\Customer::updateStatus');
 $routes->get('admin/customer/location/(:num)', 'Admin\Customer_address::location/$1');//customer address edit
 $routes->get('admin/customer_address/view/(:num)', 'Admin\Customer_address::view_address/$1');
@@ -229,7 +245,6 @@ $routes->post('admin/themes/List', 'Admin\Themes::ajaxList');
 $routes->post('admin/themes/status', 'Admin\Themes::updateStatus');
 $routes->get('admin/themes/add', 'Admin\Themes::addbanner'); // Create
 $routes->get('admin/themes/add/(:num)', 'Admin\Themes::addbanner/$1'); // Edit
-//$routes->post('themes/save', 'Themes::save_file');
 $routes->post('admin/themes/delete/(:any)', 'Admin\Themes::deleteBanner/$1');
 $routes->post('admin/themes/save_file', 'Admin\Themes::save_file');
 $routes->get('admin/get/themes', 'Admin\Themes::fetch_theme');
@@ -238,7 +253,6 @@ $routes->get('admin/get/themes', 'Admin\Themes::fetch_theme');
 $routes->get('admin/orders', 'Admin\Orders::index');
 $routes->post('admin/orders/List', 'Admin\Orders::ajaxList');
 $routes->get('admin/orders/view/(:num)', 'Admin\Orders::orderView/$1');
-// $routes->post('admin/orders/loadStatus/(:num)', 'Admin\Orders::orderStatusUpdation/$1');
 $routes->post('admin/orders/orderStatusUpdation/(:num)', 'Admin\Orders::orderStatusUpdation/$1');
 
 
@@ -247,7 +261,6 @@ $routes->post('admin/orders/orderStatusUpdation/(:num)', 'Admin\Orders::orderSta
 $routes->get('admin/', 'Admin\Profile::index');
 $routes->get('admin/profile', 'Admin\Profile::edit_admin');
 $routes->post('admin/profile/update', 'Admin\Profile::update');
-//$routes->post('admin/profile/change_password', 'Admin\Profile::change_password');
 $routes->match(['get', 'post'], 'admin/profile/change_password', 'Admin\Profile::change_password');
 $routes->post('admin/profile/list', 'Admin\Profile::ajaxList');
 
@@ -273,16 +286,6 @@ $routes->post('admin/banner/save', 'Admin\Banner::createnew');
 $routes->post('admin/banner/delete/(:any)', 'Admin\Banner::deleteBanner/$1');
 
 
-// //offer banners
-// $routes->get('offer_banner', 'Offer_Banner::index');
-// $routes->post('offer_banner/List', 'Offer_Banner::ajaxList');
-// $routes->post('offer_banner/changeStatus', 'Offer_Banner::updateStatus');
-// $routes->get('offer_banner/add', 'Offer_Banner::addbanner'); // Create
-// $routes->get('offer_banner/add/(:num)', 'Offer_Banner::addbanner/$1'); // Edit
-// $routes->post('offer_banner/save', 'Offer_Banner::createnew');
-// $routes->post('offer_banner/delete/(:any)', 'Offer_Banner::deleteBanner/$1');
-// $routes->post('offer_banner/get-subcategories', 'Offer_Banner::getSubcategories');
-// $routes->post('offer_banner/get-products', 'Offer_Banner::getProducts');
 //admin_updation
 $routes->get('/admin', 'Admin::index');
 $routes->post('admin/save', 'Admin::createnew');

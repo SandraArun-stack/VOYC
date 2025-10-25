@@ -287,6 +287,62 @@ class ProductModel extends Model
     }
 
 
+public function getProductByIdFull($id)
+{
+    $product = $this->db->table('product p')
+        ->select('p.*, c.cat_Name, s.sub_Category_Name')
+        ->join('category c', 'c.cat_Id = p.cat_id', 'left')
+        ->join('subcategory s', 's.sub_Id = p.sub_id', 'left')
+        ->where('p.pr_Id', $id)
+        ->get()
+        ->getRow();
+
+    if (!$product) return null;
+
+    // Fetch all product variants (sizes with price)
+    $variants = $this->db->table('product_variants')
+        ->select('prv_Size, prv_price')
+        ->where('pr_Id', $id)
+        ->where('prv_Status', 1)
+        ->orderBy('FIELD(prv_Size,"S","M","L","XL","XXL")')
+        ->get()
+        ->getResult();
+
+    $sizes = [];
+    foreach ($variants as $v) {
+        $sizes[$v->prv_Size] = $v->prv_price;
+    }
+    $product->sizes = $sizes;
+
+    // Fetch all images and colors
+    $images = $this->db->table('product_image')
+        ->select('pri_File_Name, color_details')
+        ->where('pr_Id', $id)
+        ->where('pri_Status', 1)
+        ->get()
+        ->getResult();
+
+    $productImages = [];
+    $colors = [];
+    foreach ($images as $img) {
+        if (!empty($img->pri_File_Name)) {
+            $productImages[] = base_url('uploads/productmedia/' . $img->pri_File_Name);
+        }
+        // Collect colors from color_details (assuming comma separated)
+       if (!empty($img->color_details)) {
+    $decoded = json_decode($img->color_details, true); // Decode JSON string to array
+    if (!empty($decoded['color'])) {
+        $colors[] = trim($decoded['color']); // store the actual hex code
+    }
+}
+    }
+
+    $product->images = $productImages;
+    $product->colors = array_unique($colors); // Remove duplicates
+
+    return $product;
 }
 
-?>
+
+
+}

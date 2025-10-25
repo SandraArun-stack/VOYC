@@ -80,7 +80,7 @@
                     <a href="#"><i class="bi bi-controller"></i></a>
                     <a href="<?= base_url('tshirt_Customisation'); ?>" class="design_icon"></a>
                 </div>
-                <div class="col-xl-6 col-lg-7 ">
+                <div class="col-xl-6 col-lg-7 d-flex align-items-center justify-content-end">
                     <nav class="header__menu">
                         <ul>
                             <li class="active"><a href="<?= base_url(' '); ?>" id="home">Home</a></li>
@@ -90,7 +90,14 @@
                             <li><a href="<?= base_url('contact'); ?>" id="contact">Contact</a></li>
                         </ul>
                     </nav>
+
+                    <!-- Search Icon -->
+                    <div class="search-wrapper">
+                        <span id="search-toggle" class="icon_search" style="cursor:pointer;"></span>
+                        <input type="text" id="search-bar" placeholder="Search..." />
+                    </div>
                 </div>
+
                 <div class="col-lg-3 col-2">
                     <div class="header__right">
                         <!-- <div class="header__right__auth">
@@ -120,7 +127,6 @@
                         </div>
 
                         <ul class="header__right__widget">
-                            <li><span class="icon_search search-switch"></span></li>
                             <li>
                                 <a href="#"><i class="bi bi-wallet2"></i>
                                     <div class="tip">2</div>

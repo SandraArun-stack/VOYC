@@ -12,7 +12,7 @@
                 <div class="col-md-4">
                     <ul class="breadcrumb-title">
                         <li class="breadcrumb-item">
-                            <a href="index.html"> <i class="fa fa-home"></i> </a>
+                             <a href="<?= base_url('admin/dashboard'); ?>"> <i class="fa fa-home"></i> </a>
                         </li>
                         <li class="breadcrumb-item"><a href="#!">Product Images</a></li>
                     </ul>
@@ -34,12 +34,18 @@
                                         <div class="col-md-7">
                                             <div id="messageBox" class="alert" style="display: none;"></div>
                                         </div>
-                                        <div class="col-md-5 d-flex justify-content-end">
-                                            <a href="<?= base_url('admin/product/image/add/' . $pr_id); ?>" class="btn btn-primary">
-                                                Add Product Image
-                                            </a>
+                                        <div class="col-md-12 d-flex justify-content-between align-items-center">
+                                            <h5 id="productNameHeading" class="mb-3"></h5>
+                                            
+                                            <div>
+                                                <a href="<?= base_url('admin/product'); ?>" class="btn btn-secondary">
+                                                    Back to List
+                                                </a>
+                                                <a href="<?= base_url('admin/product/image/add/' . $pr_id); ?>" class="btn btn-primary">
+                                                    Add Product Image
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
                                 </div>
                                 <div class="card-block table-border-style">
                                     <input type="hidden" id="pr_id" value="<?= isset($pr_id) ? $pr_id : '' ?>">
@@ -48,7 +54,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>Slno</th>
-                                                    <th>Product Name</th>
+                                                    <!-- <th>Product Name</th> -->
                                                     <th>Size</th>
                                                     <th>Color</th>
                                                     <th>Stock</th>

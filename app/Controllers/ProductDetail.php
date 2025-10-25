@@ -59,4 +59,52 @@ class ProductDetail extends Controller
         ]);
     }
 
+    public function getSizesByColor($priId)
+    {
+        $sizes = $this->ProductDetailModel->getSizesByColor($priId);
+        return $this->response->setJSON($sizes);
+    }
+
+
+
+    public function addToCart()
+    {
+        $custId   = $this->request->getPost('cust_Id');
+        $prId     = $this->request->getPost('pr_Id');
+        $priId    = $this->request->getPost('pri_Id');
+        $prvId    = $this->request->getPost('prv_Id');
+        $designId = $this->request->getPost('design_Id');
+        $quantity = $this->request->getPost('cart_Quantity') ?? 1;
+        $price = $this->request->getPost('cart_Price');
+
+        // ✅ Use isset() instead of falsy check so 0 is valid
+        if (
+            !isset($custId) || 
+            !isset($prId)   || 
+            !isset($priId)  || 
+            !isset($prvId)
+        ) {
+            return $this->response->setJSON(['status' => 0, 'message' => 'Missing required data']);
+        }
+
+        $data = [
+            'cust_Id'       => $custId,
+            'pr_Id'         => $prId,
+            'pri_Id'        => $priId,
+            'prv_Id'        => $prvId,
+            'design_Id'     => $designId,
+            'cart_Quantity' => $quantity,
+            'cart_Price'         => $price
+        ];
+
+        $result = $this->ProductDetailModel->saveToCart($data);
+
+        if ($result === 'inserted' || $result === 'updated') {
+            return $this->response->setJSON(['status' => 1, 'message' => 'Added to cart successfully']);
+        }
+
+        return $this->response->setJSON(['status' => 0, 'message' => 'Error adding to cart']);
+    }
+
+
 }
