@@ -394,11 +394,33 @@ $(document).ready(function () {
 
 });
 
-$(document).ready(function() {
-    $("#search-toggle").click(function() {
+// $(document).ready(function() {
+//     $("#search-toggle").click(function() {
+//         $("#search-bar").toggleClass("active");
+//         if ($("#search-bar").hasClass("active")) {
+//             $("#search-bar").focus();
+//         }
+//     });
+// });
+
+$(document).ready(function () {
+    $("#search-toggle").click(function () {
         $("#search-bar").toggleClass("active");
         if ($("#search-bar").hasClass("active")) {
             $("#search-bar").focus();
+        }
+    });
+
+    // 🔍 Search redirect
+    $("#search-bar").on("keypress", function (e) {
+        if (e.which === 13) { // Enter key pressed
+            const searchTerm = $(this).val().trim();
+            if (searchTerm.length > 0) {
+                $("#search-bar").removeClass("active");
+                window.location.href = base_url + "/shop?search=" + encodeURIComponent(searchTerm);
+            } else {
+                alert("Please enter a search term.");
+            }
         }
     });
 });
