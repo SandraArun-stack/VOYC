@@ -9,7 +9,9 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::index');
 $routes->get('men', 'Shop::index');
 $routes->get('women', 'Shop::index');
+$routes->get('shop', 'Shop::index'); 
 $routes->post('fetchProductsBySubcategory', 'Shop::index');
+
 
 $routes->get('productdetails/(:num)/(:num)', 'ProductDetail::index/$1/$2');
 $routes->get('getColorImage/(:num)', 'ProductDetail::getColorImage/$1');
