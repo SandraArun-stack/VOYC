@@ -143,10 +143,11 @@
                                             <li class="py-1 px-4"><b>Hello, <?= esc($session->get('user_name')) ?></b></li>
                                             <ul class="profile__container__listing">
                                                 <li>
-                                                    <a class="dropdown-item drop-profile " href="#">
-                                                        Profile
-                                                    </a>
-                                                </li>
+    <a class="dropdown-item drop-profile" href="<?= base_url('myprofile'); ?>">
+        Profile
+    </a>
+</li>
+
                                                 <li>
                                                     <a class="dropdown-item drop-profile"
                                                         href="<?= base_url('my_orders'); ?>">
