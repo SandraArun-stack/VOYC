@@ -7,15 +7,19 @@ use CodeIgniter\Router\RouteCollection;
  */
 /* GET METHODS */
 $routes->get('/', 'Home::index');
+
+//shop
 $routes->get('men', 'Shop::index');
 $routes->get('women', 'Shop::index');
 $routes->get('shop', 'Shop::index'); 
 $routes->post('fetchProductsBySubcategory', 'Shop::index');
 
+//product details
 
 $routes->get('productdetails/(:num)/(:num)', 'ProductDetail::index/$1/$2');
 $routes->get('getColorImage/(:num)', 'ProductDetail::getColorImage/$1');
 
+//contact
 $routes->get('contact', 'Contact::index');
 
 //cart
@@ -38,8 +42,9 @@ $routes->post('logoutUser', 'Home::logoutUser');
 //All Customizable Products
 $routes->get('allCustomizableProducts', 'AllCustProduct::index');
 
-
-
+//orders
+$routes->get('my_orders', 'MyOrders::index');
+$routes->post('saveRating', 'MyOrders::saveRating');
 
 // ordernow user
 

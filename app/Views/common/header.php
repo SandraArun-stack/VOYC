@@ -100,34 +100,9 @@
                         <input type="text" id="search-bar" placeholder="Search..." />
                     </div>
                 </div>
-
+                <?php $session = session(); ?>
                 <div class="col-lg-3 col-2">
                     <div class="header__right">
-                        <!-- <div class="header__right__auth">
-                            <a id="login-link">Login</a>
-                            <a id="register-link">Register</a>
-                        </div> -->
-
-                        <div class="header__right__auth">
-                            <?php $session = session(); ?>
-
-                            <?php if ($session->get('isLoggedIn')): ?>
-                                <div class="dropdown" id="userDropDown">
-                                    <a class="dropdown-toggle text-decoration-none" href="#" role="button" id="userDropdown"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <?= esc($session->get('user_name')) ?>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                        <li><a class="dropdown-item" href="#">Profile</a></li>
-                                        <li><a class="dropdown-item text-danger" href="#" id="logoutBtn">Logout</a></li>
-                                    </ul>
-                                </div>
-                            <?php else: ?>
-                                <a id="login-link" href="#" data-bs-toggle="modal" data-bs-target="#authModal">Login</a>
-                                <a id="register-link" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#authModal">Register</a>
-                            <?php endif; ?>
-                        </div>
 
                         <ul class="header__right__widget">
                             <li>
@@ -153,6 +128,58 @@
                                 </a>
                             </li>
                         </ul>
+
+                        <div class="header__right__auth">
+
+                            <div class="dropdown" id="userDropDown">
+                                <a class=" text-decoration-none" href="#" role="button" id="userDropdown"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-person-square profile-person"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end profile-small-container"
+                                    style="display:none;" aria-labelledby="userDropdown" style="display:none;">
+                                    <?php if ($session->get('isLoggedIn')): ?>
+                                        <ul class="profile__container">
+                                            <li class="py-1 px-4"><b>Hello, <?= esc($session->get('user_name')) ?></b></li>
+                                            <ul class="profile__container__listing">
+                                                <li>
+                                                    <a class="dropdown-item drop-profile " href="#">
+                                                        Profile
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item drop-profile"
+                                                        href="<?= base_url('my_orders'); ?>">
+                                                        My Orders 
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item drop-profile text-danger" href="#" id="logoutBtn">
+                                                        Logout
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </ul>
+
+                                    <?php else: ?>
+                                        <p class="dropdown-item drop-profile hideActive" href="#"><b>Welcome</b></p>
+                                        <p class="dropdown-item drop-profile welcome hideActive" href="#">
+                                            To access account and manage orders</p>
+                                        <div class="login-reg">
+                                            <button class="login-sign-up-button" id="login-link" href="#"
+                                                data-bs-toggle="modal" data-bs-target="#authModal">
+                                                Login/Sign Up
+                                            </button>
+                                        </div>
+                                    <?php endif; ?>
+                                </ul>
+                            </div>
+
+                            <!-- <a id="login-link" href="#" data-bs-toggle="modal" data-bs-target="#authModal">Login</a>
+                                <a id="register-link" href="#" data-bs-toggle="modal"
+                                    data-bs-target="#authModal">Register</a> -->
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -166,22 +193,13 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content p-2">
                 <div id="loginView">
-                    <!-- <div class="modal-header border-0 d-flex justify-content-center align-items-center flex-column pb-0 position-relative">
-                        <button type="button" class="btn border-0 bg-transparent position-absolute top-0 end-0 m-2"
-                            data-bs-dismiss="modal" aria-label="Close" style="font-size: 1.5rem;">
-                            <i class="bi bi-x-square text-dark"></i>
-                        </button>
-                        <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
-                        <h3 class="auth-title mb-0 w-100 text-center">Sign In</h3>
-
-                    </div> -->
                     <div class="modal-header border-0 position-relative p-2">
                         <button type="button" class="btn border-0 bg-transparent position-absolute login_close"
                             data-bs-dismiss="modal" aria-label="Close">
                             <i class="bi bi-x-square text-dark"></i>
                         </button>
 
-                        <div class="d-flex flex-column justify-content-center align-items-center w-100 pt-3 pb-2">
+                        <div class="d-flex flex-column justify-content-center align-items-center w-100 pt-3 pb-0">
                             <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
                             <h3 class="auth-title mb-0 text-center">Sign In</h3>
                         </div>
@@ -226,7 +244,7 @@
                             <i class="bi bi-x-square text-dark"></i>
                         </button>
 
-                        <div class="d-flex flex-column justify-content-center align-items-center w-100 pt-3 pb-2">
+                        <div class="d-flex flex-column justify-content-center align-items-center w-100 pt-3 pb-0">
                             <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
                             <h3 class="auth-title mb-0 text-center">Step Into Your Style</h3>
                         </div>

@@ -182,87 +182,7 @@ $(document).ready(function () {
         });
     });
 
-    //login ajax
-    // $('#btn_login').on('click', function (e) {
-    //     e.preventDefault();
-    //     var formDataLogin = $('#loginForm').serialize();
-    //     var loginUrl = $(this).data('url');
-    //     var $alertBox = $('#login_msg_alert');
 
-
-    //     $alertBox.addClass('d-none').removeClass('alert-success alert-danger').text('');
-
-    //     var captchaResponse = grecaptcha.getResponse();
-    //     if (!captchaResponse) {
-    //         $alertBox
-    //             .removeClass('d-none alert-success')
-    //             .addClass('alert alert-danger')
-    //             .text('Please verify you are not a robot.')
-    //             .fadeIn();
-    //         setTimeout(() => {
-    //             $alertBox.fadeOut(500);
-    //         }, 3000);
-    //         return;
-
-    //     }
-
-    //     formDataLogin += '&g-recaptcha-response=' + captchaResponse;
-
-    //     $.ajax({
-    //         url: loginUrl,
-    //         type: 'POST',
-    //         data: formDataLogin,
-    //         dataType: 'json',
-    //         beforeSend: function () {
-    //             $('#btn_login').prop('disabled', true).text('Sign In...');
-    //         },
-    //         success: function (response) {
-
-    //             $('#btn_login').prop('disabled', false).text('Sign In');
-    //             grecaptcha.reset();
-
-    //             if (response.status === 'success') {
-    //                 $alertBox
-    //                     .removeClass('d-none alert-danger')
-    //                     .addClass('alert alert-success')
-    //                     .text(response.message || 'Login successful!')
-    //                     .fadeIn();
-
-    //                 $('#loginForm')[0].reset();
-
-    //                 setTimeout(() => {
-    //                     $alertBox.fadeOut(400, function () {
-    //                         authModal?.hide();
-    //                     });
-    //                     location.reload();
-    //                 }, 2000);
-    //             } else {
-    //                 $alertBox
-    //                     .removeClass('d-none alert-success')
-    //                     .addClass('alert alert-danger')
-    //                     .text(response.message || 'Login failed!')
-    //                     .fadeIn();
-
-    //                 setTimeout(() => {
-    //                     $alertBox.fadeOut(500);
-    //                 }, 3000);
-    //             }
-    //         },
-    //         error: function () {
-    //             $('#btn_login').prop('disabled', false).text('Login');
-    //             $alertBox
-    //                 .removeClass('d-none alert-success')
-    //                 .addClass('alert alert-danger')
-    //                 .text('Something went wrong! Please try again.')
-    //                 .fadeIn();
-
-    //             setTimeout(() => {
-    //                 $alertBox.fadeOut(500);
-    //             }, 3000);
-    //         }
-
-    //     });
-    // });
 
     $('#btn_login').on('click', function (e) {
         e.preventDefault();
@@ -366,7 +286,8 @@ $(document).ready(function () {
     $('.login_close').on('click', function (e) {
         authModal.hide();
     });
-    $('#userDropDown').on('click', function (e) {
+    // show logout modal pop up
+    $('#logoutBtn').on('click', function (e) {
         e.preventDefault();
         $('#logoutModal').modal('show');
     });
@@ -410,6 +331,35 @@ $(document).ready(function () {
             $("#search-bar").focus();
         }
     });
+   
+
+    $('.header__right__auth').on('click', function (e) {
+        
+        if ($(e.target).closest('.dropdown-menu a').length) {
+            return; 
+        }
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        const $dropdown = $(this).find('#userDropDown');
+        const $menu = $dropdown.find('.dropdown-menu');
+
+        if ($dropdown.length) {
+            if ($menu.is(':visible')) {
+                $menu.hide();
+            } else {
+                $('.dropdown-menu').hide();
+                $menu.show();
+            }
+        }
+    });
+
+    $(document).on('click', '.dropdown-menu a', function () {
+        $('.dropdown-menu').hide();
+    });
+
+
 
     // 🔍 Search redirect
     $("#search-bar").on("keypress", function (e) {
@@ -424,4 +374,6 @@ $(document).ready(function () {
         }
     });
 });
+
+
 

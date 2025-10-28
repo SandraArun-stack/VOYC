@@ -424,17 +424,19 @@ ol {
 .header__right {
 	text-align: right;
 	padding: 30px 0 27px;
+	position: relative;
+	overflow: visible; 
 }
 
 .header__right__auth {
 	display: inline-block;
-	margin-right: 25px;
+	margin-left: 25px;
 }
 
 .header__right__auth a {
 	font-size: 12px;
 	color: #fff !important;
-	position: relative;
+	/* position: relative; */
 	margin-right: 8px;
 }
 
@@ -1460,17 +1462,17 @@ ol {
 
 .sidebar__filter button {
 	font-size: 12px;
-    color: #0d0d0d;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-weight: 700;
-    padding: 5px 6px;
-    border: 2px solid #000;
-    position: absolute;
-    right: 0;
-    bottom: -5px;
-    background: white;
-    border-radius: 2px;
+	color: #0d0d0d;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	font-weight: 700;
+	padding: 5px 6px;
+	border: 2px solid #000;
+	position: absolute;
+	right: 0;
+	bottom: -5px;
+	background: white;
+	border-radius: 2px;
 }
 
 .filter-range-wrap .range-slider .price-input {

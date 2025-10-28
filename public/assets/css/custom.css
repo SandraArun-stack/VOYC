@@ -1,3 +1,9 @@
+header {
+    position: sticky;
+    top: 0px;
+    z-index: 1;
+}
+
 .video-fullscreen {
     width: 100vw;
     height: 100vh;
@@ -615,6 +621,7 @@ input[type="file"] {
 
 .header__right__auth {
     cursor: pointer;
+    position: relative;
 }
 
 .eye_icon {
@@ -788,6 +795,238 @@ input[type="file"] {
     border-color: #111111;
 }
 
+#userDropDown .dropdown-menu {
+    background: #fefefe !important;
+    color: #000000 !important;
+}
+
+.profile-small-container {
+    padding: 14px 0px;
+}
+
+/* Style dropdown items */
+#userDropDown .dropdown-item {
+    color: #000000 !important;
+}
+
+/* Hover effect for items */
+/* #userDropDown .dropdown-item:hover {
+    background-color: #333 !important;
+    color: #fff !important;
+} */
+
+/* Optional: make the dropdown toggle text white */
+#userDropDown .dropdown-toggle {
+    color: #fff !important;
+}
+
+.profile-person {
+    font-size: 22px;
+    margin-left: 15px;
+}
+
+#leader_board {
+    margin-left: -14px;
+}
+
+
+
+#userDropDown {
+    position: relative;
+}
+
+#userDropDown .dropdown-menu {
+    box-shadow: rgb(94 94 94 / 30%) 0px 0px 15px 2px;
+    position: absolute !important;
+    top: 60px;
+    right: 0;
+    left: auto !important;
+    transform: none !important;
+    display: none;
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 0;
+    min-width: 200px;
+    z-index: 2000;
+}
+
+#userDropDown .dropdown-item {
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
+.modal-body {
+    padding-top: 0px;
+}
+
+.login-reg {
+    padding: 7px;
+    text-align: center;
+}
+
+.login-reg .login-sign-up-button {
+    font-size: 13px;
+    background: #000000;
+    color: white;
+    border: 1px solid #f8f8f8;
+    padding: 7px 20px;
+    border-radius: 3px
+}
+
+.welcome {
+    font-size: 12px;
+}
+
+.dropdown-item.hideActive {
+    pointer-events: none;
+    background: none !important;
+    color: #fff !important;
+    cursor: default;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+    background-color: transparent !important;
+    color: #fff !important;
+}
+
+.profile__container__listing {
+    padding-top: 10px;
+}
+
+.dashboard_side_bar .main_dashboard_items {
+    margin: 15px 0px;
+}
+
+.dashboard_side_bar .main_dashboard_items .head__list {
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.dashboard_side_bar .main_dashboard_items .head__list h5 {
+    font-size: 14px;
+}
+
+.dashboard_side_bar .main_dashboard_items .sud__head__list {
+    padding: 0px 0px 0px 10px;
+}
+
+.dashboard_side_bar .main_dashboard_items .sud__head__list p {
+    margin-bottom: 5px;
+}
+
+.dashboard_side_bar .main_dashboard_items .sud__head__list p::before {
+    content: "- ";
+}
+
+.dashboard_side_bar .main_dashboard_items .sud__head__list p:hover {
+    color: #000;
+    cursor: pointer;
+}
+
+#userDropDown ul {
+    list-style-type: none;
+}
+
+.profile-small-container ul {
+    list-style-type: none;
+}
+
+.head__list {
+    margin-bottom: 3px;
+}
+
+.search-box {
+    width: 250px;
+}
+
+.search-box input {
+    border-radius: 5px;
+    padding: 6px 12px;
+    font-size: 14px;
+}
+
+.my_order_details {
+    background: rgba(0, 0, 0, .03);
+    border-radius: 6px;
+    margin: 10px;
+}
+
+.search__my__order {
+    position: absolute;
+    top: 6px;
+    right: 10px;
+}
+
+.star-rating {
+    /* margin-left: 10px; */
+}
+
+.star-rating i {
+    font-size: 22px;
+    color: #fff;
+    cursor: pointer;
+    transition: color 0.2s, text-shadow 0.2s;
+    text-shadow: 0 0 2px #000000ad;
+}
+
+.star-rating i.hover,
+.star-rating i.active {
+    color: gold;
+       text-shadow: 0 0 2px #ffea7a;
+}
+
+.star-rating i.active,
+.star-rating i.text-warning {
+    color: gold;
+}
+
+.text-gold {
+    color: gold !important;
+}
+
+.add__feedback {
+    text-align: end;
+}
+
+.add__feedback a {
+    color: #000;
+}
+
+.truck-image {
+    width: 50px;
+    height: auto;
+}
+
+.review-input {
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding: 10px 15px;
+    font-size: 12px;
+    transition: all 0.3s ease;
+}
+
+.review-input:focus {
+    border-color: #000000;
+    box-shadow: 0 0 5px rgb(0 0 0 / 40%);
+    outline: none;
+}
+
+.review-submit {
+    text-align: end;
+    margin-top: 10px;
+}
+.review-submit button{
+    font-size: 12px;
+}
+.shop__sidebar{
+    position: sticky;
+    top:100px;
+}
 @media only screen and (max-width: 991px) {
     .main__icon {
         display: flex !important;
