@@ -1,8 +1,8 @@
-header {
+/* header {
     position: sticky;
     top: 0px;
     z-index: 111;
-}
+} */
 
 .video-fullscreen {
     width: 100vw;
