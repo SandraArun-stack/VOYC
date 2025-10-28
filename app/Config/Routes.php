@@ -11,9 +11,11 @@ $routes->get('/', 'Home::index');
 //shop
 $routes->get('men', 'Shop::index');
 $routes->get('women', 'Shop::index');
+$routes->get('shop', 'Shop::index'); 
 $routes->post('fetchProductsBySubcategory', 'Shop::index');
 
 //product details
+
 $routes->get('productdetails/(:num)/(:num)', 'ProductDetail::index/$1/$2');
 $routes->get('getColorImage/(:num)', 'ProductDetail::getColorImage/$1');
 
