@@ -189,35 +189,134 @@ class ShopModel extends Model
         return array_column($subcategories, 'sub_Id');
     }
 
+// public function searchProducts($keyword)
+// {
+//     $keyword = trim($keyword);
+//     if ($keyword === '') return [];
+
+//     $builder = $this->db->table('product p');
+//     $builder->select('p.*, pi.pri_Id, pi.pri_Thumbnail, c.cat_Name, s.sub_Category_Name');
+//     $builder->join('product_image pi', 'pi.pr_Id = p.pr_Id', 'left');
+//     $builder->join('category c', 'c.cat_Id = p.cat_Id', 'left');
+//     $builder->join('subcategory s', 's.sub_Id = p.sub_Id', 'left');
+
+//     $builder->groupStart()
+//         ->like('LOWER(p.pr_Name)', strtolower($keyword))
+//         ->orLike('LOWER(p.pr_Description)', strtolower($keyword))
+//         ->orLike('LOWER(p.pr_Fabric)', strtolower($keyword))
+//         ->orLike('LOWER(p.pr_Sleeve_Style)', strtolower($keyword))
+//         ->orLike('LOWER(p.pr_Stitch_Type)', strtolower($keyword))
+//         ->orLike('LOWER(c.cat_Name)', strtolower($keyword))
+//         ->orLike('LOWER(s.sub_Category_Name)', strtolower($keyword))
+//         ->orWhere("SOUNDEX(p.pr_Name) = SOUNDEX(" . $this->db->escape($keyword) . ")", null, false)
+//         ->orWhere("SOUNDEX(s.sub_Category_Name) = SOUNDEX(" . $this->db->escape($keyword) . ")", null, false)
+//     ->groupEnd();
+
+//     $builder->where('p.pr_Status', 1);
+//     $builder->where('pi.pri_Status', 1);
+
+//     $results = $builder->get()->getResultArray();
+
+//     // ✅ Add price and size info before returning
+//     return $this->attachProductDetails($results);
+// }
+
 public function searchProducts($keyword)
 {
     $keyword = trim($keyword);
     if ($keyword === '') return [];
+
+    // Normalize keyword
+    $rawKeyword = $keyword;
+    $lowerKeyword = mb_strtolower($rawKeyword, 'UTF-8');
+
+    // If user typed a price range like "100-500"
+    $minPrice = null;
+    $maxPrice = null;
+    if (preg_match('/^\s*(\d+(?:\.\d+)?)\s*-\s*(\d+(?:\.\d+)?)\s*$/', $keyword, $m)) {
+        $minPrice = (float)$m[1];
+        $maxPrice = (float)$m[2];
+    } elseif (preg_match('/^\s*(\d+(?:\.\d+)?)\s*$/', $keyword, $mSingle)) {
+        // Single number: we'll treat it as price search (exact or near)
+        $minPrice = (float)$mSingle[1] * 0.9; // -10%
+        $maxPrice = (float)$mSingle[1] * 1.1; // +10%
+    }
+
+    // normalized no-space version for matching "tshirt" -> "t-shirt" etc.
+    $normalized = preg_replace('/[^a-z0-9]/', '', $lowerKeyword);
 
     $builder = $this->db->table('product p');
     $builder->select('p.*, pi.pri_Id, pi.pri_Thumbnail, c.cat_Name, s.sub_Category_Name');
     $builder->join('product_image pi', 'pi.pr_Id = p.pr_Id', 'left');
     $builder->join('category c', 'c.cat_Id = p.cat_Id', 'left');
     $builder->join('subcategory s', 's.sub_Id = p.sub_Id', 'left');
+    // join variants so we can search size & price
+    $builder->join('product_variants pv', 'pv.pr_Id = p.pr_Id', 'left');
 
-    $builder->groupStart()
-        ->like('LOWER(p.pr_Name)', strtolower($keyword))
-        ->orLike('LOWER(p.pr_Description)', strtolower($keyword))
-        ->orLike('LOWER(p.pr_Fabric)', strtolower($keyword))
-        ->orLike('LOWER(p.pr_Sleeve_Style)', strtolower($keyword))
-        ->orLike('LOWER(p.pr_Stitch_Type)', strtolower($keyword))
-        ->orLike('LOWER(c.cat_Name)', strtolower($keyword))
-        ->orLike('LOWER(s.sub_Category_Name)', strtolower($keyword))
-        ->orWhere("SOUNDEX(p.pr_Name) = SOUNDEX(" . $this->db->escape($keyword) . ")", null, false)
-        ->orWhere("SOUNDEX(s.sub_Category_Name) = SOUNDEX(" . $this->db->escape($keyword) . ")", null, false)
-    ->groupEnd();
+    // Start grouped WHERE
+    $builder->groupStart();
 
+    // 1) Direct LIKE on common text columns
+    $builder->like('LOWER(p.pr_Name)', $lowerKeyword);
+    $builder->orLike('LOWER(p.pr_Description)', $lowerKeyword);
+    $builder->orLike('LOWER(p.pr_Fabric)', $lowerKeyword);
+    $builder->orLike('LOWER(p.pr_Sleeve_Style)', $lowerKeyword);
+    $builder->orLike('LOWER(p.pr_Stitch_Type)', $lowerKeyword);
+    $builder->orLike('LOWER(c.cat_Name)', $lowerKeyword);
+    $builder->orLike('LOWER(s.sub_Category_Name)', $lowerKeyword);
+
+    // 2) Size match (search in variants)
+    // Normalize size input: if someone types "xl" or "x l" etc., normalize spaces
+    $sizeCandidate = preg_replace('/\s+/', '', strtoupper($rawKeyword));
+    // common sizes are short strings; include a check to avoid matching large words as sizes
+    if (in_array($sizeCandidate, ['XXS','XS','S','M','L','XL','XXL','XXXL'], true)) {
+        $builder->orWhere('UPPER(TRIM(pv.prv_Size)) =', $sizeCandidate);
+    } else {
+        // Also try matching if keyword contains typical size words (e.g., "size m", "m")
+        $builder->orLike('UPPER(pv.prv_Size)', strtoupper($rawKeyword));
+    }
+
+    // 3) Price matches (if we parsed a number or range)
+    if ($minPrice !== null || $maxPrice !== null) {
+        if ($minPrice !== null) {
+            $builder->orWhere('pv.prv_price >=', $minPrice);
+        }
+        if ($maxPrice !== null) {
+            $builder->orWhere('pv.prv_price <=', $maxPrice);
+        }
+    }
+
+    // 4) Normalized name / category matches (removes spaces, hyphens, underscores)
+    // Use escapeLikeString to safely embed normalized value in LIKE
+    $db = $this->db;
+    $escapedNorm = $db->escapeLikeString($normalized);
+
+    // Raw SQL because builder doesn't provide REPLACE(...) helpers
+    // Search product name / category / subcategory after removing non-alphanumeric characters
+    $builder->orWhere("REPLACE(LOWER(p.pr_Name), ' ', '') LIKE '%" . $escapedNorm . "%'", null, false);
+    $builder->orWhere("REPLACE(LOWER(c.cat_Name), ' ', '') LIKE '%" . $escapedNorm . "%'", null, false);
+    $builder->orWhere("REPLACE(LOWER(s.sub_Category_Name), ' ', '') LIKE '%" . $escapedNorm . "%'", null, false);
+
+    // 5) SOUNDEX fallback for phonetic matches (helps with typos)
+    // Compare SOUNDEX of keyword with product name / subcategory / category
+    $builder->orWhere("SOUNDEX(p.pr_Name) = SOUNDEX(" . $db->escape($rawKeyword) . ")", null, false);
+    $builder->orWhere("SOUNDEX(s.sub_Category_Name) = SOUNDEX(" . $db->escape($rawKeyword) . ")", null, false);
+    $builder->orWhere("SOUNDEX(c.cat_Name) = SOUNDEX(" . $db->escape($rawKeyword) . ")", null, false);
+
+    $builder->groupEnd(); // end grouped OR conditions
+
+    // Only active products / images / variants
     $builder->where('p.pr_Status', 1);
     $builder->where('pi.pri_Status', 1);
+    $builder->where('pv.prv_Status', 1);
+
+    // Distinct products (group by product id)
+    $builder->groupBy('p.pr_Id');
+    $builder->orderBy('p.pr_Id', 'DESC');
 
     $results = $builder->get()->getResultArray();
 
-    // ✅ Add price and size info before returning
+    // Attach price/variant/rating info and return
     return $this->attachProductDetails($results);
 }
 

@@ -17,7 +17,7 @@ class Shop extends Controller
         $this->ShopModel = new ShopModel();
     }
 
-    //copy yesterday
+    //asna code 
 
     // public function index($segment = null)
     // {
