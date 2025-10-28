@@ -48,6 +48,12 @@ $routes->post('saveRating', 'MyOrders::saveRating');
 
 // ordernow user
 
+//profile in website 
+$routes->get('myprofile', 'MyProfile::index');
+$routes->post('myprofile/updateProfile', 'MyProfile::updateProfile');
+$routes->post('myprofile/changePassword', 'MyProfile::changePassword');
+
+
 // $routes->get('ordernow/product/(:any)', 'OrderNow::orderproduct/$1');
 
 $routes->get('ordernow/getAddress/(:num)', 'OrderNow::getAddress/$1');
