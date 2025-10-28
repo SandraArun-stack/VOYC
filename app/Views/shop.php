@@ -58,7 +58,7 @@
                                         </div>
                                     <?php endforeach; ?>
                                 <?php else: ?>
-                                    <p>No categories available.</p>
+                                    <p>No Categories Available.</p>
                                 <?php endif; ?>
                             </div>
 
@@ -157,6 +157,7 @@
                     
                 </div>
             </div>
+            
             <div class="col-lg-9 col-md-9">
                 <div class="row product-list">
                     <?php if (!empty($display_item)): ?>
