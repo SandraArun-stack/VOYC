@@ -1,7 +1,7 @@
 <script>
 $(document).ready(function() {
 
-    // ✅ Reusable show message function
+    //  Reusable show message function
     function showMessage(type, text) {
         const box = $('#messageBox');
         box.removeClass('alert-success alert-danger alert-warning alert-info')
@@ -25,7 +25,7 @@ $(document).ready(function() {
         $('#changePasswordModal').modal('show');
     });
 
-    // ✅ Handle Edit Profile form submission
+    //  Handle Edit Profile form submission
     $('#editProfileForm').on('submit', function(e) {
         e.preventDefault();
         $.ajax({
@@ -48,7 +48,7 @@ $(document).ready(function() {
         });
     });
 
-    // ✅ Handle Change Password form submission
+    //  Handle Change Password form submission
     $('#changePasswordForm').on('submit', function(e) {
         e.preventDefault();
         $.ajax({
@@ -71,7 +71,7 @@ $(document).ready(function() {
         });
     });
 
-    // ✅ Toggle password visibility
+    //  Toggle password visibility
     $(document).on('click', '.toggle-password', function () {
         const $icon = $(this);
         const $input = $('#' + $icon.data('target'));
