@@ -6,7 +6,7 @@
                 <div class="col-md-8">
                     <div class="page-header-title">
                         <h5 class="m-b-10"><?= isset($pri_id) ? 'Edit Product Image' : 'Add Product Image' ?></h5>
-                        <p class="m-b-0">Welcome to VOYC</p>
+                        <p class="m-b-0">Welcome to VOYC </p>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -30,6 +30,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
+
                                 <div class="card-header">
                                     <div class="row">
                                         <div id="messageBox" class="alert alert-success" style="display: none;"></div>
@@ -221,19 +222,31 @@
                                                             <?php endforeach; ?>
                                                         </div>
 
-                                                        <div class="col-6">
-                                                            <div class="mt-3">
-                                                                <label class="form-label">Upload Front Image</label>
+                                                        <div class="col-6 ">
+                                                            <div class="mt-3 d-flex align-items-center ">
+                                                                <label class="form-label upload__Image">Upload Front Image</label>
                                                                 <input type="file" class="form-control image-input" name="colors[0][images][]" multiple>
                                                             </div>
-                                                            <div class="mt-3">
-                                                                <label class="form-label">Upload Back Image</label>
+                                                            <div class="mt-3 d-flex align-items-center">
+                                                                <label class="form-label upload__Image">Upload Back Image</label>
                                                                 <input type="file" class="form-control image-input" name="colors[0][side_image][]" multiple>
                                                             </div>
-                                                            <div class="mt-3">
-                                                                <label class="form-label">Upload Sleeve Image</label>
-                                                                <input type="file" class="form-control image-input" name="colors[0][sleev_image][]" multiple>
+                                                            
+                                                            <?php if (!empty($pr_custom['pr_custom']) && $pr_custom['pr_custom'] == 1): ?>
+                                                            <div class="mt-3 d-flex align-items-center">
+                                                                <label class="form-label upload__Image">Right Sleeve Image</label>
+                                                                <input type="file" class="form-control image-input" name="colors[0][RSleeve_Img][]" >
                                                             </div>
+                                                            <div class="mt-3 d-flex align-items-center">
+                                                                <label class="form-label upload__Image">Left Sleeve Image</label>
+                                                                <input type="file" class="form-control image-input" name="colors[0][LSleeve_Img][]" >
+                                                            </div>
+                                                            <?php else: ?>
+                                                                <div class="mt-3 d-flex align-items-center">
+                                                                    <label class="form-label upload__Image">Upload Sleeve Image</label>
+                                                                    <input type="file" class="form-control image-input" name="colors[0][sleev_image][]" multiple>
+                                                                </div>
+                                                            <?php endif; ?>
                                                         </div>
                                                     </div>
                                                 </div>

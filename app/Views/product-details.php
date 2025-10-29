@@ -58,8 +58,7 @@ $userId = session()->get('user_id');
             </div>
             <div class="col-lg-6">
                 <div class="product__details__text">
-                    <h3><?= esc($product['pr_Name']) ?> 
-                    <span>Brand: SKMEIMore Men Watches from SKMEI</span></h3>
+                    <h3><?= esc($product['pr_Name']) ?></h3>
                     <div class="rating">
                         <?php
                         $avg = (float) $product['average_rating'];
@@ -75,10 +74,24 @@ $userId = session()->get('user_id');
                         ?>
                         <span>( <?= esc($product['review_count']) ?> reviews )</span>
                     </div>
-                    <div class="product__details__price">₹ <?= round(esc($product['pr_Selling_Price'] ?? '0')) ?><span>₹
-                            <?= round(esc($product['pr_Selling_Price'])) ?></span></div>
-                            <p>Inclusive of all taxes</p>
-                    <!-- <p><?= esc($product['pr_Description']) ?></p> -->
+                    <div class="product__details__price">₹ <?= round(esc($product['pr_Selling_Price'] ?? '0')) ?>
+                        <span>₹<?= round(esc($product['pr_Selling_Price'])) ?>
+                        </span>
+                    </div>
+                    <p>Inclusive of all taxes</p>
+
+                    <div class="customize__container">
+                        <small class="user__Customize">
+                            🎨Personalize your T-shirt with your own design, text, or image before adding to cart.
+                        </small>
+                        <div class="customise__btn">
+                            <button class="btn  customise__Tee" id="customizeTshirtBtn">
+                                <i class="bi bi-palette-fill"></i>
+                                Customize Tee >>
+                             </button>
+                        </div>
+                    </div>
+
                     <div class="product__details__button">
                         <div class="quantity">
                             <span>Quantity:</span>
@@ -87,26 +100,28 @@ $userId = session()->get('user_id');
                             </div>
                         </div>
 
-                        <a href="javascript:void(0);" class="cart-btn" id="addToCartBtn">
+                        <!-- <a href="javascript:void(0);" class="cart-btn" id="addToCartBtn">
                             <span class="icon_bag_alt"></span> Add to cart
-                        </a>
+                        </a> -->
+                        <?php if ($product['in_cart']): ?>
+                            <a href="<?= base_url('cart/' . $userId) ?>" class="btn cart-btn">
+                                Go to Cart →
+                            </a>
+                        <?php else: ?>
+                            <a href="javascript:void(0);" id="addToCartBtn" class="cart-btn">
+                                <span class="icon_bag_alt"></span>
+                                Add to Cart
+                            </a>
+                        <?php endif; ?>
                         <ul>
                             <li><a href="#"><span class="icon_heart_alt"></span></a></li>
                             <li><a href="#"><span class="icon_adjust-horiz"></span></a></li>
                         </ul>
                     </div>
+
+
                     <div class="product__details__widget">
                         <ul>
-                            <!-- <li>
-                                <span>Availability:</span>
-                                <div class="stock__checkbox">
-                                    <label for="stockin">
-                                        In Stock
-                                        <input type="checkbox" id="stockin">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                            </li> -->
                             <li>
                                 <span>Available color:</span>
                                 <div class="color__checkbox">
@@ -130,26 +145,19 @@ $userId = session()->get('user_id');
                                 <span class="size-title">Available size:</span>
                                 <div class="size__btn">
                                     <?php foreach ($product['sizes'] as $variant): ?>
-                                        <div class="size-option"
-                                            data-size="<?= $variant['prv_Size']; ?>"
+                                        <div class="size-option" data-size="<?= $variant['prv_Size']; ?>"
                                             data-price="<?= $variant['prv_price']; ?>"
                                             data-size-id="<?= $variant['prv_Id']; ?>">
-                                            <input type="radio"
-                                                name="product_size"
-                                                id="size_<?= $variant['prv_Size']; ?>"
-                                                value="<?= $variant['prv_Id']; ?>" 
-                                                hidden>
+                                            <input type="radio" name="product_size" id="size_<?= $variant['prv_Size']; ?>"
+                                                value="<?= $variant['prv_Id']; ?>" hidden>
                                             <label for="size_<?= $variant['prv_Size']; ?>" class="size-label">
                                                 <?= $variant['prv_Size']; ?>
                                             </label>
                                         </div>
-                                    <?php endforeach; ?>                                   
+                                    <?php endforeach; ?>
                                 </div>
                             </li>
-                            <li>
-                                <span>Promotions:</span>
-                                <p>Free shipping</p>
-                            </li>
+
                         </ul>
                     </div>
                 </div>
