@@ -291,7 +291,7 @@ ol {
 	/* background: #ffffff; */
 	-webkit-box-shadow: 0px 5px 10px rgba(91, 91, 91, 0.1);
 	box-shadow: 0px 5px 10px rgba(91, 91, 91, 0.1);
-	position: fixed;
+	position: sticky;
 	top: 0;
 	left: 0;
 	width: 100%;
@@ -1740,7 +1740,7 @@ ol {
 }
 
 .product__details__text .rating {
-	margin-bottom: 16px;
+	margin-bottom: 8px;
 }
 
 .product__details__text .rating i {
@@ -1757,14 +1757,14 @@ ol {
 
 .product__details__text p {
 	color: #444444;
-	margin-bottom: 28px;
+	/* margin-bottom: 28px; */
 }
 
 .product__details__price {
 	font-size: 30px;
 	font-weight: 600;
 	color: #000;
-	margin-bottom: 30px;
+	/* margin-bottom: 30px; */
 }
 
 .product__details__price span {
@@ -1794,7 +1794,7 @@ ol {
 	height: 50px;
 	width: 150px;
 	border: 1px solid #ebebeb;
-	border-radius: 50px;
+	border-radius: 10px;
 	padding: 0 20px;
 	overflow: hidden;
 	display: inline-block;
@@ -1822,7 +1822,7 @@ ol {
 
 .product__details__button {
 	overflow: hidden;
-	margin-bottom: 25px;
+	/* margin-bottom: 25px; */
 }
 
 .product__details__button .cart-btn {
@@ -1833,11 +1833,15 @@ ol {
 	font-weight: 600;
 	text-transform: uppercase;
 	padding: 14px 30px 15px;
-	border-radius: 50px;
+	border-radius: 10px;
 	float: left;
 	margin-right: 10px;
 	margin-bottom: 10px;
+	transition: 0.3s;
+	cursor: pointer;
 }
+
+
 
 .product__details__button ul {
 	float: left;
@@ -1948,7 +1952,7 @@ ol {
 	display: inline-block;
 	cursor: pointer;
 	position: relative;
-	margin-right: 20px;
+	margin-right: 25px;
 }
 
 .product__details__widget ul li .color__checkbox label.active input~.checkmark:after {
@@ -1974,11 +1978,12 @@ ol {
 	position: absolute;
 	left: 0;
 	top: -10px;
-	height: 20px;
-	width: 20px;
-	background: #e31e2f;
+	height: 25px;
+	width: 25px;
+	/* background: #e31e2f; */
 	border-radius: 50%;
 	content: "";
+	border: 2px solid #acada5;
 }
 
 .product__details__widget ul li .color__checkbox label .checkmark.black-bg {
@@ -1991,12 +1996,12 @@ ol {
 
 .product__details__widget ul li .color__checkbox label .checkmark:after {
 	position: absolute;
-	left: 3px;
+	left: 4px;
 	top: 5px;
-	width: 13px;
-	height: 6px;
+	width: 16px;
+	height: 8px;
 	border: solid #ffffff;
-	border-width: 1.5px 1.5px 0px 0px;
+	border-width: 2.5px 2.5px 0px 0px;
 	-webkit-transform: rotate(127deg);
 	-ms-transform: rotate(127deg);
 	transform: rotate(127deg);
@@ -2019,7 +2024,8 @@ ol {
 }
 
 .product__details__widget ul li .size__btn label.active {
-	color: #ca1515;
+	color: #ffffff;
+	font-weight: bold;
 }
 
 .product__details__widget ul li .size__btn label input {
@@ -2140,7 +2146,7 @@ ol {
 }
 
 .shop__cart__table tbody tr td {
-	padding: 30px 0;
+	padding: 10px 0;
 }
 
 .shop__cart__table tbody tr .cart__product__item {
@@ -2151,8 +2157,8 @@ ol {
 .shop__cart__table tbody tr .cart__product__item img {
 	float: left;
 	margin-right: 25px;
-	height: 160px;
-	width: 150px;
+	height: 145px;
+	width: 130px;
 }
 
 .shop__cart__table tbody tr .cart__product__item .cart__product__item__title {

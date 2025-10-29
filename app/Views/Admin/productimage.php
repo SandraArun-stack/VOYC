@@ -29,6 +29,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="card">
+                                
                                 <div class="card-header">
                                     <div class="row">
                                         <div class="col-md-7">
@@ -42,7 +43,7 @@
                                                     Back to List
                                                 </a>
                                                 <a href="<?= base_url('admin/product/image/add/' . $pr_id); ?>" class="btn btn-primary">
-                                                    Add Product Image
+                                                    Add Product Image 
                                                 </a>
                                             </div>
                                         </div>
