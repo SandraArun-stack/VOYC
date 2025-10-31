@@ -15,6 +15,8 @@ class tshirtModel extends Model
         'front_Image',
         'back_Image',
         'sleeve_Image',
+        'RSleeve_Img',
+        'LSleeve_Img',
         'created_on'
     ];
 
@@ -26,7 +28,7 @@ class tshirtModel extends Model
     public function get_Image($prId, $priId)
     {
         $image = $this->db->table('product_image')
-            ->select('pri_Thumbnail, pri_File_Name,pri_Sleev_Name,pri_Id ,pr_Id,stock,reset_stock')
+            ->select('pri_Thumbnail, pri_File_Name,pri_Sleev_Name,RSleeve_Img,LSleeve_Img,pri_Id ,pr_Id,stock,reset_stock')
             ->where('pr_Id', $prId)
             ->where('pri_Id', $priId)
             ->get()
@@ -44,14 +46,12 @@ class tshirtModel extends Model
     }
     public function get_Data_For_Pr_Id($prId)
     {
-        // Get all image/color data
         $images = $this->db->table('product_image')
             ->select('pri_Id, pr_Id, pri_Thumbnail, pri_File_Name, pri_Sleev_Name, color_details')
             ->where('pr_Id', $prId)
             ->get()
             ->getResultArray();
 
-        // Decode JSON fields safely
         foreach ($images as &$img) {
             if (isset($img['pri_File_Name'])) {
                 $img['pri_File_Name'] = json_decode($img['pri_File_Name'], true);
@@ -61,14 +61,23 @@ class tshirtModel extends Model
             }
         }
 
-        // Get all variant (size, price) data
-        $variants = $this->db->table('product_variants')
-            ->select('prv_Id, pr_Id, pri_id, prv_Size, prv_price, stock')
-            ->where('pr_Id', $prId)
+        $variants = $this->db->table('product_variants pv')
+            ->select('
+        pv.prv_Id,
+        pv.pr_Id AS variant_pr_Id,
+        pv.pri_id,
+        pv.prv_Size,
+        pv.prv_price,
+        pv.stock,
+        p.pr_Id AS product_pr_Id,
+        p.pr_Name,
+        p.pr_Code
+    ')
+            ->join('product p', 'pv.pr_Id = p.pr_Id', 'inner')
+            ->where('pv.pr_Id', $prId)
             ->get()
             ->getResultArray();
 
-        // Merge variants into images by pri_Id
         foreach ($images as &$img) {
             $img['variants'] = array_values(array_filter($variants, function ($v) use ($img) {
                 return $v['pri_id'] == $img['pri_Id'];

@@ -9,22 +9,46 @@ class SettingsModel extends Model
     protected $primaryKey = 'common_table_Id';
     protected $allowedFields = ['common_table_Id', 'field', 'value'];
 
-    // Fetch the customization charge row
-    public function getCustomizationCharge()
+    // public function getCustomizationCharge()
+    // {
+    //     return $this->where('field', 'customization_charge')->first();  // This returns an object
+    // }
+
+    public function getCustomizationCharges()
     {
-        return $this->where('field', 'customization_charge')->first();  // This returns an object
+        // Get all 3 customization charges in one query
+        $fields = [
+            'front_Customization_Price',
+            'back_Customization_Price',
+            'sleeve_Customization_Price'
+        ];
+
+        $result = $this->whereIn('field', $fields)->findAll();
+
+        $charges = [
+            'front_Customization_Price' => '',
+            'back_Customization_Price' => '',
+            'sleeve_Customization_Price' => ''
+        ];
+
+        foreach ($result as $row) {
+            $charges[$row['field']] = $row['value'];
+        }
+
+        return $charges;
     }
 
-    // Update or insert customization charge value
-    public function updateCustomizationCharge($value)
+    public function updateCustomizationCharge($field, $value)
     {
-        $existing = $this->where('field', 'customization_charge')->first();
+        $existing = $this->where('field', $field)->first();
+
         if ($existing) {
             return $this->update($existing['common_table_Id'], ['value' => $value]);
         } else {
-            return $this->insert(['field' => 'customization_charge', 'value' => $value]);
+            return $this->insert(['field' => $field, 'value' => $value]);
         }
     }
+
 }
 
 ?>

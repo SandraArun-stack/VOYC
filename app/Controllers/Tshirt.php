@@ -19,35 +19,6 @@ class Tshirt extends Controller
         $this->CartModel = new CartModel();
     }
 
-    // public function index($prId = null, $priId = null)
-    // {
-    //     if (!empty($prId) && !empty($priId)) {
-    //         $cust_image = $this->tshirtModel->get_Image($prId, $priId);
-    //         $allData = $this->tshirtModel->get_Data_For_Pr_Id($prId);
-    //         if (!$cust_image) {
-    //             return redirect()->to(base_url());
-    //         } else {
-    //             $data = [
-    //                 'prId' => $prId,
-    //                 'priId' => $priId,
-    //                 'cust_image' => $cust_image,
-    //                 'allData' => $allData
-    //             ];
-    //             return view('common/header')
-    //                 . view('tshirt', $data)
-    //                 . view('common/footer')
-    //                 . view('pagescripts/tshirtjs');
-    //         }
-
-    //     } else {
-    //         return view('common/header')
-    //             . view('tshirt')
-    //             . view('common/footer')
-    //             . view('pagescripts/tshirtjs');
-    //     }
-
-    // }
-
     public function index($prId = null, $priId = null)
     {
         if (!empty($prId) && !empty($priId)) {

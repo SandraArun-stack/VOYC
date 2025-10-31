@@ -1084,6 +1084,120 @@ input[type="file"] {
     color: white;
 }
 
+.plus_Symbol {
+    font-size: 23px;
+    font-weight: bold !important;
+}
+
+.customisation__summary_header {
+    background: #1e1e1e;
+    padding: 20px;
+}
+
+.customisation__summary_header h4 {
+    color: #fff;
+}
+
+
+.custom_Image_list img:last-child {
+    margin-right: 0;
+}
+
+.custom_Image_list img {
+    width: 65px;
+    height: 85px;
+    object-fit: cover;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.custom_Image_list img:hover,
+.custom_Image_list img.active {
+    border-color: #007bff;
+    transform: scale(1.05);
+}
+
+.price-section {
+    display: none;
+}
+
+.price-section.active {
+    display: block !important;
+
+}
+
+.design-option {
+    transition: 0.3s;
+    border-radius: 2px;
+    padding: 0px 7px;
+}
+
+.design-option label {
+    cursor: pointer;
+}
+
+.design-option.active {
+    background-color: #1e1e1e;
+    color: #fff;
+}
+
+.design-option input[type="checkbox"] {
+    accent-color: #ffffff;
+    cursor: pointer;
+}
+
+.preview-section img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    margin-right: 8px;
+    border-radius: 6px;
+}
+
+.selected-items {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.design-check {
+    margin-right: 10px;
+}
+
+.quantity-wrapper-custom {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-left: 10px;
+}
+
+.qty-btn-custom {
+    background: #f8f8f8;
+    border: none;
+    padding: 1px 9px;
+    font-size: 16px;
+    cursor: pointer !important;
+    user-select: none;
+}
+
+.qty-btn-custom:hover {
+    background: #e0e0e0;
+}
+
+.quantity-value-custom {
+    display: inline-block;
+    min-width: 30px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
 @media only screen and (max-width: 991px) {
     .main__icon {
         display: flex !important;

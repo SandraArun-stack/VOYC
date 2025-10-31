@@ -1,4 +1,4 @@
-<div class="breadcrumb-option">
+<!-- <div class="breadcrumb-option">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 pl-0">
@@ -9,7 +9,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <section class="custom_design">
     <div class="container">
         <div class="row">
@@ -30,7 +30,6 @@
                         </div>
                     </div>
                     <div class="row">
-
                         <div class="sidebar">
                             <div class="sidebar-item" data-view="upload">
                                 <img src="<?= base_url() . ASSET_PATH; ?>assets/img/customize/upload-w.png"
@@ -88,8 +87,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Upload View -->
 
+                            <!-- Upload View -->
                             <div id="view-upload" class="view-section d-none p-4">
                                 <h2 class="mb-4">Choose File to Upload</h2>
                                 <div class="d-flex justify-content-center">
@@ -106,10 +105,7 @@
                                 </div>
                             </div>
 
-
-
                             <!-- Add Text View -->
-
                             <div id="view-add_text" class="view-section d-none p-4 w-100">
                                 <h2 class="mb-4">Add Text</h2>
                                 <p class="mb-3">Enter your message on selected Text.</p>
@@ -155,7 +151,6 @@
                                 </div>
                             </div>
 
-
                             <!-- Add Art View -->
                             <div id="view-add_art" class="view-section d-none">
                                 <h2>Select Artwork</h2>
@@ -168,17 +163,7 @@
                                 </div>
                             </div>
 
-                            <!-- Product Colors View -->
-                            <!-- <div id="view-product_colors" class="view-section d-none">
-                                <h2>Choose Product Color</h2>
-                                <div class="">
-                                    <lable>Available Colors for this Product:</lable>
-                                    <div class="card">
-                                        color
-                                    </div>
-                                </div>
-                            </div> -->
-                            <!-- Product Colors View -->
+
                             <div id="view-product_colors" class="view-section d-none">
                                 <h2>Choose Product Color</h2>
                                 <div class="mt-3">
@@ -207,10 +192,10 @@
                                     <label>Available Sizes</label>
                                     <div class="card p-3 shadow-sm">
                                         <div class="d-flex flex-wrap size_container" id="sizeContainer">
-                                           <?php
+                                            <?php
                                             $sizeOrder = ["XS", "S", "M", "L", "XL", "XXL", "3XL", "4XL", "5XL", "6XL"];
 
-                                            $currentColorArray = array_filter($allData, function($item) use ($priId) {
+                                            $currentColorArray = array_filter($allData, function ($item) use ($priId) {
                                                 return $item['pri_Id'] == $priId;
                                             });
 
@@ -218,13 +203,14 @@
                                                 $currentColor = array_values($currentColorArray)[0];
 
                                                 $variants = $currentColor['variants'];
-                                                usort($variants, function($a, $b) use ($sizeOrder) {
+                                                usort($variants, function ($a, $b) use ($sizeOrder) {
                                                     return array_search($a['prv_Size'], $sizeOrder) - array_search($b['prv_Size'], $sizeOrder);
                                                 });
 
                                                 foreach ($variants as $variant) {
                                                     ?>
-                                                    <div class="size-box m-1 p-2 border rounded selectable-size" data-prv-id="<?= esc($variant['prv_Id']) ?>">
+                                                    <div class="size-box m-1 p-2 border rounded selectable-size"
+                                                        data-prv-id="<?= esc($variant['prv_Id']) ?>">
                                                         <?= esc($variant['prv_Size']) ?> - ₹<?= esc($variant['prv_price']) ?>
                                                     </div>
                                                     <?php
@@ -237,14 +223,10 @@
                                 </div>
 
                             </div>
-
-
-
                             <!-- <div class="bottom-text">
                                 💡 Drag & drop a file anywhere to upload.
                             </div> -->
                         </div>
-
                         <div class="col-md-6 text-center">
                             <div class="row">
                                 <div class="col-md-10 text-center">
@@ -256,18 +238,34 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-2 text-center"  id="imageContainer">
+                                <div class="col-md-2 text-center px-0" id="imageContainer">
                                     <div class="thumbs d-flex flex-column align-items-center">
                                         <?php if (isset($cust_image) && !empty($cust_image)): ?>
                                             <img src="<?= base_url('uploads/productmedia/' . $cust_image['pri_Thumbnail']); ?>"
                                                 data-src="<?= base_url('uploads/productmedia/' . $cust_image['pri_Thumbnail']); ?>"
                                                 data-view="front" class="shirt-thumb" />
+                                            <small>Front View</small>
                                             <img src="<?= base_url('uploads/productmedia/' . $cust_image['pri_File_Name'][0]); ?>"
                                                 data-src="<?= base_url('uploads/productmedia/' . $cust_image['pri_File_Name'][0]); ?>"
                                                 data-view="back" class="shirt-thumb" />
-                                            <img src="<?= base_url('uploads/productmedia/' . $cust_image['pri_Sleev_Name'][0]); ?>"
-                                                data-src="<?= base_url('uploads/productmedia/' . $cust_image['pri_Sleev_Name'][0]); ?>"
-                                                data-view="sleeve" class="shirt-thumb" />
+                                            <small>Back View</small>
+
+                                            <div id="addSleeveBtn"
+                                                class="border rounded py-2 px-3 mt-2 mb-2 text-center bg-light fw-semibold"
+                                                style="cursor:pointer; font-size: 14px;">
+                                                <small> <i class="bi bi-plus-lg text-dark plus_Symbol"></i> <br />Add Sleeve
+                                                    Design</small>
+                                            </div>
+                                            <div id="sleeveContainer" class="d-none flex-column align-items-center">
+                                                <img src="<?= base_url('uploads/productmedia/' . $cust_image['RSleeve_Img']); ?>"
+                                                    data-src="<?= base_url('uploads/productmedia/' . $cust_image['RSleeve_Img']); ?>"
+                                                    data-view="RSleeve_Img" class="shirt-thumb" />
+                                                <small>Right Sleeve</small>
+                                                <img src="<?= base_url('uploads/productmedia/' . $cust_image['LSleeve_Img']); ?>"
+                                                    data-src="<?= base_url('uploads/productmedia/' . $cust_image['LSleeve_Img']); ?>"
+                                                    data-view="LSleeve_Img" class="shirt-thumb" />
+                                                <small>Left Sleeve</small>
+                                            </div>
                                         <?php else: ?>
                                             <p>No images found for this product.</p>
                                         <?php endif; ?>
@@ -276,6 +274,133 @@
 
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="summary__customisation py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 p-0">
+                <div class="card shadow-sm border-0 rounded-4">
+                    <div class="card-header customisation__summary_header">
+                        <h4 class="fw-bolb">
+                            Customisation Summary
+                        </h4>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <p class="mb-2"><strong>Product Name:</strong> <span id="summaryProductName"
+                                        class="text-muted"><?php echo $variants[0]['pr_Name']; ?></span></p>
+                                <p class="mb-2"><strong>Product Code:</strong> <span id="summaryProductCode"
+                                        class="text-muted"><?php echo $variants[0]['pr_Code']; ?></span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="mb-2"><strong>Size:</strong>
+                                    <span id="summarySize" class="text-muted">
+                                        <?php echo $variants[0]['prv_Size']; ?>
+                                    </span>
+                                </p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+
+                                        <p class="mb-2"><strong>Quantity:</strong>
+                                        <div class="quantity-wrapper-custom ">
+                                            <button class="qty-btn-custom minus-custom">−</button>
+                                            <span class="quantity-value-custom">1</span>
+                                            <button class="qty-btn-custom plus-custom">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="customisation__price  p-3 rounded-3">
+                                    <h5 class="fw-semibold mb-3"><b>Your design zone</b></h5>
+
+                                    <div class="design-option d-flex justify-content-between align-items-center py-2 mb-1"
+                                        data-type="front">
+                                        <label class="mb-0 d-flex align-items-center">
+                                            <input type="checkbox" class="design-check me-2"> Front Design
+                                        </label>
+                                    </div>
+
+                                    <div class="design-option d-flex justify-content-between align-items-center py-2 mb-1"
+                                        data-type="back">
+                                        <label class="mb-0 d-flex align-items-center">
+                                            <input type="checkbox" class="design-check me-2"> Back Design
+                                        </label>
+                                    </div>
+
+                                    <div class="design-option d-flex justify-content-between align-items-center py-2 mb-1"
+                                        data-type="right">
+                                        <label class="mb-0 d-flex align-items-center">
+                                            <input type="checkbox" class="design-check me-2"> Right Sleeve
+                                        </label>
+                                    </div>
+
+                                    <div class="design-option d-flex justify-content-between align-items-center py-2 mb-1"
+                                        data-type="left">
+                                        <label class="mb-0 d-flex align-items-center">
+                                            <input type="checkbox" class="design-check me-2"> Left Sleeve
+                                        </label>
+                                    </div>
+
+
+                                    <div class="preview-section border-top pt-3">
+                                        <div class="selected-items"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="customisation__price  p-3 rounded-3">
+                                    <h5 class="fw-semibold mb-3"><b>Customization Pricing Details</b></h5>
+                                    <div class="d-flex justify-content-between py-2">
+                                        <span>Product Rate:</span>
+
+                                        <span class="fw-semibold text-success" id="priceProduct">+
+                                            ₹<?php echo $variants[0]['prv_price']; ?> </span>
+                                    </div>
+                                    <div class="price-section" id="front">
+                                        <div class="d-flex justify-content-between py-2">
+                                            <span>Front Design</span>
+                                            <span class="fw-semibold text-success" id="priceFront">+ </span>
+                                        </div>
+                                    </div>
+                                    <div class="price-section" id="back">
+                                        <div class="d-flex justify-content-between py-2">
+                                            <span>Back Design</span>
+                                            <span class="fw-semibold text-success" id="priceBack">+ </span>
+                                        </div>
+                                    </div>
+                                    <div class="price-section" id="right">
+                                        <div class="d-flex justify-content-between py-2">
+                                            <span>Right Sleeve</span>
+                                            <span class="fw-semibold text-success" id="priceRightSleeve">+ </span>
+                                        </div>
+                                    </div>
+                                    <div class="price-section" id="left">
+                                        <div class="d-flex justify-content-between py-2">
+                                            <span>Left Sleeve</span>
+                                            <span class="fw-semibold text-success" id="priceLeftSleeve">+ </span>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="d-flex justify-content-between pt-3 mt-3 border-top">
+                                        <span class="fw-bold">Total:</span>
+                                        <span class="fw-bold text-primary" id="priceTotal"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
             </div>
