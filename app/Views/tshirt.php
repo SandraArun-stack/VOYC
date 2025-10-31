@@ -99,7 +99,7 @@
                                             <label for="uploadImage" class="custom-file-upload">
                                                 Browse Image
                                             </label>
-                                            <input type="file" id="uploadImage" accept="image/*" />
+                                            <input type="file" id="uploadImage" multiple accept="image/*" />
                                         </div>
                                     </div>
                                 </div>

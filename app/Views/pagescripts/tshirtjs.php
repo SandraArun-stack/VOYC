@@ -47,12 +47,10 @@
                 originY: 'top'
             });
 
-            // Keep reference if you ever need it for tint/color
             shirtOverlay = img;
         }, { crossOrigin: 'anonymous' });
     }
 
-    // Keep for backward compatibility but now does nothing
     function resetOverlayToBackground() {
         if (shirtOverlay) {
             shirtOverlay.set({
@@ -67,7 +65,6 @@
         }
     }
 
-    // Optional: still usable for future tinting (color change)
     function applyDressColor(color) {
         if (!shirtOverlay) return;
         shirtOverlay.filters = [new fabric.Image.filters.BlendColor({
@@ -84,7 +81,6 @@
     fabric.Object.prototype.cornerStyle = 'circle';
     fabric.Object.prototype.cornerSize = 28;
 
-    // Helper function to make image controls with icons
     function createIconControl(iconUrl, offsetX, offsetY, actionHandler, cursor) {
         return new fabric.Control({
             x: offsetX,
@@ -252,29 +248,62 @@
             }
         });
 
+        let uploadedImagesBase64 = []; 
+
         $("#uploadImage").on("change", function (e) {
-            const file = e.target.files[0];
-            if (!file) return;
+            const files = e.target.files;
+            if (!files.length) return;
 
-            const reader = new FileReader();
+            uploadedImagesBase64 = []; 
 
-            reader.onload = function (f) {
-                fabric.Image.fromURL(f.target.result, function (img) {
-                    img.scaleToWidth(150);
-                    img.set({ left: 100, top: 150 });
-                    canvas.add(img).setActiveObject(img);
-                    canvas.renderAll();
-                });
+            Array.from(files).forEach((file, index) => {
+                const reader = new FileReader();
 
-                $("#uploadImage").val("");
-            };
+                reader.onload = function (f) {
+                    const base64Data = f.target.result;
+                    uploadedImagesBase64.push(base64Data);
 
-            reader.readAsDataURL(file);
+                    fabric.Image.fromURL(base64Data, function (img) {
+                        img.scaleToWidth(150);
+                        img.set({ left: 100 + index * 20, top: 150 + index * 20 });
+                        canvas.add(img).setActiveObject(img);
+                        canvas.renderAll();
+                    });
+                };
+
+                reader.readAsDataURL(file);
+            });
+
+            $("#uploadImage").val("");
         });
+
+
+        // $("#uploadImage").on("change", function (e) {
+        //     const file = e.target.files[0];
+        //     if (!file) return;
+        //     uploadedImagesBase64 = [];
+
+        //     const reader = new FileReader();
+
+        //     reader.onload = function (f) {
+        //         uploadedImageBase64 = f.target.result; 
+        //         fabric.Image.fromURL(f.target.result, function (img) {
+        //             img.scaleToWidth(150);
+        //             img.set({ left: 100, top: 150 });
+        //             canvas.add(img).setActiveObject(img);
+        //             canvas.renderAll();
+        //         });
+
+        //         $("#uploadImage").val("");
+        //     };
+
+        //     reader.readAsDataURL(file);
+        // });
 
 
 
         // Reset dress position
+
         $("#resetOverlayBtn").on("click", resetOverlayToBackground);
 
         // Lock/unlock dress (to avoid accidental moves after you place it)
@@ -354,8 +383,8 @@
                         front: designs.front,
                         back: designs.back,
                         RSleeve_Img: designs.RSleeve_Img,
-                        RSleeve_Img: designs.RSleeve_Img,
-                        // sleeve: designs.sleeve,
+                        LSleeve_Img: designs.LSleeve_Img,
+                        uploadedImages: JSON.stringify(uploadedImagesBase64),
                         prId: $('input[name="prId"]').val(),
                         priId: $('input[name="priId"]').val(),
                         prvId: selectedSize
@@ -526,6 +555,18 @@
     function saveCurrentCanvasState() {
         canvas.discardActiveObject();
         canvasStates[currentView].objects = canvas.toDatalessJSON().objects;
+        //31-10
+        const updatedImage = canvas.toDataURL({
+            format: 'png',
+            quality: 1.0
+        });
+
+        canvasStates[currentView].overlay = updatedImage;
+
+        if (designData[currentView]) {
+            designData[currentView].img = updatedImage;
+        }
+        //31-10
     }
 
     function loadCanvasState(view) {
@@ -606,26 +647,27 @@
     var RSleevePrice = parseFloat($('#sleeve_Customization_Price').val()) || 0;
     var LSleevePrice = parseFloat($('#sleeve_Customization_Price').val()) || 0;
 
-    
-    
+
+
     const designData = {
         front: {
             price: frontPrice,
-            img: canvasStates.front.overlay 
+            img: ''
         },
         back: {
             price: backPrice,
-            img: canvasStates.back.overlay
+            img: ''
         },
         right: {
             price: RSleevePrice,
-            img: canvasStates.RSleeve_Img.overlay
+            img: ''
         },
         left: {
             price: LSleevePrice,
-            img: canvasStates.LSleeve_Img.overlay
+            img: ''
         }
     };
+
     $(document).ready(function () {
 
 

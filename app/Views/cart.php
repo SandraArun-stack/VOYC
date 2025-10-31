@@ -44,11 +44,12 @@
                                                 <a href="javascript:void(0);" class="text-primary show-preview"
                                                     data-front="<?= base_url('uploads/designs/' . $item['front_Image']) ?>"
                                                     data-back="<?= base_url('uploads/designs/' . $item['back_Image']) ?>"
-                                                    data-sleeve="<?= base_url('uploads/designs/' . $item['sleeve_Image']) ?>">
+                                                    data-rsleeve="<?= base_url('uploads/designs/' . $item['RSleeve_Image']) ?>"
+                                                    data-lsleeve="<?= base_url('uploads/designs/' . $item['LSleeve_Image']) ?>">
                                                     <img src="<?= base_url('uploads/designs/' . $image) ?>" alt="Product Image">
                                                 </a>
                                             <?php else: ?>
-                                                <img src="<?= base_url('uploads/productmedia/' . ($item['pri_Thumbnail'] ?? 'default.png')) ?>" alt="Product Image">
+                                                <img src="<?= base_url('uploads/productmedia/' . ($item['pri_Thumbnail'] ?? 'default.jpg')) ?>" alt="Product Image">
                                             <?php endif; ?>
 
                                             <div class="cart__product__item__title">
@@ -215,17 +216,21 @@
                 <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
             </div>
             <div class="modal-body text-center row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <p>Front View</p>
                     <img id="previewFront" src="" alt="Front" class="img-fluid border rounded" />
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <p>Back View</p>
                     <img id="previewBack" src="" alt="Back" class="img-fluid border rounded" />
                 </div>
-                <div class="col-md-4">
-                    <p>Sleeve View</p>
-                    <img id="previewSleeve" src="" alt="Sleeve" class="img-fluid border rounded" />
+                <div class="col-md-3">
+                    <p>Right Sleeve View</p>
+                    <img id="previewRSleeve" src="" alt="RSleeve" class="img-fluid border rounded" />
+                </div>
+                <div class="col-md-3">
+                    <p>Left Sleeve View</p>
+                    <img id="previewLSleeve" src="" alt="LSleeve" class="img-fluid border rounded" />
                 </div>
             </div>
         </div>
