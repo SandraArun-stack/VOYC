@@ -69,7 +69,12 @@ class Tshirt extends Controller
 
         $frontImageData = $this->request->getPost('front');
         $backImageData = $this->request->getPost('back');
-        $sleeveImageData = $this->request->getPost('sleeve');
+        $RsleeveImageData = $this->request->getPost('RSleeve_Img');
+        $LsleeveImageData = $this->request->getPost('LSleeve_Img');
+
+
+        $uploadedImagesJson = $this->request->getPost('uploadedImages');
+
         $prId = $this->request->getPost('prId');
         $priId = $this->request->getPost('priId');
         $prvId = $this->request->getPost('prvId');
@@ -83,12 +88,13 @@ class Tshirt extends Controller
 
 
         // echo $prvId;exit();
-        if (!$frontImageData && !$backImageData && !$sleeveImageData) {
+        if (!$frontImageData && !$backImageData && !$RsleeveImageData && !$LsleeveImageData) {
             return $this->response->setJSON([
                 'status' => 'error',
                 'message' => 'No image received'
             ]);
         }
+
 
         $uploadDir = FCPATH . 'uploads/designs/';
         if (!is_dir($uploadDir)) {
@@ -98,9 +104,23 @@ class Tshirt extends Controller
         // ✅ Use the private helper method
         $frontFileName = $this->saveBase64Image($frontImageData, $uploadDir);
         $backFileName = $this->saveBase64Image($backImageData, $uploadDir);
-        $sleeveFileName = $this->saveBase64Image($sleeveImageData, $uploadDir);
+        $RSleeveFileName = $this->saveBase64Image($RsleeveImageData, $uploadDir);
+        $LSleeveFileName = $this->saveBase64Image($LsleeveImageData, $uploadDir);
 
-        if (!$frontFileName && !$backFileName && !$sleeveFileName) {
+        $uploadedImageFileNames = [];
+        if (!empty($uploadedImagesJson)) {
+            $uploadedImages = json_decode($uploadedImagesJson, true);
+            if (is_array($uploadedImages)) {
+                foreach ($uploadedImages as $base64Image) {
+                    $fileName = $this->saveBase64Image($base64Image, $uploadDir);
+                    if ($fileName) {
+                        $uploadedImageFileNames[] = $fileName;
+                    }
+                }
+            }
+        }
+
+        if (!$frontFileName && !$backFileName && !$RSleeveFileName && !$LSleeveFileName) {
             return $this->response->setJSON([
                 'status' => 'error',
                 'message' => 'Failed to save any images.'
@@ -113,7 +133,9 @@ class Tshirt extends Controller
             'cust_Id' => $userId,
             'front_Image' => $frontFileName,
             'back_Image' => $backFileName,
-            'sleeve_Image' => $sleeveFileName,
+            'RSleeve_Image' => $RSleeveFileName ?? '',
+            'LSleeve_Image' => $LSleeveFileName ?? '',
+            'User_Upload_Image' => json_encode($uploadedImageFileNames) ?? '',
             'created_on' => date('Y-m-d H:i:s')
         ];
 
@@ -138,7 +160,9 @@ class Tshirt extends Controller
             'file_name' => [
                 'front' => $frontFileName,
                 'back' => $backFileName,
-                'sleeve' => $sleeveFileName
+                // 'sleeve' => $sleeveFileName
+                'RSleeve_Image' => $RSleeveFileName,
+                'LSleeve_Image' => $LSleeveFileName
             ],
             'design_id' => $designId,
             'redirect' => base_url('cart/' . $userId)

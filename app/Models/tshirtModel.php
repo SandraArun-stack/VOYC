@@ -14,9 +14,9 @@ class tshirtModel extends Model
         'pri_Id',
         'front_Image',
         'back_Image',
-        'sleeve_Image',
         'RSleeve_Img',
         'LSleeve_Img',
+        'User_Upload_Image',
         'created_on'
     ];
 

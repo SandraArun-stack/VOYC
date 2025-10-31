@@ -26,9 +26,9 @@ public function getCartItems($custId)
     $builder = $this->db->table('my_cart c');
 
     $builder->select('c.*');
-    $builder->select('d.front_Image,d.back_Image,d.sleeve_Image');
+    $builder->select('d.front_Image,d.back_Image,d.RSleeve_Image,d.LSleeve_Image');
     $builder->select('p.pr_Name');
-    $builder->select("COALESCE(NULLIF(d.front_Image,''), pi.pri_Thumbnail, 'default.png') AS pri_Thumbnail", false);
+    $builder->select("COALESCE(NULLIF(d.front_Image,''), pi.pri_Thumbnail, 'default.jpg') AS pri_Thumbnail", false);
     $builder->select('pv.prv_price, pv.prv_Size');
 
     $builder->join('design d', 'c.design_Id = d.design_Id', 'left');
