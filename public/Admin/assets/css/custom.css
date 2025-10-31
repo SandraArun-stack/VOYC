@@ -143,3 +143,8 @@
 .phn_code div.iti--allow-dropdown {
     width: 100%;
 }
+.upload__Image {
+    font-size: 16px;
+    font-weight: 600;
+    width: 250px;
+}

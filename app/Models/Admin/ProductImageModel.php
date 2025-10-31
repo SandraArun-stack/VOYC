@@ -15,7 +15,9 @@ class ProductImageModel extends Model
         'color_details',
         'pri_Status',
         'pri_createdon',
-        'pri_createdby'
+        'pri_createdby',
+        'RSleeve_Img',
+        'LSleeve_Img'
     ];
 
     protected $db;
@@ -263,18 +265,28 @@ class ProductImageModel extends Model
     public function getImageById($id)
     {
         return $this->db->table('product_image')
-                        ->where('pri_Id', $id)
-                        ->get()
-                        ->getRow();
+            ->where('pri_Id', $id)
+            ->get()
+            ->getRow();
     }
 
     public function updateImage($id, $data)
     {
         $data['pri_modifyon'] = date('Y-m-d H:i:s');
         return $this->db->table('product_image')
-                        ->where('pri_Id', $id)
-                        ->update($data);
+            ->where('pri_Id', $id)
+            ->update($data);
+    }
+    public function checkCustomized($pr_Id)
+    {
+        // echo $pr_Id; exit();
+        return $this->db->table('product')
+            ->select('pr_custom')
+            ->where('pr_Id', $pr_Id)
+            ->get()
+            ->getRowArray();
+        
     }
 
-    
+
 }
