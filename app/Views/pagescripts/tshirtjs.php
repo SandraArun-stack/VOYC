@@ -606,25 +606,26 @@
     var RSleevePrice = parseFloat($('#sleeve_Customization_Price').val()) || 0;
     var LSleevePrice = parseFloat($('#sleeve_Customization_Price').val()) || 0;
 
+    
+    
     const designData = {
         front: {
             price: frontPrice,
-            img: "<?= base_url(ASSET_PATH . 'assets/img/test.png'); ?>"
+            img: canvasStates.front.overlay 
         },
         back: {
             price: backPrice,
-            img: "<?= base_url(ASSET_PATH . 'assets/img/test.png'); ?>"
+            img: canvasStates.back.overlay
         },
         right: {
             price: RSleevePrice,
-            img: "<?= base_url(ASSET_PATH . 'assets/img/test.png'); ?>"
+            img: canvasStates.RSleeve_Img.overlay
         },
         left: {
             price: LSleevePrice,
-            img: "<?= base_url(ASSET_PATH . 'assets/img/test.png'); ?>"
+            img: canvasStates.LSleeve_Img.overlay
         }
     };
-    
     $(document).ready(function () {
 
 

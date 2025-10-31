@@ -351,9 +351,12 @@
                                         </label>
                                     </div>
 
-                                    <input type="hidden" id="front_Customization_Price" value="<?= esc($customisationPrice['front_Customization_Price']) ?>">
-                                     <input type="hidden" id="back_Customization_Price" value value="<?= esc($customisationPrice['back_Customization_Price']) ?>">
-                                      <input type="hidden" id="sleeve_Customization_Price" value value="<?= esc($customisationPrice['sleeve_Customization_Price']) ?>">
+                                    <input type="hidden" id="front_Customization_Price"
+                                        value="<?= esc($customisationPrice['front_Customization_Price']) ?>">
+                                    <input type="hidden" id="back_Customization_Price"
+                                        value="<?= esc($customisationPrice['back_Customization_Price']) ?>">
+                                    <input type="hidden" id="sleeve_Customization_Price"
+                                        value="<?= esc($customisationPrice['sleeve_Customization_Price']) ?>">
 
                                     <div class="preview-section border-top pt-3">
                                         <div class="selected-items"></div>

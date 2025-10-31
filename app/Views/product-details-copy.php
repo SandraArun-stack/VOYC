@@ -1,36 +1,3 @@
-<!-- <style>
-.quantity-box {
-    display: flex;
-    align-items: center;
-    border: 1px solid #ddd;
-    border-radius: 50px;        /* Rounded edges */
-    overflow: hidden;
-    background-color: #f8f8f8;
-    height: 54px;
-    width: 136px;
-}
-.qty-btn {
-    width: 40px;
-    height: 40px;
-    border: none;
-    background: transparent;
-    font-size: 20px;
-    color: #000;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-.quantity-box input {
-    width: 50px;
-    text-align: center;
-    border: none;
-    background: transparent;
-    font-weight: 600;
-    color: #000;
-    font-size: 16px;
-}
-</style> -->
-
-
 <?php
 $userId = session()->get('user_id');
 ?>
@@ -39,7 +6,7 @@ $userId = session()->get('user_id');
         <div class="row">
             <div class="col-lg-12">
                 <div class="breadcrumb__links">
-                    <a href="<?= base_url(' '); ?>"><i class="fa fa-home"></i>Home</a>
+                    <a href="<?= base_url(' '); ?>"><i class="fa fa-home"></i> Home</a>
                     <a href="#">Women’s </a>
                     <span><?= esc($product['pr_Name']) ?></span>
                 </div>
@@ -91,9 +58,7 @@ $userId = session()->get('user_id');
             </div>
             <div class="col-lg-6">
                 <div class="product__details__text">
-                    <h3><?= esc($product['pr_Name']) ?>
-                        <span>Description: <?= esc($product['pr_Description']); ?></span>
-                    </h3>
+                    <h3><?= esc($product['pr_Name']) ?></h3>
                     <div class="rating">
                         <?php
                         $avg = (float) $product['average_rating'];
@@ -110,7 +75,8 @@ $userId = session()->get('user_id');
                         <span>( <?= esc($product['review_count']) ?> reviews )</span>
                     </div>
                     <div class="product__details__price">₹ <?= round(esc($product['pr_Selling_Price'] ?? '0')) ?>
-                        <span>₹<?= round(esc($product['pr_Selling_Price'])) ?></span>
+                        <span>₹<?= round(esc($product['pr_Selling_Price'])) ?>
+                        </span>
                     </div>
                     <p>Inclusive of all taxes</p>
 
@@ -122,19 +88,18 @@ $userId = session()->get('user_id');
                             <button class="btn  customise__Tee" id="customizeTshirtBtn">
                                 <i class="bi bi-palette-fill"></i>
                                 Customize Tee >>
-                            </button>
+                             </button>
                         </div>
                     </div>
 
                     <div class="product__details__button">
                         <div class="quantity">
                             <span>Quantity:</span>
-                            <div class="quantity-box d-flex align-items-center">
-                                <button type="button" class="qty-btn" id="qty-minus">−</button>
-                                <input type="text" id="quantity" value="1" readonly>
-                                <button type="button" class="qty-btn" id="qty-plus">+</button>
+                            <div class="pro-qty">
+                                <input type="text" value="1">
                             </div>
                         </div>
+
                         <!-- <a href="javascript:void(0);" class="cart-btn" id="addToCartBtn">
                             <span class="icon_bag_alt"></span> Add to cart
                         </a> -->
@@ -148,10 +113,15 @@ $userId = session()->get('user_id');
                                 Add to Cart
                             </a>
                         <?php endif; ?>
+                        <ul>
+                            <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                            <li><a href="#"><span class="icon_adjust-horiz"></span></a></li>
+                        </ul>
                     </div>
+
+
                     <div class="product__details__widget">
                         <ul>
-
                             <li>
                                 <span>Available color:</span>
                                 <div class="color__checkbox">
@@ -173,7 +143,7 @@ $userId = session()->get('user_id');
                             </li>
                             <li class="size-section">
                                 <span class="size-title">Available size:</span>
-                                <div class="size__btn trendy-size-group">
+                                <div class="size__btn">
                                     <?php foreach ($product['sizes'] as $variant): ?>
                                         <div class="size-option" data-size="<?= $variant['prv_Size']; ?>"
                                             data-price="<?= $variant['prv_price']; ?>"
@@ -188,10 +158,6 @@ $userId = session()->get('user_id');
                                 </div>
                             </li>
 
-                            <li>
-                                <span>Promotions:</span>
-                                <p>Free shipping</p>
-                            </li>
                         </ul>
                     </div>
                 </div>
@@ -288,6 +254,108 @@ $userId = session()->get('user_id');
                 </div>
             </div>
         </div>
+        <!-- <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="related__title">
+                    <h5>RELATED PRODUCTS</h5>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="img/product/related/rp-1.jpg">
+                        <div class="label new">New</div>
+                        <ul class="product__hover">
+                            <li><a href="img/product/related/rp-1.jpg" class="image-popup"><span
+                                        class="arrow_expand"></span></a></li>
+                            <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                            <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                        </ul>
+                    </div>
+                    <div class="product__item__text">
+                        <h6><a href="#">Buttons tweed blazer</a></h6>
+                        <div class="rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div class="product__price">$ 59.0</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="img/product/related/rp-2.jpg">
+                        <ul class="product__hover">
+                            <li><a href="img/product/related/rp-2.jpg" class="image-popup"><span
+                                        class="arrow_expand"></span></a></li>
+                            <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                            <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                        </ul>
+                    </div>
+                    <div class="product__item__text">
+                        <h6><a href="#">Flowy striped skirt</a></h6>
+                        <div class="rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div class="product__price">$ 49.0</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="img/product/related/rp-3.jpg">
+                        <div class="label stockout">out of stock</div>
+                        <ul class="product__hover">
+                            <li><a href="img/product/related/rp-3.jpg" class="image-popup"><span
+                                        class="arrow_expand"></span></a></li>
+                            <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                            <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                        </ul>
+                    </div>
+                    <div class="product__item__text">
+                        <h6><a href="#">Cotton T-Shirt</a></h6>
+                        <div class="rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div class="product__price">₹ 59.0</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="img/product/related/rp-4.jpg">
+                        <ul class="product__hover">
+                            <li><a href="img/product/related/rp-4.jpg" class="image-popup"><span
+                                        class="arrow_expand"></span></a></li>
+                            <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                            <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                        </ul>
+                    </div>
+                    <div class="product__item__text">
+                        <h6><a href="#">Slim striped pocket shirt</a></h6>
+                        <div class="rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div class="product__price">$ 59.0</div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
     </div>
 </section>
 <!-- Product Details Section End -->
