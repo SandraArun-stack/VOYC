@@ -136,13 +136,23 @@ public function get_prd_Details($prId, $priId)
 
 public function getSizesByColor($priId)
 {
-    return $this->db->table('product_variants')
+    $sizes = $this->db->table('product_variants')
         ->select('prv_Id, prv_Size, prv_price')
-        ->where('pri_id', $priId)  // filter by selected color
+        ->where('pri_id', $priId)
         ->where('prv_Status', 1)
         ->get()
         ->getResultArray();
+
+    // ✅ Define custom order for logical size sorting
+    $customOrder = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
+
+    usort($sizes, function ($a, $b) use ($customOrder) {
+        return array_search($a['prv_Size'], $customOrder) - array_search($b['prv_Size'], $customOrder);
+    });
+
+    return $sizes;
 }
+
 
 public function saveToCart($data)
 {

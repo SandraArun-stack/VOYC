@@ -1,3 +1,36 @@
+<!-- <style>
+.quantity-box {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 50px;        /* Rounded edges */
+    overflow: hidden;
+    background-color: #f8f8f8;
+    height: 54px;
+    width: 136px;
+}
+.qty-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    color: #000;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.quantity-box input {
+    width: 50px;
+    text-align: center;
+    border: none;
+    background: transparent;
+    font-weight: 600;
+    color: #000;
+    font-size: 16px;
+}
+</style> -->
+
+
 <?php
 $userId = session()->get('user_id');
 ?>
@@ -6,7 +39,7 @@ $userId = session()->get('user_id');
         <div class="row">
             <div class="col-lg-12">
                 <div class="breadcrumb__links">
-                    <a href="<?= base_url(' '); ?>"><i class="fa fa-home"></i> Home</a>
+                   <a href="<?= base_url(' '); ?>"><i class="fa fa-home"></i>Home</a>
                     <a href="#">Women’s </a>
                     <span><?= esc($product['pr_Name']) ?></span>
                 </div>
@@ -58,8 +91,10 @@ $userId = session()->get('user_id');
             </div>
             <div class="col-lg-6">
                 <div class="product__details__text">
-                    <h3><?= esc($product['pr_Name']) ?> 
-                    <span>Brand: SKMEIMore Men Watches from SKMEI</span></h3>
+                    <h3><?= esc($product['pr_Name']) ?>
+                        <!-- <span>Brand: SKMEIMore Men Watches from SKMEI</span>-->
+                        <span>Description: <?= esc($product['pr_Description']); ?></span>
+                    </h3>
                     <div class="rating">
                         <?php
                         $avg = (float) $product['average_rating'];
@@ -75,25 +110,27 @@ $userId = session()->get('user_id');
                         ?>
                         <span>( <?= esc($product['review_count']) ?> reviews )</span>
                     </div>
-                    <div class="product__details__price">₹ <?= round(esc($product['pr_Selling_Price'] ?? '0')) ?><span>₹
-                            <?= round(esc($product['pr_Selling_Price'])) ?></span></div>
-                            <p>Inclusive of all taxes</p>
+                    <div class="product__details__price">₹ <?= round(esc($product['pr_Selling_Price'] ?? '0')) ?>
+                    <span>₹<?= round(esc($product['pr_Selling_Price'])) ?></span>
+                </div>
+                    <p>Inclusive of all taxes</p>
                     <!-- <p><?= esc($product['pr_Description']) ?></p> -->
                     <div class="product__details__button">
                         <div class="quantity">
                             <span>Quantity:</span>
-                            <div class="pro-qty">
-                                <input type="text" value="1">
+                            <div class="quantity-box d-flex align-items-center">
+                                <button type="button" class="qty-btn" id="qty-minus">−</button>
+                                <input type="text" id="quantity" value="1" readonly>
+                                <button type="button" class="qty-btn" id="qty-plus">+</button>
                             </div>
                         </div>
-
                         <a href="javascript:void(0);" class="cart-btn" id="addToCartBtn">
                             <span class="icon_bag_alt"></span> Add to cart
                         </a>
-                        <ul>
+                        <!-- <ul>
                             <li><a href="#"><span class="icon_heart_alt"></span></a></li>
                             <li><a href="#"><span class="icon_adjust-horiz"></span></a></li>
-                        </ul>
+                        </ul> -->
                     </div>
                     <div class="product__details__widget">
                         <ul>
@@ -127,25 +164,24 @@ $userId = session()->get('user_id');
 
                             </li>
                             <li class="size-section">
-                                <span class="size-title">Available size:</span>
-                                <div class="size__btn">
-                                    <?php foreach ($product['sizes'] as $variant): ?>
-                                        <div class="size-option"
-                                            data-size="<?= $variant['prv_Size']; ?>"
-                                            data-price="<?= $variant['prv_price']; ?>"
-                                            data-size-id="<?= $variant['prv_Id']; ?>">
-                                            <input type="radio"
-                                                name="product_size"
-                                                id="size_<?= $variant['prv_Size']; ?>"
-                                                value="<?= $variant['prv_Id']; ?>" 
-                                                hidden>
-                                            <label for="size_<?= $variant['prv_Size']; ?>" class="size-label">
-                                                <?= $variant['prv_Size']; ?>
-                                            </label>
-                                        </div>
-                                    <?php endforeach; ?>                                   
-                                </div>
-                            </li>
+                            <span class="size-title">Available size:</span>
+                            <div class="size__btn trendy-size-group">
+                                <?php foreach ($product['sizes'] as $variant): ?>
+                                    <div class="size-option"
+                                        data-size="<?= $variant['prv_Size']; ?>"
+                                        data-price="<?= $variant['prv_price']; ?>"
+                                        data-size-id="<?= $variant['prv_Id']; ?>">
+                                        <input type="radio" name="product_size"
+                                            id="size_<?= $variant['prv_Size']; ?>"
+                                            value="<?= $variant['prv_Id']; ?>" hidden>
+                                        <label for="size_<?= $variant['prv_Size']; ?>" class="size-label">
+                                            <?= $variant['prv_Size']; ?>
+                                        </label>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </li>
+
                             <li>
                                 <span>Promotions:</span>
                                 <p>Free shipping</p>

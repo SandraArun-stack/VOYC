@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="breadcrumb__links">
-                    <a href="./index.html"><i class="fa fa-home"></i> Home</a>
+                    <a href="<?= base_url(' '); ?>"><i class="fa fa-home"></i>Home</a>
                     <span>Shop</span>
                 </div>
             </div>
