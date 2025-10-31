@@ -86,5 +86,24 @@ class tshirtModel extends Model
 
         return $images;
     }
+    public function get_customisation_price()
+    {
+        $query = $this->db->table('common_table')
+            ->select('field, value')
+            ->whereIn('field', [
+                'front_Customization_Price',
+                'back_Customization_Price',
+                'sleeve_Customization_Price'
+            ])
+            ->get();
+
+        $result = [];
+        foreach ($query->getResultArray() as $row) {
+            $result[$row['field']] = $row['value'];
+        }
+
+        return $result;
+    }
+
 
 }

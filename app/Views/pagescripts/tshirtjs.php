@@ -601,12 +601,30 @@
         $('#sleeveContainer').removeClass('d-none').addClass('d-flex');
     });
 
+    var frontPrice = parseFloat($('#front_Customization_Price').val()) || 0;
+    var backPrice = parseFloat($('#back_Customization_Price').val()) || 0;
+    var RSleevePrice = parseFloat($('#sleeve_Customization_Price').val()) || 0;
+    var LSleevePrice = parseFloat($('#sleeve_Customization_Price').val()) || 0;
+
     const designData = {
-        front: { price: 200, img: "<?= base_url() . ASSET_PATH; ?>assets/img/test.png" },
-        back: { price: 150, img: "<?= base_url() . ASSET_PATH; ?>assets/img/test.png" },
-        right: { price: 100, img: "<?= base_url() . ASSET_PATH; ?>assets/img/test.png" },
-        left: { price: 100, img: "<?= base_url() . ASSET_PATH; ?>assets/img/test.png" }
+        front: {
+            price: frontPrice,
+            img: "<?= base_url(ASSET_PATH . 'assets/img/test.png'); ?>"
+        },
+        back: {
+            price: backPrice,
+            img: "<?= base_url(ASSET_PATH . 'assets/img/test.png'); ?>"
+        },
+        right: {
+            price: RSleevePrice,
+            img: "<?= base_url(ASSET_PATH . 'assets/img/test.png'); ?>"
+        },
+        left: {
+            price: LSleevePrice,
+            img: "<?= base_url(ASSET_PATH . 'assets/img/test.png'); ?>"
+        }
     };
+    
     $(document).ready(function () {
 
 
@@ -666,26 +684,26 @@
             $("#priceTotal").text("₹" + total.toFixed(2));
         }
 
-         $('.qty-btn-custom.plus-custom').click(function () {
-        let $wrapper = $(this).closest('.quantity-wrapper-custom');
-        let $value = $wrapper.find('.quantity-value-custom');
-        quantity = parseInt($value.text()) + 1;
-        $value.text(quantity);
-        updatePreview(); // recalc total
-    });
-
-    // ✅ Quantity decrement
-    $('.qty-btn-custom.minus-custom').click(function () {
-        let $wrapper = $(this).closest('.quantity-wrapper-custom');
-        let $value = $wrapper.find('.quantity-value-custom');
-        let currentQty = parseInt($value.text());
-
-        if (currentQty > 1) {
-            quantity = currentQty - 1;
+        $('.qty-btn-custom.plus-custom').click(function () {
+            let $wrapper = $(this).closest('.quantity-wrapper-custom');
+            let $value = $wrapper.find('.quantity-value-custom');
+            quantity = parseInt($value.text()) + 1;
             $value.text(quantity);
             updatePreview(); // recalc total
-        }
-    });
+        });
+
+        // ✅ Quantity decrement
+        $('.qty-btn-custom.minus-custom').click(function () {
+            let $wrapper = $(this).closest('.quantity-wrapper-custom');
+            let $value = $wrapper.find('.quantity-value-custom');
+            let currentQty = parseInt($value.text());
+
+            if (currentQty > 1) {
+                quantity = currentQty - 1;
+                $value.text(quantity);
+                updatePreview(); // recalc total
+            }
+        });
 
         // Bind change event
         $(".design-check").on("change", function () {

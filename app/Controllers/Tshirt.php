@@ -24,7 +24,7 @@ class Tshirt extends Controller
         if (!empty($prId) && !empty($priId)) {
             $cust_image = $this->tshirtModel->get_Image($prId, $priId);
             $allData = $this->tshirtModel->get_Data_For_Pr_Id($prId);
-
+            $customisationPrice = $this->tshirtModel->get_customisation_price();
             if (!$cust_image) {
                 return redirect()->to(base_url());
             } else {
@@ -33,7 +33,8 @@ class Tshirt extends Controller
                     'prId' => $prId,
                     'priId' => $priId,
                     'cust_image' => $cust_image,
-                    'allData' => $allData
+                    'allData' => $allData,
+                    'customisationPrice' => $customisationPrice
                 ];
                 return view('common/header')
                     . view('tshirt', $data)
@@ -41,7 +42,13 @@ class Tshirt extends Controller
                     . view('pagescripts/tshirtjs');
             }
 
+
         } else {
+            $customisationPrice = $this->tshirtModel->get_customisation_price();
+            $data = [
+                'customisationPrice' => $customisationPrice
+            ];
+
             return view('common/header')
                 . view('tshirt')
                 . view('common/footer')
