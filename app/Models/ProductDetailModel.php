@@ -152,6 +152,42 @@ class ProductDetailModel extends Model
             ->getRowArray();
     }
 
+public function getSizesByColor($priId)
+{
+    $sizes = $this->db->table('product_variants')
+        ->select('prv_Id, prv_Size, prv_price')
+        ->where('pri_id', $priId)
+        ->where('prv_Status', 1)
+        ->get()
+        ->getResultArray();
+
+    // ✅ Define custom order for logical size sorting
+    $customOrder = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
+
+    usort($sizes, function ($a, $b) use ($customOrder) {
+        return array_search($a['prv_Size'], $customOrder) - array_search($b['prv_Size'], $customOrder);
+    });
+
+    return $sizes;
+}
+
+
+public function saveToCart($data)
+{
+    $builder = $this->db->table('my_cart');
+
+    // Check if item with same product, color, and size already exists in user's cart
+    $exists = $builder->where([
+        'cust_Id' => $data['cust_Id'],
+        'pr_Id'   => $data['pr_Id'],
+        'pri_Id'  => $data['pri_Id'],
+        'prv_Id'  => $data['prv_Id'],
+        'cart_Status' => 1
+    ])->get()->getRowArray();
+
+    if ($exists) {
+        // If already exists → increase quantity
+        $builder->where('cart_Id', $exists['cart_Id'])
     public function getSizesByColor($priId)
     {
         return $this->db->table('product_variants')

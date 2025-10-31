@@ -10,6 +10,41 @@
             left: event.pageX - (popup.width() / 2) + 'px'
         });
 
+    // When a color is selected
+    $('input[name="color__radio"]').on('change', function () {
+        var priId = $(this).data('pri-id');
+
+        //Update images
+        $.ajax({
+            url: '<?= base_url("getColorImage") ?>/' + priId,
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                if (response && response.image_url) {
+                    $('.product__big__img').attr('src', response.image_url);
+                    $('.product__small__img').each(function (index) {
+                        var smallImageUrl = response.small_image_urls[index] || response.image_url;
+                        $(this).attr('src', smallImageUrl);
+                    });
+                }
+            },
+            error: function () {
+                console.log('Error fetching image for this color.');
+            }
+        });
+
+        //  Fetch sizes for the selected color
+        $.ajax({
+            url: '<?= base_url("getSizesByColor") ?>/' + priId,
+            type: 'GET',
+            dataType: 'json',
+            success: function (sizes) {
+                var sizeGroup = $('.trendy-size-group');
+                sizeGroup.empty();
+
+                if (sizes.length) {
+                    sizes.forEach(function (s) {
+                        var sizeHtml = `<div class="size-option" data-size-id="${s.prv_Id}" data-size="${s.prv_Size}" data-price="${s.prv_price}">
         setTimeout(() => {
             popup.fadeOut(300, function () {
                 $(this).remove();
@@ -99,10 +134,52 @@
             }
         }
 
+    
+//  addcart
+$('#addToCartBtn').on('click', function (e) {
+    e.preventDefault();
         $(document).on('change', 'input[name="product_size"], input[name="color__radio"]', checkSelections);
 
         $(document).ready(checkSelections);
 
+    //  Get selected size
+    const selectedSize = $('input[name="product_size"]:checked');
+    if (!selectedSize.length) {
+        showMessage('Please select a size before adding to cart.', 'danger');
+        return;
+    }
+
+    const prvId = selectedSize.closest('.size-option').data('size-id');
+    const price = selectedSize.closest('.size-option').data('price');
+
+    const prId = "<?= $product['pr_Id'] ?>";
+    const priId = $('input[name="color__radio"]:checked').data('pri-id');
+    const designId = "<?= $product['design_Id'] ?? 0 ?>";
+
+    //  Get the quantity selected by user
+    const quantity = parseInt($('#quantity').val()) || 1;
+
+    $.ajax({
+        url: "<?= base_url('addToCart') ?>",
+        type: "POST",
+        dataType: "json",
+        data: {
+            cust_Id: userId,
+            pr_Id: prId,
+            pri_Id: priId,
+            prv_Id: prvId,
+            design_Id: designId,
+            cart_Quantity: quantity, //  send the correct quantity
+            price: price
+        },
+        success: function (response) {
+            if (response.status == 1) {
+                showMessage('Item added to cart successfully!', 'success');
+                setTimeout(() => {
+                    window.location.href = "<?= base_url('cart') ?>/" + userId;
+                }, 1500);
+            } else {
+                showMessage(response.message || 'Failed to add to cart.', 'danger');
         $('#addToCartBtn').on('click', function (e) {
             e.preventDefault();
 
@@ -206,6 +283,57 @@
         const customizeUrl = "<?= base_url('tshirt_Customisation') ?>/" + prId + "/" + priId;
         window.location.href = customizeUrl;
     });
+
+    // Auto-hide after 2 seconds
+    setTimeout(() => {
+        box.fadeOut(300);
+    }, 2000);
+}
+$(document).ready(function() {
+    $('#qty-plus').click(function() {
+        let val = parseInt($('#quantity').val());
+        $('#quantity').val(val + 1);
+    });
+
+    $('#qty-minus').click(function() {
+        let val = parseInt($('#quantity').val());
+        if (val > 1) {
+            $('#quantity').val(val - 1);
+        }
+    });
+    
+});
+
+$(document).ready(function () {
+
+    function updatePrice(sizeOption) {
+        let price = parseFloat(sizeOption.data('price')) || 0;
+        let displayPrice = '₹ ' + price.toFixed(0);
+        let discountPrice = Math.round(price + (price * 0.1)); // optional MRP style
+        $('.product__details__price').html(`${displayPrice} `);
+// if we need to show the discount price reduction use this code <span>₹ ${discountPrice}</span>
+    }
+
+    // ✅ Automatically select the first size after DOM is ready
+    setTimeout(function () {
+        let firstSize = $('.size-option').first();
+        if (firstSize.length) {
+            $('.size-option').removeClass('selected');
+            firstSize.addClass('selected');
+            firstSize.find('input[type=radio]').prop('checked', true);
+            updatePrice(firstSize);
+        }
+    }, 300); // delay ensures DOM is fully loaded
+
+    // ✅ Handle size click event
+    $(document).on('click', '.size-option', function () {
+        $('.size-option').removeClass('selected');
+        $(this).addClass('selected');
+        $(this).find('input[type=radio]').prop('checked', true);
+        updatePrice($(this));
+    });
+
+});
 
 
 

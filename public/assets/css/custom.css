@@ -1078,6 +1078,35 @@ input[type="file"] {
 .customise__Tee:focus {
     box-shadow: 0 0 0 .2rem rgb(255 255 255 / 25%);
 }
+.quantity-box {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 50px;        /* Rounded edges */
+    overflow: hidden;
+    background-color: #f8f8f8;
+    height: 54px;
+    width: 136px;
+}
+.qty-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    color: #000;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.quantity-box input {
+    width: 50px;
+    text-align: center;
+    border: none;
+    background: transparent;
+    font-weight: 600;
+    color: #000;
+    font-size: 16px;
+}
 
 .customise__Tee:hover {
     background: black;
@@ -1115,3 +1144,5 @@ input[type="file"] {
         margin: 0 auto;
     }
 }
+
+
