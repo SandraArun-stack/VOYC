@@ -77,7 +77,6 @@ class ProductDetail extends Controller
         $quantity = $this->request->getPost('cart_Quantity') ?? 1;
         $price = $this->request->getPost('cart_Price');
 
-        // ✅ Use isset() instead of falsy check so 0 is valid
         if (
             !isset($custId) || 
             !isset($prId)   || 
