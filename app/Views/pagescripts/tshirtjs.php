@@ -22,7 +22,8 @@
     const canvasStates = {
         front: { objects: [], overlay: '<?= base_url('uploads/productmedia/' . $cust_image['pri_Thumbnail']); ?>' },
         back: { objects: [], overlay: '<?= base_url('uploads/productmedia/' . $cust_image['pri_File_Name'][0]); ?>' },
-        sleeve: { objects: [], overlay: '<?= base_url('uploads/productmedia/' . $cust_image['pri_Sleev_Name'][0]); ?>' }
+        RSleeve_Img: { objects: [], overlay: '<?= base_url('uploads/productmedia/' . $cust_image['RSleeve_Img']); ?>' },
+        LSleeve_Img: { objects: [], overlay: '<?= base_url('uploads/productmedia/' . $cust_image['LSleeve_Img']); ?>' }
     };
 
     let currentView = 'front';
@@ -251,23 +252,6 @@
             }
         });
 
-
-
-        // $("#uploadImage").on("change", function (e) {
-        //     const file = e.target.files[0];
-        //     const reader = new FileReader();
-
-        //     reader.onload = function (f) {
-        //         fabric.Image.fromURL(f.target.result, function (img) {
-        //             img.scaleToWidth(150);
-        //             img.set({ left: 100, top: 150 });
-        //             canvas.add(img).setActiveObject(img);
-        //             canvas.renderAll();
-        //         });
-        //     };
-        //     reader.readAsDataURL(file);
-        // });
-        
         $("#uploadImage").on("change", function (e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -369,7 +353,9 @@
                     data: {
                         front: designs.front,
                         back: designs.back,
-                        sleeve: designs.sleeve,
+                        RSleeve_Img: designs.RSleeve_Img,
+                        RSleeve_Img: designs.RSleeve_Img,
+                        // sleeve: designs.sleeve,
                         prId: $('input[name="prId"]').val(),
                         priId: $('input[name="priId"]').val(),
                         prvId: selectedSize
@@ -414,7 +400,6 @@
             const priId = $(this).data('priid');
             const prId = "<?= $prId ?>";
 
-            // Redirect to same design page but with different color (pri_Id)
             window.location.href = "<?= base_url('tshirt') ?>/" + prId + "/" + priId;
         });
 
@@ -473,13 +458,22 @@
                 }
 
                 // --- Sleeve Image(s)
-                if (selected.pri_Sleev_Name && Array.isArray(selected.pri_Sleev_Name)) {
-                    selected.pri_Sleev_Name.forEach(image => {
+                if (selected.RSleeve_Img && Array.isArray(selected.RSleeve_Img)) {
+                    selected.RSleeve_Img.forEach(image => {
                         const imgSrc = "<?= base_url('uploads/productmedia/') ?>" + image;
                         $thumbs.append(`
                     <img src="${imgSrc}" 
                          data-src="${imgSrc}" 
-                         data-view="sleeve" class="shirt-thumb" />`);
+                         data-view="RSleeve" class="shirt-thumb" />`);
+                    });
+                }
+                if (selected.LSleeve_Img && Array.isArray(selected.LSleeve_Img)) {
+                    selected.LSleeve_Img.forEach(image => {
+                        const imgSrc = "<?= base_url('uploads/productmedia/') ?>" + image;
+                        $thumbs.append(`
+                    <img src="${imgSrc}" 
+                         data-src="${imgSrc}" 
+                         data-view="LSleeve" class="shirt-thumb" />`);
                     });
                 }
             }
@@ -599,5 +593,128 @@
         }
 
     });
+
+    //price
+
+    $(document).on('click', '#addSleeveBtn', function () {
+        $(this).hide();
+        $('#sleeveContainer').removeClass('d-none').addClass('d-flex');
+    });
+
+    var frontPrice = parseFloat($('#front_Customization_Price').val()) || 0;
+    var backPrice = parseFloat($('#back_Customization_Price').val()) || 0;
+    var RSleevePrice = parseFloat($('#sleeve_Customization_Price').val()) || 0;
+    var LSleevePrice = parseFloat($('#sleeve_Customization_Price').val()) || 0;
+
+    const designData = {
+        front: {
+            price: frontPrice,
+            img: "<?= base_url(ASSET_PATH . 'assets/img/test.png'); ?>"
+        },
+        back: {
+            price: backPrice,
+            img: "<?= base_url(ASSET_PATH . 'assets/img/test.png'); ?>"
+        },
+        right: {
+            price: RSleevePrice,
+            img: "<?= base_url(ASSET_PATH . 'assets/img/test.png'); ?>"
+        },
+        left: {
+            price: LSleevePrice,
+            img: "<?= base_url(ASSET_PATH . 'assets/img/test.png'); ?>"
+        }
+    };
+    
+    $(document).ready(function () {
+
+
+
+        // let totalText = $('#priceProduct').text();
+        // let baseTotal = parseFloat(totalText.replace(/[^\d\.]/g, '')) || 0;
+
+        function getBasePrice() {
+            let totalText = $('#priceProduct').text();
+            return parseFloat(totalText.replace(/[^\d\.]/g, '')) || 0;
+        }
+
+        let basePrice = getBasePrice();
+        let quantity = 1;
+
+        function updatePreview() {
+            let total = basePrice * quantity;
+            let previewHTML = "";
+
+            $(".design-check:checked").each(function () {
+                const type = $(this).closest(".design-option").data("type");
+                const data = designData[type];
+
+                if (!data || typeof data.price !== "number") {
+                    console.warn("Missing designData for type:", type);
+                    return;
+                }
+
+                total += data.price * quantity;
+
+                previewHTML += `
+                <div class="text-center">
+                    <img src="${data.img}" alt="${type}">
+                    <p class="text-capitalize mb-0">${type} design</p>
+                </div>
+            `;
+
+                $(`#${type}`)
+                    .addClass("active")
+                    .find(`span[id^='price']`)
+                    .text(`+ ₹${data.price}`);
+            });
+
+            // Hide entries for unchecked items
+            $(".design-option").each(function () {
+                const type = $(this).data("type");
+                const checkbox = $(this).find(".design-check");
+                if (!checkbox.is(":checked")) {
+                    $(`#${type}`)
+                        .removeClass("active")
+                        .find(`span[id^='price']`)
+                        .text("+ ₹0");
+                }
+            });
+
+            $(".selected-items").html(previewHTML);
+            $("#priceTotal").text("₹" + total.toFixed(2));
+        }
+
+        $('.qty-btn-custom.plus-custom').click(function () {
+            let $wrapper = $(this).closest('.quantity-wrapper-custom');
+            let $value = $wrapper.find('.quantity-value-custom');
+            quantity = parseInt($value.text()) + 1;
+            $value.text(quantity);
+            updatePreview(); // recalc total
+        });
+
+        // ✅ Quantity decrement
+        $('.qty-btn-custom.minus-custom').click(function () {
+            let $wrapper = $(this).closest('.quantity-wrapper-custom');
+            let $value = $wrapper.find('.quantity-value-custom');
+            let currentQty = parseInt($value.text());
+
+            if (currentQty > 1) {
+                quantity = currentQty - 1;
+                $value.text(quantity);
+                updatePreview(); // recalc total
+            }
+        });
+
+        // Bind change event
+        $(".design-check").on("change", function () {
+            updatePreview();
+        });
+
+
+
+        // Initial update
+        updatePreview();
+    });
+
 
 </script>

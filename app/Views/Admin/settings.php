@@ -50,26 +50,59 @@
                                     <div class="card p-4 shadow-sm">
                                         <h5 class="mb-3">Customization Settings</h5>
                                         <div id="update_msg" class="alert alert-success mt-3 p-2 d-none"></div>
+                                        <form id="customisation_Price_form">
+                                            <div class="form-group mb-3">
+                                                <div class="row mb-3 setting_row">
+                                                    <div class="col-md-3">
+                                                        <label for="front_Customization_Price">Front
+                                                            Customization(₹)</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <input type="text" class="form-control"
+                                                            id="front_Customization_Price"
+                                                            name="front_Customization_Price"
+                                                            value="<?= esc($front_Customization_Price ?? '') ?>""
+                                                            placeholder="Enter customization price">
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3 setting_row">
+                                                    <div class="col-md-3">
+                                                        <label for="back_Customization_Price">Back
+                                                            Customization(₹)</label>
 
-                                        <div class="form-group mb-3">
-                                            <div class="row">
-                                                <div class="col-md-2">
-                                                    <label for="customization_charge">Customization Price (₹)</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <input type="text" class="form-control"
+                                                            id="back_Customization_Price"
+                                                            name="back_Customization_Price"
+                                                         value="<?= esc($back_Customization_Price ?? '') ?>"
+                                                            placeholder="Enter customization price">
+                                                    </div>
 
                                                 </div>
-                                                <div class="col-md-8">
-                                                    <input type="text" class="form-control" id="customization_charge"
-                                                        name="customization_charge"
-                                                        value="<?= esc($customization_charge ?? '') ?>"
-                                                        placeholder="Enter customization price">
+                                                <div class="row mb-3 setting_row">
+                                                    <div class="col-md-3">
+                                                        <label for="sleeve_Customization_Price">Sleeve Customization(₹)
+                                                        </label><br />
+                                                        <small>Charge Per Sleeve Style</small>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <input type="text" class="form-control"
+                                                            id="sleeve_Customization_Price"
+                                                            name="sleeve_Customization_Price"
+                                                             value="<?= esc($sleeve_Customization_Price ?? '') ?>"
+                                                            placeholder="Enter customization price">
+                                                    </div>
+
                                                 </div>
-                                                <div class="col-md-2 text-end">
-                                                    <button type="button" id="btnUpdateCharge"
-                                                        class="btn btn-primary">Update</button>
+                                                <div class="row mb-3 setting_row">
+                                                    <div class="col-md-3">
+                                                        <button type="button" id="btnUpdateCharge"
+                                                            class="btn btn-primary">Update</button>
+                                                    </div>
                                                 </div>
                                             </div>
-
-                                        </div>
+                                        </form>
 
 
 

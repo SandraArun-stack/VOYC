@@ -20,11 +20,12 @@ class Settings extends BaseController
         }
 
         $settingsModel = new \App\Models\Admin\SettingsModel();
-        $chargeData = $settingsModel->getCustomizationCharge();
+        $chargeData = $settingsModel->getCustomizationCharges(); 
 
-        // 👇 Prepare data for view
         $data = [
-            'customization_charge' => $chargeData['value'] ?? ''
+            'front_Customization_Price' => $chargeData['front_Customization_Price'] ?? '',
+            'back_Customization_Price' => $chargeData['back_Customization_Price'] ?? '',
+            'sleeve_Customization_Price' => $chargeData['sleeve_Customization_Price'] ?? ''
         ];
 
 
@@ -35,31 +36,40 @@ class Settings extends BaseController
         $template .= view('Admin/page_scripts/settingsjs');
         return $template;
 
-
     }
+
+
 
     public function updateCustomizationCharge()
     {
-        $value = $this->request->getPost('customization_charge');
+        // Get customization prices from the POST request
+        $frontCharge = $this->request->getPost('front_Customization_Price');
+        $backCharge = $this->request->getPost('back_Customization_Price');
+        $sleeveCharge = $this->request->getPost('sleeve_Customization_Price');
 
-        if ($value === null || $value === '') {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Value is required']);
-        }
-        if (!is_numeric($value)) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Enter a Numeric Value.']);
+        if (is_null($frontCharge) || $frontCharge === '' || !is_numeric($frontCharge)) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Front Customization Price Must be a Numeric Value.']);
         }
 
+        if (is_null($backCharge) || $backCharge === '' || !is_numeric($backCharge)) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Back Customization Price Must be a Numeric Value.']);
+        }
+
+        if (is_null($sleeveCharge) || $sleeveCharge === '' || !is_numeric($sleeveCharge)) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Sleeve Customization Price Must be a Numeric Value.']);
+        }
 
         $settingsModel = new \App\Models\Admin\SettingsModel();
-        $updated = $settingsModel->updateCustomizationCharge($value);
+        $updatedFront = $settingsModel->updateCustomizationCharge('front_Customization_Price', $frontCharge);
+        $updatedBack = $settingsModel->updateCustomizationCharge('back_Customization_Price', $backCharge);
+        $updatedSleeve = $settingsModel->updateCustomizationCharge('sleeve_Customization_Price', $sleeveCharge);
 
-        if ($updated) {
-            return $this->response->setJSON(['status' => 'success', 'message' => 'Customization charge updated successfully']);
+        if ($updatedFront && $updatedBack && $updatedSleeve) {
+            return $this->response->setJSON(['status' => 'success', 'message' => 'Customization Charges Updated Successfully']);
         } else {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to update']);
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to Update Customization Charges']);
         }
     }
-
 
 
 }
