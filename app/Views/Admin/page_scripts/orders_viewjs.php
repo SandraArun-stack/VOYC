@@ -1,4 +1,4 @@
-    <script>
+<script>
     // Order View JS
     $(document).ready(function () {
         var orderId = <?= json_encode($od_Id) ?>;
@@ -11,7 +11,7 @@
             type: 'GET',
             dataType: 'json',
             success: function (res) {
-                console.log("AJAX response:", res); 
+                console.log("AJAX response:", res);
                 if (res.status) {
                     const order = res.data.order;
                     const customer = res.data.customer;
@@ -40,7 +40,7 @@
 
                     <div class="alert p-2" id="alertBox" style="display:none; font-size: 14px;"></div>
 
-                    <div class="form-group row align-items-center card-block">
+                    <div class="form-group row align-items-center card-block mb-0 p-2">
                         <label class="col-auto col-form-label"><strong>Update Status:</strong></label>
                         <div class="col-auto">
                             <select class="form-control form-control-sm arrow" style="font-size: 12px;" id="orderStatus" name="orderStatus">
@@ -160,10 +160,52 @@
 
             });
         });
+
+        // Download
+
     });
     $(document).on('click', '#backToOrders', function () {
         window.location.href = "<?= base_url('admin/orders') ?>";
     });
+    
+    $(document).ready(function () {
+        $('#DownloadCustomImages').on('click', function () {
+            // Collect all image URLs that actually exist
+            var images = [];
+            $('#customised-Details img').each(function () {
+                var src = $(this).attr('src');
+                if (src && src.trim() !== '') {
+                    images.push(src);
+                }
+            });
+
+            if (images.length === 0) {
+                alert('No images available to download.');
+                return;
+            }
+
+            alert(images.length + ' image(s) will be downloaded.');
+
+            // Loop through and trigger download for each image
+            $.each(images, function (index, url) {
+                var fileName = url.split('/').pop().split('?')[0]; // Extract filename
+                fetch(url)
+                    .then(response => response.blob())
+                    .then(blob => {
+                        var a = document.createElement('a');
+                        var blobUrl = window.URL.createObjectURL(blob);
+                        a.href = blobUrl;
+                        a.download = fileName || 'image_' + (index + 1) + '.jpg';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        window.URL.revokeObjectURL(blobUrl);
+                    })
+                    .catch(err => console.error('Failed to download:', url, err));
+            });
+        });
+    });
+
 
 
 

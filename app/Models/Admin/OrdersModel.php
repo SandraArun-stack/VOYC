@@ -14,7 +14,7 @@ class OrdersModel extends Model
 
     protected $table = 'order_detail';
     protected $primaryKey = 'od_Id';
-    protected $allowedFields = ['tracker_Link', 'od_Status', 'cus_Id'];
+    protected $allowedFields = ['tracker_Link', 'od_Status', 'cus_Id', 'design_Id'];
 
     public function getDatatables($searchValue = null, $start = 0, $length = 10, $orderBy = 'order_detail.od_Id', $orderDir = 'DESC')
     {
@@ -26,6 +26,7 @@ class OrdersModel extends Model
                 'order_detail.od_Shipping_Address',
                 'order_detail.od_Status',
                 'order_detail.od_createdon',
+                'order_detail.design_Id',
                 'product.pr_Name',
                 'product.pr_Code',
                 'customer.cust_Name',
@@ -38,6 +39,7 @@ class OrdersModel extends Model
             ->join('product', 'product.pr_Id = order_detail.pr_Id', 'left')
             ->join('customer', 'customer.cust_Id = order_detail.cus_Id', 'left')
             ->join('address', 'address.add_Id = order_detail.add_Id', 'left');
+        // print_r( $builder);exit();
 
         // Total records before filter
         $totalBuilder = clone $builder;
@@ -127,6 +129,46 @@ class OrdersModel extends Model
                 'od_Status' => $status
             ]);
     }
+    public function getCustomisedImage($od_id)
+    {
+        $builder = $this->db->table('order_detail')
+            ->select('design_Id')
+            ->where('od_Id', $od_id)
+            ->get();
+
+        $result = $builder->getRow();
+
+        if (!$result || empty($result->design_Id) || $result->design_Id == 0) {
+            return null;
+        }
+
+        $designId = $result->design_Id;
+
+        $design = $this->db->table('design')
+            ->select('front_Image, back_Image, RSleeve_Image, LSleeve_Image,User_Upload_Image')
+            ->where('design_Id', $designId)
+            ->get()
+            ->getRowArray();
+        if (!$design) {
+            return null;
+        }
+
+        if (!empty($design['User_Upload_Image'])) {
+            $json = trim($design['User_Upload_Image'], "\"'");
+            $decoded = json_decode($json, true);
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                $design['User_Upload_Image'] = $decoded;
+            } else {
+                $design['User_Upload_Image'] = [];
+            }
+        } else {
+            $design['User_Upload_Image'] = [];
+        }
+        // print_r($design['User_Upload_Image']);exit();
+
+        return $design;
+    }
+
 
 
 
