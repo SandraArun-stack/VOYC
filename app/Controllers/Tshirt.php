@@ -164,7 +164,7 @@ class Tshirt extends Controller
                 'RSleeve_Image' => $RSleeveFileName,
                 'LSleeve_Image' => $LSleeveFileName
             ],
-            'design_id' => $designId,
+            'design_Id' => $designId,
             'redirect' => base_url('cart/' . $userId)
         ]);
     }

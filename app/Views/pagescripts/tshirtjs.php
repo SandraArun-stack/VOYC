@@ -248,13 +248,13 @@
             }
         });
 
-        let uploadedImagesBase64 = []; 
+        let uploadedImagesBase64 = [];
 
         $("#uploadImage").on("change", function (e) {
             const files = e.target.files;
             if (!files.length) return;
 
-            uploadedImagesBase64 = []; 
+            uploadedImagesBase64 = [];
 
             Array.from(files).forEach((file, index) => {
                 const reader = new FileReader();
@@ -277,33 +277,6 @@
             $("#uploadImage").val("");
         });
 
-
-        // $("#uploadImage").on("change", function (e) {
-        //     const file = e.target.files[0];
-        //     if (!file) return;
-        //     uploadedImagesBase64 = [];
-
-        //     const reader = new FileReader();
-
-        //     reader.onload = function (f) {
-        //         uploadedImageBase64 = f.target.result; 
-        //         fabric.Image.fromURL(f.target.result, function (img) {
-        //             img.scaleToWidth(150);
-        //             img.set({ left: 100, top: 150 });
-        //             canvas.add(img).setActiveObject(img);
-        //             canvas.renderAll();
-        //         });
-
-        //         $("#uploadImage").val("");
-        //     };
-
-        //     reader.readAsDataURL(file);
-        // });
-
-
-
-        // Reset dress position
-
         $("#resetOverlayBtn").on("click", resetOverlayToBackground);
 
         // Lock/unlock dress (to avoid accidental moves after you place it)
@@ -320,6 +293,7 @@
 
         // Delete selected
         $("#deleteBtn").on("click", function () {
+            debugger;
             const active = canvas.getActiveObject();
             if (active) {
                 if (active === shirtOverlay) { return; }
@@ -342,6 +316,48 @@
             saveCurrentCanvasState();
 
             const designs = {};
+
+            const visibleImagesBase64 = [];
+
+            Object.keys(canvasStates).forEach(view => {
+                const viewState = canvasStates[view];
+                if (viewState && viewState.objects) {
+                    viewState.objects.forEach(obj => {
+
+                        if (obj.type === 'image' && !obj.overlay) {
+                            const tempCanvas = new fabric.StaticCanvas(null, {
+                                width: canvas.width,
+                                height: canvas.height
+                            });
+
+                            fabric.Image.fromURL(obj.src || obj._element.src, function (img) {
+                                img.set({
+                                    scaleX: obj.scaleX,
+                                    scaleY: obj.scaleY,
+                                    left: obj.left,
+                                    top: obj.top,
+                                    angle: obj.angle || 0
+                                });
+                                tempCanvas.add(img);
+                                // visibleImagesBase64.push(
+                                //     tempCanvas.toDataURL({ format: 'jpeg', quality: 0.7 })
+                                // );
+                                visibleImagesBase64.push(
+                                    tempCanvas.toDataURL({
+                                        format: 'png', 
+                                        quality: 0.7,
+                                        enableRetinaScaling: false
+                                    })
+                                );
+
+                            });
+                        }
+
+                    });
+                }
+            });
+
+
 
             const exportAll = Object.keys(canvasStates).map(view => {
                 const tempCanvas = new fabric.Canvas(null, {
@@ -372,9 +388,6 @@
                 keyboard: true
             });
             Promise.all(exportAll).then(() => {
-                // console.log("Exported designs:", designs);
-
-                // Optional: Send to backend
 
                 $.ajax({
                     url: "<?= base_url('saveDesign') ?>",
@@ -384,7 +397,8 @@
                         back: designs.back,
                         RSleeve_Img: designs.RSleeve_Img,
                         LSleeve_Img: designs.LSleeve_Img,
-                        uploadedImages: JSON.stringify(uploadedImagesBase64),
+                        // uploadedImages: JSON.stringify(uploadedImagesBase64),
+                        uploadedImages: JSON.stringify(visibleImagesBase64),
                         prId: $('input[name="prId"]').val(),
                         priId: $('input[name="priId"]').val(),
                         prvId: selectedSize

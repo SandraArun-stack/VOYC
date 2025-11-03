@@ -22,8 +22,7 @@ class OrderDetails extends Controller
     // Show checkout page
     public function index()
     {
-        // Get logged-in user ID from session
-        $userId = $this->session->get('user_id'); // change to your session key
+        $userId = $this->session->get('user_id');
 
         if (!$userId) {
             return redirect()->to(base_url('/'));
@@ -31,7 +30,6 @@ class OrderDetails extends Controller
 
         $cartModel = new CartModel();
         $cartItems = $cartModel->getCartItems($userId);
-
         return view('common/header')
             . view('orderdetails', ['cartItems' => $cartItems])
             . view('common/footer')
