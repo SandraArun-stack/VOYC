@@ -111,7 +111,8 @@
                                                 $total = $item['prv_price'] * $item['cart_Quantity'];
                                                 $subtotal += $total;
                                         ?>
-                                                <li data-prid="<?= $item['pr_Id'] ?>" data-price="<?= $item['prv_price'] ?>">
+                                        
+                                                <li data-prid="<?= $item['pr_Id'] ?>" data-price="<?= $item['prv_price'] ?>" data-designid="<?= $item['design_Id'] ?> ">
                                                     <?= str_pad($count, 2, '0', STR_PAD_LEFT) ?>.
                                                     <?= esc($item['pr_Name']) ?> 
                                                     <small>(Qty: <?= esc($item['cart_Quantity']) ?> × ₹<?= number_format($item['prv_price'], 2) ?>)</small>

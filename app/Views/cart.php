@@ -32,7 +32,6 @@
                             </thead>
                             <tbody>
 
-
                                 <?php foreach ($cartItems as $item): ?>
                                     <tr data-cartid="<?= esc($item['cart_Id']) ?>">
                                         <td class="cart__product__item">
@@ -136,8 +135,9 @@
                         <li>Total <span id="total-amount">₹ 0.00</span></li>
                     </ul>
 
-                    <a href="<?= base_url('orderdetails'); ?>" class="primary-btn proceed_check_out">Proceed to
-                        checkout</a>
+                    <a href="<?= base_url('orderdetails'); ?>" class="primary-btn proceed_check_out">
+                        Proceed to checkout
+                    </a>
                 </div>
             </div>
 

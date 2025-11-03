@@ -305,6 +305,6 @@ $routes->post('admin/save', 'Admin::createnew');
 //});
 
 //oreder details
-$routes->get('orderdetails', 'OrderDetails::index');
-$routes->post('orderdetails/placeOrder', 'OrderDetails::placeOrder');
-$routes->post('orderdetails/saveAddress', 'OrderDetails::saveAddress');
+// $routes->get('orderdetails', 'OrderDetails::index');
+// $routes->post('orderdetails/placeOrder', 'OrderDetails::placeOrder');
+// $routes->post('orderdetails/saveAddress', 'OrderDetails::saveAddress');
