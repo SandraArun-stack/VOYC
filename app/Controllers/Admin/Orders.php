@@ -84,7 +84,8 @@ class Orders extends BaseController
                 'od_createdon' => !empty($row->od_createdon) ? date('d M Y', strtotime($row->od_createdon)) : 'N/A',
                 'od_Status' => $this->getStatusLabel($row->od_Status),
                 'actions' => '<a href="' . base_url('admin/orders/view/' . $row->od_Id) . '">
-                                    <i class="fa fa-eye"></i></a>'
+                                    <i class="fa fa-eye"></i></a>',
+                                    'design_Id' => $row->design_Id ?? 0
             ];
         }
 
@@ -131,16 +132,20 @@ class Orders extends BaseController
             $add_Id = $order->add_Id;
             $customer = $model->getCustomer($cust_Id);
             $address = $model->getAddress($add_Id);
+            $Customisation_image = $model->getCustomisedImage($od_id);
 
             return $this->response->setJSON([
                 'status' => true,
                 'data' => [
                     'order' => $order,
                     'customer' => $customer,
-                    'address' => $address
+                    'address' => $address,
+                    'Customisation_image' => $Customisation_image
                 ]
             ]);
         }
+        
+         $data['Customisation_image'] = $model->getCustomisedImage($od_id);
 
         $data['od_Id'] = $od_id;
         return view('Admin/common/header')
