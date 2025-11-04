@@ -208,7 +208,7 @@
                                                         <div
                                                             class="customisation__features__center d-flex flex-column align-items-center">
                                                             <div class="layer__icons">
-                                                                <button id="layer-up" class="btn center__image__btn">
+                                                                <button id="layer-up" class="btn center__image__btn layer-up-btn">
                                                                     <i class="bi bi-layers-half center__image"></i>
                                                                 </button>
                                                                 <button id="layer-down" class="btn center__image__btn">

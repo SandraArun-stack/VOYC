@@ -1331,6 +1331,15 @@ input[type="file"] {
     gap: 6px;
 }
 
+#layer-up:disabled,
+#layer-down:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.layer-up-btn {
+    background-color: #000;
+    color: #fff;
+}
 
 @media only screen and (max-width: 991px) {
     .main__icon {

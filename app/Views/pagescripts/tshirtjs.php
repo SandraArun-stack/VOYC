@@ -942,6 +942,62 @@
             canvas.renderAll();
         });
 
+      // --- Enable/Disable Layer Buttons depending on image count ---
+function updateLayerButtonsState() {
+    const imageCount = canvas.getObjects().filter(obj => obj.type === "image").length;
+    const hasMultiple = imageCount > 1;
+
+    $("#layer-up, #layer-down").prop("disabled", !hasMultiple);
+}
+
+// --- Check at load ---
+updateLayerButtonsState();
+
+// --- Re-check whenever images are added or removed ---
+canvas.on("object:added", updateLayerButtonsState);
+canvas.on("object:removed", updateLayerButtonsState);
+
+// --- Re-enable both when something changes on canvas (selection, modification, etc.) ---
+canvas.on("selection:created", updateLayerButtonsState);
+canvas.on("selection:updated", updateLayerButtonsState);
+canvas.on("object:modified", updateLayerButtonsState);
+
+// --- Layer Up ---
+$("#layer-up").on("click", function () {
+    const active = canvas.getActiveObject();
+    if (!active || active.type !== "image") return;
+
+    const allObjects = canvas.getObjects();
+    const currentIndex = allObjects.indexOf(active);
+
+    if (currentIndex < allObjects.length - 1) {
+        canvas.bringForward(active);
+        canvas.renderAll();
+    }
+
+    // Disable temporarily until user triggers another change
+    $(this).prop("disabled", true);
+    $("#layer-down").prop("disabled", false);
+});
+
+// --- Layer Down ---
+$("#layer-down").on("click", function () {
+    const active = canvas.getActiveObject();
+    if (!active || active.type !== "image") return;
+
+    const currentIndex = canvas.getObjects().indexOf(active);
+    if (currentIndex > 0) {
+        canvas.sendBackwards(active);
+        canvas.renderAll();
+    }
+
+    // Disable temporarily until user triggers another change
+    $(this).prop("disabled", true);
+    $("#layer-up").prop("disabled", false);
+});
+
+
+
     });
 
 </script>
