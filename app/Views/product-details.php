@@ -48,6 +48,7 @@ $userId = session()->get('user_id');
     </div>
 </div>
 <!-- Breadcrumb End -->
+ 
 <!-- Product Details Section Begin -->
 <section class="product-details spad">
     <div class="container">

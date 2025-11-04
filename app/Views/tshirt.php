@@ -105,6 +105,126 @@
                                 </div>
                             </div>
 
+                            <!-- <div id="view-spec-upload-image" class="view-section d-none p-4">
+                                <h4>Image Properties</h4>
+                                <div class="d-flex justify-content-center">
+                                    <div id="image-details" class="text-center">
+                                        <div class="mb-3  d-flex align-items-center gap-3">
+                                            <label class="form-label">Width (cm)</label>
+                                            <div class="d-flex gap-2 Properties__scale">
+                                                <button id="decrease-width" class="btn btn-adjustor">−</button>
+                                                <input type="number" id="img-width"
+                                                    class="form-control w-25 text-center" readonly />
+                                                <button id="increase-width" class="btn btn-adjustor">+</button>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3  d-flex align-items-center gap-3">
+                                            <label class="form-label">Height (cm)</label>
+                                            <div class="d-flex gap-2 Properties__scale">
+                                                <button id="decrease-height" class="btn btn-adjustor">−</button>
+                                                <input type="number" id="img-height"
+                                                    class="form-control w-25 text-center" readonly />
+                                                <button id="increase-height" class="btn btn-adjustor">+</button>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-column text-start">
+                                            <button id="center-image" class="btn btn-sm">
+                                                <i class="bi bi-align-center"></i> 
+                                            </button>
+                                            <small>center</small>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                             -->
+
+                            <div id="view-spec-upload-image" class="view-section d-none p-2">
+                                <p>Image Properties</p>
+                                <div class="spec_Image">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="row" id="image-details">
+                                                <div class="col-md-6">
+                                                    <div class="d-flex flex-column">
+                                                        <p class="upload__image mb-0">
+                                                            <b>Upload Image</b>
+                                                        </p>
+                                                        <p class="height__width mt-0">Width * Height(cm)</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="row g-3">
+                                                        <div
+                                                            class="col-5 d-flex justify-content-center align-items-center width__spec px-0 #000000 #000000">
+                                                            <div id="decrease-width" class="btn-adjustor">
+                                                                <p class="adjust__icon">−</p>
+                                                            </div>
+                                                            <input type="number" id="img-width"
+                                                                class="form-control w-25 text-center p-0" readonly />
+                                                            <div id="increase-width" class="btn-adjustor">
+                                                                <p class="adjust__icon">+</p>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="col-5 d-flex justify-content-center align-items-center height__spec px-0 Properties__scale">
+                                                            <div id="decrease-height" class="btn-adjustor">
+                                                                <p class="adjust__icon">−</p>
+                                                            </div>
+                                                            <input type="number" id="img-height"
+                                                                class="form-control w-25 text-center p-0" readonly />
+
+
+                                                            <div id="increase-height" class="btn-adjustor">
+                                                                <p class="adjust__icon">+</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="d-flex align-items-center spec__feature__gap">
+                                                        <div
+                                                            class="customisation__features__center d-flex flex-column align-items-center">
+                                                            <button id="center-image" class="btn center__image__btn">
+                                                                <i
+                                                                    class="bi bi-arrows-collapse-vertical center__image"></i>
+                                                            </button>
+                                                            <small>Center</small>
+                                                        </div>
+
+                                                        <!-- <div
+                                                            class="customisation__features__center d-flex flex-column align-items-center">
+                                                            <button class="btn center__image__btn">
+                                                                <div class="layer__icons">
+                                                                    <i class="bi bi-layers-half center__image"></i>
+                                                                    <i class="bi bi-layers-half center__image"></i>
+                                                                    
+                                                                </div>
+                                                            </button>
+                                                            <small>Layering</small>
+                                                        </div> -->
+                                                        <div
+                                                            class="customisation__features__center d-flex flex-column align-items-center">
+                                                            <div class="layer__icons">
+                                                                <button id="layer-up" class="btn center__image__btn">
+                                                                    <i class="bi bi-layers-half center__image"></i>
+                                                                </button>
+                                                                <button id="layer-down" class="btn center__image__btn">
+                                                                    <i class="bi bi-layers-half center__image"></i>
+                                                                </button>
+                                                            </div>
+                                                            <small>Layering</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- Add Text View -->
                             <div id="view-add_text" class="view-section d-none p-4 w-100">
                                 <h2 class="mb-4">Add Text</h2>
