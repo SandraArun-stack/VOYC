@@ -148,7 +148,7 @@
                                                 <div class="col-md-6">
                                                     <div class="d-flex flex-column">
                                                         <p class="upload__image mb-0">
-                                                            <b>Upload Image</b>
+                                                            <b>Upload Size</b>
                                                         </p>
                                                         <p class="height__width mt-0">Width * Height(cm)</p>
                                                     </div>
@@ -182,7 +182,21 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row">
+                                            <div class="row mt-2">
+                                                <div class="col-md-12">
+                                                    <div class="d-flex align-items-center justify-content-between">
+                                                        <p class="mb-1"><b>Remove Background</b></p>
+
+                                                        <div class="form-check form-switch background__remover">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                id="toggle-bg-remove">
+                                                            <label class="form-check-label"
+                                                                for="toggle-bg-remove"></label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2">
                                                 <div class="col-md-12">
                                                     <div class="d-flex align-items-center spec__feature__gap">
                                                         <div
@@ -193,22 +207,11 @@
                                                             </button>
                                                             <small>Center</small>
                                                         </div>
-
-                                                        <!-- <div
-                                                            class="customisation__features__center d-flex flex-column align-items-center">
-                                                            <button class="btn center__image__btn">
-                                                                <div class="layer__icons">
-                                                                    <i class="bi bi-layers-half center__image"></i>
-                                                                    <i class="bi bi-layers-half center__image"></i>
-                                                                    
-                                                                </div>
-                                                            </button>
-                                                            <small>Layering</small>
-                                                        </div> -->
                                                         <div
                                                             class="customisation__features__center d-flex flex-column align-items-center">
                                                             <div class="layer__icons">
-                                                                <button id="layer-up" class="btn center__image__btn layer-up-btn">
+                                                                <button id="layer-up"
+                                                                    class="btn center__image__btn layer-up-btn">
                                                                     <i class="bi bi-layers-half center__image"></i>
                                                                 </button>
                                                                 <button id="layer-down" class="btn center__image__btn">
@@ -217,9 +220,26 @@
                                                             </div>
                                                             <small>Layering</small>
                                                         </div>
+                                                        <div
+                                                            class="customisation__features__center d-flex flex-column align-items-center">
+                                                            <div class="icons__fliping">
+                                                                <button id="horizontal__flip"
+                                                                    class="btn center__image__btn ">
+                                                                    <i class="bi bi-symmetry-horizontal"></i>
+                                                                </button>
+                                                                <button id="vertical__flip"
+                                                                    class="btn center__image__btn">
+                                                                    <i class="bi bi-symmetry-vertical"></i>
+                                                                </button>
+                                                            </div>
+                                                            <small>Flip</small>
+                                                        </div>
+
                                                     </div>
                                                 </div>
                                             </div>
+
+
                                         </div>
                                     </div>
                                 </div>

@@ -250,32 +250,6 @@
 
         let uploadedImagesBase64 = [];
 
-        // $("#uploadImage").on("change", function (e) {
-        //     const files = e.target.files;
-        //     if (!files.length) return;
-
-        //     uploadedImagesBase64 = [];
-
-        //     Array.from(files).forEach((file, index) => {
-        //         const reader = new FileReader();
-
-        //         reader.onload = function (f) {
-        //             const base64Data = f.target.result;
-        //             uploadedImagesBase64.push(base64Data);
-
-        //             fabric.Image.fromURL(base64Data, function (img) {
-        //                 img.scaleToWidth(150);
-        //                 img.set({ left: 100 + index * 20, top: 150 + index * 20 });
-        //                 canvas.add(img).setActiveObject(img);
-        //                 canvas.renderAll();
-        //             });
-        //         };
-
-        //         reader.readAsDataURL(file);
-        //     });
-
-        //     $("#uploadImage").val("");
-        // });
 
         $("#resetOverlayBtn").on("click", resetOverlayToBackground);
 
@@ -619,6 +593,12 @@
         $('#customize_main_ui').addClass('d-none');
         $('.view-section').addClass('d-none');
         $('#view-' + viewId).removeClass('d-none');
+
+        if (viewId !== 'upload') {
+            $('#view-spec-upload-image').addClass('d-none');
+        }
+
+        window.currentView = viewId;
     });
 
     $('#openFontPicker').on('click', function () {
@@ -849,22 +829,49 @@
         });
 
         // --- When user clicks/selects an image ---
+        // canvas.on("selection:created", function (e) {
+        //     if (!e.selected || e.selected.length === 0) return;
+        //     activeImage = e.selected[0];
+        //     updateImageDimensionsUI(activeImage);
+        //     $("#view-spec-upload-image").removeClass("d-none");
+        // });
+
+        // // --- When user switches selection between objects ---
+        // canvas.on("selection:updated", function (e) {
+        //     if (!e.selected || e.selected.length === 0) return;
+        //     activeImage = e.selected[0];
+        //     updateImageDimensionsUI(activeImage);
+        //     $("#view-spec-upload-image").removeClass("d-none");
+        // });
+
+        // // --- When deselecting all ---
+        // canvas.on("selection:cleared", function () {
+        //     activeImage = null;
+        //     $("#view-spec-upload-image").addClass("d-none");
+        // });
+
         canvas.on("selection:created", function (e) {
             if (!e.selected || e.selected.length === 0) return;
             activeImage = e.selected[0];
             updateImageDimensionsUI(activeImage);
-            $("#view-spec-upload-image").removeClass("d-none");
+
+            // ✅ Show image properties ONLY in upload view
+            if (window.currentView === "upload") {
+                $("#view-spec-upload-image").removeClass("d-none");
+            }
         });
 
-        // --- When user switches selection between objects ---
         canvas.on("selection:updated", function (e) {
             if (!e.selected || e.selected.length === 0) return;
             activeImage = e.selected[0];
             updateImageDimensionsUI(activeImage);
-            $("#view-spec-upload-image").removeClass("d-none");
+
+            // ✅ Show image properties ONLY in upload view
+            if (window.currentView === "upload") {
+                $("#view-spec-upload-image").removeClass("d-none");
+            }
         });
 
-        // --- When deselecting all ---
         canvas.on("selection:cleared", function () {
             activeImage = null;
             $("#view-spec-upload-image").addClass("d-none");
@@ -924,7 +931,7 @@
         $("#center-image").on("click", function () {
             const active = canvas.getActiveObject();
 
-            if (!active || active.type !== "image") {
+            if (!active) {
                 alert("Please select an image first.");
                 return;
             }
@@ -942,59 +949,128 @@
             canvas.renderAll();
         });
 
-      // --- Enable/Disable Layer Buttons depending on image count ---
-function updateLayerButtonsState() {
-    const imageCount = canvas.getObjects().filter(obj => obj.type === "image").length;
-    const hasMultiple = imageCount > 1;
+        // --- Enable/Disable Layer Buttons depending on image count ---
+        function updateLayerButtonsState() {
+            const imageCount = canvas.getObjects().filter(obj => obj.type === "image").length;
+            const hasMultiple = imageCount > 1;
 
-    $("#layer-up, #layer-down").prop("disabled", !hasMultiple);
-}
+            $("#layer-up, #layer-down").prop("disabled", !hasMultiple);
+        }
 
-// --- Check at load ---
-updateLayerButtonsState();
+        // --- Check at load ---
+        updateLayerButtonsState();
 
-// --- Re-check whenever images are added or removed ---
-canvas.on("object:added", updateLayerButtonsState);
-canvas.on("object:removed", updateLayerButtonsState);
+        // --- Re-check whenever images are added or removed ---
+        canvas.on("object:added", updateLayerButtonsState);
+        canvas.on("object:removed", updateLayerButtonsState);
 
-// --- Re-enable both when something changes on canvas (selection, modification, etc.) ---
-canvas.on("selection:created", updateLayerButtonsState);
-canvas.on("selection:updated", updateLayerButtonsState);
-canvas.on("object:modified", updateLayerButtonsState);
+        // --- Re-enable both when something changes on canvas (selection, modification, etc.) ---
+        canvas.on("selection:created", updateLayerButtonsState);
+        canvas.on("selection:updated", updateLayerButtonsState);
+        canvas.on("object:modified", updateLayerButtonsState);
 
-// --- Layer Up ---
-$("#layer-up").on("click", function () {
-    const active = canvas.getActiveObject();
-    if (!active || active.type !== "image") return;
+        // --- Layer Up ---
+        $("#layer-up").on("click", function () {
+            const active = canvas.getActiveObject();
+            if (!active || active.type !== "image") return;
 
-    const allObjects = canvas.getObjects();
-    const currentIndex = allObjects.indexOf(active);
+            const allObjects = canvas.getObjects();
+            const currentIndex = allObjects.indexOf(active);
 
-    if (currentIndex < allObjects.length - 1) {
-        canvas.bringForward(active);
-        canvas.renderAll();
-    }
+            if (currentIndex < allObjects.length - 1) {
+                canvas.bringForward(active);
+                canvas.renderAll();
+            }
 
-    // Disable temporarily until user triggers another change
-    $(this).prop("disabled", true);
-    $("#layer-down").prop("disabled", false);
-});
+            // Disable temporarily until user triggers another change
+            $(this).prop("disabled", true);
+            $("#layer-down").prop("disabled", false);
+        });
 
-// --- Layer Down ---
-$("#layer-down").on("click", function () {
-    const active = canvas.getActiveObject();
-    if (!active || active.type !== "image") return;
+        // --- Layer Down ---
+        $("#layer-down").on("click", function () {
+            const active = canvas.getActiveObject();
+            if (!active || active.type !== "image") return;
 
-    const currentIndex = canvas.getObjects().indexOf(active);
-    if (currentIndex > 0) {
-        canvas.sendBackwards(active);
-        canvas.renderAll();
-    }
+            const currentIndex = canvas.getObjects().indexOf(active);
+            if (currentIndex > 0) {
+                canvas.sendBackwards(active);
+                canvas.renderAll();
+            }
 
-    // Disable temporarily until user triggers another change
-    $(this).prop("disabled", true);
-    $("#layer-up").prop("disabled", false);
-});
+            // Disable temporarily until user triggers another change
+            $(this).prop("disabled", true);
+            $("#layer-up").prop("disabled", false);
+        });
+
+        // Add a custom property to track background removal
+        canvas.on('selection:created', updateRemoveBgToggle);
+        canvas.on('selection:updated', updateRemoveBgToggle);
+        canvas.on('selection:cleared', () => {
+            $("#toggle-bg-remove").prop("checked", false);
+        });
+
+        function updateRemoveBgToggle() {
+            const active = canvas.getActiveObject();
+            if (active && active.type === "image") {
+                $("#toggle-bg-remove").prop("checked", !!active.bgRemoved);
+            } else {
+                $("#toggle-bg-remove").prop("checked", false);
+            }
+        }
+
+        // When toggle changes
+        $("#toggle-bg-remove").on("change", function () {
+            const active = canvas.getActiveObject();
+
+            if (!active || active.type !== "image") {
+                alert("Please select an image first.");
+                $(this).prop("checked", false);
+                return;
+            }
+
+            if (this.checked) {
+                // Remove background (simulation)
+                active.filters.push(new fabric.Image.filters.RemoveColor({
+                    color: '#ffffff', // target color
+                    distance: 0.2
+                }));
+                active.applyFilters();
+                active.bgRemoved = true; // store custom flag
+                canvas.renderAll();
+            } else {
+                // Reset background
+                active.filters = [];
+                active.applyFilters();
+                active.bgRemoved = false;
+                canvas.renderAll();
+            }
+        });
+
+        // --- Flip functionality ---
+        $("#horizontal__flip").on("click", function () {
+            const active = canvas.getActiveObject();
+            if (!active) {
+                alert("Please select an image to flip horizontally.");
+                return;
+            }
+
+            // Toggle horizontal flip
+            active.set("flipX", !active.flipX);
+            canvas.renderAll();
+        });
+
+        $("#vertical__flip").on("click", function () {
+            const active = canvas.getActiveObject();
+            if (!active) {
+                alert("Please select an image to flip vertically.");
+                return;
+            }
+
+            // Toggle vertical flip
+            active.set("flipY", !active.flipY);
+            canvas.renderAll();
+        });
 
 
 

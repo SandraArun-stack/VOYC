@@ -1333,12 +1333,39 @@ input[type="file"] {
 
 #layer-up:disabled,
 #layer-down:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+    opacity: 0.5;
+    cursor: not-allowed;
 }
+
 .layer-up-btn {
     background-color: #000;
     color: #fff;
+}
+
+.form-check.form-switch {
+    padding-left: 0;
+}
+
+.background__remover .form-check-input {
+        width: 33px;
+    height: 19px;
+    background-color: #ccc !important;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    bottom: 5px;
+}
+
+.background__remover .form-check-input:checked {
+    background-color: #000 !important;
+}
+
+.background__remover .form-check-input:checked:focus {
+    box-shadow: none !important;
+}
+
+.background__remover .form-check-input:focus {
+    box-shadow: none;
 }
 
 @media only screen and (max-width: 991px) {
