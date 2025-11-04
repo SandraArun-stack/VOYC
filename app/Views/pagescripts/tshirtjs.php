@@ -250,32 +250,32 @@
 
         let uploadedImagesBase64 = [];
 
-        $("#uploadImage").on("change", function (e) {
-            const files = e.target.files;
-            if (!files.length) return;
+        // $("#uploadImage").on("change", function (e) {
+        //     const files = e.target.files;
+        //     if (!files.length) return;
 
-            uploadedImagesBase64 = [];
+        //     uploadedImagesBase64 = [];
 
-            Array.from(files).forEach((file, index) => {
-                const reader = new FileReader();
+        //     Array.from(files).forEach((file, index) => {
+        //         const reader = new FileReader();
 
-                reader.onload = function (f) {
-                    const base64Data = f.target.result;
-                    uploadedImagesBase64.push(base64Data);
+        //         reader.onload = function (f) {
+        //             const base64Data = f.target.result;
+        //             uploadedImagesBase64.push(base64Data);
 
-                    fabric.Image.fromURL(base64Data, function (img) {
-                        img.scaleToWidth(150);
-                        img.set({ left: 100 + index * 20, top: 150 + index * 20 });
-                        canvas.add(img).setActiveObject(img);
-                        canvas.renderAll();
-                    });
-                };
+        //             fabric.Image.fromURL(base64Data, function (img) {
+        //                 img.scaleToWidth(150);
+        //                 img.set({ left: 100 + index * 20, top: 150 + index * 20 });
+        //                 canvas.add(img).setActiveObject(img);
+        //                 canvas.renderAll();
+        //             });
+        //         };
 
-                reader.readAsDataURL(file);
-            });
+        //         reader.readAsDataURL(file);
+        //     });
 
-            $("#uploadImage").val("");
-        });
+        //     $("#uploadImage").val("");
+        // });
 
         $("#resetOverlayBtn").on("click", resetOverlayToBackground);
 
@@ -344,7 +344,7 @@
                                 // );
                                 visibleImagesBase64.push(
                                     tempCanvas.toDataURL({
-                                        format: 'png', 
+                                        format: 'png',
                                         quality: 0.7,
                                         enableRetinaScaling: false
                                     })
@@ -597,15 +597,21 @@
     function initThumbClick() {
         $(".thumbs img").on("click", function () {
             const newView = $(this).data("view");
+            const src = $(this).data("src");
+
+            // ✅ remember which thumb we're editing
+            currentThumbView = newView;
+
             if (newView === currentView) return;
+
             saveCurrentCanvasState();      // save current canvas
             currentView = newView;         // update view
             loadCanvasState(currentView);  // load new view
-            const src = $(this).data("src");
             addOverlay(src);
             highlightThumb(src);
         });
     }
+
 
     $('.sidebar-item, #customize_main_ui .option').on('click', function () {
         const viewId = $(this).data('view');
@@ -773,5 +779,169 @@
         updatePreview();
     });
 
+    $(document).ready(function () {
+        const dpi = 96;
+        const cmPerInch = 2.54;
+        let thumbImages = {};
+        let currentThumbView = currentView;
+
+        // --- Helper conversion functions ---
+        const pxToCm = (px) => (px / dpi) * cmPerInch;
+        const cmToPx = (cm) => (cm / cmPerInch) * dpi;
+
+        // --- Helper: Update UI fields based on image size ---
+        function updateImageDimensionsUI(img) {
+            if (!img) return;
+            const widthInCm = pxToCm(img.getScaledWidth());
+            const heightInCm = pxToCm(img.getScaledHeight());
+            $("#img-width").val(widthInCm.toFixed(2));
+            $("#img-height").val(heightInCm.toFixed(2));
+        }
+
+        // --- Helper: Apply new dimensions from controls ---
+        function applyDimensions(img, newWidthCm, newHeightCm) {
+            if (!img) return;
+            img.scaleToWidth(cmToPx(newWidthCm));
+            img.scaleToHeight(cmToPx(newHeightCm));
+            canvas.renderAll();
+            updateImageDimensionsUI(img);
+        }
+
+        // --- Handle image uploads ---
+        // --- Handle image uploads ---
+        $("#uploadImage").on("change", function (e) {
+            const files = e.target.files;
+            if (!files.length) return;
+
+            Array.from(files).forEach((file, index) => {
+                const reader = new FileReader();
+
+                reader.onload = function (f) {
+                    const base64Data = f.target.result;
+
+                    // ✅ if an image is selected, replace its source
+                    if (canvas.getActiveObject() && canvas.getActiveObject().type === "image") {
+                        const active = canvas.getActiveObject();
+                        active.setSrc(base64Data, function () {
+                            active.setCoords();
+                            canvas.renderAll();
+                        });
+                    } else {
+                        // ✅ otherwise, create a *new image*
+                        fabric.Image.fromURL(base64Data, function (img) {
+                            img.set({
+                                left: 100 + index * 20,
+                                top: 150 + index * 20,
+                                hasControls: true,
+                                selectable: true
+                            });
+                            img.scaleToWidth(150);
+                            canvas.add(img).setActiveObject(img);
+                            canvas.renderAll();
+                        });
+                    }
+                };
+
+                reader.readAsDataURL(file);
+            });
+
+            $("#uploadImage").val(""); // reset input
+        });
+
+        // --- When user clicks/selects an image ---
+        canvas.on("selection:created", function (e) {
+            if (!e.selected || e.selected.length === 0) return;
+            activeImage = e.selected[0];
+            updateImageDimensionsUI(activeImage);
+            $("#view-spec-upload-image").removeClass("d-none");
+        });
+
+        // --- When user switches selection between objects ---
+        canvas.on("selection:updated", function (e) {
+            if (!e.selected || e.selected.length === 0) return;
+            activeImage = e.selected[0];
+            updateImageDimensionsUI(activeImage);
+            $("#view-spec-upload-image").removeClass("d-none");
+        });
+
+        // --- When deselecting all ---
+        canvas.on("selection:cleared", function () {
+            activeImage = null;
+            $("#view-spec-upload-image").addClass("d-none");
+        });
+
+        // --- Update UI when resizing using Fabric controls (real-time) ---
+        canvas.on("object:scaling", function (e) {
+            if (!e.target || e.target.type !== "image") return;
+            updateImageDimensionsUI(e.target);
+        });
+
+        // --- Also update once scaling ends to ensure final values ---
+        canvas.on("object:modified", function (e) {
+            if (!e.target || e.target.type !== "image") return;
+            updateImageDimensionsUI(e.target);
+        });
+
+        // --- Width & Height button handlers ---
+        $("#increase-width").on("click", function () {
+            if (!activeImage) return;
+            const w = parseFloat($("#img-width").val());
+            const h = parseFloat($("#img-height").val());
+            applyDimensions(activeImage, w * 1.1, h * 1.1);
+        });
+
+        $("#decrease-width").on("click", function () {
+            if (!activeImage) return;
+            const w = parseFloat($("#img-width").val());
+            const h = parseFloat($("#img-height").val());
+            applyDimensions(activeImage, w * 0.9, h * 0.9);
+        });
+
+        $("#increase-height").on("click", function () {
+            if (!activeImage) return;
+            const w = parseFloat($("#img-width").val());
+            const h = parseFloat($("#img-height").val());
+            applyDimensions(activeImage, w * 1.1, h * 1.1);
+        });
+
+        $("#decrease-height").on("click", function () {
+            if (!activeImage) return;
+            const w = parseFloat($("#img-width").val());
+            const h = parseFloat($("#img-height").val());
+            applyDimensions(activeImage, w * 0.9, h * 0.9);
+        });
+
+        // --- Handle custom control visibility ---
+        function toggleCustomControls(object, visible) {
+            object.setControlsVisibility({
+                deleteControl: visible,
+                duplicateControl: visible,
+                flipControl: visible
+            });
+            canvas.renderAll();
+        }
+
+        $("#center-image").on("click", function () {
+            const active = canvas.getActiveObject();
+
+            if (!active || active.type !== "image") {
+                alert("Please select an image first.");
+                return;
+            }
+
+            // ✅ Center the image on the canvas
+            active.set({
+                left: canvas.getWidth() / 2,
+                top: canvas.getHeight() / 2,
+                originX: "center",
+                originY: "center"
+            });
+
+            // Refresh position
+            active.setCoords();
+            canvas.renderAll();
+        });
+
+    });
 
 </script>
