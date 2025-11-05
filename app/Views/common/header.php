@@ -141,19 +141,21 @@
                                             <li class="py-1 px-4"><b>Hello, <?= esc($session->get('user_name')) ?></b></li>
                                             <ul class="profile__container__listing">
                                                 <li>
-    <a class="dropdown-item drop-profile" href="<?= base_url('myprofile'); ?>">
-        Profile
-    </a>
-</li>
+                                                    <a class="dropdown-item drop-profile"
+                                                        href="<?= base_url('myprofile'); ?>">
+                                                        Profile
+                                                    </a>
+                                                </li>
 
                                                 <li>
                                                     <a class="dropdown-item drop-profile"
                                                         href="<?= base_url('my_orders'); ?>">
-                                                        My Orders 
+                                                        My Orders
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item drop-profile text-danger" href="#" id="logoutBtn">
+                                                    <a class="dropdown-item drop-profile text-danger" href="#"
+                                                        id="logoutBtn">
                                                         Logout
                                                     </a>
                                                 </li>
@@ -223,20 +225,20 @@
                             <button type="button" id="btn_login" class="btn btn-primary w-100"
                                 data-url="<?= base_url('loginUser') ?>">Sign In</button>
                         </form>
-                        <div class="text-center mt-3">
-                            Don’t have an account? <a href="#" id="to-register">Sign Up</a>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="text-center mt-3">
+                                <small class=""> Don’t have an account? <a href="#" id="to-register">Sign Up</a></small>
+                            </div>
+                            <div class="text-center mt-3">
+                                <small><a href="#" id="to-forgot-password">Forgot Password?</a></small>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- REGISTER VIEW -->
                 <div id="registerView">
-                    <!-- <div class="modal-header border-0 d-flex justify-content-center align-items-center flex-column pb-0">
-                        <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
-
-                        <h3 class="auth-title mb-0  w-100  text-center">Step Into Your Style</h3>
-
-                    </div> -->
+                    
                     <div class="modal-header border-0 position-relative p-2">
                         <button type="button" class="btn border-0 bg-transparent position-absolute login_close"
                             data-bs-dismiss="modal" aria-label="Close">
@@ -257,6 +259,10 @@
                             <label>Email</label><span>&nbsp;*</span>
                             <input type="email" name="email" class="form-control mb-3" placeholder="Enter the Email"
                                 required>
+
+                            <label>Phone Number</label><span>&nbsp;*</span>
+                            <input type="number" name="phone_number" class="form-control mb-3"
+                                placeholder="Enter the Phone Number" required>
 
                             <div class="eye_icon  mb-3">
                                 <label>Password</label><span>&nbsp;*</span>
@@ -282,6 +288,34 @@
                         <div class="text-center mt-3">
                             Already have an account? <a href="#" id="to-login">Sign In</a>
                         </div>
+                    </div>
+                </div>
+
+                <div id="forgotPassView" class="d-none">
+                    <div class="modal-header border-0 position-relative p-2">
+                        <button type="button" class="btn border-0 bg-transparent position-absolute login_close"
+                            data-bs-dismiss="modal" aria-label="Close">
+                            <i class="bi bi-x-square text-dark"></i>
+                        </button>
+
+                        <div class="d-flex flex-column justify-content-center align-items-center w-100 pt-3 pb-0">
+                            <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
+                            <h3 class="auth-title mb-0 text-center">Sign In</h3>
+                        </div>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="alert alert-success m-1 p-2 w-auto d-none" id="forgotalert"></div>
+                        <form id="forgotPassForm">
+                            <label>Email</label><span>&nbsp;*</span>
+                            <input type="email" name="forgot_email" class="form-control mb-3"
+                                placeholder="Enter Your Email" required>
+                                <div class="submit_forgot w-100">
+                                    <button type="button" id="btn_forgot_password" class="btn btn-dark"
+                                        data-url="<?= base_url('forgotPassword') ?>">Submit</button>
+                                </div>
+                        </form>
+                        
                     </div>
                 </div>
             </div>

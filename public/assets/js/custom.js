@@ -76,6 +76,7 @@ $(document).ready(function () {
     $('#login-link').on('click', function (e) {
         e.preventDefault();
         $('#registerView').hide();
+        $('#forgotPassView').hide();
         $('#loginView').show();
         authModal.show();
     });
@@ -83,6 +84,7 @@ $(document).ready(function () {
     $('#register-link').on('click', function (e) {
         e.preventDefault();
         $('#loginView').hide();
+        $('#forgotPassView').hide();
         $('#registerView').show();
         authModal.show();
     });
@@ -91,13 +93,23 @@ $(document).ready(function () {
         e.preventDefault();
         $('#loginView').fadeOut(200, function () {
             $('#registerView').fadeIn(200);
+            $('#forgotPassView').addClass('d-none');
         });
     });
 
     $(document).on('click', '#to-login', function (e) {
         e.preventDefault();
         $('#registerView').fadeOut(200, function () {
+            $('#forgotPassView').addClass('d-none');
             $('#loginView').fadeIn(200);
+
+        });
+    });
+    $(document).on('click', '#to-forgot-password', function (e) {
+        e.preventDefault();
+        $('#loginView').fadeOut(200, function () {
+            $('#forgotPassView').fadeIn(200);
+            $('#forgotPassView').removeClass('d-none');
         });
     });
 
@@ -331,12 +343,12 @@ $(document).ready(function () {
             $("#search-bar").focus();
         }
     });
-   
+
 
     $('.header__right__auth').on('click', function (e) {
-        
+
         if ($(e.target).closest('.dropdown-menu a').length) {
-            return; 
+            return;
         }
 
         e.preventDefault();
@@ -373,6 +385,65 @@ $(document).ready(function () {
             }
         }
     });
+
+    $('#btn_forgot_password').on('click', function (e) {
+        e.preventDefault();
+
+        var forgotUrl = $(this).data('url');
+        var email = $('input[name="forgot_email"]').val();
+        var alertBox = $('#forgotalert');
+
+        alertBox.addClass('d-none').removeClass('alert-success alert-danger').text('');
+
+        $.ajax({
+            url: forgotUrl,
+            type: 'POST',
+            data: { forgot_email: email },
+            dataType: 'json',
+            success: function (res) {
+                // Show alert with success or error message
+                if (res.status === 'success') {
+                    alertBox
+                        .removeClass('d-none')
+                        .addClass('alert-success')
+                        .text(res.message)
+                        .fadeIn(200);
+                } else {
+                    alertBox
+                        .removeClass('d-none')
+                        .addClass('alert-danger')
+                        .text(res.message)
+                        .fadeIn(200);
+                }
+
+                // ✅ Fade out after 3 seconds
+                setTimeout(function () {
+                    alertBox.fadeOut(500, function () {
+                        alertBox.addClass('d-none').show(); // reset state
+                    });
+                }, 3000);
+            },
+            error: function (xhr, status, error) {
+                console.error('Error:', xhr.responseText);
+                alertBox
+                    .removeClass('d-none')
+                    .addClass('alert-danger')
+                    .text('Something went wrong. Please try again.')
+                    .fadeIn(200);
+
+                // ✅ Fade out after 3 seconds
+                setTimeout(function () {
+                    alertBox.fadeOut(500, function () {
+                        alertBox.addClass('d-none').show(); // reset state
+                    });
+                }, 3000);
+            }
+        });
+    });
+
+
+
+
 });
 
 

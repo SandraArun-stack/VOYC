@@ -110,8 +110,8 @@ $userId = session()->get('user_id');
                         ?>
                         <span>( <?= esc($product['review_count']) ?> reviews )</span>
                     </div>
-                    <div class="product__details__price">₹ <?= round(esc($product['pr_Selling_Price'] ?? '0')) ?>
-                        <span>₹<?= round(esc($product['pr_Selling_Price'])) ?></span>
+                    <div class="product__details__price">₹ 
+                        <span>₹ </span>
                     </div>
                     <p>Inclusive of all taxes</p>
 

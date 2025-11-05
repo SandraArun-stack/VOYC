@@ -734,6 +734,10 @@ input[type="file"] {
     width: 90px;
 }
 
+#forgotPassView img {
+    width: 90px;
+}
+
 
 .logout_btns_container {
     gap: 15px;

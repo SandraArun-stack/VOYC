@@ -36,15 +36,15 @@ class OrderModel extends Model
 
 	// }
     public function getOrdersByUser($userId)
-{
-    return $this->select('order_detail.*, product.*, address.*')
-        ->join('product', 'product.pr_Id = order_detail.pr_Id')
-        ->join('address', 'address.add_Id = order_detail.add_Id') // Join with address table
-        ->where('order_detail.cus_Id', $userId)
-        ->where('order_detail.od_Status !=', '') // Only non-empty statuses
-        ->orderBy('order_detail.od_createdon', 'DESC')
-        ->findAll();
-}
+    {
+        return $this->select('order_detail.*, product.*, address.*')
+            ->join('product', 'product.pr_Id = order_detail.pr_Id')
+            ->join('address', 'address.add_Id = order_detail.add_Id') // Join with address table
+            ->where('order_detail.cus_Id', $userId)
+            ->where('order_detail.od_Status !=', '') // Only non-empty statuses
+            ->orderBy('order_detail.od_createdon', 'DESC')
+            ->findAll();
+    }
 
 
 
@@ -57,10 +57,10 @@ class OrderModel extends Model
     public function getOrdersWithProducts($userId)
     {
         return $this->select('order_detail.*, product.pr_Name, product.product_image')
-                    ->join('product', 'product.pr_Id = order_detail.pr_Id')
-                    ->where('order_detail.cus_Id', $userId)
-                    ->orderBy('order_detail.od_createdon', 'DESC')
-                    ->findAll();
+            ->join('product', 'product.pr_Id = order_detail.pr_Id')
+            ->where('order_detail.cus_Id', $userId)
+            ->orderBy('order_detail.od_createdon', 'DESC')
+            ->findAll();
     }
 
 }

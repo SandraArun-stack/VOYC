@@ -7,7 +7,10 @@ use CodeIgniter\Router\RouteCollection;
  */
 /* GET METHODS */
 $routes->get('/', 'Home::index');
-
+//forgot password
+$routes->post('forgotPassword', 'ForgotPassword::forgotPassword');
+$routes->get('resetPassword/(:any)', 'ForgotPassword::resetPassword/$1');
+$routes->post('updatePassword', 'ForgotPassword::updatePassword');
 //shop
 $routes->get('men', 'Shop::index');
 $routes->get('women', 'Shop::index');

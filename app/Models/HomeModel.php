@@ -31,6 +31,7 @@ class HomeModel extends Model
             'cust_Name' => $data['full_name'],
             'cust_Email' => $data['email'],
             'cust_Password' => $data['password'],
+            'cust_Phone' => $data['phone_number'],
             'cust_Status' => 1,
             'cust_createdon' => date('Y-m-d H:i:s'),
             'cust_createdby' => 0,
