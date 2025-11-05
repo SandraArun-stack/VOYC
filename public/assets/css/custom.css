@@ -375,10 +375,22 @@ input[type="file"] {
 
 /* Style the color input */
 #textColor.form-control-color {
-    height: 30px;
-    width: 65px;
+    width: 122px;
+    height: 37px;
     padding: 0;
     border: 1px solid #ced4da;
+    border-radius: 6px;
+    background: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+#textColor.form-control-color::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+#textColor.form-control-color::-webkit-color-swatch {
+    border: none;
     border-radius: 6px;
 }
 
@@ -386,28 +398,46 @@ input[type="file"] {
 #fontSize.form-range {
     accent-color: #343a40;
     height: 1.5rem;
+    width: 121px;
 }
 
 /* Style checkboxes */
-.form-check-input {
-    width: 14px;
-    height: 14px;
+.text__spec .form-check-input {
+    width: 26px;
+    height: 21px;
     cursor: pointer;
     border-radius: 4px;
     border: 1px solid #6c757d;
-    margin-top: 7px;
+    /* margin-top: 7px; */
     transition: background-color 0.2s ease;
+    right: 0;
 }
 
-.form-check-input:checked {
+.text__spec .form-check-input:checked {
     background-color: #343a40;
     border-color: #343a40;
 }
 
+#addText,
+#openFontPicker {
+    width: 122px !important;
+}
+
+#openFontPicker {
+    color: white !important;
+    border-color: #343a40 !important;
+    background: #343a40 !important;
+}
+
+
+#textColor {
+    width: 122px;
+    height: 37px;
+}
 
 .form-check-label {
-    font-size: 15px;
-    margin-left: 6px;
+    /* font-size: 15px; */
+    /* margin-left: 6px; */
     cursor: pointer;
 }
 
@@ -421,11 +451,18 @@ input[type="file"] {
     border-color: #6c757d;
 }
 
-.fontPickerContainer {
+/* .fontPickerContainer {
     max-height: 300px;
     width: 300px;
     overflow-y: auto;
     overflow-x: hidden;
+} */
+#fontPickerContainer {
+    max-height: 300px;
+    width: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    white-space: nowrap;
 }
 
 .font-option.active {
@@ -1347,7 +1384,7 @@ input[type="file"] {
 }
 
 .background__remover .form-check-input {
-        width: 33px;
+    width: 33px;
     height: 19px;
     background-color: #ccc !important;
     border: none;

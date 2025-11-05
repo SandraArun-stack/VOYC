@@ -77,14 +77,14 @@ class Tshirt extends Controller
 
         $prId = $this->request->getPost('prId');
         $priId = $this->request->getPost('priId');
-        $prvId = $this->request->getPost('prvId');
+        // $prvId = $this->request->getPost('prvId');
 
-        if (empty($prvId)) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Select the Size You Want.'
-            ]);
-        }
+        // if (empty($prvId)) {
+        //     return $this->response->setJSON([
+        //         'status' => 'error',
+        //         'message' => 'Select the Size You Want.'
+        //     ]);
+        // }
 
 
         // echo $prvId;exit();
@@ -147,7 +147,7 @@ class Tshirt extends Controller
             'pri_Id' => $priId,
             'design_Id' => $designId,
             'created_on' => date('Y-m-d H:i:s'),
-            'prv_Id' => $prvId,
+            // 'prv_Id' => $prvId,
             'cart_Quantity' => 1
 
         ];

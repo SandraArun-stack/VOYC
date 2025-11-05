@@ -35,6 +35,16 @@
     addOverlay(defaultOverlay);
     highlightThumb(defaultOverlay);
 
+    function updateCheckboxState() {
+        const hasObjects = canvas.getObjects().some(obj => !obj.isOverlay);
+        const checkbox = $(`.design-option[data-type="${currentView}"] .design-check`);
+        checkbox.prop('disabled', !hasObjects);
+        if (!hasObjects) checkbox.prop('checked', false);
+    }
+    canvas.on('object:added', updateCheckboxState);
+    canvas.on('object:removed', updateCheckboxState);
+    canvas.on('object:modified', updateCheckboxState);
+
 
     function addOverlay(src) {
         fabric.Image.fromURL(src, function (img) {
@@ -277,11 +287,11 @@
 
         let selectedSize = null;
 
-        $(document).on('click', '.selectable-size', function () {
-            $('.selectable-size').removeClass('selected');
-            $(this).addClass('selected');
-            selectedSize = $(this).data('prv-id');
-        });
+        // $(document).on('click', '.selectable-size', function () {
+        //     $('.selectable-size').removeClass('selected');
+        //     $(this).addClass('selected');
+        //     selectedSize = $(this).data('prv-id');
+        // });
 
         $("#saveBtn").on("click", function () {
 
@@ -375,7 +385,7 @@
                         uploadedImages: JSON.stringify(visibleImagesBase64),
                         prId: $('input[name="prId"]').val(),
                         priId: $('input[name="priId"]').val(),
-                        prvId: selectedSize
+                        // prvId: selectedSize
                     },
 
                     success: function (response) {

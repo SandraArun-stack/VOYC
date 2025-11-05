@@ -24,10 +24,10 @@
                     <input type="hidden" name="prId" value="<?= isset($prId) ? esc($prId) : ''; ?>">
                     <input type="hidden" name="priId" value="<?= isset($priId) ? esc($priId) : ''; ?>">
                     <div class="row">
-                        <div class="col-md-6 w-100 pr-0 pb-3 my_design_btn">
+                        <!-- <div class="col-md-6 w-100 pr-0 pb-3 my_design_btn">
                             <button id="saveBtn" class="btn btn-dark text-end">Save My Design</button>
 
-                        </div>
+                        </div> -->
                     </div>
                     <div class="row">
                         <div class="sidebar">
@@ -62,7 +62,7 @@
                         </div>
 
                         <div class="main-content p-3" id="controls">
-                            <div id="customize_main_ui">
+                            <div id="customize_main_ui" class="pl-5">
                                 <h2>What's next for you?</h2>
                                 <div class="options">
                                     <div class="option" data-view="upload">
@@ -247,46 +247,53 @@
 
                             <!-- Add Text View -->
                             <div id="view-add_text" class="view-section d-none p-4 w-100">
-                                <h2 class="mb-4">Add Text</h2>
-                                <p class="mb-3">Enter your message on selected Text.</p>
+                                <h3 class="mb-2">Customize Text</h3>
+                                <div class="d-flex justify-content-between mt-2">
+                                    <label class="mb-1">Enter the Text on selected Box</label>
 
-                                <button id="addText" class="btn btn-dark mt-2 w-100">+ Add Text</button>
+                                    <button id="addText" class="btn btn-dark">+ Add Text</button>
 
 
-                                <div class="">
-                                    <label for="fontFamily" class="form-label fw-semibold text-center">Font</label>
-                                    <button id="openFontPicker" class="btn btn-outline-secondary w-100">Choose Font
-                                        Style</button>
+                                </div>
+
+                                <div class="d-flex justify-content-between mt-2">
+                                    <label for="fontFamily" class="form-label fw-semibold text-center">Choose Font Style</label>
+                                    <button id="openFontPicker" class="btn btn-outline-secondary ">Fonts</button>
                                 </div>
                                 <!-- Available font listing -->
-                                <div id="fontPickerContainer" class="d-none p-4 border rounded" style="">
+                                <div id="fontPickerContainer" class="d-none p-4 border rounded mt-2" style="">
                                     <div class="row g-3">
                                         <!-- Font items will be injected here -->
                                     </div>
                                 </div>
 
-                                <div class="d-flex flex-wrap">
-                                    <label class="form-label">Text Color &nbsp;</label>
+                                <div class="d-flex flex-wrap justify-content-between mt-2">
+                                    <label class="form-label">Choose Text Color </label>
                                     <input type="color" id="textColor" value="#000000"
                                         class="form-control form-control-color" title="Choose your color">
 
                                 </div>
-                                <div class="d-flex flex-wrap">
+                                <div class="d-flex flex-wrap justify-content-between mt-2">
                                     <label for="fontSize" class="form-label">Font Size &nbsp; </label>
                                     <input type="range" id="fontSize" class="form-range" min="10" max="80" value="20">
                                 </div>
-                                <div class="mb-3 d-flex gap-4">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="boldToggle">
+                                <div class="mb-3 d-flex justify-content-between text__spec mt-2">
+                                    <div class="form-check w-100 pl-0">
                                         <label class="form-check-label fw-semibold" for="boldToggle">
                                             Bold
                                         </label>
+                                        <input class="form-check-input" type="checkbox" id="boldToggle">
+
                                     </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="italicToggle">
+
+                                </div>
+                                <div class="mb-3 d-flex justify-content-between text__spec mt-2">
+                                    <div class="form-check w-100 pl-0">
                                         <label class="form-check-label fw-semibold" for="italicToggle">
                                             Italic
                                         </label>
+                                        <input class="form-check-input" type="checkbox" id="italicToggle">
+
                                     </div>
                                 </div>
                             </div>
@@ -306,7 +313,7 @@
 
                             <div id="view-product_colors" class="view-section d-none">
                                 <h2>Choose Product Color</h2>
-                                <div class="mt-3">
+                                <!-- <div class="mt-3">
                                     <label>Available Colors for this Product:</label>
                                     <div class="card p-3 shadow-sm">
                                         <div class="d-flex flex-wrap color_small_container">
@@ -326,9 +333,10 @@
                                             <?php endif; ?>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
+
                                 <!-- Sizes -->
-                                <div class="mt-3">
+                                <!-- <div class="mt-3">
                                     <label>Available Sizes</label>
                                     <div class="card p-3 shadow-sm">
                                         <div class="d-flex flex-wrap size_container" id="sizeContainer">
@@ -360,7 +368,7 @@
 
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
 
                             </div>
                             <!-- <div class="bottom-text">
@@ -466,28 +474,28 @@
                                     <div class="design-option d-flex justify-content-between align-items-center py-2 mb-1"
                                         data-type="front">
                                         <label class="mb-0 d-flex align-items-center">
-                                            <input type="checkbox" class="design-check me-2"> Front Design
+                                            <input type="checkbox" class="design-check me-2" disabled> Front Design
                                         </label>
                                     </div>
 
                                     <div class="design-option d-flex justify-content-between align-items-center py-2 mb-1"
                                         data-type="back">
                                         <label class="mb-0 d-flex align-items-center">
-                                            <input type="checkbox" class="design-check me-2"> Back Design
+                                            <input type="checkbox" class="design-check me-2" disabled> Back Design
                                         </label>
                                     </div>
 
                                     <div class="design-option d-flex justify-content-between align-items-center py-2 mb-1"
                                         data-type="right">
                                         <label class="mb-0 d-flex align-items-center">
-                                            <input type="checkbox" class="design-check me-2"> Right Sleeve
+                                            <input type="checkbox" class="design-check me-2" disabled> Right Sleeve
                                         </label>
                                     </div>
 
                                     <div class="design-option d-flex justify-content-between align-items-center py-2 mb-1"
                                         data-type="left">
                                         <label class="mb-0 d-flex align-items-center">
-                                            <input type="checkbox" class="design-check me-2"> Left Sleeve
+                                            <input type="checkbox" class="design-check me-2" disabled> Left Sleeve
                                         </label>
                                     </div>
 
@@ -541,6 +549,10 @@
                                     <div class="d-flex justify-content-between pt-3 mt-3 border-top">
                                         <span class="fw-bold">Total:</span>
                                         <span class="fw-bold text-primary" id="priceTotal"></span>
+                                    </div>
+
+                                    <div class="d-flex justify-content-end pt-3 mt-3 border-top">
+                                        <button class="btn btn-dark" id="saveBtn">Add To Cart</button>
                                     </div>
                                 </div>
                             </div>
