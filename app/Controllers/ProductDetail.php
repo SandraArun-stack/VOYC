@@ -24,6 +24,7 @@ class ProductDetail extends Controller
         }
 
         $product = $this->ProductDetailModel->get_prd_Details($prId, $priId);
+        // print_r($product); exit;
 
         if (!$product) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound("Product not found");

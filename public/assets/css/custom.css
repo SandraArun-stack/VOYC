@@ -15,6 +15,21 @@
     z-index: 11;
 }
 
+.video__skip_button {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+       padding: 7px 16px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    border: 1px solid white;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 9999;
+    display: none;
+}
+
 #categoriesModal {
     box-shadow: 0 0 15px 2px #ffffff4d;
 }
@@ -1408,6 +1423,8 @@ input[type="file"] {
 .background__remover .form-check-input:focus {
     box-shadow: none;
 }
+
+
 
 @media only screen and (max-width: 991px) {
     .main__icon {

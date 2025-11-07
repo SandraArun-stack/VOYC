@@ -24,7 +24,7 @@ class NewProductModel extends Model
     {
         $newProducts = $this->db->table('product p')
             ->select('p.pr_Id, p.pr_Name, p.pr_Selling_Price, p.pr_Description, 
-                  pi.pri_Id, pi.pri_Thumbnail,p.pr_custom')
+                  pi.pri_Id, pi.pri_Thumbnail,p.pr_custom,p.pr_for')
             ->join('product_image pi', 'pi.pr_Id = p.pr_Id', 'left')
             ->where('p.pr_Status', 1)
             ->where('pi.pri_Status', 1)

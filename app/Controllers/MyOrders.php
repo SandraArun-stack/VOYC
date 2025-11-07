@@ -29,9 +29,15 @@ class MyOrders extends Controller
         $my_orders = $this->MyOrdersModel->getMyOrders($userId, $perPage);
         $pager = $this->MyOrdersModel->pager;
 
+        $data = [
+            'my_orders' => $my_orders,
+            'pager' => $pager,
+            'breadcrumb' => 'My Orders'
+        ];
+
         return view('common/header')
-            . view('common/UserSideBar')
-            . view('myorders', ['my_orders' => $my_orders, 'pager' => $pager])
+            . view('common/UserSideBar',$data)
+            . view('myorders', $data)
             . view('common/footer')
             . view('pagescripts/myOrdersjs');
     }

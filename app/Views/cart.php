@@ -64,16 +64,15 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="cart__price">₹ <?= !empty($item['prv_price']) ? esc($item['prv_price']) : '0' ?></td>
+                                        <td class="cart__price">₹ <?= !empty($item['cart_Price']) ? esc($item['cart_Price']) : '0' ?></td>
 
                                         <td class="cart__quantity">
                                             <div class="pro-qty">
                                                 <input type="text" value="<?= esc($item['cart_Quantity']) ?>">
                                             </div>
                                         </td>
-                                        <td class="cart__total">₹
-                                            <?= number_format($item['prv_price'] * $item['cart_Quantity'], 2) ?>
-                                        </td>
+                                       <td class="cart__total" data-price="<?= esc($item['cart_Price']) ?>" data-quantity="<?= esc($item['cart_Quantity']) ?>">₹0.00</td>
+
                                         <td class="cart__close">
                                             <!-- <span class="icon_close cart-remove"
                                                 data-cart-id="<?= esc($item['cart_Id']) ?>"></span> -->
@@ -122,14 +121,10 @@
                     $calculatedTotal = 0;
                     if (!empty($cartItems)) {
                         foreach ($cartItems as $item) {
-                            $calculatedTotal += $item['prv_price'] * $item['cart_Quantity'];
+                            $calculatedTotal += $item['cart_Price'] * $item['cart_Quantity'];
                         }
                     }
                     ?>
-                    <!-- <ul>
-                        <li>Subtotal <span id="subtotal-amount">₹ <?= number_format($calculatedTotal, 2) ?></span></li>
-                        <li>Total <span id="total-amount">₹ <?= number_format($calculatedTotal, 2) ?></span></li>
-                    </ul> -->
                     <ul>
                         <li>Subtotal <span id="subtotal-amount">₹ 0.00</span></li>
                         <li>Total <span id="total-amount">₹ 0.00</span></li>

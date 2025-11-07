@@ -51,6 +51,7 @@ class ProductImage extends BaseController
                 $aggregated[$id] = [
                     'pri_Id' => $row['pri_Id'],
                     'pr_Id' => $row['pr_id'],
+                    // 'prv_Id' => $row['prv_id'],
                     'pr_Name' => $row['pr_name'] ?? 'N/A',
                     'colors' => json_decode($row['color_details'], true)['color'] ?? 'N/A',
                     'sizes' => [],
@@ -471,8 +472,11 @@ class ProductImage extends BaseController
                 'pr_Id' => $pr_id,
                 'pri_Thumbnail' => $thumbnailUploaded[0],
                 'pri_File_Name' => json_encode($sideUploaded),
-                'RSleeve_Img' => $RSleeve_Img[0],
-                'LSleeve_Img' => $LSleeve_Img[0],
+                // 'RSleeve_Img' => $RSleeve_Img[0],
+                // 'LSleeve_Img' => $LSleeve_Img[0],
+                'RSleeve_Img' => !empty($RSleeve_Img) ? $RSleeve_Img[0] : null,
+                'LSleeve_Img' => !empty($LSleeve_Img) ? $LSleeve_Img[0] : null,
+
                 'pri_Sleev_Name' => !empty($sleeveUploaded) ? json_encode($sleeveUploaded) : null,
                 'color_details' => json_encode(['color' => $color]),
                 'pri_Status' => 1,

@@ -15,7 +15,8 @@ class CartModel extends Model
         'cart_Status',
         'design_Id',
         'prv_Id',
-        'cart_Quantity'
+        'cart_Quantity',
+        'cart_Price'
     ];
 
     

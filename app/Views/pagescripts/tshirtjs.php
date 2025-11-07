@@ -189,6 +189,14 @@
 
     // --- UI bindings ---
     $(document).ready(function () {
+        const authModal = new bootstrap.Modal(document.getElementById('authModal'), {
+            backdrop: true,
+            keyboard: true
+        });
+
+        $('.login_close').on('click', function (e) {
+            authModal.hide();
+        });
 
         loadCanvasState(currentView);
         initThumbClick();
@@ -292,13 +300,99 @@
         //     $(this).addClass('selected');
         //     selectedSize = $(this).data('prv-id');
         // });
+        let quantity = 1;
+
+        function getBasePrice() {
+            let totalText = $('#priceProduct').text();
+            return parseFloat(totalText.replace(/[^\d\.]/g, '')) || 0;
+        }
+
+        let basePrice = getBasePrice();
+
+
+        function updatePreview() {
+            let total = basePrice * quantity;
+            let previewHTML = "";
+
+            $(".design-check:checked").each(function () {
+                const type = $(this).closest(".design-option").data("type");
+                const data = designData[type];
+
+                if (!data || typeof data.price !== "number") {
+                    console.warn("Missing designData for type:", type);
+                    return;
+                }
+
+                total += data.price * quantity;
+
+                previewHTML += `
+                <div class="text-center">
+                    <img src="${data.img}" alt="${type}">
+                    <p class="text-capitalize mb-0">${type} design</p>
+                </div>
+            `;
+
+                $(`#${type}`)
+                    .addClass("active")
+                    .find(`span[id^='price']`)
+                    .text(`+ ₹${data.price}`);
+            });
+
+            // Hide entries for unchecked items
+            $(".design-option").each(function () {
+                const type = $(this).data("type");
+                const checkbox = $(this).find(".design-check");
+                if (!checkbox.is(":checked")) {
+                    $(`#${type}`)
+                        .removeClass("active")
+                        .find(`span[id^='price']`)
+                        .text("+ ₹0");
+                }
+            });
+
+            $(".selected-items").html(previewHTML);
+            $("#priceTotal").text("₹" + total.toFixed(2));
+        }
+
+        $('.qty-btn-custom.plus-custom').click(function () {
+            let $wrapper = $(this).closest('.quantity-wrapper-custom');
+            let $value = $wrapper.find('.quantity-value-custom');
+            quantity = parseInt($value.text()) + 1;
+            $value.text(quantity);
+            updatePreview(); // recalc total
+        });
+
+        // ✅ Quantity decrement
+        $('.qty-btn-custom.minus-custom').click(function () {
+            let $wrapper = $(this).closest('.quantity-wrapper-custom');
+            let $value = $wrapper.find('.quantity-value-custom');
+            let currentQty = parseInt($value.text());
+
+            if (currentQty > 1) {
+                quantity = currentQty - 1;
+                $value.text(quantity);
+                updatePreview(); // recalc total
+            }
+        });
+
+        // Bind change event
+        $(".design-check").on("change", function () {
+            updatePreview();
+        });
+
+
+
+        // Initial update
+        updatePreview();
+        // const totalPrice = $("#priceTotal").text().replace(/[^\d\.]/g, '');
 
         $("#saveBtn").on("click", function () {
 
-            // debugger;
             var $alertBox = $('#design_msg_alert');
             saveCurrentCanvasState();
 
+            let totalText = $("#priceTotal").text();
+            let totalPrice = parseFloat(totalText.replace(/[^\d\.]/g, '')) || 0;
             const designs = {};
 
             const visibleImagesBase64 = [];
@@ -367,10 +461,7 @@
                 });
             });
 
-            const authModal = new bootstrap.Modal(document.getElementById('authModal'), {
-                backdrop: true,
-                keyboard: true
-            });
+
             Promise.all(exportAll).then(() => {
 
                 $.ajax({
@@ -385,6 +476,8 @@
                         uploadedImages: JSON.stringify(visibleImagesBase64),
                         prId: $('input[name="prId"]').val(),
                         priId: $('input[name="priId"]').val(),
+                        quantity: quantity,
+                        totalPrice: totalPrice,
                         // prvId: selectedSize
                     },
 
@@ -393,6 +486,7 @@
                             authModal.show();
                             $('#loginView').show();
                             $('#registerView').hide();
+                            $('#forgotPassView').hide();
                             return;
                         } else if (response.status === 'success') {
                             $alertBox
@@ -678,96 +772,7 @@
         }
     };
 
-    $(document).ready(function () {
 
-
-
-        // let totalText = $('#priceProduct').text();
-        // let baseTotal = parseFloat(totalText.replace(/[^\d\.]/g, '')) || 0;
-
-        function getBasePrice() {
-            let totalText = $('#priceProduct').text();
-            return parseFloat(totalText.replace(/[^\d\.]/g, '')) || 0;
-        }
-
-        let basePrice = getBasePrice();
-        let quantity = 1;
-
-        function updatePreview() {
-            let total = basePrice * quantity;
-            let previewHTML = "";
-
-            $(".design-check:checked").each(function () {
-                const type = $(this).closest(".design-option").data("type");
-                const data = designData[type];
-
-                if (!data || typeof data.price !== "number") {
-                    console.warn("Missing designData for type:", type);
-                    return;
-                }
-
-                total += data.price * quantity;
-
-                previewHTML += `
-                <div class="text-center">
-                    <img src="${data.img}" alt="${type}">
-                    <p class="text-capitalize mb-0">${type} design</p>
-                </div>
-            `;
-
-                $(`#${type}`)
-                    .addClass("active")
-                    .find(`span[id^='price']`)
-                    .text(`+ ₹${data.price}`);
-            });
-
-            // Hide entries for unchecked items
-            $(".design-option").each(function () {
-                const type = $(this).data("type");
-                const checkbox = $(this).find(".design-check");
-                if (!checkbox.is(":checked")) {
-                    $(`#${type}`)
-                        .removeClass("active")
-                        .find(`span[id^='price']`)
-                        .text("+ ₹0");
-                }
-            });
-
-            $(".selected-items").html(previewHTML);
-            $("#priceTotal").text("₹" + total.toFixed(2));
-        }
-
-        $('.qty-btn-custom.plus-custom').click(function () {
-            let $wrapper = $(this).closest('.quantity-wrapper-custom');
-            let $value = $wrapper.find('.quantity-value-custom');
-            quantity = parseInt($value.text()) + 1;
-            $value.text(quantity);
-            updatePreview(); // recalc total
-        });
-
-        // ✅ Quantity decrement
-        $('.qty-btn-custom.minus-custom').click(function () {
-            let $wrapper = $(this).closest('.quantity-wrapper-custom');
-            let $value = $wrapper.find('.quantity-value-custom');
-            let currentQty = parseInt($value.text());
-
-            if (currentQty > 1) {
-                quantity = currentQty - 1;
-                $value.text(quantity);
-                updatePreview(); // recalc total
-            }
-        });
-
-        // Bind change event
-        $(".design-check").on("change", function () {
-            updatePreview();
-        });
-
-
-
-        // Initial update
-        updatePreview();
-    });
 
     $(document).ready(function () {
         const dpi = 96;

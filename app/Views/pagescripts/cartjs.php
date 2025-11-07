@@ -1,29 +1,55 @@
 <script>
 
     function updateGrandTotal() {
-        var grandTotal = 0;
+        //     var grandTotal = 0;
+        //     $('.cart__total').each(function () {
+        //         grandTotal += parseFloat($(this).text().replace(/[^\d.]/g, ''));
+        //     });
+        //     $('#grandTotal').text('₹ ' + grandTotal.toFixed(2));
+        // }
+        let grandTotal = 0;
+
         $('.cart__total').each(function () {
-            grandTotal += parseFloat($(this).text().replace(/[^\d.]/g, ''));
+            let price = parseFloat($(this).data('price')) || 0;
+            let qty = parseInt($(this).data('quantity')) || 0;
+            let total = price * qty;
+
+            $(this).text('₹ ' + total.toFixed(2));
+            grandTotal += total;
         });
+
         $('#grandTotal').text('₹ ' + grandTotal.toFixed(2));
     }
 
+    // function recalcCartTotal() {
+    //     var subtotal = 0;
+
+    //     $('.cart__total').each(function () {
+    //         // Get the text, remove currency symbol and commas
+    //         var totalText = $(this).text().replace(/[^\d.]/g, '');
+    //         subtotal += parseFloat(totalText) || 0;
+    //     });
+
+    //     // Update subtotal and total
+    //     $('#subtotal-amount').text('₹ ' + subtotal.toFixed(2));
+    //     $('#total-amount').text('₹ ' + subtotal.toFixed(2));
+    // }
+
     function recalcCartTotal() {
-        var subtotal = 0;
+        let subtotal = 0;
 
         $('.cart__total').each(function () {
-            // Get the text, remove currency symbol and commas
-            var totalText = $(this).text().replace(/[^\d.]/g, '');
-            subtotal += parseFloat(totalText) || 0;
+            let value = parseFloat($(this).text().replace(/[^\d.]/g, '')) || 0;
+            subtotal += value;
         });
 
-        // Update subtotal and total
         $('#subtotal-amount').text('₹ ' + subtotal.toFixed(2));
         $('#total-amount').text('₹ ' + subtotal.toFixed(2));
     }
 
 
     $(document).ready(function () {
+
 
         $(document).on('click', '.cart-remove', function () {
             const cartId = $(this).attr('data-cart-id');
@@ -73,8 +99,11 @@
         proQty.prepend('<span class="dec qtybtn">-</span>');
         proQty.append('<span class="inc qtybtn">+</span>');
 
-        recalcCartTotal();
+        // recalcCartTotal();
         updateGrandTotal();
+        setTimeout(() => {
+            recalcCartTotal();
+        }, 100);
 
         $('.pro-qty').on('click', '.qtybtn', function () {
             var $button = $(this);

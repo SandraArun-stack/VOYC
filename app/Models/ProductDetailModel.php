@@ -12,6 +12,9 @@ class ProductDetailModel extends Model
         'pri_Thumbnail',
         'pri_File_Name',
         'pri_Sleev_Name',
+        'RSleeve_Img',
+        'LSleeve_Img',
+        'pri_Video',
         'pri_Status',
         'pri_createdon',
         'pri_createdby',
@@ -24,7 +27,7 @@ class ProductDetailModel extends Model
     public function get_prd_Details($prId, $priId)
     {
         $product = $this->db->table('product p')
-            ->select('p.pr_Id, p.pr_Name, p.pr_Selling_Price, p.pr_Description')
+            ->select('p.pr_Id, p.pr_Name, p.pr_Selling_Price, p.pr_Description,p.pr_custom')
             ->where('p.pr_Id', $prId)
             ->where('p.pr_Status', 1)
             ->get()
@@ -34,9 +37,8 @@ class ProductDetailModel extends Model
             return null;
         }
 
-        // ✅ Get product images for this color
         $images = $this->db->table('product_image pi')
-            ->select('pi.pri_Id, pi.pri_Thumbnail, pi.pri_File_Name, pi.pri_Sleev_Name, pi.color_details')
+            ->select('pi.pri_Id, pi.pri_Thumbnail, pi.pri_File_Name, pi.pri_Sleev_Name, pi.RSleeve_Img, pi.LSleeve_Img, pi.pri_Video, pi.color_details')
             ->where('pi.pr_Id', $prId)
             ->where('pi.pri_Id', $priId)
             ->where('pi.pri_Status', 1)

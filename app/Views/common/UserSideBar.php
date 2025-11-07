@@ -4,14 +4,17 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="breadcrumb__links">
-                    <a href="<?= base_url(' '); ?>"><i class="fa fa-home"></i>Home</a>
-                    <span>Shop</span>
+                    <a href="<?= base_url(); ?>"><i class="fa fa-home"></i> Home</a>
+                    <span id="breadcrumb-current">
+                        <?= isset($breadcrumb) ? esc($breadcrumb) : 'Shop'; ?>
+                    </span>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <!-- Breadcrumb End -->
+
 
 <!-- Shop Section Begin -->
 <section class="shop spad">
@@ -29,7 +32,9 @@
                                     <h5>Orders</h5>
                                 </div>
                                 <div class="sud__head__list">
-                                    <p>Orders & Returns</p>
+                                    <a href="<?= base_url('my_orders'); ?>">
+                                        <p>Orders & Returns</p>
+                                    </a>
                                     <p>My Wishlist</p>
                                 </div>
                             </div>
@@ -48,7 +53,9 @@
                                     <h5>Accounts</h5>
                                 </div>
                                 <div class="sud__head__list">
-                                    <p>My Profile</p>
+                                    <a href="<?= base_url('myprofile'); ?>">
+                                        <p>My Profile</p>
+                                    </a>
                                     <p>My Wallet</p>
                                     <p>My Address</p>
                                     <p>My Wishlist</p>

@@ -201,7 +201,9 @@
                         </button>
 
                         <div class="d-flex flex-column justify-content-center align-items-center w-100 pt-3 pb-0">
-                            <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
+                            <a href="<?= base_url('/'); ?>">
+                                <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
+                            </a>
                             <h3 class="auth-title mb-0 text-center">Sign In</h3>
                         </div>
                     </div>
@@ -238,7 +240,7 @@
 
                 <!-- REGISTER VIEW -->
                 <div id="registerView">
-                    
+
                     <div class="modal-header border-0 position-relative p-2">
                         <button type="button" class="btn border-0 bg-transparent position-absolute login_close"
                             data-bs-dismiss="modal" aria-label="Close">
@@ -246,7 +248,10 @@
                         </button>
 
                         <div class="d-flex flex-column justify-content-center align-items-center w-100 pt-3 pb-0">
-                            <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
+                              <a href="<?= base_url('/'); ?>">
+
+                                  <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
+                              </a>
                             <h3 class="auth-title mb-0 text-center">Step Into Your Style</h3>
                         </div>
                     </div>
@@ -299,7 +304,10 @@
                         </button>
 
                         <div class="d-flex flex-column justify-content-center align-items-center w-100 pt-3 pb-0">
-                            <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
+                              <a href="<?= base_url('/'); ?>">
+
+                                  <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
+                              </a>
                             <h3 class="auth-title mb-0 text-center">Sign In</h3>
                         </div>
                     </div>
@@ -310,12 +318,12 @@
                             <label>Email</label><span>&nbsp;*</span>
                             <input type="email" name="forgot_email" class="form-control mb-3"
                                 placeholder="Enter Your Email" required>
-                                <div class="submit_forgot w-100">
-                                    <button type="button" id="btn_forgot_password" class="btn btn-dark"
-                                        data-url="<?= base_url('forgotPassword') ?>">Submit</button>
-                                </div>
+                            <div class="submit_forgot w-100">
+                                <button type="button" id="btn_forgot_password" class="btn btn-dark"
+                                    data-url="<?= base_url('forgotPassword') ?>">Submit</button>
+                            </div>
                         </form>
-                        
+
                     </div>
                 </div>
             </div>

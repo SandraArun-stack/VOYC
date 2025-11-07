@@ -2,6 +2,8 @@
     <video class="video-fullscreen" autoplay muted playsinline>
         <source src="<?= base_url() . ASSET_PATH; ?>assets/videos/intro.mp4" type="video/mp4">
     </video>
+    <button id="skipVideoBtn" class="video__skip_button">Skip<i class="bi bi-caret-right"></i></button>
+
 </div>
 <div class="show-after categorie-container">
     <section class="categories">
@@ -60,7 +62,7 @@
                             <h1>Men’s fashion</h1>
                             <p>Sitamet, consectetur adipiscing elit, sed do eiusmod tempor incidid-unt labore
                                 edolore magna aliquapendisse ultrices gravida.</p>
-                            <a href="#">Shop now</a>
+                            <a href="<?= base_url('men'); ?>" id="men">Shop now</a>
                         </div>
                     </div>
                 </div>
@@ -72,7 +74,7 @@
                                 <div class="categories__text">
                                     <h4>Men’s fashion</h4>
                                     <p>358 items</p>
-                                    <a href="#">Shop now</a>
+                                    <a href="<?= base_url('men'); ?>" id="men">Shop now</a>
                                 </div>
                             </div>
                         </div>
@@ -82,7 +84,7 @@
                                 <div class="categories__text">
                                     <h4>Kid’s fashion</h4>
                                     <p>273 items</p>
-                                    <a href="#">Shop now</a>
+                                    <a href="<?= base_url('men'); ?>" id="men">Shop now</a>
                                 </div>
                             </div>
                         </div>
@@ -92,7 +94,7 @@
                                 <div class="categories__text">
                                     <h4>Kid’s fashion</h4>
                                     <p>159 items</p>
-                                    <a href="#">Shop now</a>
+                                    <a href="<?= base_url('men'); ?>" id="men">Shop now</a>
                                 </div>
                             </div>
                         </div>
@@ -102,7 +104,7 @@
                                 <div class="categories__text">
                                     <h4>Easy Wear</h4>
                                     <p>792 items</p>
-                                    <a href="#">Shop now</a>
+                                    <a href="<?= base_url('men'); ?>" id="men">Shop now</a>
                                 </div>
                             </div>
                         </div>
@@ -123,12 +125,11 @@
                 </div>
                 <div class="col-lg-8 col-md-8">
                     <ul class="filter__controls">
-                        <li class="active" data-filter="*">All</li>
-                        <li data-filter=".women">Women’s</li>
-                        <!-- <li data-filter=".men">Men’s</li> -->
-                        <li data-filter=".kid">Kid’s</li>
-                        <!-- <li data-filter=".accessories">Accessories</li>
-                            <li data-filter=".cosmetic">Cosmetics</li> -->
+                        <li class="active" data-filter="all">All</li>
+                        <li data-filter="women">Women’s</li>
+
+                        <li data-filter="men">Men’s</li>
+
                     </ul>
                 </div>
             </div>
@@ -141,7 +142,10 @@
                         $prId = $item['pr_Id'];
                         $priId = $item['pri_Id'];
                         ?>
-                        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                        <!-- <div class="col-lg-3 col-md-4 col-sm-6 mb-4"> -->
+                        <div class="col-lg-3 col-md-4 col-sm-6 mb-4 product-box <?= strtolower(trim($item['pr_for'])) ?>">
+
+
                             <div class="product__item" data-url="<?= base_url("productdetails/$prId/$priId"); ?>">
                                 <div class="product__item__pic">
                                     <?php if ($firstImage): ?>
@@ -151,7 +155,7 @@
                                     <?php else: ?>
                                         <img class="product-img" src="<?= base_url('assets/img/no-image.png'); ?>" alt="No Image" />
                                     <?php endif; ?>
-                                    <div class="label new">
+                                    <!-- <div class="label new">
 
                                         <?php if ($item['pr_custom'] == 1): ?>
                                             <a href="<?= base_url('tshirt_Customisation/' . $item['pr_Id'] . '/' . $item['pri_Id']); ?>">
@@ -159,7 +163,7 @@
                                                     alt="">
                                             </a>
                                         <?php endif; ?>
-                                    </div>
+                                    </div> -->
                                     <ul class="product__hover">
                                         <?php if ($firstImage): ?>
                                             <li>

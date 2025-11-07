@@ -35,6 +35,11 @@
 
 
     $(document).ready(function () {
+        $(document).on('click', '.product__item', function (e) {
+            if ($(e.target).closest('a').length) return;
+            const url = $(this).data('url');
+            if (url) window.location.href = url;
+        });
 
         const itemsPerPage = 9;
         const $cards = $(".product__card");
@@ -128,7 +133,6 @@
                     success: function (response) {
                         if (response.status === 'success') {
                             let html = '';
-
                             response.filtered_products.forEach(item => {
                                 html += `
                                     <div class="col-lg-4 col-md-6 mb-4 product__card" style="opacity:1;">
