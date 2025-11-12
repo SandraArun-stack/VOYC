@@ -35,16 +35,6 @@
     addOverlay(defaultOverlay);
     highlightThumb(defaultOverlay);
 
-    function updateCheckboxState() {
-        const hasObjects = canvas.getObjects().some(obj => !obj.isOverlay);
-        const checkbox = $(`.design-option[data-type="${currentView}"] .design-check`);
-        checkbox.prop('disabled', !hasObjects);
-        if (!hasObjects) checkbox.prop('checked', false);
-    }
-    canvas.on('object:added', updateCheckboxState);
-    canvas.on('object:removed', updateCheckboxState);
-    canvas.on('object:modified', updateCheckboxState);
-
 
     function addOverlay(src) {
         fabric.Image.fromURL(src, function (img) {
@@ -655,10 +645,23 @@
 
         canvasStates[currentView].overlay = updatedImage;
 
-        if (designData[currentView]) {
-            designData[currentView].img = updatedImage;
-        }
+        // if (designData[currentView]) {
+        //     designData[currentView].img = updatedImage;
+        // }
         //31-10
+        const viewMap = {
+            RSleeve: 'right',
+            RSleeve_Img: 'right',
+            LSleeve: 'left',
+            LSleeve_Img: 'left'
+        };
+
+        const mappedKey = viewMap[currentView] || currentView;
+
+        if (designData[mappedKey]) {
+            designData[mappedKey].img = updatedImage;
+        }
+
     }
 
     function loadCanvasState(view) {
@@ -771,6 +774,33 @@
             img: ''
         }
     };
+
+    // function updateCheckboxState() {
+    //     const hasObjects = canvas.getObjects().some(obj => !obj.isOverlay);
+    //     const checkbox = $(`.design-option[data-type="${currentView}"] .design-check`);
+    //     checkbox.prop('disabled', !hasObjects);
+    //     if (!hasObjects) checkbox.prop('checked', false);
+    // }
+
+    function updateCheckboxState() {
+        const viewMap = {
+            RSleeve: 'right',
+            RSleeve_Img: 'right',
+            LSleeve: 'left',
+            LSleeve_Img: 'left',
+        };
+
+        const typeKey = viewMap[currentView] || currentView;
+        const hasObjects = canvas.getObjects().some(obj => !obj.isOverlay);
+        const checkbox = $(`.design-option[data-type="${typeKey}"] .design-check`);
+
+        checkbox.prop('disabled', !hasObjects);
+        if (!hasObjects) checkbox.prop('checked', false);
+    }
+
+    canvas.on('object:added', updateCheckboxState);
+    canvas.on('object:removed', updateCheckboxState);
+    canvas.on('object:modified', updateCheckboxState);
 
 
 

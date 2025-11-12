@@ -86,13 +86,13 @@
                             <span class="pcoded-mcaret"></span>
                         </a>
                     </li>
-                    <li class="<?= ($segment == 'themes') ? 'active' : '' ?>">
+                    <!-- <li class="<?= ($segment == 'themes') ? 'active' : '' ?>">
                         <a href="<?php echo base_url('admin/themes') ?>" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="bi bi-circle-half"></i><b>D</b></span>
                             <span class="pcoded-mtext" data-i18n="nav.dash.main">Themes</span>
                             <span class="pcoded-mcaret"></span>
                         </a>
-                    </li>
+                    </li> -->
                     <li class="<?= ($segment == 'settings') ? 'active' : '' ?>">
                         <a href="<?php echo base_url('admin/settings') ?>" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="bi bi-gear"></i><b>D</b></span>

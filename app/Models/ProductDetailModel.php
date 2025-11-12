@@ -52,9 +52,19 @@ class ProductDetailModel extends Model
                 $allImages[] = strtolower(trim($img['pri_Thumbnail']));
             }
 
+            if (!empty($img['RSleeve_Img'])) {
+                $allImages[] = strtolower(trim($img['RSleeve_Img']));
+            }
+
+            if (!empty($img['LSleeve_Img'])) {
+                $allImages[] = strtolower(trim($img['LSleeve_Img']));
+            }
+
+
             foreach (['pri_File_Name', 'pri_Sleev_Name'] as $jsonField) {
                 if (!empty($img[$jsonField])) {
                     $fileNames = json_decode($img[$jsonField], true);
+
                     if (is_array($fileNames)) {
                         foreach ($fileNames as $file) {
                             $allImages[] = strtolower(trim($file));
@@ -65,7 +75,7 @@ class ProductDetailModel extends Model
         }
 
         $product['images'] = array_values(array_unique($allImages));
-
+        // print_r($product['images']);exit();
         // ✅ Color options
         $colorDetails = $this->db->table('product_image pi')
             ->select('pi.color_details, pi.pri_Id, pi.pri_Thumbnail')

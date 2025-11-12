@@ -48,7 +48,7 @@ $userId = session()->get('user_id');
     </div>
 </div>
 <!-- Breadcrumb End -->
- 
+
 <!-- Product Details Section Begin -->
 <section class="product-details spad">
     <div class="container">
@@ -57,7 +57,8 @@ $userId = session()->get('user_id');
             <div class="col-lg-6">
                 <div class="product__details__pic">
                     <div class="product__details__pic__left product__thumb nice-scroll">
-                        <?php if (!empty($images)): ?>
+                       
+                        <?php if (!empty($images)):?>
                             <?php foreach ($images as $i => $img): ?>
                                 <a class="pt <?= $i === 0 ? 'active' : '' ?>" href="#product-<?= $i + 1 ?>">
                                     <img src="<?= base_url('uploads/productmedia/' . $img); ?>" class="product__small__img"
@@ -110,22 +111,23 @@ $userId = session()->get('user_id');
                         ?>
                         <span>( <?= esc($product['review_count']) ?> reviews )</span>
                     </div>
-                    <div class="product__details__price">₹ 
+                    <div class="product__details__price">₹
                         <span>₹ </span>
                     </div>
                     <p>Inclusive of all taxes</p>
-
-                    <div class="customize__container">
-                        <small class="user__Customize">
-                            🎨Personalize your T-shirt with your own design, text, or image before adding to cart.
-                        </small>
-                        <div class="customise__btn">
-                            <button class="btn  customise__Tee" id="customizeTshirtBtn">
-                                <i class="bi bi-palette-fill"></i>
-                                Customize Tee >>
-                            </button>
+                    <?php if (!empty($product['pr_custom']) && $product['pr_custom'] == 1): ?>
+                        <div class="customize__container">
+                            <small class="user__Customize">
+                                🎨Personalize your T-shirt with your own design, text, or image before adding to cart.
+                            </small>
+                            <div class="customise__btn">
+                                <button class="btn  customise__Tee" id="customizeTshirtBtn">
+                                    <i class="bi bi-palette-fill"></i>
+                                    Customize Tee >>
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    <?php endif; ?>
 
                     <div class="product__details__button">
                         <div class="quantity">

@@ -45,18 +45,18 @@
                                     Add Text
                                 </p>
                             </div>
-                            <div class="sidebar-item" data-view="add_art">
+                            <!-- <div class="sidebar-item" data-view="add_art">
                                 <img src="<?= base_url() . ASSET_PATH; ?>assets/img/customize/landscape-w.png"
                                     alt="Add Art Icon" class="sidebar-icon" /><br />
                                 <p class="m-0">
                                     Add Art
                                 </p>
-                            </div>
+                            </div> -->
                             <div class="sidebar-item" data-view="product_colors">
                                 <img src="<?= base_url() . ASSET_PATH; ?>assets/img/customize/change-w.png"
                                     alt="Product Colors Icon" class="sidebar-icon" /><br />
                                 <p class="m-0">
-                                    Product<br>Colors
+                                    Change<br>Product
                                 </p>
                             </div>
                         </div>
@@ -75,11 +75,11 @@
                                             alt="Add Text">
                                         <div>Add Text</div>
                                     </div>
-                                    <div class="option" data-view="add_art">
+                                    <!-- <div class="option" data-view="add_art">
                                         <img src="<?= base_url() . ASSET_PATH; ?>assets/img/customize/landscape.png"
                                             alt="Add Art">
                                         <div>Add Art</div>
-                                    </div>
+                                    </div> -->
                                     <div class="option" data-view="product_colors">
                                         <img src="<?= base_url() . ASSET_PATH; ?>assets/img/customize/change.png"
                                             alt="Change Products">
