@@ -118,7 +118,7 @@
 
             //  Get selected size
             const selectedSize = $('input[name="product_size"]:checked');
-            
+
             if (selectedSize.length === 0) {
                 showClickPopup('Select a size', e);
                 return;
@@ -241,7 +241,81 @@
             updatePrice($(this));
         });
 
+        const $mainCarousel = $(".product__details__pic__slider");
+
+        // Initialize Owl Carousel
+        $mainCarousel.owlCarousel({
+            loop: false, // keep this false — we’ll manually loop back later
+            margin: 0,
+            items: 1,
+            dots: false,
+            nav: true,
+            navText: ["<i class='arrow_carrot-left'></i>", "<i class='arrow_carrot-right'></i>"],
+            smartSpeed: 800,
+            autoHeight: false,
+            autoplay: false, // we’ll control autoplay manually
+            mouseDrag: false,
+            startPosition: 'URLHash'
+        }).on('changed.owl.carousel', function (event) {
+            const indexNum = event.item.index + 1;
+            product_thumbs(indexNum);
+        });
+
+        // Thumbnail click: jump to corresponding image
+        $(".product__thumb a").on("click", function (e) {
+            e.preventDefault();
+            const hash = $(this).attr("href"); // e.g. #product-2
+            const targetIndex = parseInt(hash.split("-")[1], 10) - 1;
+            $mainCarousel.trigger("to.owl.carousel", [targetIndex, 400]);
+            product_thumbs(targetIndex + 1);
+        });
+
+        // Animate all images once after page load
+        const totalItems = $mainCarousel.find('.owl-item').length;
+        let currentIndex = 0;
+
+        function animateThroughImages() {
+            const interval = setInterval(() => {
+                currentIndex++;
+                if (currentIndex < totalItems) {
+                    $mainCarousel.trigger("next.owl.carousel");
+                } else {
+                    clearInterval(interval);
+                    // Return to the first image after finishing
+                    setTimeout(() => {
+                        $mainCarousel.trigger("to.owl.carousel", [0, 600]);
+                    }, 800);
+                }
+            }, 2000); // 2 seconds per image
+        }
+
+        // Start auto animation once everything loads
+        setTimeout(animateThroughImages, 1000);
+
+        // Keep your existing extras
+        $('.image-popup').magnificPopup({ type: 'image' });
+        $(".nice-scroll").niceScroll({
+            cursorborder: "",
+            cursorcolor: "#dddddd",
+            boxzoom: false,
+            cursorwidth: 5,
+            background: 'rgba(0, 0, 0, 0.2)',
+            cursorborderradius: 50,
+            horizrailenabled: false
+        });
     });
+
+    // Existing function stays the same
+    function product_thumbs(num) {
+        const thumbs = document.querySelectorAll('.product__thumb a');
+        thumbs.forEach(function (e) {
+            e.classList.remove("active");
+            if (e.hash.split("-")[1] == num) {
+                e.classList.add("active");
+            }
+        });
+    }
+
 
 
 </script>

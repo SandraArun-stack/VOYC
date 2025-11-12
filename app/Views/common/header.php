@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/jquery-ui.min.css" type="text/css">
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/magnific-popup.css" type="text/css">
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/owl.theme.default.min.css" type="text/css">
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/style.css" type="text/css">
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/custom.css" type="text/css">
@@ -58,7 +59,7 @@
                 </a></li>
         </ul>
         <div class="offcanvas__logo">
-            <a href="#"><img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo.jpg" alt=""></a>
+            <a href="<?= base_url(' '); ?>"><img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo.jpg" alt=""></a>
         </div>
         <div id="mobile-menu-wrap"></div>
         <div class="offcanvas__auth">
@@ -73,9 +74,10 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xl-3 col-lg-2 col-2">
-                    <div class="header__logo">
-                        <a href="<?= base_url(' '); ?>"></a>
-                    </div>
+                    <a href="<?= base_url(' '); ?>">
+                        <div class="header__logo"></div>
+                    </a>
+
                 </div>
                 <div class="col-8 mt-4 main__icon">
                     <a href="#"><i class="bi bi-controller"></i></a>
@@ -248,10 +250,10 @@
                         </button>
 
                         <div class="d-flex flex-column justify-content-center align-items-center w-100 pt-3 pb-0">
-                              <a href="<?= base_url('/'); ?>">
+                            <a href="<?= base_url('/'); ?>">
 
-                                  <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
-                              </a>
+                                <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
+                            </a>
                             <h3 class="auth-title mb-0 text-center">Step Into Your Style</h3>
                         </div>
                     </div>
@@ -304,10 +306,10 @@
                         </button>
 
                         <div class="d-flex flex-column justify-content-center align-items-center w-100 pt-3 pb-0">
-                              <a href="<?= base_url('/'); ?>">
+                            <a href="<?= base_url('/'); ?>">
 
-                                  <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
-                              </a>
+                                <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
+                            </a>
                             <h3 class="auth-title mb-0 text-center">Sign In</h3>
                         </div>
                     </div>

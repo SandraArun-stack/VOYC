@@ -56,41 +56,45 @@ $userId = session()->get('user_id');
         <div class="row">
             <div class="col-lg-6">
                 <div class="product__details__pic">
+
+                    <!-- Thumbnails -->
                     <div class="product__details__pic__left product__thumb nice-scroll">
-                       
-                        <?php if (!empty($images)):?>
+                        <?php if (!empty($images)): ?>
                             <?php foreach ($images as $i => $img): ?>
-                                <a class="pt <?= $i === 0 ? 'active' : '' ?>" href="#product-<?= $i + 1 ?>">
-                                    <img src="<?= base_url('uploads/productmedia/' . $img); ?>" class="product__small__img"
-                                        alt="">
-                                </a>
+                                <div class="thumb-item <?= $i === 0 ? 'active' : '' ?>" data-index="<?= $i ?>">
+                                    <img src="<?= base_url('uploads/productmedia/' . $img); ?>" alt="">
+                                </div>
                             <?php endforeach; ?>
                         <?php else: ?>
-                            <a class="pt active" href="#product-1">
+                            <div class="thumb-item active" data-index="0">
                                 <img src="<?= base_url('uploads/productmedia/' . ($product['prd_first_image'] ?? 'default.jpg')); ?>"
                                     alt="">
-                            </a>
+                            </div>
                         <?php endif; ?>
                     </div>
 
+                    <!-- Main Carousel -->
                     <div class="product__details__slider__content">
                         <div class="product__details__pic__slider owl-carousel">
                             <?php if (!empty($images)): ?>
-                                <?php foreach ($images as $i => $img): ?>
-                                    <img data-hash="product-<?= $i + 1 ?>" class="product__big__img"
-                                        src="<?= base_url('uploads/productmedia/' . $img); ?>" alt="">
+                                <?php foreach ($images as $img): ?>
+                                    <div class="item">
+                                        <img src="<?= base_url('uploads/productmedia/' . $img); ?>" class="product__big__img"
+                                            alt="">
+                                    </div>
                                 <?php endforeach; ?>
                             <?php else: ?>
-                                <img data-hash="product-1" class="product__big__img"
-                                    src="<?= base_url('uploads/productmedia/' . ($product['prd_first_image'] ?? 'default.jpg')); ?>"
-                                    alt="">
-
+                                <div class="item">
+                                    <img src="<?= base_url('uploads/productmedia/' . ($product['prd_first_image'] ?? 'default.jpg')); ?>"
+                                        class="product__big__img" alt="">
+                                </div>
                             <?php endif; ?>
                         </div>
                     </div>
-                </div>
 
+                </div>
             </div>
+
             <div class="col-lg-6">
                 <div class="product__details__text">
                     <h3><?= esc($product['pr_Name']) ?>

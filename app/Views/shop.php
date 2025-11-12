@@ -169,15 +169,7 @@
                                     <div class="product__item">
                                         <div class="product__item__pic set-bg"
                                             data-setbg="<?= base_url('uploads/productmedia/' . ($item['pri_Thumbnail'])) ?>">
-                                            <div class="label new">
-                                                <?php if ($item['pr_custom'] == 1): ?>
-                                                    <a
-                                                        href="<?= base_url('tshirt_Customisation/' . $item['pr_Id'] . '/' . $item['pri_Id']); ?>">
-                                                        <img class="design_icon"
-                                                            src="<?= base_url() . ASSET_PATH ?>assets/img/design.png" alt="">
-                                                    </a>
-                                                <?php endif; ?>
-                                            </div>
+                                            
                                             <ul class="product__hover">
                                                 <li>
                                                     <a href="<?= base_url('uploads/productmedia/' . ($item['pri_Thumbnail'])) ?>"

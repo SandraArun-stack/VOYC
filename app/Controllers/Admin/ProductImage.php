@@ -136,10 +136,6 @@ class ProductImage extends BaseController
 
         return $template;
     }
-
-
-
-
     public function addProductImage($pr_id = null, $pri_id = null)
     {
         if (!$this->session->get('ad_uid')) {
@@ -180,12 +176,6 @@ class ProductImage extends BaseController
         $template .= view('Admin/page_scripts/productimagejs');
         return $template;
     }
-
-
-
-
-
-
 
     public function update($pr_id, $pri_id)
     {
@@ -328,8 +318,6 @@ class ProductImage extends BaseController
             'redirect' => base_url('admin/product/image/' . $pr_id)
         ]);
     }
-
-
 
     public function save()
     {
@@ -515,7 +503,6 @@ class ProductImage extends BaseController
             'msg' => 'No product images were saved.'
         ]);
     }
-
 
     public function delete($pri_id = null)
     {

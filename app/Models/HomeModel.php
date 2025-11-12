@@ -52,6 +52,9 @@ class HomeModel extends Model
         if (!$user) {
             return ['status' => 'error', 'message' => 'Incorrect Email Id or Password'];
         }
+        if($user['cust_Status'] != 1){
+            return ['status' => 'error', 'message' => 'Your Account is Inactive. Please Contact Support.'];
+        }
 
         if ($user['cust_Password'] !== $data['password']) {
             return ['status' => 'error', 'message' => 'Incorrect Email Id or Password'];
