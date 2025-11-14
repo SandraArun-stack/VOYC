@@ -91,6 +91,14 @@ class ProductImageModel extends Model
         return $this->delete($pri_id);
     }
 
+    // -------------------
+    // VARIANT METHODS
+    // -------------------
+
+    // public function insertVariant($data)
+    // {
+    //     return $this->db->table('product_variants')->insert($data);
+    // }
 
     public function insertVariant($data)
     {
