@@ -15,41 +15,47 @@ class CartModel extends Model
         'cart_Status',
         'design_Id',
         'prv_Id',
-        'cart_Quantity'
+        'cart_Quantity',
+        'cart_Price',
+        'cart_Size'
     ];
 
-    
 
 
-public function getCartItems($custId)
-{
-    $builder = $this->db->table('my_cart c');
 
-    $builder->select('c.*');
-    $builder->select('d.front_Image,d.back_Image,d.RSleeve_Image,d.LSleeve_Image');
-    $builder->select('p.pr_Name');
-    $builder->select("COALESCE(NULLIF(d.front_Image,''), pi.pri_Thumbnail, 'default.jpg') AS pri_Thumbnail", false);
-    $builder->select('pv.prv_price, pv.prv_Size');
+    public function getCartItems($custId)
+    {
+        $builder = $this->db->table('my_cart c');
 
-    $builder->join('design d', 'c.design_Id = d.design_Id', 'left');
-    $builder->join('product_image pi', 'c.pri_Id = pi.pri_Id', 'left');
-    $builder->join('product p', 'c.pr_Id = p.pr_Id', 'left');
-    $builder->join('product_variants pv', 'c.prv_Id = pv.prv_Id', 'left');
+        $builder->select('c.*');
+        $builder->select('d.front_Image,d.back_Image,d.RSleeve_Image,d.LSleeve_Image');
+        $builder->select('p.pr_Name');
+        $builder->select("COALESCE(NULLIF(d.front_Image,''), pi.pri_Thumbnail, 'default.jpg') AS pri_Thumbnail", false);
+        $builder->select('pv.prv_price, pv.prv_Size');
 
-    $builder->where('c.cust_Id', $custId);
-    $builder->where('c.cart_Status', 1);
-    $builder->orderBy('c.cart_Id', 'DESC');
+        $builder->select("(SELECT JSON_ARRAYAGG(JSON_OBJECT('prv_Id', prv_Id, 'prv_Size', prv_Size, 'prv_price', prv_price))
+                       FROM product_variants 
+                       WHERE pri_Id = c.pri_Id) AS size_options", false);
 
-    $query = $builder->get();
-    return $query->getResultArray();
-}
+        $builder->join('design d', 'c.design_Id = d.design_Id', 'left');
+        $builder->join('product_image pi', 'c.pri_Id = pi.pri_Id', 'left');
+        $builder->join('product p', 'c.pr_Id = p.pr_Id', 'left');
+        $builder->join('product_variants pv', 'c.prv_Id = pv.prv_Id', 'left');
+
+        $builder->where('c.cust_Id', $custId);
+        $builder->where('c.cart_Status', 1);
+        $builder->orderBy('c.cart_Id', 'DESC');
+
+        $query = $builder->get();
+        return $query->getResultArray();
+    }
 
 
     public function getCartPrice($userId)
     {
         $builder = $this->db->table('my_cart c');
 
-        $builder->select('c.*,pv.*'); 
+        $builder->select('c.*,pv.*');
         $builder->join('product_variants pv', 'c.prv_Id = pv.prv_Id', 'left');
 
         $builder->where('c.cust_Id', $userId);
@@ -68,7 +74,7 @@ public function getCartItems($custId)
     }
 
 
-   public function clearCart($userId)
+    public function clearCart($userId)
     {
         return $this->where('cust_Id', $userId)->delete();
     }

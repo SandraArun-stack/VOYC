@@ -827,7 +827,7 @@
 }
 
 .debug-bar-dinlineBlock {
-  display: inline-block;
+  display:none;
 }
 
 .debug-bar-pointer {

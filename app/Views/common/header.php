@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/jquery-ui.min.css" type="text/css">
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/magnific-popup.css" type="text/css">
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/owl.theme.default.min.css" type="text/css">
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/style.css" type="text/css">
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/custom.css" type="text/css">
@@ -58,7 +59,7 @@
                 </a></li>
         </ul>
         <div class="offcanvas__logo">
-            <a href="#"><img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo.jpg" alt=""></a>
+            <a href="<?= base_url(' '); ?>"><img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo.jpg" alt=""></a>
         </div>
         <div id="mobile-menu-wrap"></div>
         <div class="offcanvas__auth">
@@ -72,16 +73,17 @@
     <header class="header show-after">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-xl-3 col-lg-2 col-2">
-                    <div class="header__logo">
-                        <a href="<?= base_url(' '); ?>"></a>
-                    </div>
+                <div class="col-xl-2 col-lg-2 col-2">
+                    <a href="<?= base_url(' '); ?>">
+                        <div class="header__logo"></div>
+                    </a>
+
                 </div>
                 <div class="col-8 mt-4 main__icon">
                     <a href="#"><i class="bi bi-controller"></i></a>
                     <a href="<?= base_url('tshirt_Customisation'); ?>" class="design_icon"></a>
                 </div>
-                <div class="col-xl-6 col-lg-7 d-flex align-items-center">
+                <div class="col-xl-7 col-lg-7 d-flex align-items-center justify-content-center text-center">
                     <nav class="header__menu">
                         <ul>
                             <li class="active"><a href="<?= base_url(' '); ?>" id="home">Home</a></li>
@@ -104,25 +106,31 @@
 
                         <ul class="header__right__widget">
                             <li>
-                                <a href="#"><i class="bi bi-wallet2"></i>
+                                <a href="#" class="icon-with-text"><i class="bi bi-wallet2"></i>
                                     <div class="tip">2</div>
+                                     <span class="icon-label">Wallet</span>
                                 </a>
                             </li>
                             <?php if ($session->get('isLoggedIn')): ?>
                                 <li>
                                     <?php $userId = $session->get('user_id'); ?>
-                                    <a href="<?= base_url('cart/' . $userId); ?>"><i class="bi bi-cart"></i>
+                                    <a href="<?= base_url('cart/' . $userId); ?>" class="icon-with-text">
+                                        <i class="bi bi-cart"></i>
+                                        <span class="icon-label">Cart</span>
                                         <div class="tip">2</div>
                                     </a>
                                 </li>
                             <?php endif; ?>
-                            <li>
-                                <a href="<?= base_url('allCustomizableProducts'); ?>"><img class="design_icon"
-                                        src="<?= base_url() . ASSET_PATH; ?>assets/img/design.png" alt="">
+                            <li class="customization_icon_header">
+                                <a href="<?= base_url('allCustomizableProducts'); ?>" class="icon-with-text">
+                                    <i class="custom-icon-customisation"></i>
+                                     <span class="icon-label">Design</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#" id="leader_board"><i class="bi bi-award-fill"></i>
+                                <a href="#" id="leader_board" class="icon-with-text">
+                                    <i class="bi bi-award-fill"></i>
+                                     <span class="icon-label">Winners</span>
                                 </a>
                             </li>
                         </ul>
@@ -130,9 +138,10 @@
                         <div class="header__right__auth">
 
                             <div class="dropdown" id="userDropDown">
-                                <a class=" text-decoration-none" href="#" role="button" id="userDropdown"
+                                <a class=" text-decoration-none icon-with-text" href="#" role="button" id="userDropdown"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bi bi-person-square profile-person"></i>
+                                    <span class="icon-label">Profile</span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end profile-small-container"
                                     style="display:none;" aria-labelledby="userDropdown" style="display:none;">
@@ -141,19 +150,21 @@
                                             <li class="py-1 px-4"><b>Hello, <?= esc($session->get('user_name')) ?></b></li>
                                             <ul class="profile__container__listing">
                                                 <li>
-    <a class="dropdown-item drop-profile" href="<?= base_url('myprofile'); ?>">
-        Profile
-    </a>
-</li>
+                                                    <a class="dropdown-item drop-profile"
+                                                        href="<?= base_url('myprofile'); ?>">
+                                                        Profile
+                                                    </a>
+                                                </li>
 
                                                 <li>
                                                     <a class="dropdown-item drop-profile"
                                                         href="<?= base_url('my_orders'); ?>">
-                                                        My Orders 
+                                                        My Orders
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item drop-profile text-danger" href="#" id="logoutBtn">
+                                                    <a class="dropdown-item drop-profile text-danger" href="#"
+                                                        id="logoutBtn">
                                                         Logout
                                                     </a>
                                                 </li>
@@ -199,7 +210,9 @@
                         </button>
 
                         <div class="d-flex flex-column justify-content-center align-items-center w-100 pt-3 pb-0">
-                            <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
+                            <a href="<?= base_url('/'); ?>">
+                                <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
+                            </a>
                             <h3 class="auth-title mb-0 text-center">Sign In</h3>
                         </div>
                     </div>
@@ -223,20 +236,20 @@
                             <button type="button" id="btn_login" class="btn btn-primary w-100"
                                 data-url="<?= base_url('loginUser') ?>">Sign In</button>
                         </form>
-                        <div class="text-center mt-3">
-                            Don’t have an account? <a href="#" id="to-register">Sign Up</a>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="text-center mt-3">
+                                <small class=""> Don’t have an account? <a href="#" id="to-register">Sign Up</a></small>
+                            </div>
+                            <div class="text-center mt-3">
+                                <small><a href="#" id="to-forgot-password">Forgot Password?</a></small>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- REGISTER VIEW -->
                 <div id="registerView">
-                    <!-- <div class="modal-header border-0 d-flex justify-content-center align-items-center flex-column pb-0">
-                        <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
 
-                        <h3 class="auth-title mb-0  w-100  text-center">Step Into Your Style</h3>
-
-                    </div> -->
                     <div class="modal-header border-0 position-relative p-2">
                         <button type="button" class="btn border-0 bg-transparent position-absolute login_close"
                             data-bs-dismiss="modal" aria-label="Close">
@@ -244,7 +257,10 @@
                         </button>
 
                         <div class="d-flex flex-column justify-content-center align-items-center w-100 pt-3 pb-0">
-                            <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
+                            <a href="<?= base_url('/'); ?>">
+
+                                <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
+                            </a>
                             <h3 class="auth-title mb-0 text-center">Step Into Your Style</h3>
                         </div>
                     </div>
@@ -257,6 +273,10 @@
                             <label>Email</label><span>&nbsp;*</span>
                             <input type="email" name="email" class="form-control mb-3" placeholder="Enter the Email"
                                 required>
+
+                            <label>Phone Number</label><span>&nbsp;*</span>
+                            <input type="number" name="phone_number" class="form-control mb-3"
+                                placeholder="Enter the Phone Number" required>
 
                             <div class="eye_icon  mb-3">
                                 <label>Password</label><span>&nbsp;*</span>
@@ -282,6 +302,37 @@
                         <div class="text-center mt-3">
                             Already have an account? <a href="#" id="to-login">Sign In</a>
                         </div>
+                    </div>
+                </div>
+
+                <div id="forgotPassView" class="d-none">
+                    <div class="modal-header border-0 position-relative p-2">
+                        <button type="button" class="btn border-0 bg-transparent position-absolute login_close"
+                            data-bs-dismiss="modal" aria-label="Close">
+                            <i class="bi bi-x-square text-dark"></i>
+                        </button>
+
+                        <div class="d-flex flex-column justify-content-center align-items-center w-100 pt-3 pb-0">
+                            <a href="<?= base_url('/'); ?>">
+
+                                <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
+                            </a>
+                            <h3 class="auth-title mb-0 text-center">Sign In</h3>
+                        </div>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="alert alert-success m-1 p-2 w-auto d-none" id="forgotalert"></div>
+                        <form id="forgotPassForm">
+                            <label>Email</label><span>&nbsp;*</span>
+                            <input type="email" name="forgot_email" class="form-control mb-3"
+                                placeholder="Enter Your Email" required>
+                            <div class="submit_forgot w-100">
+                                <button type="button" id="btn_forgot_password" class="btn btn-dark"
+                                    data-url="<?= base_url('forgotPassword') ?>">Submit</button>
+                            </div>
+                        </form>
+
                     </div>
                 </div>
             </div>

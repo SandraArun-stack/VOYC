@@ -38,6 +38,7 @@ class ProductImage extends BaseController
         $pr_id = $this->request->getPost('pr_id');
 
         $model = new \App\Models\Admin\ProductImageModel();
+
         $data = $model->getDatatables($pr_id);
         $total = $model->countAll($pr_id);
         $filtered = $model->countFiltered($pr_id);
@@ -45,12 +46,13 @@ class ProductImage extends BaseController
         // Aggregate variants per product image
         $aggregated = [];
         foreach ($data as $row) {
-            $id = $row['pri_Id'];
+            $id = $row['prv_Id'];
 
             if (!isset($aggregated[$id])) {
                 $aggregated[$id] = [
                     'pri_Id' => $row['pri_Id'],
                     'pr_Id' => $row['pr_id'],
+                    'prv_Id' => $row['prv_Id'],
                     'pr_Name' => $row['pr_name'] ?? 'N/A',
                     'colors' => json_decode($row['color_details'], true)['color'] ?? 'N/A',
                     'sizes' => [],
@@ -58,6 +60,7 @@ class ProductImage extends BaseController
                     'stocks' => [],
                     'reset_stocks' => [],
                     'pri_Status' => $row['pri_Status'],
+                    'prv_Status' => $row['prv_Status'] ?? 1,
                 ];
             }
 
@@ -76,7 +79,7 @@ class ProductImage extends BaseController
             $row['reset_stocks'] = implode(', ', $row['reset_stocks']);
 
             // Status toggle
-            if ($row['pri_Status'] == 3) {
+            if ($row['prv_Status'] == 3) {
                 // Deleted → show badge only, no toggle
                 $row['status_switch'] = '<span class="badge bg-danger">Deleted</span>';
             } else {
@@ -84,11 +87,11 @@ class ProductImage extends BaseController
                 $row['status_switch'] = '<div class="form-check form-switch">
                     <input class="form-check-input checkactiveimage"
                         type="checkbox"
-                        id="checkimg-' . $row['pri_Id'] . '"
-                        value="' . $row['pri_Id'] . '" ' . ($row['pri_Status'] == 1 ? 'checked' : '') . '>
+                        id="checkimg-' . $row['prv_Id'] . '"
+                        value="' . $row['prv_Id'] . '" ' . ($row['prv_Status'] == 1 ? 'checked' : '') . '>
 
                     <label class="form-check-label pl-0 label-check"
-                        for="statusSwitch-' . $row['pri_Id'] . '"></label>
+                        for="statusSwitch-' . $row['prv_Id'] . '"></label>
                 </div>';
             }
 
@@ -99,7 +102,7 @@ class ProductImage extends BaseController
                     <i class="bi bi-pencil-square"></i>
                 </a>&nbsp;
                 <i class="bi bi-trash text-danger icon-clickable" style="cursor: pointer;" 
-                onclick="confirmDelete(' . $row['pri_Id'] . ')"></i>&nbsp;';
+                onclick="confirmDelete(' . $row['prv_Id'] . ')"></i>&nbsp;';
         }
 
         return $this->response->setJSON([
@@ -135,9 +138,6 @@ class ProductImage extends BaseController
 
         return $template;
     }
-
-
-
 
     public function addProductImage($pr_id = null, $pri_id = null)
     {
@@ -180,11 +180,383 @@ class ProductImage extends BaseController
         return $template;
     }
 
+    // public function update($pr_id, $pri_id)
+    // {
+    //     $colorsData = $this->request->getPost('colors');
+
+    //     if (empty($colorsData) || empty($pr_id) || empty($pri_id)) {
+    //         return $this->response->setJSON([
+    //             'status' => 'error',
+    //             'msg' => 'Missing Product, Image ID, or Color Data.'
+    //         ]);
+    //     }
+
+    //     $existingData = $this->productimageModel->find($pri_id);
+
+    //     foreach ($colorsData as $colorIndex => $colorGroup) {
+    //         $color = trim($colorGroup['color'] ?? '');
+    //         $sizes = $colorGroup['sizes'] ?? [];
+    //         $prices = $colorGroup['prices'] ?? [];
+    //         $stock = $colorGroup['stock'] ?? [];
+    //         $reset_stock = $colorGroup['reset_stock'] ?? [];
+
+    //         if (empty($color) || empty($sizes)) {
+    //             return $this->response->setJSON([
+    //                 'status' => 'error',
+    //                 'msg' => 'Please Provide All Required Data and At Least One Size.'
+    //             ]);
+    //         }
+
+    //         // --- Handle Images ---
+    //         // Thumbnail
 
 
 
+    //         // --- Thumbnail ---
+    //         $thumbnailUploaded = !empty($existingData['pri_Thumbnail']) ? [$existingData['pri_Thumbnail']] : [];
+    //         if (!empty($_FILES['colors']['name'][$colorIndex]['images'][0])) {
+    //             foreach ($_FILES['colors']['name'][$colorIndex]['images'] as $i => $name) {
+    //                 if ($_FILES['colors']['error'][$colorIndex]['images'][$i] === 0) {
+    //                     $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+    //                     if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
+    //                         return $this->response->setJSON(['status' => 'error', 'msg' => 'Only JPG, PNG, or WEBP images are allowed.']);
+    //                     }
+    //                     $newName = uniqid('', true) . '.' . $ext;
+    //                     $destination = FCPATH . 'uploads/productmedia/' . $newName;
+    //                     if (move_uploaded_file($_FILES['colors']['tmp_name'][$colorIndex]['images'][$i], $destination)) {
+    //                         $thumbnailUploaded[] = $newName;
+    //                     }
+    //                 }
+    //             }
+    //         }
+
+    //         // --- Side Images ---
+    //         $sideUploaded = !empty($existingData['pri_File_Name']) ? json_decode($existingData['pri_File_Name'], true) : [];
+    //         if (!empty($_FILES['colors']['name'][$colorIndex]['side_image'][0])) {
+    //             $newSideUploaded = [];
+    //             foreach ($_FILES['colors']['name'][$colorIndex]['side_image'] as $i => $name) {
+    //                 if ($_FILES['colors']['error'][$colorIndex]['side_image'][$i] === 0) {
+    //                     $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+    //                     if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
+    //                         return $this->response->setJSON(['status' => 'error', 'msg' => 'Only JPG, PNG, or WEBP images are allowed.']);
+    //                     }
+    //                     $newName = uniqid('', true) . '.' . $ext;
+    //                     $destination = FCPATH . 'uploads/productmedia/' . $newName;
+    //                     if (move_uploaded_file($_FILES['colors']['tmp_name'][$colorIndex]['side_image'][$i], $destination)) {
+    //                         $newSideUploaded[] = $newName;
+    //                     }
+    //                 }
+    //             }
+    //             // Only overwrite if new files uploaded
+    //             if (!empty($newSideUploaded)) {
+    //                 $sideUploaded = $newSideUploaded;
+    //             }
+    //         }
 
 
+    //         // Sleeve Images
+    //         $sleeveUploaded = !empty($existingData['pri_Sleev_Name']) ? json_decode($existingData['pri_Sleev_Name'], true) : [];
+    //         if (!empty($_FILES['colors']['name'][$colorIndex]['sleev_image'][0])) {
+    //             $sleeveUploaded = [];
+    //             foreach ($_FILES['colors']['name'][$colorIndex]['sleev_image'] as $i => $name) {
+    //                 if ($_FILES['colors']['error'][$colorIndex]['sleev_image'][$i] === 0) {
+    //                     $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+    //                     if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
+    //                         return $this->response->setJSON(['status' => 'error', 'msg' => 'Only JPG, PNG, or WEBP images are allowed for Sleeve Images.']);
+    //                     }
+    //                     $newName = uniqid('', true) . '.' . $ext;
+    //                     $destination = FCPATH . 'uploads/productmedia/' . $newName;
+    //                     if (move_uploaded_file($_FILES['colors']['tmp_name'][$colorIndex]['sleev_image'][$i], $destination)) {
+    //                         $sleeveUploaded[] = $newName;
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //         $RSleeve_Img = !empty($existingData['RSleeve_Img']) ? [$existingData['RSleeve_Img']] : [];
+    //         if (!empty($_FILES['colors']['name'][$colorIndex]['images'][0])) {
+    //             foreach ($_FILES['colors']['name'][$colorIndex]['images'] as $i => $name) {
+    //                 if ($_FILES['colors']['error'][$colorIndex]['images'][$i] === 0) {
+    //                     $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+    //                     if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
+    //                         return $this->response->setJSON(['status' => 'error', 'msg' => 'Only JPG, PNG, or WEBP images are allowed.']);
+    //                     }
+    //                     $newName = uniqid('', true) . '.' . $ext;
+    //                     $destination = FCPATH . 'uploads/productmedia/' . $newName;
+    //                     if (move_uploaded_file($_FILES['colors']['tmp_name'][$colorIndex]['images'][$i], $destination)) {
+    //                         $RSleeve_Img[] = $newName;
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //         $LSleeve_Img = !empty($existingData['LSleeve_Img']) ? [$existingData['LSleeve_Img']] : [];
+    //         if (!empty($_FILES['colors']['name'][$colorIndex]['images'][0])) {
+    //             foreach ($_FILES['colors']['name'][$colorIndex]['images'] as $i => $name) {
+    //                 if ($_FILES['colors']['error'][$colorIndex]['images'][$i] === 0) {
+    //                     $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+    //                     if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
+    //                         return $this->response->setJSON(['status' => 'error', 'msg' => 'Only JPG, PNG, or WEBP images are allowed.']);
+    //                     }
+    //                     $newName = uniqid('', true) . '.' . $ext;
+    //                     $destination = FCPATH . 'uploads/productmedia/' . $newName;
+    //                     if (move_uploaded_file($_FILES['colors']['tmp_name'][$colorIndex]['images'][$i], $destination)) {
+    //                         $LSleeve_Img[] = $newName;
+    //                     }
+    //                 }
+    //             }
+    //         }
+
+    //         if (empty($thumbnailUploaded) || empty($sideUploaded)) {
+    //             return $this->response->setJSON([
+    //                 'status' => 'error',
+    //                 'msg' => 'Please Upload at Least One Thumbnail and One Side Image For Each Color.'
+    //             ]);
+    //         }
+
+    //         // --- Update Image Record ---
+    //         $imageData = [
+    //             'pri_Thumbnail' => $thumbnailUploaded[0],
+    //             'pri_File_Name' => json_encode($sideUploaded),
+    //             'pri_Sleev_Name' => !empty($sleeveUploaded) ? json_encode($sleeveUploaded) : $existingData['pri_Sleev_Name'],
+    //             'RSleeve_Img' => $RSleeve_Img[0],
+    //             'LSleeve_Img' => $LSleeve_Img[0],
+    //             'color_details' => json_encode(['color' => $color]),
+    //             'pri_Status' => 1
+    //         ];
+    //         $this->productimageModel->updateProductimage($pri_id, $imageData);
+
+    //         // --- Update Variants ---
+    //         foreach ($sizes as $size) {
+    //             $prv_id = isset($colorGroup['prv_id'][$size]) ? intval($colorGroup['prv_id'][$size]) : null;
+    //             $variantData = [
+    //                 'pr_id' => $pr_id,
+    //                 'pri_id' => $pri_id,
+    //                 'prv_Size' => $size,
+    //                 'prv_price' => $prices[$size] ?? 0,
+    //                 'stock' => $stock[$size] ?? 0,
+    //                 'reset_stock' => $reset_stock[$size] ?? 0
+    //             ];
+
+    //             if (!empty($prv_id)) {
+    //                 $existingVariant = $this->productimageModel->getVariantByPriIdSizeAndPrvId($pri_id, $size, $prv_id);
+    //                 if ($existingVariant) {
+    //                     $this->productimageModel->updateVariant($prv_id, $variantData);
+    //                 } else {
+    //                     $this->productimageModel->insertVariant($variantData);
+    //                 }
+    //             } else {
+    //                 $this->productimageModel->insertVariant($variantData);
+    //             }
+    //         }
+    //     }
+
+    //     return $this->response->setJSON([
+    //         'status' => 'success',
+    //         'msg' => 'Product Images Updated Successfully!',
+    //         'redirect' => base_url('admin/product/image/' . $pr_id)
+    //     ]);
+    // }
+
+
+    // public function save()
+    // {
+    //     $pri_id = $this->request->getPost('pri_id');
+    //     $pr_id = $this->request->getPost('pr_id');
+
+    //     if (!empty($pri_id)) {
+    //         return $this->update($pr_id, $pri_id);
+    //     }
+
+    //     $colorsData = $this->request->getPost('colors');
+    //     if (empty($colorsData) || empty($pr_id)) {
+    //         return $this->response->setJSON([
+    //             'status' => 'error',
+    //             'msg' => 'Missing Product or Color Data.'
+    //         ]);
+    //     }
+
+    //     $insertedAny = false;
+
+    //     foreach ($colorsData as $colorIndex => $colorGroup) {
+    //         $color = trim($colorGroup['color'] ?? '');
+    //         $sizes = $colorGroup['sizes'] ?? [];
+    //         $prices = $colorGroup['prices'] ?? [];
+    //         $stock = $colorGroup['stock'] ?? [];
+    //         $reset_stock = $colorGroup['reset_stock'] ?? [];
+
+    //         if (empty($color) || empty($sizes)) {
+    //             return $this->response->setJSON([
+    //                 'status' => 'error',
+    //                 'msg' => 'Please Provide All Required Data and At Least One Size.'
+    //             ]);
+    //         }
+
+    //         // --- Handle Images ---
+    //         $thumbnailUploaded = [];
+    //         $sideUploaded = [];
+    //         $sleeveUploaded = [];
+    //         $RSleeve_Img = [];
+    //         $LSleeve_Img = [];
+
+    //         // --- Handle Videos ---
+    //         $videoUploaded = null;
+
+    //         if (!empty($_FILES['colors']['name'][$colorIndex]['videos'][0])) {
+    //             $name = $_FILES['colors']['name'][$colorIndex]['videos'][0];
+    //             if ($_FILES['colors']['error'][$colorIndex]['videos'][0] === 0) {
+    //                 $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+    //                 if (!in_array($ext, ['mp4', 'avi', 'mov', 'mkv', 'webm'])) {
+    //                     return $this->response->setJSON(['status' => 'error', 'msg' => 'Only MP4, AVI, MOV, MKV, or WEBM videos are allowed.']);
+    //                 }
+    //                 $newName = uniqid('', true) . '.' . $ext;
+    //                 $destination = FCPATH . 'uploads/productmedia/' . $newName;
+    //                 if (move_uploaded_file($_FILES['colors']['tmp_name'][$colorIndex]['videos'][0], $destination)) {
+    //                     $videoUploaded = $newName;
+    //                 }
+    //             }
+    //         }
+
+    //         // Thumbnail
+    //         if (!empty($_FILES['colors']['name'][$colorIndex]['images'][0])) {
+    //             foreach ($_FILES['colors']['name'][$colorIndex]['images'] as $i => $name) {
+    //                 if ($_FILES['colors']['error'][$colorIndex]['images'][$i] === 0) {
+    //                     $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+    //                     if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
+    //                         return $this->response->setJSON(['status' => 'error', 'msg' => 'Only JPG, PNG, or WEBP images are allowed.']);
+    //                     }
+    //                     $newName = uniqid('', true) . '.' . $ext;
+    //                     $destination = FCPATH . 'uploads/productmedia/' . $newName;
+    //                     if (move_uploaded_file($_FILES['colors']['tmp_name'][$colorIndex]['images'][$i], $destination)) {
+    //                         $thumbnailUploaded[] = $newName;
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //         // Side Images
+    //         if (!empty($_FILES['colors']['name'][$colorIndex]['side_image'][0])) {
+    //             foreach ($_FILES['colors']['name'][$colorIndex]['side_image'] as $i => $name) {
+    //                 if ($_FILES['colors']['error'][$colorIndex]['side_image'][$i] === 0) {
+    //                     $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+    //                     if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
+    //                         return $this->response->setJSON(['status' => 'error', 'msg' => 'Only JPG, PNG, or WEBP images are allowed.']);
+    //                     }
+    //                     $newName = uniqid('', true) . '.' . $ext;
+    //                     $destination = FCPATH . 'uploads/productmedia/' . $newName;
+    //                     if (move_uploaded_file($_FILES['colors']['tmp_name'][$colorIndex]['side_image'][$i], $destination)) {
+    //                         $sideUploaded[] = $newName;
+    //                     }
+    //                 }
+    //             }
+    //         }
+
+    //         // Sleeve Images
+    //         if (!empty($_FILES['colors']['name'][$colorIndex]['sleev_image'][0])) {
+    //             foreach ($_FILES['colors']['name'][$colorIndex]['sleev_image'] as $i => $name) {
+    //                 if ($_FILES['colors']['error'][$colorIndex]['sleev_image'][$i] === 0) {
+    //                     $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+    //                     if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
+    //                         return $this->response->setJSON(['status' => 'error', 'msg' => 'Only JPG, PNG, or WEBP images are allowed for Sleeve Images.']);
+    //                     }
+    //                     $newName = uniqid('', true) . '.' . $ext;
+    //                     $destination = FCPATH . 'uploads/productmedia/' . $newName;
+    //                     if (move_uploaded_file($_FILES['colors']['tmp_name'][$colorIndex]['sleev_image'][$i], $destination)) {
+    //                         $sleeveUploaded[] = $newName;
+    //                     }
+    //                 }
+    //             }
+    //         }
+
+    //         //Right Sleeve Image
+    //         if (!empty($_FILES['colors']['name'][$colorIndex]['RSleeve_Img'][0])) {
+    //             foreach ($_FILES['colors']['name'][$colorIndex]['RSleeve_Img'] as $i => $name) {
+    //                 if ($_FILES['colors']['error'][$colorIndex]['RSleeve_Img'][$i] === 0) {
+    //                     $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+    //                     if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
+    //                         return $this->response->setJSON(['status' => 'error', 'msg' => 'Only JPG, PNG, or WEBP images are allowed for Sleeve Images.']);
+    //                     }
+    //                     $newName = uniqid('', true) . '.' . $ext;
+    //                     $destination = FCPATH . 'uploads/productmedia/' . $newName;
+    //                     if (move_uploaded_file($_FILES['colors']['tmp_name'][$colorIndex]['RSleeve_Img'][$i], $destination)) {
+    //                         $RSleeve_Img[] = $newName;
+    //                     }
+    //                 }
+    //             }
+    //         }
+
+    //         //Left Sleeve Image
+    //         if (!empty($_FILES['colors']['name'][$colorIndex]['LSleeve_Img'][0])) {
+    //             foreach ($_FILES['colors']['name'][$colorIndex]['LSleeve_Img'] as $i => $name) {
+    //                 if ($_FILES['colors']['error'][$colorIndex]['LSleeve_Img'][$i] === 0) {
+    //                     $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+    //                     if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
+    //                         return $this->response->setJSON(['status' => 'error', 'msg' => 'Only JPG, PNG, or WEBP images are allowed for Sleeve Images.']);
+    //                     }
+    //                     $newName = uniqid('', true) . '.' . $ext;
+    //                     $destination = FCPATH . 'uploads/productmedia/' . $newName;
+    //                     if (move_uploaded_file($_FILES['colors']['tmp_name'][$colorIndex]['LSleeve_Img'][$i], $destination)) {
+    //                         $LSleeve_Img[] = $newName;
+    //                     }
+    //                 }
+    //             }
+    //         }
+
+    //         if (empty($thumbnailUploaded)) {
+    //             return $this->response->setJSON([
+    //                 'status' => 'error',
+    //                 'msg' => 'Please Upload at Least One Thumbnail For Each Color.'
+    //             ]);
+    //         } elseif (empty($sideUploaded)) {
+    //             return $this->response->setJSON([
+    //                 'status' => 'error',
+    //                 'msg' => 'Please Upload at Least One Side Image For Each Color.'
+    //             ]);
+    //         }
+    //         // --- Insert Image Record ---
+    //         $imageData = [
+    //             'pr_Id' => $pr_id,
+    //             'pri_Video' => $videoUploaded,
+    //             'pri_Thumbnail' => $thumbnailUploaded[0],
+    //             'pri_File_Name' => json_encode($sideUploaded),
+    //             'RSleeve_Img' => !empty($RSleeve_Img) ? $RSleeve_Img[0] : null,
+    //             'LSleeve_Img' => !empty($LSleeve_Img) ? $LSleeve_Img[0] : null,
+
+    //             'pri_Sleev_Name' => !empty($sleeveUploaded) ? json_encode($sleeveUploaded) : null,
+    //             'color_details' => json_encode(['color' => $color]),
+    //             'pri_Status' => 1,
+    //             'pri_createdon' => date('Y-m-d H:i:s'),
+    //             'pri_createdby' => $this->session->get('ad_uid')
+    //         ];
+
+    //         $pri_id = $this->productimageModel->insertProductImages($imageData);
+
+    //         // --- Insert Variants ---
+    //         foreach ($sizes as $size) {
+    //             $variantData = [
+    //                 'pr_id' => $pr_id,
+    //                 'pri_id' => $pri_id,
+    //                 'prv_Size' => $size,
+    //                 'prv_price' => $prices[$size] ?? 0,
+    //                 'stock' => $stock[$size] ?? 0,
+    //                 'reset_stock' => $reset_stock[$size] ?? 0
+    //             ];
+    //             $this->productimageModel->insertVariant($variantData);
+    //         }
+
+    //         $insertedAny = true;
+    //     }
+
+    //     if ($insertedAny) {
+    //         return $this->response->setJSON([
+    //             'status' => 'success',
+    //             'msg' => 'Product Images Saved Successfully!',
+    //             'redirect' => base_url('admin/product/image/' . $pr_id)
+    //         ]);
+    //     }
+
+    //     return $this->response->setJSON([
+    //         'status' => 'error',
+    //         'msg' => 'No product images were saved.'
+    //     ]);
+    // }
 
     public function update($pr_id, $pri_id)
     {
@@ -213,72 +585,35 @@ class ProductImage extends BaseController
                 ]);
             }
 
-            // --- Handle Images ---
-            // Thumbnail
+            // --- Upload new files (reuse helper) ---
+            $thumbnailUploaded = $this->uploadFiles($_FILES, $colorIndex, 'images', ['jpg', 'jpeg', 'png', 'webp']);
+            $sideUploaded = $this->uploadFiles($_FILES, $colorIndex, 'side_image', ['jpg', 'jpeg', 'png', 'webp']);
+            $sleeveUploaded = $this->uploadFiles($_FILES, $colorIndex, 'sleev_image', ['jpg', 'jpeg', 'png', 'webp']);
+            $RSleeve_Img = $this->uploadFiles($_FILES, $colorIndex, 'RSleeve_Img', ['jpg', 'jpeg', 'png', 'webp']);
+            $LSleeve_Img = $this->uploadFiles($_FILES, $colorIndex, 'LSleeve_Img', ['jpg', 'jpeg', 'png', 'webp']);
 
-
-
-            // --- Thumbnail ---
-            $thumbnailUploaded = !empty($existingData['pri_Thumbnail']) ? [$existingData['pri_Thumbnail']] : [];
-            if (!empty($_FILES['colors']['name'][$colorIndex]['images'][0])) {
-                foreach ($_FILES['colors']['name'][$colorIndex]['images'] as $i => $name) {
-                    if ($_FILES['colors']['error'][$colorIndex]['images'][$i] === 0) {
-                        $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
-                        if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
-                            return $this->response->setJSON(['status' => 'error', 'msg' => 'Only JPG, PNG, or WEBP images are allowed.']);
-                        }
-                        $newName = uniqid('', true) . '.' . $ext;
-                        $destination = FCPATH . 'uploads/productmedia/' . $newName;
-                        if (move_uploaded_file($_FILES['colors']['tmp_name'][$colorIndex]['images'][$i], $destination)) {
-                            $thumbnailUploaded[] = $newName;
-                        }
-                    }
-                }
+            // --- Preserve existing data if nothing new uploaded ---
+            if (empty($thumbnailUploaded) && !empty($existingData['pri_Thumbnail'])) {
+                $thumbnailUploaded[] = $existingData['pri_Thumbnail'];
             }
 
-            // --- Side Images ---
-            $sideUploaded = !empty($existingData['pri_File_Name']) ? json_decode($existingData['pri_File_Name'], true) : [];
-            if (!empty($_FILES['colors']['name'][$colorIndex]['side_image'][0])) {
-                $newSideUploaded = [];
-                foreach ($_FILES['colors']['name'][$colorIndex]['side_image'] as $i => $name) {
-                    if ($_FILES['colors']['error'][$colorIndex]['side_image'][$i] === 0) {
-                        $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
-                        if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
-                            return $this->response->setJSON(['status' => 'error', 'msg' => 'Only JPG, PNG, or WEBP images are allowed.']);
-                        }
-                        $newName = uniqid('', true) . '.' . $ext;
-                        $destination = FCPATH . 'uploads/productmedia/' . $newName;
-                        if (move_uploaded_file($_FILES['colors']['tmp_name'][$colorIndex]['side_image'][$i], $destination)) {
-                            $newSideUploaded[] = $newName;
-                        }
-                    }
-                }
-                // Only overwrite if new files uploaded
-                if (!empty($newSideUploaded)) {
-                    $sideUploaded = $newSideUploaded;
-                }
+            if (empty($sideUploaded) && !empty($existingData['pri_File_Name'])) {
+                $sideUploaded = json_decode($existingData['pri_File_Name'], true);
             }
 
-
-            // Sleeve Images
-            $sleeveUploaded = !empty($existingData['pri_Sleev_Name']) ? json_decode($existingData['pri_Sleev_Name'], true) : [];
-            if (!empty($_FILES['colors']['name'][$colorIndex]['sleev_image'][0])) {
-                $sleeveUploaded = [];
-                foreach ($_FILES['colors']['name'][$colorIndex]['sleev_image'] as $i => $name) {
-                    if ($_FILES['colors']['error'][$colorIndex]['sleev_image'][$i] === 0) {
-                        $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
-                        if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
-                            return $this->response->setJSON(['status' => 'error', 'msg' => 'Only JPG, PNG, or WEBP images are allowed for Sleeve Images.']);
-                        }
-                        $newName = uniqid('', true) . '.' . $ext;
-                        $destination = FCPATH . 'uploads/productmedia/' . $newName;
-                        if (move_uploaded_file($_FILES['colors']['tmp_name'][$colorIndex]['sleev_image'][$i], $destination)) {
-                            $sleeveUploaded[] = $newName;
-                        }
-                    }
-                }
+            if (empty($sleeveUploaded) && !empty($existingData['pri_Sleev_Name'])) {
+                $sleeveUploaded = json_decode($existingData['pri_Sleev_Name'], true);
             }
 
+            if (empty($RSleeve_Img) && !empty($existingData['RSleeve_Img'])) {
+                $RSleeve_Img[] = $existingData['RSleeve_Img'];
+            }
+
+            if (empty($LSleeve_Img) && !empty($existingData['LSleeve_Img'])) {
+                $LSleeve_Img[] = $existingData['LSleeve_Img'];
+            }
+
+            // --- Safety check ---
             if (empty($thumbnailUploaded) || empty($sideUploaded)) {
                 return $this->response->setJSON([
                     'status' => 'error',
@@ -291,9 +626,14 @@ class ProductImage extends BaseController
                 'pri_Thumbnail' => $thumbnailUploaded[0],
                 'pri_File_Name' => json_encode($sideUploaded),
                 'pri_Sleev_Name' => !empty($sleeveUploaded) ? json_encode($sleeveUploaded) : $existingData['pri_Sleev_Name'],
+                'RSleeve_Img' => $RSleeve_Img[0] ?? $existingData['RSleeve_Img'],
+                'LSleeve_Img' => $LSleeve_Img[0] ?? $existingData['LSleeve_Img'],
                 'color_details' => json_encode(['color' => $color]),
-                'pri_Status' => 1
+                'pri_Status' => 1,
+                'pri_updatedon' => date('Y-m-d H:i:s'),
+                'pri_updatedby' => $this->session->get('ad_uid')
             ];
+
             $this->productimageModel->updateProductimage($pri_id, $imageData);
 
             // --- Update Variants ---
@@ -329,7 +669,6 @@ class ProductImage extends BaseController
     }
 
 
-
     public function save()
     {
         $pri_id = $this->request->getPost('pri_id');
@@ -363,116 +702,28 @@ class ProductImage extends BaseController
                 ]);
             }
 
-            // --- Handle Images ---
-            $thumbnailUploaded = [];
-            $sideUploaded = [];
-            $sleeveUploaded = [];
-            $RSleeve_Img = [];
-            $LSleeve_Img = [];
-
-
-            // Thumbnail
-            if (!empty($_FILES['colors']['name'][$colorIndex]['images'][0])) {
-                foreach ($_FILES['colors']['name'][$colorIndex]['images'] as $i => $name) {
-                    if ($_FILES['colors']['error'][$colorIndex]['images'][$i] === 0) {
-                        $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
-                        if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
-                            return $this->response->setJSON(['status' => 'error', 'msg' => 'Only JPG, PNG, or WEBP images are allowed.']);
-                        }
-                        $newName = uniqid('', true) . '.' . $ext;
-                        $destination = FCPATH . 'uploads/productmedia/' . $newName;
-                        if (move_uploaded_file($_FILES['colors']['tmp_name'][$colorIndex]['images'][$i], $destination)) {
-                            $thumbnailUploaded[] = $newName;
-                        }
-                    }
-                }
-            }
-            // Side Images
-            if (!empty($_FILES['colors']['name'][$colorIndex]['side_image'][0])) {
-                foreach ($_FILES['colors']['name'][$colorIndex]['side_image'] as $i => $name) {
-                    if ($_FILES['colors']['error'][$colorIndex]['side_image'][$i] === 0) {
-                        $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
-                        if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
-                            return $this->response->setJSON(['status' => 'error', 'msg' => 'Only JPG, PNG, or WEBP images are allowed.']);
-                        }
-                        $newName = uniqid('', true) . '.' . $ext;
-                        $destination = FCPATH . 'uploads/productmedia/' . $newName;
-                        if (move_uploaded_file($_FILES['colors']['tmp_name'][$colorIndex]['side_image'][$i], $destination)) {
-                            $sideUploaded[] = $newName;
-                        }
-                    }
-                }
-            }
-
-            // Sleeve Images
-            if (!empty($_FILES['colors']['name'][$colorIndex]['sleev_image'][0])) {
-                foreach ($_FILES['colors']['name'][$colorIndex]['sleev_image'] as $i => $name) {
-                    if ($_FILES['colors']['error'][$colorIndex]['sleev_image'][$i] === 0) {
-                        $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
-                        if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
-                            return $this->response->setJSON(['status' => 'error', 'msg' => 'Only JPG, PNG, or WEBP images are allowed for Sleeve Images.']);
-                        }
-                        $newName = uniqid('', true) . '.' . $ext;
-                        $destination = FCPATH . 'uploads/productmedia/' . $newName;
-                        if (move_uploaded_file($_FILES['colors']['tmp_name'][$colorIndex]['sleev_image'][$i], $destination)) {
-                            $sleeveUploaded[] = $newName;
-                        }
-                    }
-                }
-            }
-
-            //Right Sleeve Image
-            if (!empty($_FILES['colors']['name'][$colorIndex]['RSleeve_Img'][0])) {
-                foreach ($_FILES['colors']['name'][$colorIndex]['RSleeve_Img'] as $i => $name) {
-                    if ($_FILES['colors']['error'][$colorIndex]['RSleeve_Img'][$i] === 0) {
-                        $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
-                        if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
-                            return $this->response->setJSON(['status' => 'error', 'msg' => 'Only JPG, PNG, or WEBP images are allowed for Sleeve Images.']);
-                        }
-                        $newName = uniqid('', true) . '.' . $ext;
-                        $destination = FCPATH . 'uploads/productmedia/' . $newName;
-                        if (move_uploaded_file($_FILES['colors']['tmp_name'][$colorIndex]['RSleeve_Img'][$i], $destination)) {
-                            $RSleeve_Img[] = $newName;
-                        }
-                    }
-                }
-            }
-
-            //Left Sleeve Image
-            if (!empty($_FILES['colors']['name'][$colorIndex]['LSleeve_Img'][0])) {
-                foreach ($_FILES['colors']['name'][$colorIndex]['LSleeve_Img'] as $i => $name) {
-                    if ($_FILES['colors']['error'][$colorIndex]['LSleeve_Img'][$i] === 0) {
-                        $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
-                        if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
-                            return $this->response->setJSON(['status' => 'error', 'msg' => 'Only JPG, PNG, or WEBP images are allowed for Sleeve Images.']);
-                        }
-                        $newName = uniqid('', true) . '.' . $ext;
-                        $destination = FCPATH . 'uploads/productmedia/' . $newName;
-                        if (move_uploaded_file($_FILES['colors']['tmp_name'][$colorIndex]['LSleeve_Img'][$i], $destination)) {
-                            $LSleeve_Img[] = $newName;
-                        }
-                    }
-                }
-            }
+            // --- Upload all file types using helper ---
+            $thumbnailUploaded = $this->uploadFiles($_FILES, $colorIndex, 'images', ['jpg', 'jpeg', 'png', 'webp']);
+            $sideUploaded = $this->uploadFiles($_FILES, $colorIndex, 'side_image', ['jpg', 'jpeg', 'png', 'webp']);
+            $sleeveUploaded = $this->uploadFiles($_FILES, $colorIndex, 'sleev_image', ['jpg', 'jpeg', 'png', 'webp']);
+            $RSleeve_Img = $this->uploadFiles($_FILES, $colorIndex, 'RSleeve_Img', ['jpg', 'jpeg', 'png', 'webp']);
+            $LSleeve_Img = $this->uploadFiles($_FILES, $colorIndex, 'LSleeve_Img', ['jpg', 'jpeg', 'png', 'webp']);
+            $videoUploaded = $this->uploadFiles($_FILES, $colorIndex, 'videos', ['mp4', 'avi', 'mov', 'mkv', 'webm'], true);
 
             if (empty($thumbnailUploaded)) {
-                return $this->response->setJSON([
-                    'status' => 'error',
-                    'msg' => 'Please Upload at Least One Thumbnail For Each Color.'
-                ]);
+                return $this->response->setJSON(['status' => 'error', 'msg' => 'Please Upload at Least One Thumbnail For Each Color.']);
             } elseif (empty($sideUploaded)) {
-                return $this->response->setJSON([
-                    'status' => 'error',
-                    'msg' => 'Please Upload at Least One Side Image For Each Color.'
-                ]);
+                return $this->response->setJSON(['status' => 'error', 'msg' => 'Please Upload at Least One Side Image For Each Color.']);
             }
+
             // --- Insert Image Record ---
             $imageData = [
                 'pr_Id' => $pr_id,
+                'pri_Video' => $videoUploaded[0] ?? null,
                 'pri_Thumbnail' => $thumbnailUploaded[0],
                 'pri_File_Name' => json_encode($sideUploaded),
-                'RSleeve_Img' => $RSleeve_Img[0],
-                'LSleeve_Img' => $LSleeve_Img[0],
+                'RSleeve_Img' => $RSleeve_Img[0] ?? null,
+                'LSleeve_Img' => $LSleeve_Img[0] ?? null,
                 'pri_Sleev_Name' => !empty($sleeveUploaded) ? json_encode($sleeveUploaded) : null,
                 'color_details' => json_encode(['color' => $color]),
                 'pri_Status' => 1,
@@ -511,58 +762,104 @@ class ProductImage extends BaseController
             'msg' => 'No product images were saved.'
         ]);
     }
+    private function uploadFiles($filesArray, $colorIndex, $field, $allowedExt, $isVideo = false)
+    {
+        $uploaded = [];
 
+        if (!empty($filesArray['colors']['name'][$colorIndex][$field][0])) {
+            foreach ($filesArray['colors']['name'][$colorIndex][$field] as $i => $name) {
+                if ($filesArray['colors']['error'][$colorIndex][$field][$i] === 0) {
+                    $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+                    if (!in_array($ext, $allowedExt)) {
+                        throw new \RuntimeException("Invalid file type for {$field}. Allowed: " . implode(', ', $allowedExt));
+                    }
 
-    public function delete($pri_id = null)
+                    $newName = uniqid('', true) . '.' . $ext;
+                    $destination = FCPATH . 'uploads/productmedia/' . $newName;
+
+                    if (move_uploaded_file($filesArray['colors']['tmp_name'][$colorIndex][$field][$i], $destination)) {
+                        $uploaded[] = $newName;
+                    }
+                }
+            }
+        }
+
+        return $uploaded;
+    }
+
+    public function delete($prv_id = null)
     {
         if (!$this->session->get('ad_uid')) {
             return $this->response->setJSON(['status' => 'error', 'msg' => 'Unauthorized']);
         }
 
-        if ($pri_id === null) {
+        if ($prv_id === null) {
             return $this->response->setJSON(['status' => 'error', 'msg' => 'Invalid ID']);
         }
 
-        $deleted = $this->productimageModel->deleteProductImage($pri_id);
+        $deleted = $this->productimageModel->deleteVariantById($prv_id);
 
         if ($deleted) {
-            return $this->response->setJSON(['status' => 'success', 'msg' => 'Deleted successfully']);
+            return $this->response->setJSON(['status' => 'success', 'msg' => 'Variant deleted successfully']);
         } else {
-            return $this->response->setJSON(['status' => 'error', 'msg' => 'Delete failed']);
+            return $this->response->setJSON(['status' => 'error', 'msg' => 'Failed to delete variant']);
         }
     }
 
+
     public function changeStatus()
     {
-        $priId = $this->request->getPost('pri_Id'); // primary image ID
-        $newStatus = $this->request->getPost('pri_Status'); // 1 = active, 2 = inactive
+        $prvId = $this->request->getPost('prv_Id');
+        $newStatus = $this->request->getPost('prv_Status'); // 1 = active, 2 = inactive
 
-        $productImageModel = new \App\Models\Admin\ProductImageModel();
-        $image = $productImageModel->getImageById($priId);
+        $db = \Config\Database::connect();
+        $variantBuilder = $db->table('product_variants');
 
-        if (!$image) {
+        // 1️⃣ Get the variant (to know which pri_Id it belongs to)
+        $variant = $variantBuilder->where('prv_Id', $prvId)->get()->getRow();
+
+        if (!$variant) {
             return $this->response->setJSON([
                 'success' => false,
-                'message' => 'Image Not Found'
+                'message' => 'Variant Not Found'
             ]);
         }
 
-        $update = $productImageModel->updateImage($priId, ['pri_Status' => $newStatus]);
+        // 2️⃣ Update the variant status
+        $update = $variantBuilder
+            ->where('prv_Id', $prvId)
+            ->update(['prv_Status' => $newStatus]);
 
         if ($update) {
+            // 3️⃣ Get the pri_Id of this variant
+            $priId = $variant->pri_id;
+
+            // 4️⃣ Count all ACTIVE variants under the same pri_Id
+            $activeVariants = $db->table('product_variants')
+                ->where('pri_Id', $priId)
+                ->where('prv_Status', 1)
+                ->countAllResults();
+
+            // 5️⃣ Update product_image based on active variant count
+            $imageStatus = ($activeVariants > 0) ? 1 : 2;
+
+            $db->table('product_image')
+                ->where('pri_Id', $priId)
+                ->update(['pri_Status' => $imageStatus]);
+
+            // 6️⃣ Return success JSON
             return $this->response->setJSON([
                 'success' => true,
-                'message' => 'Product Image Status Updated Successfully!',
+                'message' => 'Product Variant Status Updated Successfully!',
                 'new_status' => $newStatus
             ]);
         } else {
             return $this->response->setJSON([
                 'success' => false,
-                'message' => 'Failed To Update Product Image Status'
+                'message' => 'Failed To Update Product Variant Status'
             ]);
         }
     }
-
 
 
 }

@@ -33,7 +33,7 @@
                             <tbody>
 
                                 <?php foreach ($cartItems as $item): ?>
-                                    <tr data-cartid="<?= esc($item['cart_Id']) ?>">
+                                    <tr data-cartid="<?= esc($item['cart_Id']) ?>" class="cart-row">
                                         <td class="cart__product__item">
                                             <?php
                                             $designImage = !empty($item['front_Image']) ? $item['front_Image'] : null;
@@ -48,12 +48,31 @@
                                                     <img src="<?= base_url('uploads/designs/' . $image) ?>" alt="Product Image">
                                                 </a>
                                             <?php else: ?>
-                                                <img src="<?= base_url('uploads/productmedia/' . ($item['pri_Thumbnail'] ?? 'default.jpg')) ?>" alt="Product Image">
+                                                <img src="<?= base_url('uploads/productmedia/' . ($item['pri_Thumbnail'] ?? 'default.jpg')) ?>"
+                                                    alt="Product Image">
                                             <?php endif; ?>
 
                                             <div class="cart__product__item__title">
                                                 <h6><?= esc($item['pr_Name']) ?></h6>
-                                                <p>Size: <?= !empty($item['prv_Size']) ? esc($item['prv_Size']) : '-' ?></p>
+                                                <?php
+                                                $sizeOptions = json_decode($item['size_options'], true) ?? [];
+                                                $currentSize = $item['cart_Size'] ?? '';
+                                                ?>
+                                                <div class="size-cart-drop">
+
+                                                    <label>Size:</label>
+                                                    <select class="form-select cart-size-dropdown px-3"
+                                                        data-cart-id="<?= esc($item['cart_Id']) ?>"
+                                                        data-pri-id="<?= esc($item['pri_Id']) ?>">
+                                                        <?php foreach ($sizeOptions as $opt): ?>
+                                                            <option value="<?= esc($opt['prv_Id']) ?>"
+                                                                data-price="<?= esc($opt['prv_price']) ?>"
+                                                                <?= ($opt['prv_Size'] == $currentSize) ? 'selected' : '' ?>>
+                                                                <?= esc($opt['prv_Size']) ?>
+                                                            </option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                </div>
 
                                                 <div class="rating">
                                                     <i class="fa fa-star"></i>
@@ -64,23 +83,25 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="cart__price">₹ <?= !empty($item['prv_price']) ? esc($item['prv_price']) : '0' ?></td>
+                                        <td class="cart__price">₹
+                                            <?= !empty($item['cart_Price']) ? esc($item['cart_Price']) : '0' ?>
+                                        </td>
 
                                         <td class="cart__quantity">
                                             <div class="pro-qty">
                                                 <input type="text" value="<?= esc($item['cart_Quantity']) ?>">
                                             </div>
                                         </td>
-                                        <td class="cart__total">₹
-                                            <?= number_format($item['prv_price'] * $item['cart_Quantity'], 2) ?>
-                                        </td>
+                                        <td class="cart__total" data-price="<?= esc($item['cart_Price']) ?>"
+                                            data-quantity="<?= esc($item['cart_Quantity']) ?>">₹0.00</td>
+
                                         <td class="cart__close">
                                             <!-- <span class="icon_close cart-remove"
                                                 data-cart-id="<?= esc($item['cart_Id']) ?>"></span> -->
-                                                <span class="cart-remove" data-cart-id="<?= esc($item['cart_Id']) ?>">
-                                                <i class="bi bi-trash3-fill"  ></i>
+                                            <span class="cart-remove" data-cart-id="<?= esc($item['cart_Id']) ?>">
+                                                <i class="bi bi-trash3-fill"></i>
 
-                                                </span>
+                                            </span>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -108,11 +129,11 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="discount__content">
-                    <h6>Discount codes</h6>
+                    <!-- <h6>Discount codes</h6>
                     <form action="#">
                         <input type="text" placeholder="Enter your coupon code">
                         <button type="submit" class="site-btn">Apply</button>
-                    </form>
+                    </form> -->
                 </div>
             </div>
             <div class="col-lg-4 offset-lg-2">
@@ -122,14 +143,10 @@
                     $calculatedTotal = 0;
                     if (!empty($cartItems)) {
                         foreach ($cartItems as $item) {
-                            $calculatedTotal += $item['prv_price'] * $item['cart_Quantity'];
+                            $calculatedTotal += $item['cart_Price'] * $item['cart_Quantity'];
                         }
                     }
                     ?>
-                    <!-- <ul>
-                        <li>Subtotal <span id="subtotal-amount">₹ <?= number_format($calculatedTotal, 2) ?></span></li>
-                        <li>Total <span id="total-amount">₹ <?= number_format($calculatedTotal, 2) ?></span></li>
-                    </ul> -->
                     <ul>
                         <li>Subtotal <span id="subtotal-amount">₹ 0.00</span></li>
                         <li>Total <span id="total-amount">₹ 0.00</span></li>

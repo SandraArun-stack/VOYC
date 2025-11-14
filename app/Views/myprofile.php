@@ -68,6 +68,9 @@
         </div>
     </div>
 </div>
+</div>
+</div>
+</section>
 <!-- Edit Profile Modal -->
 <div class="modal fade" id="editProfileModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">

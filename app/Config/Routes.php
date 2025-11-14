@@ -7,7 +7,10 @@ use CodeIgniter\Router\RouteCollection;
  */
 /* GET METHODS */
 $routes->get('/', 'Home::index');
-
+//forgot password
+$routes->post('forgotPassword', 'ForgotPassword::forgotPassword');
+$routes->get('resetPassword/(:any)', 'ForgotPassword::resetPassword/$1');
+$routes->post('updatePassword', 'ForgotPassword::updatePassword');
 //shop
 $routes->get('men', 'Shop::index');
 $routes->get('women', 'Shop::index');
@@ -27,6 +30,7 @@ $routes->get('cart', 'Cart::index');
 $routes->get('cart/(:num)', 'Cart::index/$1');
 $routes->post('cart/remove', 'Cart::remove');
 $routes->post('cart/updateQuantity', 'Cart::updateQuantity');
+$routes->post('cart/updateCartSize', 'Cart::updateCartSize');
 $routes->post('addToCart', 'ProductDetail::addToCart');
 
 //Tshirt Customisation

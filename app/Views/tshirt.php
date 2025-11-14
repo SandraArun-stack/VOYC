@@ -24,10 +24,10 @@
                     <input type="hidden" name="prId" value="<?= isset($prId) ? esc($prId) : ''; ?>">
                     <input type="hidden" name="priId" value="<?= isset($priId) ? esc($priId) : ''; ?>">
                     <div class="row">
-                        <div class="col-md-6 w-100 pr-0 pb-3 my_design_btn">
+                        <!-- <div class="col-md-6 w-100 pr-0 pb-3 my_design_btn">
                             <button id="saveBtn" class="btn btn-dark text-end">Save My Design</button>
 
-                        </div>
+                        </div> -->
                     </div>
                     <div class="row">
                         <div class="sidebar">
@@ -45,24 +45,24 @@
                                     Add Text
                                 </p>
                             </div>
-                            <div class="sidebar-item" data-view="add_art">
+                            <!-- <div class="sidebar-item" data-view="add_art">
                                 <img src="<?= base_url() . ASSET_PATH; ?>assets/img/customize/landscape-w.png"
                                     alt="Add Art Icon" class="sidebar-icon" /><br />
                                 <p class="m-0">
                                     Add Art
                                 </p>
-                            </div>
+                            </div> -->
                             <div class="sidebar-item" data-view="product_colors">
                                 <img src="<?= base_url() . ASSET_PATH; ?>assets/img/customize/change-w.png"
                                     alt="Product Colors Icon" class="sidebar-icon" /><br />
                                 <p class="m-0">
-                                    Product<br>Colors
+                                    Change<br>Product
                                 </p>
                             </div>
                         </div>
 
                         <div class="main-content p-3" id="controls">
-                            <div id="customize_main_ui">
+                            <div id="customize_main_ui" class="pl-5">
                                 <h2>What's next for you?</h2>
                                 <div class="options">
                                     <div class="option" data-view="upload">
@@ -75,11 +75,11 @@
                                             alt="Add Text">
                                         <div>Add Text</div>
                                     </div>
-                                    <div class="option" data-view="add_art">
+                                    <!-- <div class="option" data-view="add_art">
                                         <img src="<?= base_url() . ASSET_PATH; ?>assets/img/customize/landscape.png"
                                             alt="Add Art">
                                         <div>Add Art</div>
-                                    </div>
+                                    </div> -->
                                     <div class="option" data-view="product_colors">
                                         <img src="<?= base_url() . ASSET_PATH; ?>assets/img/customize/change.png"
                                             alt="Change Products">
@@ -148,7 +148,7 @@
                                                 <div class="col-md-6">
                                                     <div class="d-flex flex-column">
                                                         <p class="upload__image mb-0">
-                                                            <b>Upload Image</b>
+                                                            <b>Upload Size</b>
                                                         </p>
                                                         <p class="height__width mt-0">Width * Height(cm)</p>
                                                     </div>
@@ -182,7 +182,21 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row">
+                                            <div class="row mt-2">
+                                                <div class="col-md-12">
+                                                    <div class="d-flex align-items-center justify-content-between">
+                                                        <p class="mb-1"><b>Remove Background</b></p>
+
+                                                        <div class="form-check form-switch background__remover">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                id="toggle-bg-remove">
+                                                            <label class="form-check-label"
+                                                                for="toggle-bg-remove"></label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2">
                                                 <div class="col-md-12">
                                                     <div class="d-flex align-items-center spec__feature__gap">
                                                         <div
@@ -193,22 +207,11 @@
                                                             </button>
                                                             <small>Center</small>
                                                         </div>
-
-                                                        <!-- <div
-                                                            class="customisation__features__center d-flex flex-column align-items-center">
-                                                            <button class="btn center__image__btn">
-                                                                <div class="layer__icons">
-                                                                    <i class="bi bi-layers-half center__image"></i>
-                                                                    <i class="bi bi-layers-half center__image"></i>
-                                                                    
-                                                                </div>
-                                                            </button>
-                                                            <small>Layering</small>
-                                                        </div> -->
                                                         <div
                                                             class="customisation__features__center d-flex flex-column align-items-center">
                                                             <div class="layer__icons">
-                                                                <button id="layer-up" class="btn center__image__btn">
+                                                                <button id="layer-up"
+                                                                    class="btn center__image__btn layer-up-btn">
                                                                     <i class="bi bi-layers-half center__image"></i>
                                                                 </button>
                                                                 <button id="layer-down" class="btn center__image__btn">
@@ -217,9 +220,26 @@
                                                             </div>
                                                             <small>Layering</small>
                                                         </div>
+                                                        <div
+                                                            class="customisation__features__center d-flex flex-column align-items-center">
+                                                            <div class="icons__fliping">
+                                                                <button id="horizontal__flip"
+                                                                    class="btn center__image__btn ">
+                                                                    <i class="bi bi-symmetry-horizontal"></i>
+                                                                </button>
+                                                                <button id="vertical__flip"
+                                                                    class="btn center__image__btn">
+                                                                    <i class="bi bi-symmetry-vertical"></i>
+                                                                </button>
+                                                            </div>
+                                                            <small>Flip</small>
+                                                        </div>
+
                                                     </div>
                                                 </div>
                                             </div>
+
+
                                         </div>
                                     </div>
                                 </div>
@@ -227,46 +247,53 @@
 
                             <!-- Add Text View -->
                             <div id="view-add_text" class="view-section d-none p-4 w-100">
-                                <h2 class="mb-4">Add Text</h2>
-                                <p class="mb-3">Enter your message on selected Text.</p>
+                                <h3 class="mb-2">Customize Text</h3>
+                                <div class="d-flex justify-content-between mt-2">
+                                    <label class="mb-1">Enter the Text on selected Box</label>
 
-                                <button id="addText" class="btn btn-dark mt-2 w-100">+ Add Text</button>
+                                    <button id="addText" class="btn btn-dark">+ Add Text</button>
 
 
-                                <div class="">
-                                    <label for="fontFamily" class="form-label fw-semibold text-center">Font</label>
-                                    <button id="openFontPicker" class="btn btn-outline-secondary w-100">Choose Font
-                                        Style</button>
+                                </div>
+
+                                <div class="d-flex justify-content-between mt-2">
+                                    <label for="fontFamily" class="form-label fw-semibold text-center">Choose Font Style</label>
+                                    <button id="openFontPicker" class="btn btn-outline-secondary ">Fonts</button>
                                 </div>
                                 <!-- Available font listing -->
-                                <div id="fontPickerContainer" class="d-none p-4 border rounded" style="">
+                                <div id="fontPickerContainer" class="d-none p-4 border rounded mt-2" style="">
                                     <div class="row g-3">
                                         <!-- Font items will be injected here -->
                                     </div>
                                 </div>
 
-                                <div class="d-flex flex-wrap">
-                                    <label class="form-label">Text Color &nbsp;</label>
+                                <div class="d-flex flex-wrap justify-content-between mt-2">
+                                    <label class="form-label">Choose Text Color </label>
                                     <input type="color" id="textColor" value="#000000"
                                         class="form-control form-control-color" title="Choose your color">
 
                                 </div>
-                                <div class="d-flex flex-wrap">
+                                <div class="d-flex flex-wrap justify-content-between mt-2">
                                     <label for="fontSize" class="form-label">Font Size &nbsp; </label>
                                     <input type="range" id="fontSize" class="form-range" min="10" max="80" value="20">
                                 </div>
-                                <div class="mb-3 d-flex gap-4">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="boldToggle">
+                                <div class="mb-3 d-flex justify-content-between text__spec mt-2">
+                                    <div class="form-check w-100 pl-0">
                                         <label class="form-check-label fw-semibold" for="boldToggle">
                                             Bold
                                         </label>
+                                        <input class="form-check-input" type="checkbox" id="boldToggle">
+
                                     </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="italicToggle">
+
+                                </div>
+                                <div class="mb-3 d-flex justify-content-between text__spec mt-2">
+                                    <div class="form-check w-100 pl-0">
                                         <label class="form-check-label fw-semibold" for="italicToggle">
                                             Italic
                                         </label>
+                                        <input class="form-check-input" type="checkbox" id="italicToggle">
+
                                     </div>
                                 </div>
                             </div>
@@ -286,7 +313,7 @@
 
                             <div id="view-product_colors" class="view-section d-none">
                                 <h2>Choose Product Color</h2>
-                                <div class="mt-3">
+                                <!-- <div class="mt-3">
                                     <label>Available Colors for this Product:</label>
                                     <div class="card p-3 shadow-sm">
                                         <div class="d-flex flex-wrap color_small_container">
@@ -306,9 +333,10 @@
                                             <?php endif; ?>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
+
                                 <!-- Sizes -->
-                                <div class="mt-3">
+                                <!-- <div class="mt-3">
                                     <label>Available Sizes</label>
                                     <div class="card p-3 shadow-sm">
                                         <div class="d-flex flex-wrap size_container" id="sizeContainer">
@@ -340,7 +368,7 @@
 
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
 
                             </div>
                             <!-- <div class="bottom-text">
@@ -407,7 +435,7 @@
                 <div class="card shadow-sm border-0 rounded-4">
                     <div class="card-header customisation__summary_header">
                         <h4 class="fw-bolb">
-                            Customisation Summary
+                            Customization Summary
                         </h4>
                     </div>
                     <div class="card-body">
@@ -446,28 +474,28 @@
                                     <div class="design-option d-flex justify-content-between align-items-center py-2 mb-1"
                                         data-type="front">
                                         <label class="mb-0 d-flex align-items-center">
-                                            <input type="checkbox" class="design-check me-2"> Front Design
+                                            <input type="checkbox" class="design-check me-2" disabled> Front Design
                                         </label>
                                     </div>
 
                                     <div class="design-option d-flex justify-content-between align-items-center py-2 mb-1"
                                         data-type="back">
                                         <label class="mb-0 d-flex align-items-center">
-                                            <input type="checkbox" class="design-check me-2"> Back Design
+                                            <input type="checkbox" class="design-check me-2" disabled> Back Design
                                         </label>
                                     </div>
 
                                     <div class="design-option d-flex justify-content-between align-items-center py-2 mb-1"
                                         data-type="right">
                                         <label class="mb-0 d-flex align-items-center">
-                                            <input type="checkbox" class="design-check me-2"> Right Sleeve
+                                            <input type="checkbox" class="design-check me-2" disabled> Right Sleeve
                                         </label>
                                     </div>
 
                                     <div class="design-option d-flex justify-content-between align-items-center py-2 mb-1"
                                         data-type="left">
                                         <label class="mb-0 d-flex align-items-center">
-                                            <input type="checkbox" class="design-check me-2"> Left Sleeve
+                                            <input type="checkbox" class="design-check me-2" disabled> Left Sleeve
                                         </label>
                                     </div>
 
@@ -521,6 +549,10 @@
                                     <div class="d-flex justify-content-between pt-3 mt-3 border-top">
                                         <span class="fw-bold">Total:</span>
                                         <span class="fw-bold text-primary" id="priceTotal"></span>
+                                    </div>
+
+                                    <div class="d-flex justify-content-end pt-3 mt-3 border-top">
+                                        <button class="btn btn-dark" id="saveBtn">Add To Cart</button>
                                     </div>
                                 </div>
                             </div>

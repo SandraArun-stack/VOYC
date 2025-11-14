@@ -1,36 +1,111 @@
 <script>
 
     function updateGrandTotal() {
-        var grandTotal = 0;
+        //     var grandTotal = 0;
+        //     $('.cart__total').each(function () {
+        //         grandTotal += parseFloat($(this).text().replace(/[^\d.]/g, ''));
+        //     });
+        //     $('#grandTotal').text('₹ ' + grandTotal.toFixed(2));
+        // }
+        let grandTotal = 0;
+
         $('.cart__total').each(function () {
-            grandTotal += parseFloat($(this).text().replace(/[^\d.]/g, ''));
+            let price = parseFloat($(this).data('price')) || 0;
+            let qty = parseInt($(this).data('quantity')) || 0;
+            let total = price * qty;
+
+            $(this).text('₹ ' + total.toFixed(2));
+            grandTotal += total;
         });
+
         $('#grandTotal').text('₹ ' + grandTotal.toFixed(2));
     }
 
+    // function recalcCartTotal() {
+    //     var subtotal = 0;
+
+    //     $('.cart__total').each(function () {
+    //         // Get the text, remove currency symbol and commas
+    //         var totalText = $(this).text().replace(/[^\d.]/g, '');
+    //         subtotal += parseFloat(totalText) || 0;
+    //     });
+
+    //     // Update subtotal and total
+    //     $('#subtotal-amount').text('₹ ' + subtotal.toFixed(2));
+    //     $('#total-amount').text('₹ ' + subtotal.toFixed(2));
+    // }
+
     function recalcCartTotal() {
-        var subtotal = 0;
+        let subtotal = 0;
 
         $('.cart__total').each(function () {
-            // Get the text, remove currency symbol and commas
-            var totalText = $(this).text().replace(/[^\d.]/g, '');
-            subtotal += parseFloat(totalText) || 0;
+            let value = parseFloat($(this).text().replace(/[^\d.]/g, '')) || 0;
+            subtotal += value;
         });
 
-        // Update subtotal and total
         $('#subtotal-amount').text('₹ ' + subtotal.toFixed(2));
         $('#total-amount').text('₹ ' + subtotal.toFixed(2));
     }
 
 
     $(document).ready(function () {
+        $('.cart-size-dropdown').on('change', function () {
+            const $dropdown = $(this);
+            const cartId = $dropdown.data('cart-id');
+            const selected = $dropdown.find('option:selected');
+            const prvId = selected.val();
+            const cartSize = selected.text().split('(')[0].trim(); // "M"
+            const cartPrice = parseFloat(selected.data('price')) || 0;
+
+            // Row and quantity
+            const $row = $dropdown.closest('tr');
+            const $qtyInput = $row.find('.pro-qty input');
+            const qty = parseInt($qtyInput.val(), 10) || 1;
+
+            // Update price cell (visible)
+            $row.find('.cart__price').text('₹ ' + cartPrice.toFixed(2));
+
+            // Update cart__total: set text, attr and jQuery data for price & quantity
+            const total = cartPrice * qty;
+            const $totalCell = $row.find('.cart__total');
+
+            $totalCell.text('₹ ' + total.toFixed(2));
+            $totalCell.attr('data-price', cartPrice);
+            $totalCell.attr('data-quantity', qty);
+            $totalCell.data('price', cartPrice);      // update jQuery data cache
+            $totalCell.data('quantity', qty);
+
+            // Recalculate totals UI
+            updateGrandTotal();
+            recalcCartTotal();
+
+            // AJAX update DB
+            $.ajax({
+                url: "<?= base_url('cart/updateCartSize') ?>",
+                type: 'POST',
+                data: {
+                    cart_Id: cartId,
+                    prv_Id: prvId,
+                    cart_Size: cartSize,
+                    cart_Price: cartPrice
+                },
+                dataType: 'json'
+            }).done(function (res) {
+                if (res.status !== 1) {
+                    alert(res.message || 'Failed to update size.');
+                }
+            }).fail(function () {
+                alert('Error updating cart.');
+            });
+        });
+
 
         $(document).on('click', '.cart-remove', function () {
             const cartId = $(this).attr('data-cart-id');
-            if (!cartId) {
-                alert('Cart ID missing');
-                return;
-            }
+            // if (!cartId) {
+            //     alert('Cart ID missing');
+            //     return;
+            // }
             const row = $(this).closest('tr');
 
             $.ajax({
@@ -42,6 +117,8 @@
                 success: function (response) {
                     if (response.status === 'success') {
                         row.remove();
+                        updateGrandTotal();
+                        recalcCartTotal();
                     } else {
                         alert('Failed to remove item.');
                     }
@@ -73,8 +150,11 @@
         proQty.prepend('<span class="dec qtybtn">-</span>');
         proQty.append('<span class="inc qtybtn">+</span>');
 
-        recalcCartTotal();
+        // recalcCartTotal();
         updateGrandTotal();
+        setTimeout(() => {
+            recalcCartTotal();
+        }, 100);
 
         $('.pro-qty').on('click', '.qtybtn', function () {
             var $button = $(this);

@@ -35,22 +35,6 @@
     // });
 
     $(document).ready(function () {
-        $(".show-after").hide();
-        const video = document.querySelector(".video-section video");
-
-        const hasPlayedThisSession = sessionStorage.getItem("videoPlayedOnce");
-
-        if (hasPlayedThisSession) {
-            $(".video-section").hide();
-            showMainContent();
-        } else {
-            if (video) {
-                video.addEventListener("ended", runSequence);
-            } else {
-                setTimeout(runSequence, 2000);
-            }
-        }
-
         function runSequence() {
             $(".video-section").fadeOut(800, function () {
                 showMainContent();
@@ -65,6 +49,51 @@
                 });
             });
         }
+        $(".show-after").hide();
+        const video = document.querySelector(".video-section video");
+        const skipBtn = $("#skipVideoBtn");
+
+        const hasPlayedThisSession = sessionStorage.getItem("videoPlayedOnce");
+
+        if (hasPlayedThisSession) {
+            $(".video-section").hide();
+            showMainContent();
+        } else {
+            setTimeout(() => {
+                skipBtn.fadeIn(400);
+            }, 2000);
+
+            skipBtn.on("click", function () {
+                runSequence();
+            });
+            if (video) {
+                video.addEventListener("ended", runSequence);
+            } else {
+                setTimeout(runSequence, 2000);
+            }
+        }
+
+        $(".filter__controls li").on("click", function () {
+
+            let filter = $(this).data("filter");
+
+            $(".filter__controls li").removeClass("active");
+            $(this).addClass("active");
+
+            if (filter === "all") {
+                $(".product-box").show();
+            } else {
+                $(".product-box").hide();
+                $("." + filter).show();
+            }
+
+            if ($(".product-box:visible").length === 0) {
+                $("#no-products-message").show();
+            } else {
+                $("#no-products-message").hide();
+            }
+        });
+
     });
 
 </script>

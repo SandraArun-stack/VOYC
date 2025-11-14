@@ -179,6 +179,14 @@
 
     // --- UI bindings ---
     $(document).ready(function () {
+        const authModal = new bootstrap.Modal(document.getElementById('authModal'), {
+            backdrop: true,
+            keyboard: true
+        });
+
+        $('.login_close').on('click', function (e) {
+            authModal.hide();
+        });
 
         loadCanvasState(currentView);
         initThumbClick();
@@ -250,32 +258,6 @@
 
         let uploadedImagesBase64 = [];
 
-        // $("#uploadImage").on("change", function (e) {
-        //     const files = e.target.files;
-        //     if (!files.length) return;
-
-        //     uploadedImagesBase64 = [];
-
-        //     Array.from(files).forEach((file, index) => {
-        //         const reader = new FileReader();
-
-        //         reader.onload = function (f) {
-        //             const base64Data = f.target.result;
-        //             uploadedImagesBase64.push(base64Data);
-
-        //             fabric.Image.fromURL(base64Data, function (img) {
-        //                 img.scaleToWidth(150);
-        //                 img.set({ left: 100 + index * 20, top: 150 + index * 20 });
-        //                 canvas.add(img).setActiveObject(img);
-        //                 canvas.renderAll();
-        //             });
-        //         };
-
-        //         reader.readAsDataURL(file);
-        //     });
-
-        //     $("#uploadImage").val("");
-        // });
 
         $("#resetOverlayBtn").on("click", resetOverlayToBackground);
 
@@ -303,18 +285,108 @@
 
         let selectedSize = null;
 
-        $(document).on('click', '.selectable-size', function () {
-            $('.selectable-size').removeClass('selected');
-            $(this).addClass('selected');
-            selectedSize = $(this).data('prv-id');
+        // $(document).on('click', '.selectable-size', function () {
+        //     $('.selectable-size').removeClass('selected');
+        //     $(this).addClass('selected');
+        //     selectedSize = $(this).data('prv-id');
+        // });
+        let quantity = 1;
+
+        function getBasePrice() {
+            let totalText = $('#priceProduct').text();
+            return parseFloat(totalText.replace(/[^\d\.]/g, '')) || 0;
+        }
+
+        let basePrice = getBasePrice();
+
+
+        function updatePreview() {
+            let total = basePrice * quantity;
+            let previewHTML = "";
+
+            $(".design-check:checked").each(function () {
+                const type = $(this).closest(".design-option").data("type");
+                const data = designData[type];
+
+                if (!data || typeof data.price !== "number") {
+                    console.warn("Missing designData for type:", type);
+                    return;
+                }
+
+                total += data.price * quantity;
+
+                previewHTML += `
+                <div class="text-center">
+                    <img src="${data.img}" alt="${type}">
+                    <p class="text-capitalize mb-0">${type} design</p>
+                </div>
+            `;
+
+                $(`#${type}`)
+                    .addClass("active")
+                    .find(`span[id^='price']`)
+                    .text(`+ ₹${data.price}`);
+            });
+
+            // Hide entries for unchecked items
+            $(".design-option").each(function () {
+                const type = $(this).data("type");
+                const checkbox = $(this).find(".design-check");
+                if (!checkbox.is(":checked")) {
+                    $(`#${type}`)
+                        .removeClass("active")
+                        .find(`span[id^='price']`)
+                        .text("+ ₹0");
+                }
+            });
+
+            $(".selected-items").html(previewHTML);
+            $("#priceTotal").text("₹" + total.toFixed(2));
+        }
+
+        $('.qty-btn-custom.plus-custom').click(function () {
+            let $wrapper = $(this).closest('.quantity-wrapper-custom');
+            let $value = $wrapper.find('.quantity-value-custom');
+            quantity = parseInt($value.text()) + 1;
+            $value.text(quantity);
+            updatePreview(); // recalc total
         });
+
+        // ✅ Quantity decrement
+        $('.qty-btn-custom.minus-custom').click(function () {
+            let $wrapper = $(this).closest('.quantity-wrapper-custom');
+            let $value = $wrapper.find('.quantity-value-custom');
+            let currentQty = parseInt($value.text());
+
+            if (currentQty > 1) {
+                quantity = currentQty - 1;
+                $value.text(quantity);
+                updatePreview(); // recalc total
+            }
+        });
+
+        // Bind change event
+        $(".design-check").on("change", function () {
+            updatePreview();
+        });
+
+
+
+        // Initial update
+        updatePreview();
+        // const totalPrice = $("#priceTotal").text().replace(/[^\d\.]/g, '');
 
         $("#saveBtn").on("click", function () {
 
-            // debugger;
+            var $btn = $(this);
+
             var $alertBox = $('#design_msg_alert');
             saveCurrentCanvasState();
 
+            $btn.prop('disabled', true).text('Processing...');
+
+            let totalText = $("#priceTotal").text();
+            let totalPrice = parseFloat(totalText.replace(/[^\d\.]/g, '')) || 0;
             const designs = {};
 
             const visibleImagesBase64 = [];
@@ -383,10 +455,7 @@
                 });
             });
 
-            const authModal = new bootstrap.Modal(document.getElementById('authModal'), {
-                backdrop: true,
-                keyboard: true
-            });
+
             Promise.all(exportAll).then(() => {
 
                 $.ajax({
@@ -401,7 +470,9 @@
                         uploadedImages: JSON.stringify(visibleImagesBase64),
                         prId: $('input[name="prId"]').val(),
                         priId: $('input[name="priId"]').val(),
-                        prvId: selectedSize
+                        quantity: quantity,
+                        totalPrice: totalPrice,
+                        // prvId: selectedSize
                     },
 
                     success: function (response) {
@@ -409,6 +480,7 @@
                             authModal.show();
                             $('#loginView').show();
                             $('#registerView').hide();
+                            $('#forgotPassView').hide();
                             return;
                         } else if (response.status === 'success') {
                             $alertBox
@@ -577,10 +649,23 @@
 
         canvasStates[currentView].overlay = updatedImage;
 
-        if (designData[currentView]) {
-            designData[currentView].img = updatedImage;
-        }
+        // if (designData[currentView]) {
+        //     designData[currentView].img = updatedImage;
+        // }
         //31-10
+        const viewMap = {
+            RSleeve: 'right',
+            RSleeve_Img: 'right',
+            LSleeve: 'left',
+            LSleeve_Img: 'left'
+        };
+
+        const mappedKey = viewMap[currentView] || currentView;
+
+        if (designData[mappedKey]) {
+            designData[mappedKey].img = updatedImage;
+        }
+
     }
 
     function loadCanvasState(view) {
@@ -619,6 +704,12 @@
         $('#customize_main_ui').addClass('d-none');
         $('.view-section').addClass('d-none');
         $('#view-' + viewId).removeClass('d-none');
+
+        if (viewId !== 'upload') {
+            $('#view-spec-upload-image').addClass('d-none');
+        }
+
+        window.currentView = viewId;
     });
 
     $('#openFontPicker').on('click', function () {
@@ -688,96 +779,34 @@
         }
     };
 
-    $(document).ready(function () {
+    // function updateCheckboxState() {
+    //     const hasObjects = canvas.getObjects().some(obj => !obj.isOverlay);
+    //     const checkbox = $(`.design-option[data-type="${currentView}"] .design-check`);
+    //     checkbox.prop('disabled', !hasObjects);
+    //     if (!hasObjects) checkbox.prop('checked', false);
+    // }
+
+    function updateCheckboxState() {
+        const viewMap = {
+            RSleeve: 'right',
+            RSleeve_Img: 'right',
+            LSleeve: 'left',
+            LSleeve_Img: 'left',
+        };
+
+        const typeKey = viewMap[currentView] || currentView;
+        const hasObjects = canvas.getObjects().some(obj => !obj.isOverlay);
+        const checkbox = $(`.design-option[data-type="${typeKey}"] .design-check`);
+
+        checkbox.prop('disabled', !hasObjects);
+        if (!hasObjects) checkbox.prop('checked', false);
+    }
+
+    canvas.on('object:added', updateCheckboxState);
+    canvas.on('object:removed', updateCheckboxState);
+    canvas.on('object:modified', updateCheckboxState);
 
 
-
-        // let totalText = $('#priceProduct').text();
-        // let baseTotal = parseFloat(totalText.replace(/[^\d\.]/g, '')) || 0;
-
-        function getBasePrice() {
-            let totalText = $('#priceProduct').text();
-            return parseFloat(totalText.replace(/[^\d\.]/g, '')) || 0;
-        }
-
-        let basePrice = getBasePrice();
-        let quantity = 1;
-
-        function updatePreview() {
-            let total = basePrice * quantity;
-            let previewHTML = "";
-
-            $(".design-check:checked").each(function () {
-                const type = $(this).closest(".design-option").data("type");
-                const data = designData[type];
-
-                if (!data || typeof data.price !== "number") {
-                    console.warn("Missing designData for type:", type);
-                    return;
-                }
-
-                total += data.price * quantity;
-
-                previewHTML += `
-                <div class="text-center">
-                    <img src="${data.img}" alt="${type}">
-                    <p class="text-capitalize mb-0">${type} design</p>
-                </div>
-            `;
-
-                $(`#${type}`)
-                    .addClass("active")
-                    .find(`span[id^='price']`)
-                    .text(`+ ₹${data.price}`);
-            });
-
-            // Hide entries for unchecked items
-            $(".design-option").each(function () {
-                const type = $(this).data("type");
-                const checkbox = $(this).find(".design-check");
-                if (!checkbox.is(":checked")) {
-                    $(`#${type}`)
-                        .removeClass("active")
-                        .find(`span[id^='price']`)
-                        .text("+ ₹0");
-                }
-            });
-
-            $(".selected-items").html(previewHTML);
-            $("#priceTotal").text("₹" + total.toFixed(2));
-        }
-
-        $('.qty-btn-custom.plus-custom').click(function () {
-            let $wrapper = $(this).closest('.quantity-wrapper-custom');
-            let $value = $wrapper.find('.quantity-value-custom');
-            quantity = parseInt($value.text()) + 1;
-            $value.text(quantity);
-            updatePreview(); // recalc total
-        });
-
-        // ✅ Quantity decrement
-        $('.qty-btn-custom.minus-custom').click(function () {
-            let $wrapper = $(this).closest('.quantity-wrapper-custom');
-            let $value = $wrapper.find('.quantity-value-custom');
-            let currentQty = parseInt($value.text());
-
-            if (currentQty > 1) {
-                quantity = currentQty - 1;
-                $value.text(quantity);
-                updatePreview(); // recalc total
-            }
-        });
-
-        // Bind change event
-        $(".design-check").on("change", function () {
-            updatePreview();
-        });
-
-
-
-        // Initial update
-        updatePreview();
-    });
 
     $(document).ready(function () {
         const dpi = 96;
@@ -849,22 +878,49 @@
         });
 
         // --- When user clicks/selects an image ---
+        // canvas.on("selection:created", function (e) {
+        //     if (!e.selected || e.selected.length === 0) return;
+        //     activeImage = e.selected[0];
+        //     updateImageDimensionsUI(activeImage);
+        //     $("#view-spec-upload-image").removeClass("d-none");
+        // });
+
+        // // --- When user switches selection between objects ---
+        // canvas.on("selection:updated", function (e) {
+        //     if (!e.selected || e.selected.length === 0) return;
+        //     activeImage = e.selected[0];
+        //     updateImageDimensionsUI(activeImage);
+        //     $("#view-spec-upload-image").removeClass("d-none");
+        // });
+
+        // // --- When deselecting all ---
+        // canvas.on("selection:cleared", function () {
+        //     activeImage = null;
+        //     $("#view-spec-upload-image").addClass("d-none");
+        // });
+
         canvas.on("selection:created", function (e) {
             if (!e.selected || e.selected.length === 0) return;
             activeImage = e.selected[0];
             updateImageDimensionsUI(activeImage);
-            $("#view-spec-upload-image").removeClass("d-none");
+
+            // ✅ Show image properties ONLY in upload view
+            if (window.currentView === "upload") {
+                $("#view-spec-upload-image").removeClass("d-none");
+            }
         });
 
-        // --- When user switches selection between objects ---
         canvas.on("selection:updated", function (e) {
             if (!e.selected || e.selected.length === 0) return;
             activeImage = e.selected[0];
             updateImageDimensionsUI(activeImage);
-            $("#view-spec-upload-image").removeClass("d-none");
+
+            // ✅ Show image properties ONLY in upload view
+            if (window.currentView === "upload") {
+                $("#view-spec-upload-image").removeClass("d-none");
+            }
         });
 
-        // --- When deselecting all ---
         canvas.on("selection:cleared", function () {
             activeImage = null;
             $("#view-spec-upload-image").addClass("d-none");
@@ -924,7 +980,7 @@
         $("#center-image").on("click", function () {
             const active = canvas.getActiveObject();
 
-            if (!active || active.type !== "image") {
+            if (!active) {
                 alert("Please select an image first.");
                 return;
             }
@@ -941,6 +997,131 @@
             active.setCoords();
             canvas.renderAll();
         });
+
+        // --- Enable/Disable Layer Buttons depending on image count ---
+        function updateLayerButtonsState() {
+            const imageCount = canvas.getObjects().filter(obj => obj.type === "image").length;
+            const hasMultiple = imageCount > 1;
+
+            $("#layer-up, #layer-down").prop("disabled", !hasMultiple);
+        }
+
+        // --- Check at load ---
+        updateLayerButtonsState();
+
+        // --- Re-check whenever images are added or removed ---
+        canvas.on("object:added", updateLayerButtonsState);
+        canvas.on("object:removed", updateLayerButtonsState);
+
+        // --- Re-enable both when something changes on canvas (selection, modification, etc.) ---
+        canvas.on("selection:created", updateLayerButtonsState);
+        canvas.on("selection:updated", updateLayerButtonsState);
+        canvas.on("object:modified", updateLayerButtonsState);
+
+        // --- Layer Up ---
+        $("#layer-up").on("click", function () {
+            const active = canvas.getActiveObject();
+            if (!active || active.type !== "image") return;
+
+            const allObjects = canvas.getObjects();
+            const currentIndex = allObjects.indexOf(active);
+
+            if (currentIndex < allObjects.length - 1) {
+                canvas.bringForward(active);
+                canvas.renderAll();
+            }
+
+            // Disable temporarily until user triggers another change
+            $(this).prop("disabled", true);
+            $("#layer-down").prop("disabled", false);
+        });
+
+        // --- Layer Down ---
+        $("#layer-down").on("click", function () {
+            const active = canvas.getActiveObject();
+            if (!active || active.type !== "image") return;
+
+            const currentIndex = canvas.getObjects().indexOf(active);
+            if (currentIndex > 0) {
+                canvas.sendBackwards(active);
+                canvas.renderAll();
+            }
+
+            // Disable temporarily until user triggers another change
+            $(this).prop("disabled", true);
+            $("#layer-up").prop("disabled", false);
+        });
+
+        // Add a custom property to track background removal
+        canvas.on('selection:created', updateRemoveBgToggle);
+        canvas.on('selection:updated', updateRemoveBgToggle);
+        canvas.on('selection:cleared', () => {
+            $("#toggle-bg-remove").prop("checked", false);
+        });
+
+        function updateRemoveBgToggle() {
+            const active = canvas.getActiveObject();
+            if (active && active.type === "image") {
+                $("#toggle-bg-remove").prop("checked", !!active.bgRemoved);
+            } else {
+                $("#toggle-bg-remove").prop("checked", false);
+            }
+        }
+
+        // When toggle changes
+        $("#toggle-bg-remove").on("change", function () {
+            const active = canvas.getActiveObject();
+
+            if (!active || active.type !== "image") {
+                alert("Please select an image first.");
+                $(this).prop("checked", false);
+                return;
+            }
+
+            if (this.checked) {
+                // Remove background (simulation)
+                active.filters.push(new fabric.Image.filters.RemoveColor({
+                    color: '#ffffff', // target color
+                    distance: 0.2
+                }));
+                active.applyFilters();
+                active.bgRemoved = true; // store custom flag
+                canvas.renderAll();
+            } else {
+                // Reset background
+                active.filters = [];
+                active.applyFilters();
+                active.bgRemoved = false;
+                canvas.renderAll();
+            }
+        });
+
+        // --- Flip functionality ---
+        $("#horizontal__flip").on("click", function () {
+            const active = canvas.getActiveObject();
+            if (!active) {
+                alert("Please select an image to flip horizontally.");
+                return;
+            }
+
+            // Toggle horizontal flip
+            active.set("flipX", !active.flipX);
+            canvas.renderAll();
+        });
+
+        $("#vertical__flip").on("click", function () {
+            const active = canvas.getActiveObject();
+            if (!active) {
+                alert("Please select an image to flip vertically.");
+                return;
+            }
+
+            // Toggle vertical flip
+            active.set("flipY", !active.flipY);
+            canvas.renderAll();
+        });
+
+
 
     });
 

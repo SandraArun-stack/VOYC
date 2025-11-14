@@ -15,6 +15,21 @@
     z-index: 11;
 }
 
+.video__skip_button {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    padding: 7px 16px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    border: 1px solid white;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 9999;
+    display: none;
+}
+
 #categoriesModal {
     box-shadow: 0 0 15px 2px #ffffff4d;
 }
@@ -375,10 +390,22 @@ input[type="file"] {
 
 /* Style the color input */
 #textColor.form-control-color {
-    height: 30px;
-    width: 65px;
+    width: 122px;
+    height: 37px;
     padding: 0;
     border: 1px solid #ced4da;
+    border-radius: 6px;
+    background: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+#textColor.form-control-color::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+#textColor.form-control-color::-webkit-color-swatch {
+    border: none;
     border-radius: 6px;
 }
 
@@ -386,28 +413,46 @@ input[type="file"] {
 #fontSize.form-range {
     accent-color: #343a40;
     height: 1.5rem;
+    width: 121px;
 }
 
 /* Style checkboxes */
-.form-check-input {
-    width: 14px;
-    height: 14px;
+.text__spec .form-check-input {
+    width: 26px;
+    height: 21px;
     cursor: pointer;
     border-radius: 4px;
     border: 1px solid #6c757d;
-    margin-top: 7px;
+    /* margin-top: 7px; */
     transition: background-color 0.2s ease;
+    right: 0;
 }
 
-.form-check-input:checked {
+.text__spec .form-check-input:checked {
     background-color: #343a40;
     border-color: #343a40;
 }
 
+#addText,
+#openFontPicker {
+    width: 122px !important;
+}
+
+#openFontPicker {
+    color: white !important;
+    border-color: #343a40 !important;
+    background: #343a40 !important;
+}
+
+
+#textColor {
+    width: 122px;
+    height: 37px;
+}
 
 .form-check-label {
-    font-size: 15px;
-    margin-left: 6px;
+    /* font-size: 15px; */
+    /* margin-left: 6px; */
     cursor: pointer;
 }
 
@@ -421,11 +466,18 @@ input[type="file"] {
     border-color: #6c757d;
 }
 
-.fontPickerContainer {
+/* .fontPickerContainer {
     max-height: 300px;
     width: 300px;
     overflow-y: auto;
     overflow-x: hidden;
+} */
+#fontPickerContainer {
+    max-height: 300px;
+    width: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    white-space: nowrap;
 }
 
 .font-option.active {
@@ -697,6 +749,10 @@ input[type="file"] {
     width: 90px;
 }
 
+#forgotPassView img {
+    width: 90px;
+}
+
 
 .logout_btns_container {
     gap: 15px;
@@ -809,20 +865,12 @@ input[type="file"] {
     color: #000000 !important;
 }
 
-/* Hover effect for items */
-/* #userDropDown .dropdown-item:hover {
-    background-color: #333 !important;
-    color: #fff !important;
-} */
-
-/* Optional: make the dropdown toggle text white */
 #userDropDown .dropdown-toggle {
     color: #fff !important;
 }
 
 .profile-person {
     font-size: 22px;
-    margin-left: 15px;
 }
 
 #leader_board {
@@ -1329,6 +1377,185 @@ input[type="file"] {
     align-items: center;
     justify-content: center;
     gap: 6px;
+}
+
+#layer-up:disabled,
+#layer-down:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.layer-up-btn {
+    background-color: #000;
+    color: #fff;
+}
+
+.form-check.form-switch {
+    padding-left: 0;
+}
+
+.background__remover .form-check-input {
+    width: 33px;
+    height: 19px;
+    background-color: #ccc !important;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    bottom: 5px;
+}
+
+.background__remover .form-check-input:checked {
+    background-color: #000 !important;
+}
+
+.background__remover .form-check-input:checked:focus {
+    box-shadow: none !important;
+}
+
+.background__remover .form-check-input:focus {
+    box-shadow: none;
+}
+
+.thumb-item {
+    margin-top: 21px;
+    cursor: pointer;
+}
+
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    max-height: 500px;
+    /* adjust to fit your carousel */
+    overflow: hidden;
+}
+
+.product__big__video {
+    width: 100%;
+    height: auto;
+    /* ensures it fits inside the container */
+    display: block;
+}
+
+.play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 60px;
+    /* adjust size */
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    z-index: 10;
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.play-button i {
+    pointer-events: none;
+}
+
+.play-button:hover {
+    color: rgba(255, 255, 255, 1);
+}
+
+.thumb-item video,
+.video-thumb video {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.video-thumb {
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+.video-thumb .play-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 22px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 8px 10px;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.cart-row {
+    cursor: pointer;
+}
+
+.location-my-orders {
+    padding-right: 10px;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.size-cart-drop {
+    margin-top: 7px;
+}
+
+.cart-size-dropdown {
+    border-radius: 5px;
+    box-shadow: 0 0 5px 1px #d5cfcf;
+    font-size: 17px;
+    font-weight: 500;
+    margin-left: 6px;
+}
+
+.icon-with-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+    text-decoration: none;
+    position: relative;
+}
+
+.icon-with-text .icon-label {
+    font-size: 11px;
+    color: #fff;
+}
+
+.icon-with-text .design_icon {
+    margin-top: 6px;
+    display: block;
+}
+
+.header__right__widget li a i,
+.header__right__widget li a img {
+    font-size: 22px;
+}
+
+.custom-icon-customisation {
+    width: 42px;
+    height: 36px;
+    display: inline-block;
+    background-image: url('../img/design.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.customization_icon_header {
+    position: relative;
+    bottom: -8px;
+}
+/* Full-screen center alignment */
+.expired-wrapper {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f6f7fb;
 }
 
 

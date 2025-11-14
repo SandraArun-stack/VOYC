@@ -190,10 +190,8 @@
                     <ul class="filter__controls">
                         <li class="active" data-filter="*">All</li>
                         <li data-filter=".women">Women’s</li>
-                        <!-- <li data-filter=".men">Men’s</li> -->
-                        <li data-filter=".kid">Kid’s</li>
-                        <!-- <li data-filter=".accessories">Accessories</li>
-                        <li data-filter=".cosmetic">Cosmetics</li> -->
+                        <li data-filter=".kid">Men’s</li>
+                       
                     </ul>
                 </div>
             </div>

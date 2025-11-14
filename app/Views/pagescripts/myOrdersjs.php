@@ -2,12 +2,41 @@
     $(document).ready(function () {
         //search order
 
+        // $('#orderSearch').on('keyup', function () {
+        //     const value = $(this).val().toLowerCase();
+        //     $('.my__orders__container .card').filter(function () {
+        //         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+        //     });
+        // });
         $('#orderSearch').on('keyup', function () {
-            const value = $(this).val().toLowerCase();
-            $('.my__orders__container .card-block .row').filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            const value = $(this).val().toLowerCase().trim();
+
+            let matchFound = false;
+
+            $('.my__orders__container .card').each(function () {
+                const cardText = $(this).text().toLowerCase();
+                if (cardText.indexOf(value) > -1) {
+                    $(this).css('display', 'block'); // ✅ force display visible
+                    matchFound = true;
+                } else {
+                    $(this).css('display', 'none');
+                }
             });
+
+            // Optional: handle empty result
+            if (!matchFound) {
+                if ($('#noOrdersMsg').length === 0) {
+                    $('.my__orders__container .col-lg-12').append(`
+                <div id="noOrdersMsg" class="alert alert-info text-center mt-3">
+                    No matching orders found.
+                </div>
+            `);
+                }
+            } else {
+                $('#noOrdersMsg').remove();
+            }
         });
+
 
         // status of order
 
@@ -79,7 +108,8 @@
         });
 
         $(document).on('click', '.review-submit button', function (e) {
-            var $alertBox = $('#review_msg_alert');
+            var $alertBox = $(this).closest('.card').find('#review_msg_alert');
+
             e.preventDefault();
 
             const $block = $(this).closest('.review_adding_block');

@@ -35,6 +35,11 @@
 
 
     $(document).ready(function () {
+        $(document).on('click', '.product__item', function (e) {
+            if ($(e.target).closest('a').length) return;
+            const url = $(this).data('url');
+            if (url) window.location.href = url;
+        });
 
         const itemsPerPage = 9;
         const $cards = $(".product__card");
@@ -128,20 +133,13 @@
                     success: function (response) {
                         if (response.status === 'success') {
                             let html = '';
-
                             response.filtered_products.forEach(item => {
                                 html += `
                                     <div class="col-lg-4 col-md-6 mb-4 product__card" style="opacity:1;">
                                         <div class="product__item" data-url="<?= base_url('productdetails'); ?>/${item.pr_Id}/${item.pri_Id}">
                                             <div class="product__item__pic set-bg"
                                                 data-setbg="<?= base_url('uploads/productmedia/'); ?>/${item.pri_Thumbnail}">
-                                                <div class="label new">
-                                                    ${item.pr_custom == 1 ? `
-                                                        <a href="<?= base_url('tshirt_Customisation'); ?>/${item.pr_Id}/${item.pri_Id}">
-                                                            <img class="design_icon"
-                                                                src="<?= base_url() . ASSET_PATH ?>assets/img/design.png" alt="">
-                                                        </a>` : ''}
-                                                </div>
+                                                
                                                 <ul class="product__hover">
                                                     <li>
                                                         <a href="<?= base_url('uploads/productmedia/'); ?>/${item.pri_Thumbnail}" class="image-popup">
@@ -224,13 +222,7 @@
                                         <div class="product__item" data-url="<?= base_url('productdetails'); ?>/${item.pr_Id}/${item.pri_Id}">
                                             <div class="product__item__pic set-bg"
                                                 data-setbg="<?= base_url('uploads/productmedia/'); ?>/${item.pri_Thumbnail}">
-                                                <div class="label new">
-                                                    ${item.pr_custom == 1 ? `
-                                                        <a href="<?= base_url('tshirt_Customisation'); ?>/${item.pr_Id}/${item.pri_Id}">
-                                                            <img class="design_icon"
-                                                                src="<?= base_url() . ASSET_PATH ?>assets/img/design.png" alt="">
-                                                        </a>` : ''}
-                                                </div>
+                                               
                                                 <ul class="product__hover">
                                                     <li>
                                                         <a href="<?= base_url('uploads/productmedia/'); ?>/${item.pri_Thumbnail}" class="image-popup">

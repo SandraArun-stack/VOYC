@@ -48,7 +48,7 @@ $userId = session()->get('user_id');
     </div>
 </div>
 <!-- Breadcrumb End -->
- 
+
 <!-- Product Details Section Begin -->
 <section class="product-details spad">
     <div class="container">
@@ -56,44 +56,72 @@ $userId = session()->get('user_id');
         <div class="row">
             <div class="col-lg-6">
                 <div class="product__details__pic">
+                    <!-- Thumbnails -->
                     <div class="product__details__pic__left product__thumb nice-scroll">
                         <?php if (!empty($images)): ?>
                             <?php foreach ($images as $i => $img): ?>
-                                <a class="pt <?= $i === 0 ? 'active' : '' ?>" href="#product-<?= $i + 1 ?>">
-                                    <img src="<?= base_url('uploads/productmedia/' . $img); ?>" class="product__small__img"
-                                        alt="">
-                                </a>
+                                <div class="thumb-item <?= $i === 0 ? 'active' : '' ?>" data-index="<?= $i ?>">
+                                    <img src="<?= base_url('uploads/productmedia/' . $img); ?>" alt="">
+                                </div>
                             <?php endforeach; ?>
+                            <?php if (!empty($video_url)): ?>
+                                <div class="thumb-item" data-index="<?= !empty($images) ? count($images) : 0 ?>">
+                                    <div class="video-thumb">
+                                        <video src="<?= $video_url ?>" preload="metadata" muted></video>
+                                        <!-- <div class="video-overlay">
+                                            <i class="fas fa-play"></i>
+                                        </div> -->
+                                    </div>
+
+                                </div>
+                            <?php endif; ?>
                         <?php else: ?>
-                            <a class="pt active" href="#product-1">
+                            <div class="thumb-item active" data-index="0">
                                 <img src="<?= base_url('uploads/productmedia/' . ($product['prd_first_image'] ?? 'default.jpg')); ?>"
                                     alt="">
-                            </a>
+                            </div>
                         <?php endif; ?>
+
+
                     </div>
 
+                    <!-- ✅ KEEP only ONE carousel -->
                     <div class="product__details__slider__content">
                         <div class="product__details__pic__slider owl-carousel">
                             <?php if (!empty($images)): ?>
-                                <?php foreach ($images as $i => $img): ?>
-                                    <img data-hash="product-<?= $i + 1 ?>" class="product__big__img"
-                                        src="<?= base_url('uploads/productmedia/' . $img); ?>" alt="">
+                                <?php foreach ($images as $img): ?>
+                                    <div class="item">
+                                        <img src="<?= base_url('uploads/productmedia/' . $img); ?>" class="product__big__img"
+                                            alt="">
+                                    </div>
                                 <?php endforeach; ?>
                             <?php else: ?>
-                                <img data-hash="product-1" class="product__big__img"
-                                    src="<?= base_url('uploads/productmedia/' . ($product['prd_first_image'] ?? 'default.jpg')); ?>"
-                                    alt="">
-
+                                <div class="item">
+                                    <img src="<?= base_url('uploads/productmedia/' . ($product['prd_first_image'] ?? 'default.jpg')); ?>"
+                                        class="product__big__img" alt="">
+                                </div>
                             <?php endif; ?>
+
+                            <!-- Show video at the end if it exists -->
+                            <?php if (!empty($video_url)): ?>
+                                <div class="item video-slide">
+                                    <div class="video-wrapper">
+                                        <video class="product__big__video" src="<?= $video_url ?>"
+                                            preload="metadata"></video>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+
                         </div>
                     </div>
                 </div>
 
             </div>
+
             <div class="col-lg-6">
                 <div class="product__details__text">
                     <h3><?= esc($product['pr_Name']) ?>
-                        <span>Description: <?= esc($product['pr_Description']); ?></span>
+                        <!-- <span>Description: <?= esc($product['pr_Description']); ?></span> -->
                     </h3>
                     <div class="rating">
                         <?php
@@ -110,22 +138,23 @@ $userId = session()->get('user_id');
                         ?>
                         <span>( <?= esc($product['review_count']) ?> reviews )</span>
                     </div>
-                    <div class="product__details__price">₹ <?= round(esc($product['pr_Selling_Price'] ?? '0')) ?>
-                        <span>₹<?= round(esc($product['pr_Selling_Price'])) ?></span>
+                    <div class="product__details__price">₹
+                        <span>₹ </span>
                     </div>
                     <p>Inclusive of all taxes</p>
-
-                    <div class="customize__container">
-                        <small class="user__Customize">
-                            🎨Personalize your T-shirt with your own design, text, or image before adding to cart.
-                        </small>
-                        <div class="customise__btn">
-                            <button class="btn  customise__Tee" id="customizeTshirtBtn">
-                                <i class="bi bi-palette-fill"></i>
-                                Customize Tee >>
-                            </button>
+                    <?php if (!empty($product['pr_custom']) && $product['pr_custom'] == 1): ?>
+                        <div class="customize__container">
+                            <small class="user__Customize">
+                                🎨Personalize your T-shirt with your own design, text, or image before adding to cart.
+                            </small>
+                            <div class="customise__btn">
+                                <button class="btn  customise__Tee" id="customizeTshirtBtn">
+                                    <i class="bi bi-palette-fill"></i>
+                                    Customize Tee >>
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    <?php endif; ?>
 
                     <div class="product__details__button">
                         <div class="quantity">
@@ -139,16 +168,12 @@ $userId = session()->get('user_id');
                         <!-- <a href="javascript:void(0);" class="cart-btn" id="addToCartBtn">
                             <span class="icon_bag_alt"></span> Add to cart
                         </a> -->
-                        <?php if ($product['in_cart']): ?>
-                            <a href="<?= base_url('cart/' . $userId) ?>" class="btn cart-btn">
-                                Go to Cart →
-                            </a>
-                        <?php else: ?>
-                            <a href="javascript:void(0);" id="addToCartBtn" class="cart-btn">
-                                <span class="icon_bag_alt"></span>
-                                Add to Cart
-                            </a>
-                        <?php endif; ?>
+
+                        <a href="javascript:void(0);" id="addToCartBtn" class="cart-btn">
+                            <span class="icon_bag_alt"></span>
+                            Add to Cart
+                        </a>
+
                     </div>
                     <div class="product__details__widget">
                         <ul>

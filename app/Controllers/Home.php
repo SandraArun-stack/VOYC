@@ -40,8 +40,9 @@ class Home extends BaseController
         $email = $this->request->getPost('email');
         $password = md5($this->request->getPost('reg_password'));
         $confirm = md5($this->request->getPost('reg_confirm_password'));
+        $phone_number = $this->request->getPost('phone_number');
 
-        if (empty($fullName) || empty($email) || empty($password) || empty($confirm)) {
+        if (empty($fullName) || empty($email) || empty($password) || empty($confirm) || empty($phone_number)) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Please Fill in All Required Fields.']);
         }
 
@@ -53,6 +54,14 @@ class Home extends BaseController
             return $this->response->setJSON(['status' => 'error', 'message' => 'Invalid email format.']);
         }
 
+        $phone_number = preg_replace('/[\s\-]/', '', $phone_number); // remove spaces/dashes
+        if (strlen($phone_number) === 11 && str_starts_with($phone_number, '0')) {
+            $phone_number = substr($phone_number, 1); // remove leading zero
+        }
+
+        if (!preg_match('/^(?:\+91|91)?[6-9]\d{9}$/', $phone_number)) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Please enter a valid Indian phone number.']);
+        }
         if ($password !== $confirm) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Passwords do not Match.']);
         }
@@ -64,6 +73,7 @@ class Home extends BaseController
             'full_name' => $fullName,
             'email' => $email,
             'password' => $password,
+            'phone_number' => $phone_number
         ];
 
         $homeModel = new HomeModel();

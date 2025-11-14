@@ -17,7 +17,8 @@ class ProductImageModel extends Model
         'pri_createdon',
         'pri_createdby',
         'RSleeve_Img',
-        'LSleeve_Img'
+        'LSleeve_Img',
+        'pri_Video'
     ];
 
     protected $db;
@@ -86,10 +87,13 @@ class ProductImageModel extends Model
         return $this->getInsertID();
     }
 
-    public function deleteProductImage($pri_id)
+    public function deleteVariantById($prv_id)
     {
-        return $this->delete($pri_id);
+        return $this->db->table('product_variants')
+            ->where('prv_Id', $prv_id)
+            ->update(['prv_Status' => 3]);
     }
+
 
     // -------------------
     // VARIANT METHODS
@@ -166,14 +170,17 @@ class ProductImageModel extends Model
                 p.pr_name,
                 pi.color_details,
                 pi.pri_Status,
+                pv.prv_Id,
                 pv.prv_Size,
                 pv.prv_price,
                 pv.stock,
-                pv.reset_stock
+                pv.reset_stock,
+                pv.prv_Status
             ')
             ->join('product p', 'pi.pr_id = p.pr_id', 'left')
             ->join('product_variants pv', 'pi.pri_id = pv.pri_id', 'left')
-            ->where('p.pr_Status !=', 3);
+            ->where('p.pr_Status !=', 3)
+            ->where('pv.prv_Status !=', 3);
 
         if ($pr_id !== null) {
             $builder->where('pi.pr_id', $pr_id);
@@ -285,7 +292,7 @@ class ProductImageModel extends Model
             ->where('pr_Id', $pr_Id)
             ->get()
             ->getRowArray();
-        
+
     }
 
 

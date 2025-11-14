@@ -18,7 +18,7 @@
                     <?php if (!empty($my_orders)): ?>
                         <?php foreach ($my_orders as $order): ?>
 
-                            <div class="card mb-3"  data-aos="fade-up" data-aos-duration="600">
+                            <div class="card mb-3">
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                     <span class="order-status" data-status="<?= esc($order['od_Status']) ?>">
                                         <!-- <i class="bi bi-truck me-2"></i> -->
@@ -36,10 +36,17 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <?php
+
+                                            $productUrl = base_url('productdetails/' . $order['pr_Id'] . '/' . $order['pri_Id']);
+
                                             if ($order['design_Id'] == 0) {
-                                                echo '<img src="' . base_url('uploads/productmedia/' . esc($order['order_Image'])) . '" alt="Product Image">';
+                                                echo '<a href="' . $productUrl . '" class="order-image-link">
+                                                        <img src="' . base_url('uploads/productmedia/' . esc($order['order_Image'])) . '" alt="Product Image">
+                                                    </a>';
                                             } else {
-                                                echo '<img src="' . base_url('uploads/designs/' . esc($order['order_Image'])) . '" alt="Custom Design">';
+                                                echo '<a href="' . $productUrl . '" class="order-image-link">
+                                                        <img src="' . base_url('uploads/designs/' . esc($order['order_Image'])) . '" alt="Custom Design">
+                                                    </a>';
                                             }
                                             ?>
 
@@ -47,6 +54,7 @@
                                         <div class="col-md-9">
                                             <div class="row mb-2 my_order_details">
                                                 <div class="col-12 mt-2">
+                                                    <p class="mb-2"><b><?= esc($order['od_number']) ?></b></p>
                                                     <p class="mb-2"><?= esc($order['pr_Code']) ?></p>
                                                     <p class="mb-2"><?= esc($order['pr_Name']) ?></p>
                                                     <p class="mb-2">Size: <?= esc($order['od_Size']) ?></p>
@@ -85,8 +93,7 @@
                                                                 <?php if (empty($order['review']) || is_null($order['review'])): ?>
                                                                     <b><a href="#" class="write_feedback">Write a Review</a></b>
                                                                 <?php else: ?>
-                                                                    <b><a href="#" class="see_feedback text-success">See My
-                                                                            Feedback</a></b>
+                                                                    <b><a href="#" class="see_feedback text-success">See My Feedback</a></b>
                                                                 <?php endif; ?>
                                                             </p>
                                                         </div>
@@ -120,8 +127,18 @@
                                             <div class="row mb-2 my_order_details">
                                                 <div class="col-12 mt-2">
 
-                                                    <p class="mb-2">Delivered To:</p>
-                                                    <p><?= nl2br(esc(str_replace(',', "\n", $order['od_Shipping_Address']))) ?>
+                                                    <p class="mb-2"><i class="bi bi-geo-alt-fill location-my-orders"></i>Shipping Address</p>
+                                                    <?php
+                                                    $addressParts = explode(',', $order['od_Shipping_Address']);
+                                                    $formattedAddress = '';
+
+                                                    foreach (array_chunk($addressParts, 2) as $pair) {
+                                                        $formattedAddress .= esc(implode(', ', array_map('trim', $pair))) . '<br>';
+                                                    }
+                                                    ?>
+
+                                                    <p><?= $formattedAddress ?></p>
+
                                                     </p>
                                                 </div>
                                             </div>

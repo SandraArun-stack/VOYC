@@ -11,6 +11,7 @@ class HomeModel extends Model
         'cust_Name',
         'cust_Email',
         'cust_Password',
+        'cust_Phone',
         'cust_Status',
         'cust_createdon',
         'cust_createdby',
@@ -31,6 +32,7 @@ class HomeModel extends Model
             'cust_Name' => $data['full_name'],
             'cust_Email' => $data['email'],
             'cust_Password' => $data['password'],
+            'cust_Phone' => $data['phone_number'],
             'cust_Status' => 1,
             'cust_createdon' => date('Y-m-d H:i:s'),
             'cust_createdby' => 0,
@@ -50,6 +52,9 @@ class HomeModel extends Model
 
         if (!$user) {
             return ['status' => 'error', 'message' => 'Incorrect Email Id or Password'];
+        }
+        if($user['cust_Status'] != 1){
+            return ['status' => 'error', 'message' => 'Your Account is Inactive. Please Contact Support.'];
         }
 
         if ($user['cust_Password'] !== $data['password']) {

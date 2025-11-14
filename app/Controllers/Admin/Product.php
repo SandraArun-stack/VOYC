@@ -57,7 +57,7 @@ class Product extends BaseController
 			<label class="form-check-label pl-0 label-check"
 				   for="statusSwitch-' . $row['pr_Id'] . '"></label>
 		</div>';
-
+           
             // Action buttons
            $row['actions'] = '
     <img class="img-size"
@@ -66,15 +66,7 @@ class Product extends BaseController
         onclick="redirectToProductImage(' . $row['pr_Id'] . ')"
         style="cursor: pointer;">&nbsp;
       			 
-		<img class="img-size open-video-modal"
-			 src="' . base_url(ASSET_PATH . 'Admin/assets/images/video_add.ico') . '"
-			 alt="Video-add"
-			 data-toggle="modal"
-			 data-target="#videoModal"
-			 data-product-id="' . $row['pr_Id'] . '"
-			 data-product-name="' . htmlspecialchars($row['pr_Name'], ENT_QUOTES) . '"
-			 onclick="openvideoModal(' . $row['pr_Id'] . ', \'' . addslashes($row['pr_Name']) . '\')"
-			 style="cursor: pointer;">     
+	
              
 		<a href="' . base_url('admin/product/edit/' . $row['pr_Id']) . '">
 			<i class="bi bi-pencil-square"></i>

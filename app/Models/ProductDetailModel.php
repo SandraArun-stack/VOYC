@@ -12,6 +12,9 @@ class ProductDetailModel extends Model
         'pri_Thumbnail',
         'pri_File_Name',
         'pri_Sleev_Name',
+        'RSleeve_Img',
+        'LSleeve_Img',
+        'pri_Video',
         'pri_Status',
         'pri_createdon',
         'pri_createdby',
@@ -24,7 +27,7 @@ class ProductDetailModel extends Model
     public function get_prd_Details($prId, $priId)
     {
         $product = $this->db->table('product p')
-            ->select('p.pr_Id, p.pr_Name, p.pr_Selling_Price, p.pr_Description')
+            ->select('p.pr_Id, p.pr_Name, p.pr_Selling_Price, p.pr_Description,p.pr_custom')
             ->where('p.pr_Id', $prId)
             ->where('p.pr_Status', 1)
             ->get()
@@ -34,9 +37,8 @@ class ProductDetailModel extends Model
             return null;
         }
 
-        // ✅ Get product images for this color
         $images = $this->db->table('product_image pi')
-            ->select('pi.pri_Id, pi.pri_Thumbnail, pi.pri_File_Name, pi.pri_Sleev_Name, pi.color_details')
+            ->select('pi.pri_Id, pi.pri_Thumbnail, pi.pri_File_Name, pi.pri_Sleev_Name, pi.RSleeve_Img, pi.LSleeve_Img, pi.pri_Video, pi.color_details')
             ->where('pi.pr_Id', $prId)
             ->where('pi.pri_Id', $priId)
             ->where('pi.pri_Status', 1)
@@ -50,9 +52,19 @@ class ProductDetailModel extends Model
                 $allImages[] = strtolower(trim($img['pri_Thumbnail']));
             }
 
+            if (!empty($img['RSleeve_Img'])) {
+                $allImages[] = strtolower(trim($img['RSleeve_Img']));
+            }
+
+            if (!empty($img['LSleeve_Img'])) {
+                $allImages[] = strtolower(trim($img['LSleeve_Img']));
+            }
+
+
             foreach (['pri_File_Name', 'pri_Sleev_Name'] as $jsonField) {
                 if (!empty($img[$jsonField])) {
                     $fileNames = json_decode($img[$jsonField], true);
+
                     if (is_array($fileNames)) {
                         foreach ($fileNames as $file) {
                             $allImages[] = strtolower(trim($file));
@@ -63,7 +75,7 @@ class ProductDetailModel extends Model
         }
 
         $product['images'] = array_values(array_unique($allImages));
-
+        // print_r($product['images']);exit();
         // ✅ Color options
         $colorDetails = $this->db->table('product_image pi')
             ->select('pi.color_details, pi.pri_Id, pi.pri_Thumbnail')
@@ -146,7 +158,7 @@ class ProductDetailModel extends Model
     public function getImageByColor($priId)
     {
         return $this->db->table('product_image')
-            ->select('pri_Thumbnail , pri_File_Name')
+            ->select('pri_Thumbnail , pri_File_Name, pri_Sleev_Name, RSleeve_Img, LSleeve_Img, pri_Video')
             ->where('pri_Id', $priId)
             ->where('pri_Status', 1)
             ->get()
@@ -183,6 +195,7 @@ class ProductDetailModel extends Model
             'pr_Id' => $data['pr_Id'],
             'pri_Id' => $data['pri_Id'],
             'prv_Id' => $data['prv_Id'],
+            'cart_Size' => $data['cart_Size'],
             'cart_Status' => 1
         ])->get()->getRowArray();
 
@@ -201,7 +214,8 @@ class ProductDetailModel extends Model
                 'prv_Id' => $data['prv_Id'],
                 'design_Id' => $data['design_Id'] ?? 0,
                 'cart_Quantity' => $data['cart_Quantity'] ?? 1,
-                'cart_Price' => $data['price'] ?? 0,
+                'cart_Price' => $data['cart_Price'] ?? 0,
+                'cart_Size' => $data['cart_Size'] ?? '',
                 'cart_Status' => 1
             ]);
             return 'inserted';

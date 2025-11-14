@@ -435,7 +435,7 @@ ol {
 
 .header__right__auth {
 	display: inline-block;
-	margin-left: 25px;
+	/* margin-left: 25px; */
 }
 
 .header__right__auth a {
@@ -455,7 +455,7 @@ ol {
 
 .header__right__auth a:after {
 	position: absolute;
-	right: -8px;
+	right: 0px;
 	top: -2px;
 	/* content: "/"; */
 	font-size: 13px;
@@ -475,7 +475,7 @@ ol {
 }
 
 .header__right__widget li:last-child {
-	margin-right: 0;
+	/* margin-right: 0; */
 }
 
 .header__right__widget li a {
@@ -498,6 +498,7 @@ ol {
 	text-align: center;
 	border-radius: 50%;
 }
+
 
 .offcanvas-menu-wrapper {
 	display: none;
@@ -1619,7 +1620,7 @@ ol {
 	width: 40px;
 	border: 1px solid #f2f2f2;
 	border-radius: 50%;
-	font-size: 14px;
+	font-size: 11px;
 	color: #111111;
 	font-weight: 600;
 	line-height: 40px;
@@ -1627,7 +1628,7 @@ ol {
 	-webkit-transition: all, 0.3s;
 	-o-transition: all, 0.3s;
 	transition: all, 0.3s;
-	margin-right: 6px;
+	/* margin-right: 6px; */
 }
 
 .pagination__option a:last-child {
@@ -1659,7 +1660,7 @@ ol {
 
 .product__details__pic__left {
 	width: 22%;
-	max-height: 574px;
+	max-height: 517px;
 	float: left;
 	overflow-y: auto;
 }
@@ -1703,10 +1704,15 @@ ol {
 	margin-left: 20px;
 }
 
+.product__details__pic__slider {
+	width: 412px;
+	height: 100px;
+}
+
 .product__details__pic__slider.owl-carousel .owl-nav button {
 	position: absolute;
 	left: 10px;
-	top: 50%;
+	bottom: -150px;
 	font-size: 22px;
 	color: #111111;
 	width: 40px;
@@ -1727,7 +1733,7 @@ ol {
 	color: #111111;
 	font-weight: 600;
 	text-transform: uppercase;
-	margin-bottom: 12px;
+	margin-bottom: 0px;
 }
 
 .product__details__text h3 span {
