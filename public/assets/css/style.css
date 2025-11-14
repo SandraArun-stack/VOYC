@@ -1619,7 +1619,7 @@ ol {
 	width: 40px;
 	border: 1px solid #f2f2f2;
 	border-radius: 50%;
-	font-size: 14px;
+	font-size: 11px;
 	color: #111111;
 	font-weight: 600;
 	line-height: 40px;
@@ -1627,7 +1627,7 @@ ol {
 	-webkit-transition: all, 0.3s;
 	-o-transition: all, 0.3s;
 	transition: all, 0.3s;
-	margin-right: 6px;
+	/* margin-right: 6px; */
 }
 
 .pagination__option a:last-child {
@@ -1702,11 +1702,14 @@ ol {
 	float: left;
 	margin-left: 20px;
 }
-
+.product__details__pic__slider {
+	width: 412px;
+    height: 100px;
+}
 .product__details__pic__slider.owl-carousel .owl-nav button {
 	position: absolute;
 	left: 10px;
-	top: 50%;
+	bottom: -150px;
 	font-size: 22px;
 	color: #111111;
 	width: 40px;
@@ -1727,7 +1730,7 @@ ol {
 	color: #111111;
 	font-weight: 600;
 	text-transform: uppercase;
-	margin-bottom: 12px;
+	margin-bottom: 0px;
 }
 
 .product__details__text h3 span {

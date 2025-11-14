@@ -378,8 +378,12 @@
 
         $("#saveBtn").on("click", function () {
 
+            var $btn = $(this);
+
             var $alertBox = $('#design_msg_alert');
             saveCurrentCanvasState();
+
+            $btn.prop('disabled', true).text('Processing...');
 
             let totalText = $("#priceTotal").text();
             let totalPrice = parseFloat(totalText.replace(/[^\d\.]/g, '')) || 0;

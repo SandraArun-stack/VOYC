@@ -30,6 +30,7 @@ class OrderDetails extends Controller
 
         $cartModel = new CartModel();
         $cartItems = $cartModel->getCartItems($userId);
+        // print_r($cartItems);
         return view('common/header')
             . view('orderdetails', ['cartItems' => $cartItems])
             . view('common/footer')
@@ -89,6 +90,9 @@ class OrderDetails extends Controller
             $item['add_Id'] = $add_Id;
             $item['od_number'] = $orderNumber;
             $item['od_Shipping_Address'] = $shippingAddress;
+            if (isset($item['od_Size'])) {
+                $item['od_Size'] = $item['od_Size'];
+            }
             $this->orderModel->createOrderItem($item);
         }
 
@@ -131,7 +135,7 @@ class OrderDetails extends Controller
         // ==============================
         // EMAIL TO ADMIN
         // ==============================
-        $adminEmail = 'smartloungework@gmail.com'; 
+        $adminEmail = 'smartloungework@gmail.com';
         $adminMessage = "
         <div style='max-width:600px;margin:auto;border:1px solid #eee;border-radius:10px;padding:20px;font-family:Arial,sans-serif;'>
             {$emailHeader}

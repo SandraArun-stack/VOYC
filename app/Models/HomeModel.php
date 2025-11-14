@@ -11,6 +11,7 @@ class HomeModel extends Model
         'cust_Name',
         'cust_Email',
         'cust_Password',
+        'cust_Phone',
         'cust_Status',
         'cust_createdon',
         'cust_createdby',

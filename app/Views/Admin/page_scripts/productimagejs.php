@@ -4,10 +4,6 @@
     var csrfHash = "<?= csrf_hash() ?>";
     var pr_id = $('#pr_id').val();
 
-
-    //add product
-
-
     $('#productList').DataTable({
         processing: true,
         serverSide: true,
@@ -189,8 +185,6 @@
         });
     });
 
-
-
     $('#media_files').on('change', function (event) {
         $('#imagePreview').empty();
         const files = event.target.files;
@@ -217,7 +211,7 @@
         }
     });
 
-    function confirmDelete(priId) {
+    function confirmDelete(prvId) {
         Swal.fire({
             title: 'Are you sure?',
             text: 'You want to delete this Product Image?',
@@ -228,7 +222,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: baseUrl + 'admin/productimage/delete/' + priId,
+                    url: baseUrl + 'admin/productimage/delete/' + prvId,
                     method: 'POST',
                     data: {
                         "<?= csrf_token() ?>": "<?= csrf_hash() ?>"
@@ -390,7 +384,7 @@
 
         //change status
         $(document).on('change', '.checkactiveimage', function () {
-            let priId = $(this).attr('id').split('-')[1]; // e.g. id="checkimg-5" → 5
+            let prvId = $(this).attr('id').split('-')[1]; // e.g. id="checkimg-5" → 5
             let status = $(this).is(':checked') ? 1 : 2;
             let checkbox = $(this);
 
@@ -399,8 +393,8 @@
                 type: 'POST',
                 dataType: 'json',
                 data: {
-                    pri_Id: priId,
-                    pri_Status: status,
+                    prv_Id: prvId,
+                    prv_Status: status,
                     [csrfTokenName]: csrfHash
                 },
                 success: function (response) {

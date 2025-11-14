@@ -32,8 +32,8 @@
 
                                 <div class="card-header">
                                     <div class="row">
-                                        <div class="col-md-7">
-                                            <div id="messageBox" class="alert" style="display: none;"></div>
+                                        <div class="col-md-12">
+                                            <div id="messageBox" class="alert" style="display:none;"></div>
                                         </div>
                                         <div class="col-md-12 d-flex justify-content-between align-items-center">
                                             <h5 id="productNameHeading" class="mb-3"></h5>

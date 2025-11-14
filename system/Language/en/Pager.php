@@ -15,8 +15,8 @@ declare(strict_types=1);
 return [
     'pageNavigation'         => 'Page navigation',
     'first'                  => 'First',
-    'previous'               => 'Previous',
-    'next'                   => 'Next',
+    'previous'               => '<<',
+    'next'                   => '>>',
     'last'                   => 'Last',
     'older'                  => 'Older',
     'newer'                  => 'Newer',

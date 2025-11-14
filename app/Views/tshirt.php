@@ -435,7 +435,7 @@
                 <div class="card shadow-sm border-0 rounded-4">
                     <div class="card-header customisation__summary_header">
                         <h4 class="fw-bolb">
-                            Customisation Summary
+                            Customization Summary
                         </h4>
                     </div>
                     <div class="card-body">

@@ -56,7 +56,6 @@ $userId = session()->get('user_id');
         <div class="row">
             <div class="col-lg-6">
                 <div class="product__details__pic">
-
                     <!-- Thumbnails -->
                     <div class="product__details__pic__left product__thumb nice-scroll">
                         <?php if (!empty($images)): ?>
@@ -65,15 +64,28 @@ $userId = session()->get('user_id');
                                     <img src="<?= base_url('uploads/productmedia/' . $img); ?>" alt="">
                                 </div>
                             <?php endforeach; ?>
+                            <?php if (!empty($video_url)): ?>
+                                <div class="thumb-item" data-index="<?= !empty($images) ? count($images) : 0 ?>">
+                                    <div class="video-thumb">
+                                        <video src="<?= $video_url ?>" preload="metadata" muted></video>
+                                        <!-- <div class="video-overlay">
+                                            <i class="fas fa-play"></i>
+                                        </div> -->
+                                    </div>
+
+                                </div>
+                            <?php endif; ?>
                         <?php else: ?>
                             <div class="thumb-item active" data-index="0">
                                 <img src="<?= base_url('uploads/productmedia/' . ($product['prd_first_image'] ?? 'default.jpg')); ?>"
                                     alt="">
                             </div>
                         <?php endif; ?>
+
+
                     </div>
 
-                    <!-- Main Carousel -->
+                    <!-- ✅ KEEP only ONE carousel -->
                     <div class="product__details__slider__content">
                         <div class="product__details__pic__slider owl-carousel">
                             <?php if (!empty($images)): ?>
@@ -89,16 +101,27 @@ $userId = session()->get('user_id');
                                         class="product__big__img" alt="">
                                 </div>
                             <?php endif; ?>
+
+                            <!-- Show video at the end if it exists -->
+                            <?php if (!empty($video_url)): ?>
+                                <div class="item video-slide">
+                                    <div class="video-wrapper">
+                                        <video class="product__big__video" src="<?= $video_url ?>"
+                                            preload="metadata"></video>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+
                         </div>
                     </div>
-
                 </div>
+
             </div>
 
             <div class="col-lg-6">
                 <div class="product__details__text">
                     <h3><?= esc($product['pr_Name']) ?>
-                        <span>Description: <?= esc($product['pr_Description']); ?></span>
+                        <!-- <span>Description: <?= esc($product['pr_Description']); ?></span> -->
                     </h3>
                     <div class="rating">
                         <?php
@@ -145,16 +168,12 @@ $userId = session()->get('user_id');
                         <!-- <a href="javascript:void(0);" class="cart-btn" id="addToCartBtn">
                             <span class="icon_bag_alt"></span> Add to cart
                         </a> -->
-                        <?php if ($product['in_cart']): ?>
-                            <a href="<?= base_url('cart/' . $userId) ?>" class="btn cart-btn">
-                                Go to Cart →
-                            </a>
-                        <?php else: ?>
-                            <a href="javascript:void(0);" id="addToCartBtn" class="cart-btn">
-                                <span class="icon_bag_alt"></span>
-                                Add to Cart
-                            </a>
-                        <?php endif; ?>
+
+                        <a href="javascript:void(0);" id="addToCartBtn" class="cart-btn">
+                            <span class="icon_bag_alt"></span>
+                            Add to Cart
+                        </a>
+
                     </div>
                     <div class="product__details__widget">
                         <ul>

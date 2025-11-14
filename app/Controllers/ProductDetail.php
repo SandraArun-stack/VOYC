@@ -40,25 +40,59 @@ class ProductDetail extends Controller
             . view('common/footer')
             . view('pagescripts/productdetailsjs');
     }
+
     public function getColorImage($priId)
     {
         $image = $this->ProductDetailModel->getImageByColor($priId);
 
-        if ($image && !empty($image['pri_Thumbnail'])) {
-            $smallImages = json_decode($image['pri_File_Name']);
+        if (!$image) {
             return $this->response->setJSON([
-                'image_url' => base_url('uploads/productmedia/' . $image['pri_Thumbnail']),
-                'small_image_urls' => $smallImages ? array_map(function ($fileName) {
-                    return base_url('uploads/productmedia/' . $fileName);
-                }, $smallImages) : []
+                'image_url' => base_url('uploads/productmedia/default.jpg'),
+                'small_image_urls' => []
             ]);
         }
 
+        $allImages = [];
+
+        // Decode and collect pri_File_Name
+        if (!empty($image['pri_File_Name'])) {
+            $files = json_decode($image['pri_File_Name'], true);
+            if (is_array($files)) {
+                foreach ($files as $file) {
+                    $allImages[] = base_url('uploads/productmedia/' . $file);
+                }
+            }
+        }
+
+        // Decode and collect pri_Sleev_Name
+        if (!empty($image['pri_Sleev_Name'])) {
+            $sleeves = json_decode($image['pri_Sleev_Name'], true);
+            if (is_array($sleeves)) {
+                foreach ($sleeves as $file) {
+                    $allImages[] = base_url('uploads/productmedia/' . $file);
+                }
+            }
+        }
+
+        // Add RSleeve_Img and LSleeve_Img if valid
+        foreach (['RSleeve_Img', 'LSleeve_Img'] as $field) {
+            if (!empty($image[$field]) && $image[$field] !== '[]') {
+                $allImages[] = base_url('uploads/productmedia/' . $image[$field]);
+            }
+        }
+
+        // Fallback
+        if (empty($allImages)) {
+            $allImages[] = base_url('uploads/productmedia/' . ($image['pri_Thumbnail'] ?? 'default.jpg'));
+        }
+
         return $this->response->setJSON([
-            'image_url' => base_url('uploads/productmedia/default.jpg'),
-            'small_image_url' => base_url('uploads/productmedia/default.jpg')
+            'image_url' => base_url('uploads/productmedia/' . ($image['pri_Thumbnail'] ?? 'default.jpg')),
+            'small_image_urls' => $allImages,
+            'video_url' => !empty($image['pri_Video']) ? base_url('uploads/productmedia/' . $image['pri_Video']) : null
         ]);
     }
+
 
     public function getSizesByColor($priId)
     {
@@ -70,31 +104,32 @@ class ProductDetail extends Controller
 
     public function addToCart()
     {
-        $custId   = $this->request->getPost('cust_Id');
-        $prId     = $this->request->getPost('pr_Id');
-        $priId    = $this->request->getPost('pri_Id');
-        $prvId    = $this->request->getPost('prv_Id');
+        $custId = $this->request->getPost('cust_Id');
+        $prId = $this->request->getPost('pr_Id');
+        $priId = $this->request->getPost('pri_Id');
+        $prvId = $this->request->getPost('prv_Id');
         $designId = $this->request->getPost('design_Id');
         $quantity = $this->request->getPost('cart_Quantity') ?? 1;
-        $price = $this->request->getPost('cart_Price');
-
+        $cart_Price = $this->request->getPost('cart_Price');
+ $cart_Size = $this->request->getPost('cart_Size');
         if (
-            !isset($custId) || 
-            !isset($prId)   || 
-            !isset($priId)  || 
+            !isset($custId) ||
+            !isset($prId) ||
+            !isset($priId) ||
             !isset($prvId)
         ) {
             return $this->response->setJSON(['status' => 0, 'message' => 'Missing required data']);
         }
 
         $data = [
-            'cust_Id'       => $custId,
-            'pr_Id'         => $prId,
-            'pri_Id'        => $priId,
-            'prv_Id'        => $prvId,
-            'design_Id'     => $designId,
+            'cust_Id' => $custId,
+            'pr_Id' => $prId,
+            'pri_Id' => $priId,
+            'prv_Id' => $prvId,
+            'design_Id' => $designId,
             'cart_Quantity' => $quantity,
-            'cart_Price'         => $price
+            'cart_Price' => $cart_Price,
+            'cart_Size' => $cart_Size 
         ];
 
         $result = $this->ProductDetailModel->saveToCart($data);

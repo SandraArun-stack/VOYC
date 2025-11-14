@@ -11,6 +11,7 @@ class OrderDetailsModel extends Model
         'or_Id',
         'od_number',
         'pr_Id',
+        'pri_Id',
         'od_Quantity',
         'od_Size',
         'od_Color',
@@ -35,7 +36,7 @@ class OrderDetailsModel extends Model
     // Insert order items
     public function createOrderItem($data)
     {
-        $data['od_Status'] = $data['od_Status'] ?? 'New';
+        $data['od_Status'] = '1';
         $data['od_createdon'] = date('Y-m-d H:i:s');
         $data['od_number'] = $data['order_number'] ?? 'VOYC-' . date('Ymd') . '-' . random_int(10000, 99999);
 

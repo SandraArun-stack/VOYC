@@ -170,7 +170,7 @@
                                         <div class="product__item__pic set-bg"
                                             data-setbg="<?= base_url('uploads/productmedia/' . ($item['pri_Thumbnail'])) ?>">
                                             
-                                            <ul class="product__hover">
+                                            <!-- <ul class="product__hover">
                                                 <li>
                                                     <a href="<?= base_url('uploads/productmedia/' . ($item['pri_Thumbnail'])) ?>"
                                                         class="image-popup">
@@ -179,7 +179,7 @@
                                                 </li>
                                                 <li><a href="#"><span class="icon_heart_alt"></span></a></li>
                                                 <li><a href="#"><span class="icon_bag_alt"></span></a></li>
-                                            </ul>
+                                            </ul> -->
                                         </div>
                                         <div class="product__item__text">
                                             <h6><a href="#"><?= esc($item['pr_Name']) ?></a></h6>
@@ -224,8 +224,6 @@
 
 
 
-<!-- Instagram Begin -->
-<div class="instagram">
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-2 col-md-4 col-sm-4 p-0">
@@ -284,4 +282,4 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->

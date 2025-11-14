@@ -41,9 +41,9 @@ class Cart extends Controller
     {
         $cartId = $this->request->getPost('cart_Id');
 
-        if (empty($cartId)) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Cart ID missing']);
-        }
+        // if (empty($cartId)) {
+        //     return $this->response->setJSON(['status' => 'error', 'message' => 'Cart ID missing']);
+        // }
 
         $cartModel = new \App\Models\CartModel();
 
@@ -74,6 +74,29 @@ class Cart extends Controller
             'status' => 'success',
             'message' => 'Quantity updated successfully'
         ]);
+    }
+    public function updateCartSize()
+    {
+        $cartId = $this->request->getPost('cart_Id');
+        $prvId = $this->request->getPost('prv_Id');
+        $cartSize = $this->request->getPost('cart_Size');
+        $cartPrice = $this->request->getPost('cart_Price');
+
+        if (empty($cartId) || empty($cartSize)) {
+            return $this->response->setJSON(['status' => 0, 'message' => 'Invalid data']);
+        }
+
+        $updated = $this->CartModel->update($cartId, [
+            'prv_Id' => $prvId,
+            'cart_Size' => $cartSize,
+            'cart_Price' => $cartPrice
+        ]);
+
+        if ($updated) {
+            return $this->response->setJSON(['status' => 1, 'message' => 'Cart updated successfully']);
+        } else {
+            return $this->response->setJSON(['status' => 0, 'message' => 'Failed to update cart']);
+        }
     }
 
 

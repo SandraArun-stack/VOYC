@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/jquery-ui.min.css" type="text/css">
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/magnific-popup.css" type="text/css">
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/owl.theme.default.min.css" type="text/css">
+    <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/owl.theme.default.min.css" type="text/css">
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/style.css" type="text/css">
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/custom.css" type="text/css">

@@ -30,6 +30,7 @@ $routes->get('cart', 'Cart::index');
 $routes->get('cart/(:num)', 'Cart::index/$1');
 $routes->post('cart/remove', 'Cart::remove');
 $routes->post('cart/updateQuantity', 'Cart::updateQuantity');
+$routes->post('cart/updateCartSize', 'Cart::updateCartSize');
 $routes->post('addToCart', 'ProductDetail::addToCart');
 
 //Tshirt Customisation

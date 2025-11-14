@@ -158,7 +158,7 @@ class ProductDetailModel extends Model
     public function getImageByColor($priId)
     {
         return $this->db->table('product_image')
-            ->select('pri_Thumbnail , pri_File_Name')
+            ->select('pri_Thumbnail , pri_File_Name, pri_Sleev_Name, RSleeve_Img, LSleeve_Img, pri_Video')
             ->where('pri_Id', $priId)
             ->where('pri_Status', 1)
             ->get()
@@ -195,6 +195,7 @@ class ProductDetailModel extends Model
             'pr_Id' => $data['pr_Id'],
             'pri_Id' => $data['pri_Id'],
             'prv_Id' => $data['prv_Id'],
+            'cart_Size' => $data['cart_Size'],
             'cart_Status' => 1
         ])->get()->getRowArray();
 
@@ -213,7 +214,8 @@ class ProductDetailModel extends Model
                 'prv_Id' => $data['prv_Id'],
                 'design_Id' => $data['design_Id'] ?? 0,
                 'cart_Quantity' => $data['cart_Quantity'] ?? 1,
-                'cart_Price' => $data['price'] ?? 0,
+                'cart_Price' => $data['cart_Price'] ?? 0,
+                'cart_Size' => $data['cart_Size'] ?? '',
                 'cart_Status' => 1
             ]);
             return 'inserted';
