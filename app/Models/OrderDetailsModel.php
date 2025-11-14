@@ -38,7 +38,6 @@ class OrderDetailsModel extends Model
     {
         $data['od_Status'] = '1';
         $data['od_createdon'] = date('Y-m-d H:i:s');
-    //    $item['order_number'] = $orderNumber;
 
         return $this->insert($data);
     }

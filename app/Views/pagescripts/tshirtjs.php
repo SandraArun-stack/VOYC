@@ -325,7 +325,7 @@
                 $(`#${type}`)
                     .addClass("active")
                     .find(`span[id^='price']`)
-                    .text(`+ ₹${data.price}`);
+                    .text(`₹${data.price}`);
             });
 
             // Hide entries for unchecked items
@@ -336,7 +336,7 @@
                     $(`#${type}`)
                         .removeClass("active")
                         .find(`span[id^='price']`)
-                        .text("+ ₹0");
+                        .text("₹0");
                 }
             });
 
