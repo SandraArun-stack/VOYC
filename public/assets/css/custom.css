@@ -865,20 +865,12 @@ input[type="file"] {
     color: #000000 !important;
 }
 
-/* Hover effect for items */
-/* #userDropDown .dropdown-item:hover {
-    background-color: #333 !important;
-    color: #fff !important;
-} */
-
-/* Optional: make the dropdown toggle text white */
 #userDropDown .dropdown-toggle {
     color: #fff !important;
 }
 
 .profile-person {
     font-size: 22px;
-    margin-left: 15px;
 }
 
 #leader_board {
@@ -1511,16 +1503,53 @@ input[type="file"] {
 }
 
 .cart-size-dropdown {
-border-radius: 5px;
+    border-radius: 5px;
     box-shadow: 0 0 5px 1px #d5cfcf;
     font-size: 17px;
     font-weight: 500;
     margin-left: 6px;
 }
-.cart-size-dropdown option:checked {
-  /* background-color: black; */
-  /* color: white; */
+
+.icon-with-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+    text-decoration: none;
+    position: relative;
 }
+
+.icon-with-text .icon-label {
+    font-size: 11px;
+    color: #fff;
+}
+
+.icon-with-text .design_icon {
+    margin-top: 6px;
+    display: block;
+}
+
+.header__right__widget li a i,
+.header__right__widget li a img {
+    font-size: 22px;
+}
+
+.custom-icon-customisation {
+       width: 42px;
+    height: 36px;
+    display: inline-block;
+    background-image: url('../img/design.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.customization_icon_header {
+    position: relative;
+    bottom: -8px;
+}
+
+
 
 @media only screen and (max-width: 991px) {
     .main__icon {

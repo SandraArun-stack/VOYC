@@ -73,7 +73,7 @@
     <header class="header show-after">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-xl-3 col-lg-2 col-2">
+                <div class="col-xl-2 col-lg-2 col-2">
                     <a href="<?= base_url(' '); ?>">
                         <div class="header__logo"></div>
                     </a>
@@ -83,7 +83,7 @@
                     <a href="#"><i class="bi bi-controller"></i></a>
                     <a href="<?= base_url('tshirt_Customisation'); ?>" class="design_icon"></a>
                 </div>
-                <div class="col-xl-6 col-lg-7 d-flex align-items-center">
+                <div class="col-xl-7 col-lg-7 d-flex align-items-center justify-content-center text-center">
                     <nav class="header__menu">
                         <ul>
                             <li class="active"><a href="<?= base_url(' '); ?>" id="home">Home</a></li>
@@ -106,25 +106,31 @@
 
                         <ul class="header__right__widget">
                             <li>
-                                <a href="#"><i class="bi bi-wallet2"></i>
+                                <a href="#" class="icon-with-text"><i class="bi bi-wallet2"></i>
                                     <div class="tip">2</div>
+                                     <span class="icon-label">Wallet</span>
                                 </a>
                             </li>
                             <?php if ($session->get('isLoggedIn')): ?>
                                 <li>
                                     <?php $userId = $session->get('user_id'); ?>
-                                    <a href="<?= base_url('cart/' . $userId); ?>"><i class="bi bi-cart"></i>
+                                    <a href="<?= base_url('cart/' . $userId); ?>" class="icon-with-text">
+                                        <i class="bi bi-cart"></i>
+                                        <span class="icon-label">Cart</span>
                                         <div class="tip">2</div>
                                     </a>
                                 </li>
                             <?php endif; ?>
-                            <li>
-                                <a href="<?= base_url('allCustomizableProducts'); ?>"><img class="design_icon"
-                                        src="<?= base_url() . ASSET_PATH; ?>assets/img/design.png" alt="">
+                            <li class="customization_icon_header">
+                                <a href="<?= base_url('allCustomizableProducts'); ?>" class="icon-with-text">
+                                    <i class="custom-icon-customisation"></i>
+                                     <span class="icon-label">Design</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#" id="leader_board"><i class="bi bi-award-fill"></i>
+                                <a href="#" id="leader_board" class="icon-with-text">
+                                    <i class="bi bi-award-fill"></i>
+                                     <span class="icon-label">Winners</span>
                                 </a>
                             </li>
                         </ul>
@@ -132,9 +138,10 @@
                         <div class="header__right__auth">
 
                             <div class="dropdown" id="userDropDown">
-                                <a class=" text-decoration-none" href="#" role="button" id="userDropdown"
+                                <a class=" text-decoration-none icon-with-text" href="#" role="button" id="userDropdown"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bi bi-person-square profile-person"></i>
+                                    <span class="icon-label">Profile</span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end profile-small-container"
                                     style="display:none;" aria-labelledby="userDropdown" style="display:none;">

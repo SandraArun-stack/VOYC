@@ -75,18 +75,24 @@
 
         $(".filter__controls li").on("click", function () {
 
-        let filter = $(this).data("filter");
+            let filter = $(this).data("filter");
 
-        $(".filter__controls li").removeClass("active");
-        $(this).addClass("active");
+            $(".filter__controls li").removeClass("active");
+            $(this).addClass("active");
 
-        if (filter === "all") {
-            $(".product-box").show();
-        } else {
-            $(".product-box").hide();
-            $("." + filter).show();
-        }
-    });
+            if (filter === "all") {
+                $(".product-box").show();
+            } else {
+                $(".product-box").hide();
+                $("." + filter).show();
+            }
+
+            if ($(".product-box:visible").length === 0) {
+                $("#no-products-message").show();
+            } else {
+                $("#no-products-message").hide();
+            }
+        });
 
     });
 

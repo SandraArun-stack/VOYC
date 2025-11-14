@@ -435,7 +435,7 @@ ol {
 
 .header__right__auth {
 	display: inline-block;
-	margin-left: 25px;
+	/* margin-left: 25px; */
 }
 
 .header__right__auth a {
@@ -455,7 +455,7 @@ ol {
 
 .header__right__auth a:after {
 	position: absolute;
-	right: -8px;
+	right: 0px;
 	top: -2px;
 	/* content: "/"; */
 	font-size: 13px;
@@ -475,7 +475,7 @@ ol {
 }
 
 .header__right__widget li:last-child {
-	margin-right: 0;
+	/* margin-right: 0; */
 }
 
 .header__right__widget li a {
@@ -498,6 +498,7 @@ ol {
 	text-align: center;
 	border-radius: 50%;
 }
+
 
 .offcanvas-menu-wrapper {
 	display: none;
@@ -1702,10 +1703,12 @@ ol {
 	float: left;
 	margin-left: 20px;
 }
+
 .product__details__pic__slider {
 	width: 412px;
-    height: 100px;
+	height: 100px;
 }
+
 .product__details__pic__slider.owl-carousel .owl-nav button {
 	position: absolute;
 	left: 10px;

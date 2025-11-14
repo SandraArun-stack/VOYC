@@ -136,6 +136,9 @@
 
             <?php if (!empty($newPrdImg)): ?>
                 <div class="row property__gallery">
+                    <p id="no-products-message" style="display:none; text-align:center; margin-top:20px;">
+                        No products found
+                    </p>
                     <?php foreach ($newPrdImg as $item): ?>
                         <?php
                         $firstImage = $item['pri_Thumbnail'] ?? null;
@@ -155,7 +158,7 @@
                                     <?php else: ?>
                                         <img class="product-img" src="<?= base_url('assets/img/no-image.png'); ?>" alt="No Image" />
                                     <?php endif; ?>
-                                   
+
                                     <!-- <ul class="product__hover">
                                         <?php if ($firstImage): ?>
                                             <li>
@@ -379,5 +382,5 @@
     </section>
     <!-- Services Section End -->
 
-   
+
 </div>
