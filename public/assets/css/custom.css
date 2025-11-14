@@ -1535,7 +1535,7 @@ input[type="file"] {
 }
 
 .custom-icon-customisation {
-       width: 42px;
+    width: 42px;
     height: 36px;
     display: inline-block;
     background-image: url('../img/design.png');
@@ -1548,7 +1548,15 @@ input[type="file"] {
     position: relative;
     bottom: -8px;
 }
-
+/* Full-screen center alignment */
+.expired-wrapper {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f6f7fb;
+}
 
 
 @media only screen and (max-width: 991px) {

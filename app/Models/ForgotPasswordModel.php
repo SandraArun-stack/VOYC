@@ -18,10 +18,10 @@ class ForgotPasswordModel extends Model
         'reset_token'
     ];
     public function getActiveUserByEmail($email)
-{
-    return $this->where('cust_Email', $email)
-                ->where('cust_Status', 1)
-                ->first();
-}
+    {
+        return $this->where('cust_Email', $email)
+            ->where('cust_Status', 1)
+            ->first();
+    }
 
 }

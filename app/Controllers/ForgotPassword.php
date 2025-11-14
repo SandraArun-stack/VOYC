@@ -48,12 +48,7 @@ class ForgotPassword extends Controller
 
         // Email content
         $subject = 'Password Reset Request';
-        //     $message = "
-        //     <p>Hello {$user['cust_Name']},</p>
-        //     <p>We received a request to reset your password. Click below to reset it:</p>
-        //     <p><a href='{$resetUrl}' target='_blank'>Reset Password</a></p>
-        //     <p>This link will expire in 1 hour.</p>
-        // ";
+       
         $logoUrl = base_url(ASSET_PATH . 'assets/img/logo-black.jpg');
 
         $message = '
@@ -171,7 +166,7 @@ class ForgotPassword extends Controller
         $user = $this->ForgotPasswordModel->where('reset_token', $token)->first();
 
         if (!$user || strtotime($user['reset_token_expiry']) < time()) {
-            return view('errors/html/error_404', ['message' => 'Invalid or expired token']);
+           return view('reset_expired');
         }
 
         return view('reset_password_form', ['token' => $token]);
@@ -181,26 +176,24 @@ class ForgotPassword extends Controller
     public function updatePassword()
     {
         $token = $this->request->getPost('token');
-        $newPassword = $this->request->getPost('new_password');
-
+        $newPassword = md5($this->request->getPost('new_password'));
         $user = $this->ForgotPasswordModel->where('reset_token', $token)->first();
 
         if (!$user) {
-            return redirect()->to('/')->with('error', 'Invalid token');
+             return view('reset_expired');
         }
 
         if (strtotime($user['reset_token_expiry']) < time()) {
-            return redirect()->to('/')->with('error', 'Token expired');
+            return view('reset_expired');
         }
 
-        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
 
         $this->ForgotPasswordModel->update($user['cust_Id'], [
-            'cust_Password' => $hashedPassword,
+            'cust_Password' => $newPassword,
             'reset_token' => null,
             'reset_token_expiry' => null
         ]);
 
-        return redirect()->to('/login')->with('success', 'Password updated successfully');
+        return redirect()->to('/')->with('success', 'Password updated successfully');
     }
 }
