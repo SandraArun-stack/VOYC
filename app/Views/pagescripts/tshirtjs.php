@@ -472,7 +472,8 @@
                         priId: $('input[name="priId"]').val(),
                         quantity: quantity,
                         totalPrice: totalPrice,
-                        // prvId: selectedSize
+                        selectedSize: $("#summarySize").text().trim(),
+
                     },
 
                     success: function (response) {

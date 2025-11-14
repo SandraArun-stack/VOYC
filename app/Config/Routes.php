@@ -146,7 +146,8 @@ $routes->get('Return_refundpolicy', 'ReturnAndRefundPolicy::index');
 
 
 //oreder details
-$routes->get('orderdetails', 'OrderDetails::index');  
+$routes->match(['get', 'post'], 'orderdetails', 'OrderDetails::index');
+ 
 $routes->post('orderdetails/placeOrder', 'OrderDetails::placeOrder');
 $routes->post('orderdetails/saveAddress', 'OrderDetails::saveAddress');
 

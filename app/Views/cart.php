@@ -152,9 +152,15 @@
                         <li>Total <span id="total-amount">₹ 0.00</span></li>
                     </ul>
 
-                    <a href="<?= base_url('orderdetails'); ?>" class="primary-btn proceed_check_out">
+                    <a  href="#" id="proceedCheckout" class="primary-btn proceed_check_out">
                         Proceed to checkout
                     </a>
+                    <form id="goCheckoutForm" action="<?= base_url('orderdetails') ?>" method="POST"
+                        style="display:none;">
+                        <input type="hidden" name="totalAmount" id="hiddenTotal">
+                        
+                    </form>
+
                 </div>
             </div>
 
@@ -163,67 +169,6 @@
 </section>
 <!-- Shop Cart Section End -->
 
-<!-- Instagram Begin -->
-<div class="instagram">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                <div class="instagram__item set-bg"
-                    data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/footer-banyan/footer-7.jpg">
-                    <div class="instagram__text">
-                        <i class="fa fa-instagram"></i>
-                        <a href="#">Voyc Online Shop</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                <div class="instagram__item set-bg"
-                    data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/footer-banyan/footer-6.jpg">
-                    <div class="instagram__text">
-                        <i class="fa fa-instagram"></i>
-                        <a href="#">Voyc Online Shop</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                <div class="instagram__item set-bg"
-                    data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/footer-banyan/footer-5.jpg">
-                    <div class="instagram__text">
-                        <i class="fa fa-instagram"></i>
-                        <a href="#">Voyc Online Shop</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                <div class="instagram__item set-bg"
-                    data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/footer-banyan/footer-9.jpg">
-                    <div class="instagram__text">
-                        <i class="fa fa-instagram"></i>
-                        <a href="#">Voyc Online Shop</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                <div class="instagram__item set-bg"
-                    data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/footer-banyan/footer-8.jpg">
-                    <div class="instagram__text">
-                        <i class="fa fa-instagram"></i>
-                        <a href="#">Voyc Online Shop</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                <div class="instagram__item set-bg"
-                    data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/footer-banyan/footer-10.jpg">
-                    <div class="instagram__text">
-                        <i class="fa fa-instagram"></i>
-                        <a href="#">Voyc Online Shop</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 <!-- Design Preview Modal -->
 <div class="modal fade" id="designPreviewModal" tabindex="-1" aria-labelledby="designPreviewLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">

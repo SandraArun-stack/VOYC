@@ -78,6 +78,7 @@
                 $('html, body').animate({ scrollTop: $('.checkout__form').offset().top - 100 }, 500);
                 return false;
             }
+            var finalOrderTotal = $("#order-total").val();
 
             // Step 2: Collect cart items
             var cartItems = [];
@@ -95,7 +96,9 @@
                     od_Original_Price: $(el).data('price') || 0,
                     od_Selling_Price: $(el).data('price') || 0,
                     od_Size: $(el).data('size') || null,
-                    od_Grand_Total: parseFloat(totalText)
+                    pr_Code: $(el).data('prcode') || null,
+                    pr_Name: $(el).data('prname') || null,
+                    od_Grand_Total: finalOrderTotal
                 });
             });
 
@@ -110,9 +113,9 @@
                 data: formData,
                 dataType: "json",
                 beforeSend: function () {
-                      $('html, body').animate({ scrollTop: 0 }, 'fast');
+                    $('html, body').animate({ scrollTop: 0 }, 'fast');
                     showMessage('⏳ Placing your order...', 'warning');
-                    
+
                 },
                 success: function (response) {
                     if (response.status === 'success') {

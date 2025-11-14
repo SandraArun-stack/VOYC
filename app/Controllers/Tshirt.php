@@ -73,7 +73,7 @@ class Tshirt extends Controller
         $LsleeveImageData = $this->request->getPost('LSleeve_Img');
         $quantity = $this->request->getPost('quantity');
         $totalPrice = $this->request->getPost('totalPrice');
-// print_r($totalPrice);exit;
+$selectedSize = $this->request->getPost('selectedSize');
         $uploadedImagesJson = $this->request->getPost('uploadedImages');
 
         $prId = $this->request->getPost('prId');
@@ -148,7 +148,7 @@ class Tshirt extends Controller
             'pri_Id' => $priId,
             'design_Id' => $designId,
             'created_on' => date('Y-m-d H:i:s'),
-            // 'prv_Id' => $prvId,
+            'cart_Size' => $selectedSize,
             'cart_Quantity' => $quantity ?? 1,
            'cart_Price' => $quantity > 0 ? ($totalPrice / $quantity) : $totalPrice  
         ];
