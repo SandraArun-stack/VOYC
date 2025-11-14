@@ -109,16 +109,18 @@
                                 if (!empty($cartItems)):
                                     $count = 1;
                                     foreach ($cartItems as $item):
-                                        $total = $item['prv_price'] * $item['cart_Quantity'];
+                                        $total = $item['cart_Price'] * $item['cart_Quantity'];
                                         $subtotal += $total;
                                         ?>
-
+                                        <input type="hidden" id="order-total" value="<?= $totalAmount ?>">
                                         <li data-prid="<?= $item['pr_Id'] ?>" data-priid="<?= $item['pri_Id'] ?>"
-                                            data-price="<?= $item['prv_price'] ?>" data-designid="<?= $item['design_Id'] ?>" data-size="<?= $item['cart_Size'] ?>">
+                                            data-price="<?= $item['cart_Price'] ?>" data-designid="<?= $item['design_Id'] ?>"
+                                            data-size="<?= $item['cart_Size'] ?>" data-prcode="<?= $item['pr_Code'] ?>"
+                                            data-prname="<?= $item['pr_Name'] ?>">
                                             <?= str_pad($count, 2, '0', STR_PAD_LEFT) ?>.
                                             <?= esc($item['pr_Name']) ?>
-                                            <small>(Qty: <?= esc($item['cart_Quantity']) ?> ×
-                                                ₹<?= number_format($item['prv_price'], 2) ?>)</small>
+                                            <br /> <small>(Qty: <?= esc($item['cart_Quantity']) ?> ×
+                                                ₹<?= number_format($item['cart_Price'], 2) ?>)</small>
                                             <span>₹ <?= number_format($total, 2) ?></span>
                                         </li>
 

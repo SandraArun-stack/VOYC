@@ -38,7 +38,6 @@ class OrderDetailsModel extends Model
     {
         $data['od_Status'] = '1';
         $data['od_createdon'] = date('Y-m-d H:i:s');
-        $data['od_number'] = $data['order_number'] ?? 'VOYC-' . date('Ymd') . '-' . random_int(10000, 99999);
 
         return $this->insert($data);
     }

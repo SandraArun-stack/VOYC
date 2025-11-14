@@ -195,6 +195,20 @@
             }, 'json');
         });
 
+        $('#proceedCheckout').click(function (e) {
+            e.preventDefault();
+
+            let totalAmount = $('#total-amount').text().replace('₹', '').trim();
+
+            // put total into hidden field
+            $('#hiddenTotal').val(totalAmount);
+
+            // submit form via POST
+            $('#goCheckoutForm').submit();
+        });
+
+
+
     });
 
 

@@ -35,7 +35,7 @@
                                     <a href="<?= base_url('my_orders'); ?>">
                                         <p>Orders & Returns</p>
                                     </a>
-                                    <p>My Wishlist</p>
+                                    <!-- <p>My Wishlist</p> -->
                                 </div>
                             </div>
                             <hr />
@@ -58,7 +58,7 @@
                                     </a>
                                     <p>My Wallet</p>
                                     <p>My Address</p>
-                                    <p>My Wishlist</p>
+                                    <!-- <p>My Wishlist</p> -->
                                     <p>Delete My Account</p>
                                 </div>
                             </div>
