@@ -59,8 +59,7 @@
                                                             <th>Customer Name</th>
                                                             <th>Email</th>
                                                             <th>Contact Number</th>
-                                                            <th>Product Code</th>
-                                                            <th>Quantity</th>
+                                                            <th>Order Number</th>
                                                             <th>Order Date</th>
                                                             <th>Status</th>
                                                             <th>Action</th>

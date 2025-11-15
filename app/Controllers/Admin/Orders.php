@@ -74,18 +74,15 @@ class Orders extends BaseController
             }
 
             $formattedData[] = [
-
-                'cust_Name' => $row->cust_Name ?? 'N/A', // Send raw name only, not link
-                'od_Id' => $row->od_Id,
-                'add_Email' => $row->add_Email ?? 'N/A',   // ← Now from od_Shipping_Address
+                'od_Id' => $row->od_Id,  // ← ADD THIS
+                'cust_Name' => $row->cust_Name ?? 'N/A',
+                'od_number' => $row->od_number,
+                'add_Email' => $row->add_Email ?? 'N/A',
                 'add_Phone' => $row->add_Phone ?? 'N/A',
-                'pr_Code' => $row->pr_Code ?? 'N/A',
-                'od_Quantity' => $row->od_Quantity ?? 'N/A',
                 'od_createdon' => !empty($row->od_createdon) ? date('d M Y', strtotime($row->od_createdon)) : 'N/A',
                 'od_Status' => $this->getStatusLabel($row->od_Status),
-                'actions' => '<a href="' . base_url('admin/orders/view/' . $row->od_Id) . '">
-                                    <i class="fa fa-eye"></i></a>',
-                                    'design_Id' => $row->design_Id ?? 0
+                'actions' => '<a href="' . base_url('admin/orders/view/' . $row->od_Id) . '"><i class="fa fa-eye"></i></a>',
+                'design_Id' => $row->design_Id ?? 0
             ];
         }
 
@@ -144,8 +141,8 @@ class Orders extends BaseController
                 ]
             ]);
         }
-        
-         $data['Customisation_image'] = $model->getCustomisedImage($od_id);
+
+        $data['Customisation_image'] = $model->getCustomisedImage($od_id);
 
         $data['od_Id'] = $od_id;
         return view('Admin/common/header')

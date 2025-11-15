@@ -47,8 +47,7 @@
 
             { data: 'add_Email' },
             { data: 'add_Phone' },
-            { data: 'pr_Code' },
-            { data: 'od_Quantity' },
+            { data: 'od_number' },
             { data: 'od_createdon' },
             {
                 data: 'od_Status',
@@ -67,7 +66,7 @@
             }
         ],
         columnDefs: [
-            { targets: [7, 8], orderable: false, searchable: false }
+            { targets: [6, 7], orderable: false, searchable: false }
         ],
         createdRow: function (row, data, dataIndex) {
             // Add click event on the entire row

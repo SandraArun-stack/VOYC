@@ -14,14 +14,41 @@ class OrdersModel extends Model
 
     protected $table = 'order_detail';
     protected $primaryKey = 'od_Id';
-    protected $allowedFields = ['tracker_Link', 'od_Status', 'cus_Id', 'design_Id'];
+    protected $allowedFields = [
+        'od_Id',
+        'od_number',
+        'od_Original_Price',
+        'od_Original_Price',
+        'od_Selling_Price',
+        'od_DiscountValue',
+        'od_DiscountType',
+        'od_createdon',
+        'od_createdby',
+        'od_modifyby',
+        'od_modifyon',
+        'pr_Code',
+        'add_Id',
+        'pr_Id',
+        'pri_Id',
+        'od_Grand_Total',
+        'od_Shipping_Address',
+        'design_Id',
+        'od_Status',
+        'od_Quantity',
+        'od_Size',
+        'tracker_Link',
+        'od_Status',
+        'cus_Id',
+        'design_Id'
+    ];
 
-    public function getDatatables($searchValue = null, $start = 0, $length = 10, $orderBy = 'order_detail.od_Id', $orderDir = 'DESC')
+    public function getDatatables($searchValue = null, $start = 0, $length = 10, $orderBy = 'order_detail.od_number', $orderDir = 'DESC')
     {
 
         $builder = $this->db->table('order_detail')
             ->select([
                 'order_detail.od_Id',
+                'order_detail.od_number',
                 'order_detail.od_Quantity',
                 'order_detail.od_Shipping_Address',
                 'order_detail.od_Status',
@@ -38,7 +65,8 @@ class OrdersModel extends Model
             ->where('od_Status!=', '')
             ->join('product', 'product.pr_Id = order_detail.pr_Id', 'left')
             ->join('customer', 'customer.cust_Id = order_detail.cus_Id', 'left')
-            ->join('address', 'address.add_Id = order_detail.add_Id', 'left');
+            ->join('address', 'address.add_Id = order_detail.add_Id', 'left')
+            ->groupBy('order_detail.od_number');;
         // print_r( $builder);exit();
 
         // Total records before filter
@@ -76,21 +104,6 @@ class OrdersModel extends Model
         ];
 
     }
-
-
-
-
-    // public function getOrder($od_id)
-    // {
-    //     return $this->db->table('order_detail')
-    //         ->select('order_detail.*, product.pr_Code, product.pr_Description, product.pr_Name')
-    //         ->join('product', 'product.pr_Id = order_detail.pr_Id')
-    //         ->where('order_detail.od_Id', $od_id)
-    //         ->whereIn('order_detail.od_Status', [1, 2, 3, 4]) // include only specific statuses
-    //         ->get()
-    //         ->getRow();
-
-    // }
 
 
     public function getOrder($od_id)
