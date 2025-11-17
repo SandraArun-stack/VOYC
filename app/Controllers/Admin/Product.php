@@ -174,15 +174,7 @@ if (!preg_match('/^[a-zA-Z0-9 _\-()\/\\\\]+$/', $product_code)) {
         'message' => 'Invalid Product Code'
     ]);
 }
-if(!empty($product_description)) {
-if (!preg_match('/^[a-zA-Z0-9\s.,;:()\'"\/&_@+-]+$/', $product_description)) {
-    return $this->response->setJSON([
-        'status' => 'error',
-        'field' => 'product_description',
-        'message' => 'Description contains invalid characters. Allowed: letters, numbers, spaces, and basic punctuation.'
-    ]);
-}
-}
+
 if (!ctype_digit($product_stock)) {
     return $this->response->setJSON([
         'status' => 'error',

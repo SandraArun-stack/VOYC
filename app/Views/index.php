@@ -314,8 +314,8 @@
                 <div class="col-lg-3 col-md-4 col-sm-6">
                     <div class="services__item">
                         <i class="fa fa-money"></i>
-                        <h6>Money Back Guarantee</h6>
-                        <p>If good have Problems</p>
+                        <h6>Secured Money Transaction</h6>
+                        <p>100% secure payment</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6">
