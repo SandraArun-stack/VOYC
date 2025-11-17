@@ -24,6 +24,7 @@ $routes->get('getColorImage/(:num)', 'ProductDetail::getColorImage/$1');
 
 //contact
 $routes->get('contact', 'Contact::index');
+$routes->post('contact/save', 'Contact::submit');
 
 //cart
 $routes->get('cart', 'Cart::index');
