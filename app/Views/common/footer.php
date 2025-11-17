@@ -7,9 +7,8 @@
                     <div class="footer__logo">
                         <a href="#"><img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo.jpg" alt=""></a>
                     </div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                        cilisis.</p>
-                    <div class="footer__payment">
+                    <p>Location</p>
+                    <!-- <div class="footer__payment">
                         <a href="#"><img src="<?= base_url() . ASSET_PATH; ?>assets/img/payment/payment-1.png"
                                 alt=""></a>
                         <a href="#"><img src="<?= base_url() . ASSET_PATH; ?>assets/img/payment/payment-2.png"
@@ -20,17 +19,17 @@
                                 alt=""></a>
                         <a href="#"><img src="<?= base_url() . ASSET_PATH; ?>assets/img/payment/payment-5.png"
                                 alt=""></a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="col-lg-2 col-md-3 col-sm-5">
                 <div class="footer__widget">
                     <h6>Quick links</h6>
                     <ul>
-                        <li><a href="#">Game Arena</a></li>
-                        <li><a href="#">Customization</a></li>
-                        <li><a href="#">About</a></li>
-                        <li><a href="#">Contact</a></li>
+                        <li><a href="<?= base_url(' '); ?>">Game Arena</a></li>
+                        <li><a href="<?= base_url('allCustomizableProducts'); ?>">Customization</a></li>
+                        <li><a href="<?= base_url('contact'); ?>">About</a></li>
+                        
                     </ul>
                 </div>
             </div>
@@ -38,20 +37,21 @@
                 <div class="footer__widget">
                     <h6>Account</h6>
                     <ul>
-                        <li><a href="#">My Account</a></li>
-                        <li><a href="#">Orders Tracking</a></li>
-                        <li><a href="#">Checkout</a></li>
-                        <li><a href="#">Wishlist</a></li>
+                        <li><a href="<?= base_url('myprofile'); ?>">My Account</a></li>
+                        <li><a href="<?= base_url('cart'); ?>">My Cart</a></li>
+                        <li><a href="<?= base_url('contact') ?>">Contact</a></li>
+                        <!-- <li><a href="#">Checkout</a></li> -->
+                        <!-- <li><a href="#">Wishlist</a></li> -->
                     </ul>
                 </div>
             </div>
             <div class="col-lg-4 col-md-8 col-sm-8">
                 <div class="footer__newslatter">
-                    <h6>NEWSLETTER</h6>
+                    <!-- <h6>NEWSLETTER</h6>
                     <form action="#">
                         <input type="text" placeholder="Email">
                         <button type="submit" class="site-btn">Subscribe</button>
-                    </form>
+                    </form> -->
                     <div class="footer__social">
                         <a href="#"><i class="fa fa-facebook"></i></a>
                         <a href="#"><i class="fa fa-twitter"></i></a>

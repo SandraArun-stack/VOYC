@@ -346,7 +346,53 @@
             </div>
         </div>
     </div>
-    
+    <div id="categoriesModal" class="custom-modal" data-aos="zoom-in" data-aos-duration="600">
+                <div class="custom-modal-content">
+                    <div class="custom-layer">
+                        <span class="close-btn">&times;</span>
+                        <div class="leaderboard-header text-center">
+                            <h3 class="leaderboard-title">PLAYERS OF THE DAY</h3>
+                        </div>
+                        <div class="leaderboard-item winner-first">
+                            <div class="position-icon first">🥇</div>
+                            <img src="<?= base_url() . ASSET_PATH; ?>assets/img/winner/kid-first.jpg" alt=" Winner"
+                                class="winner-img">
+                            <div class="winner-info">
+                                <h4>John Doe</h4>
+                                <p>Score: 1500</p>
+                            </div>
+                        </div>
+                        <div class="leaderboard-item winner-second">
+                            <div class="position-icon first">🥈</div>
+                            <img src="<?= base_url() . ASSET_PATH; ?>assets/img/winner/kid-first.jpg" alt=" Winner"
+                                class="winner-img">
+                            <div class="winner-info ">
+                                <h4>John Doe</h4>
+                                <p>Score: 1500</p>
+                            </div>
+                        </div>
+                        <div class="leaderboard-item winner-third">
+                            <div class="position-icon first">🥉</div>
+                            <img src="<?= base_url() . ASSET_PATH; ?>assets/img/winner/kid-first.jpg" alt=" Winner"
+                                class="winner-img">
+                            <div class="winner-info ">
+                                <h4>John Doe</h4>
+                                <p>Score: 1500</p>
+                            </div>
+                        </div>
+                        <div class="leaderboard-item winner-fourth">
+                            <div class="position-icon first">🏅</div>
+                            <img src="<?= base_url() . ASSET_PATH; ?>assets/img/winner/kid-first.jpg" alt=" Winner"
+                                class="winner-img">
+                            <div class="winner-info ">
+                                <h4>John Doe</h4>
+                                <p>Score: 1500</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
     <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0">

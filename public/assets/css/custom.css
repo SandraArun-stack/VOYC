@@ -38,6 +38,13 @@
     position: relative;
 }
 
+
+.fade-out {
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+
 .custom-modal {
     display: none;
     position: absolute;
@@ -57,6 +64,8 @@
     box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
     border-radius: 0;
     overflow: hidden;
+    position: absolute;
+    top: 125px;
 }
 
 .custom-layer {
@@ -1548,6 +1557,7 @@ input[type="file"] {
     position: relative;
     bottom: -8px;
 }
+
 /* Full-screen center alignment */
 .expired-wrapper {
     height: 100vh;
@@ -1558,19 +1568,23 @@ input[type="file"] {
     background: #f6f7fb;
 }
 
-.forgot-text{
-        color: #7e7e7e;
+.forgot-text {
+    color: #7e7e7e;
 }
+
 .forgot-input::placeholder {
- font-size: 12px !important;
+    font-size: 12px !important;
     /* color: #888; optional */
 }
-#to-forgot-password{
-    color:black !important;
-}
-#to-login-from-forgot{
+
+#to-forgot-password {
     color: black !important;
 }
+
+#to-login-from-forgot {
+    color: black !important;
+}
+
 @media only screen and (max-width: 991px) {
     .main__icon {
         display: flex !important;
