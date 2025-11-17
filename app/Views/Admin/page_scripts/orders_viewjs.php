@@ -1,10 +1,77 @@
 <script>
-    // Order View JS
-    $(document).ready(function () {
-        var orderId = <?= json_encode($od_Id) ?>;
-        console.log("Order ID:", orderId);
 
-        let originalStatus = '';
+    $(document).on('change', '.orderStatusSelect', function () {
+         let originalStatus = '';
+
+        let currentStatus = $(this).val();
+        let od_number = $(this).data('id');
+        // let tracker = $('#trackingUrl').val();
+
+        if (currentStatus === originalStatus) {
+            $('#alertBox')
+                .removeClass()
+                .addClass('alert alert-warning p-2')
+                .text("No change in status to update.")
+                .fadeIn()
+                .delay(2000)
+                .fadeOut();
+            return;
+        }
+
+        $.ajax({
+            url: '<?= base_url('admin/orders/orderStatusUpdation/') ?>' + od_number,
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                // tracker: tracker,
+                status: currentStatus
+            },
+
+            success: function (response) {
+                if (response.status === true) {
+                    $('#alertBox')
+                        .removeClass()
+                        .addClass('alert alert-success p-2')
+                        .text(response.message)
+                        .fadeIn()
+                        .delay(2000)
+                        .fadeOut();
+
+                    originalStatus = currentStatus;
+
+                    // 🔥 Update all dropdowns having same od_number
+                    $('.orderStatusSelect[data-id="' + od_number + '"]').val(currentStatus);
+                } else {
+                    $('#alertBox')
+                        .removeClass()
+                        .addClass('alert alert-danger p-2')
+                        .text(response.message)
+                        .fadeIn()
+                        .delay(3000)
+                        .fadeOut();
+                }
+            },
+
+            error: function (xhr) {
+                $('#alertBox')
+                    .removeClass()
+                    .addClass('alert alert-danger p-2')
+                    .text('Failed to Update Status: ' + xhr.responseText)
+                    .fadeIn()
+                    .delay(3000)
+                    .fadeOut();
+            }
+        });
+
+    });
+
+
+    // });
+
+
+    $(document).ready(function () {
+        var orderId = <?= json_encode($od_number) ?>;
+        console.log("Order ID:", orderId);
 
         $.ajax({
             url: '<?= base_url('admin/orders/view/') ?>' + orderId,
@@ -12,167 +79,179 @@
             dataType: 'json',
             success: function (res) {
                 console.log("AJAX response:", res);
+
                 if (res.status) {
-                    const order = res.data.order;
+
+                    const orders = res.data.orders;
                     const customer = res.data.customer;
                     const address = res.data.address;
 
-                    originalStatus = order.od_Status;
+                    // ----------------------------
+                    // PRODUCT TABLE
+                    // ----------------------------
+                    let productTable = `
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Product Code</th>
+                                <th>Product Name</th>
+                                <th>Quantity</th>
+                                <th>Customized</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
 
+                    let grandTotal = 0;
+
+                    orders.forEach(function (o) {
+                        grandTotal += parseFloat(o.od_Grand_Total);
+
+                        productTable += `
+                        <tr>
+                            <td>${o.pr_Code}</td>
+                            <td>${o.pr_Name}</td>
+                            <td>${o.od_Quantity}</td>
+                             <td>
+                                ${(!o.design_Id || o.design_Id == 0)
+                                ? `
+                                <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <span>No</span>
+                                    
+                                </div>
+                                `
+                                : `
+                                <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <span>Yes</span>
+                                    <button class="btn btn-warning btn-sm viewDesignBtn" data-id="${o.design_Id}">
+                                        View Design
+                                    </button>
+                                </div>
+`
+                            }
+
+                            </td>
+                            <td>${Math.round(o.od_Selling_Price)}</td>
+                        </tr>
+                    `;
+                    });
+
+                    // -------- Add Grand Total Row --------
+                    productTable += `
+                        <tr style="font-weight:bold; background:#f7f7f7;">
+                            <td colspan="4" class="text-end">Grand Total:</td>
+                            <td>${Math.round(grandTotal)}</td>
+                        </tr>
+                    </tbody>
+                </table>`;
+
+                    $('#order-details').html(productTable);
+
+                    // ----------------------------
+                    // CUSTOMER DETAILS
+                    // ----------------------------
                     $('#customer-details').html(`
                     <p><strong>Name:</strong> ${customer.cust_Name}</p>
                     <p><strong>Email:</strong> ${customer.cust_Email}</p>
-                    <p><strong>Phone:</strong> ${customer.cust_Phone ? customer.cust_Phone : 'N/A'}</p>
+                    <p><strong>Phone:</strong> ${customer.cust_Phone || 'N/A'}</p>
+                    <p><strong>Date of Birth:</strong> ${customer.cust_Dob || 'N/A'}</p>
                 `);
 
-                    $('#order-details').html(`
-                    <p><strong>Product Code:</strong> ${order.pr_Code}</p>
-                    <p><strong>Product Name:</strong> ${order.pr_Name}</p>
-                    <p><strong>Description:</strong> ${order.pr_Description}</p>
-                    <p><strong>Quantity:</strong> ${order.od_Quantity}</p>
-                   
-                    <p><strong>Ordered On:</strong> ${new Date(order.od_createdon).toLocaleString()}</p>
-                    <p><strong>Original Price Per Piece:</strong> ${Math.round(order.od_Original_Price)}</p>
-                    <p><strong>Discount:</strong> ${order.od_DiscountValue}</p>
-                    <p><strong>Selling Price Per Piece:</strong> ${Math.round(order.od_Selling_Price)}</p>
-                    <p><strong>Grand Total:</strong> ${Math.round(order.od_Grand_Total)}</p>
-                    <p><strong>Discount Type:</strong> ${order.od_DiscountType}</p><hr/>
-
-                    <div class="alert p-2" id="alertBox" style="display:none; font-size: 14px;"></div>
-
-                    <div class="form-group row align-items-center card-block mb-0 p-2">
-                        <label class="col-auto col-form-label"><strong>Update Status:</strong></label>
-                        <div class="col-auto">
-                            <select class="form-control form-control-sm arrow" style="font-size: 12px;" id="orderStatus" name="orderStatus">
-                                <option value="1" ${order.od_Status === '1' ? 'selected' : ''}>New</option>
-                                <option value="2" ${order.od_Status === '2' ? 'selected' : ''}>Confirmed</option>
-                                <option value="3" ${order.od_Status === '3' ? 'selected' : ''}>Packed</option>
-                                <option value="4" ${order.od_Status === '4' ? 'selected' : ''}>Dispatched</option>
-                            </select>
-                        </div>
-                        <div class="col text-end">
-                            <button class="btn btn-sm btn-primary" id="orderUpdatedId">Update</button>
-                        </div>
-                    </div>
-
-                    <div id="tracking-link" class="form-group card-block mt-2" style="display: none;">
-                        <label for="trackingUrl"><strong>Tracking Link:</strong></label>
-                        <textarea class="form-control form-control-sm" id="trackingUrl" name ="trackingUrl" rows="2" placeholder="Enter tracking link here...">${order.tracker_Link ? order.tracker_Link : ''}</textarea>
-                    </div>
-                `);
-
-                    $('#orderStatus').on('change', function () {
-                        if ($(this).val() === '4') {
-                            $('#tracking-link').show();
-                        } else {
-                            $('#tracking-link').hide();
-                        }
-                    });
-
-                    $('#orderStatus').trigger('change');
-                    const Deliveraddress = order.od_Shipping_Address || '';
-                    const parts = Deliveraddress.split(',').map(p => p.trim());
-
-                    // Safety checks
-                    const name = parts[0] || '';
-                    const phone = parts.find(p => /\+?\d[\d\s\-()]{7,}/.test(p)) || '';
-                    const email = parts.find(p => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(p)) || '';
-
-                    // Get the middle part (excluding name, phone, email)
-                    const middle = parts.filter(p =>
-                        p !== name && p !== phone && p !== email
-                    ).join(', ');
-
+                    // ----------------------------
+                    // DELIVERY ADDRESS
+                    // ----------------------------
                     $('#delivery-details').html(`
-                    <p><strong>Name:</strong> ${address.add_Name || 'N/A'}</p>
+                    <p><strong>Name:</strong> ${address.add_Name}</p>
                     <p>
                         ${address.add_BuldingNo || ''} ${address.add_Street || ''},<br>
                         ${address.add_Landmark || ''},<br>
                         ${address.add_City || ''}, ${address.add_State || ''},<br>
                         ${address.add_Pincode || ''}
                     </p>
-                    <p><strong>Phone:</strong> ${address.add_Phone || 'N/A'}</p>
-                    <p><strong>Email:</strong> ${address.add_Email || 'N/A'}</p>
-                                                    
+                    <p><strong>Phone:</strong> ${address.add_Phone}</p>
+                    <p><strong>Email:</strong> ${address.add_Email}</p>
                 `);
                 }
-            },
-            error: function (xhr, status, error) {
-                console.error("AJAX Error:", error);
-                $('#customer-details').html('<p>Error loading data.</p>');
             }
         });
+    });
 
-        $(document).on('click', '#orderUpdatedId', function () {
-            const tracker = $('#trackingUrl').val();
-            const currentStatus = $('#orderStatus').val();
 
-            if (currentStatus === originalStatus) {
-                $('#alertBox')
-                    .removeClass()
-                    .addClass('alert alert-warning p-2')
-                    .text("No change in status to update.")
-                    .fadeIn()
-                    .delay(2000)
-                    .fadeOut();
-                return;
-            }
-            $.ajax({
-                url: '<?= base_url('admin/orders/orderStatusUpdation/') ?>' + orderId,
-                type: 'POST',
-                dataType: 'json',
-                data: {
-                    tracker: tracker,
-                    status: currentStatus
-                },
 
-                success: function (response) {
-                    if (response.status === true) {
-                        $('#alertBox')
-                            .removeClass()
-                            .addClass('alert alert-success p-2')
-                            .text(response.message)
-                            .fadeIn()
-                            .delay(2000)
-                            .fadeOut();
+    $(document).on('click', '.viewDesignBtn', function () {
+        let design_Id = $(this).data('id');
 
-                        originalStatus = currentStatus; // Save the new valid status
-                    } else {
-                        // This will show message like: 'Enter the tracking link here.'
-                        $('#alertBox')
-                            .removeClass()
-                            .addClass('alert alert-danger p-2')
-                            .text(response.message)
-                            .fadeIn()
-                            .delay(3000)
-                            .fadeOut();
-                    }
-                },
-                error: function (xhr, status, error) {
-                    $('#alertBox')
-                        .removeClass()
-                        .addClass('alert alert-danger p-2')
-                        .text('Failed to Update Status: ' + xhr.responseText)
-                        .fadeIn()
-                        .delay(3000)
-                        .fadeOut();
+        $("#designModalBody").html("<p class='text-center'>Loading...</p>");
+        $("#designModal").modal("show");
+
+        $.ajax({
+            url: "<?= base_url('admin/getDesign') ?>",
+            type: "POST",
+            data: { design_Id: design_Id },
+            dataType: "json",
+            success: function (res) {
+                if (!res.status) {
+                    $("#designModalBody").html("<p class='text-danger'>No design found!</p>");
+                    return;
                 }
 
-            });
+                let d = res.data;
+                let html = `<div class="row"><div class="col-md-12">
+                <div class=" mb-3">
+                    <div class="">
+                        <div class='d-flex flex-wrap gap-3 p-3'>`;
+
+                // --- Normal design images ---
+                Object.keys(d)
+                    .filter(k => k !== 'User_Upload_Image')
+                    .forEach(function (key) {
+                        if (d[key] !== null && d[key] !== "") {
+                            html += `
+                        <div class="text-center">
+                            <img src="<?= base_url('uploads/designs/') ?>${d[key]}" 
+                                 class="img-fluid rounded shadow-sm" style="max-width:150px;">
+                            <p>${key.replace('_', ' ')}</p>
+                        </div>`;
+                        }
+                    });
+
+                html += `</div>`;
+
+                // --- User Uploaded Images ---
+                if (d.User_Upload_Image && d.User_Upload_Image.length > 0) {
+                    html += `<div class="d-flex flex-wrap gap-3 p-3">`;
+                    d.User_Upload_Image.forEach(function (img) {
+                        html += `
+                    <div class="text-center">
+                        <img src="<?= base_url('uploads/designs/') ?>${img}" 
+                             class="img-fluid rounded shadow-sm" style="max-width:150px;">
+                    </div>`;
+                    });
+                    html += `</div>`;
+                }
+
+                html += `
+                <div class="p-3">
+                    <button class="btn btn-primary" id="DownloadCustomImages">Download</button>
+                </div>
+            </div></div></div></div>`;
+
+                $("#designModalBody").html(html);
+            }
         });
-
-        // Download
-
     });
+
+
     $(document).on('click', '#backToOrders', function () {
         window.location.href = "<?= base_url('admin/orders') ?>";
     });
-    
+
     $(document).ready(function () {
-        $('#DownloadCustomImages').on('click', function () {
-            // Collect all image URLs that actually exist
+        $(document).on('click', '#DownloadCustomImages', function () {
+
             var images = [];
-            $('#customised-Details img').each(function () {
+            $("#designModalBody img").each(function () {
                 var src = $(this).attr('src');
                 if (src && src.trim() !== '') {
                     images.push(src);

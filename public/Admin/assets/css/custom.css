@@ -55,7 +55,7 @@
      width: 65px !important;
  }
 
- 
+
 
  .thumbs {
      width: 120px;
@@ -122,7 +122,34 @@
  .banner-btm-spce {
      margin-bottom: 3px !important;
  }
+ .iti__selected-dial-code {
+     display: none !important;
+ }
 
+ .phn_code div.iti--allow-dropdown {
+     width: 100%;
+ }
+
+ .upload__Image {
+     font-size: 16px;
+     font-weight: 600;
+     width: 250px;
+ }
+
+ .setting_row label {
+     margin-bottom: 0px;
+ }
+
+ .unopened-row {
+     background-color: #fff4f4 !important;
+     font-weight: 600;
+ }
+.notification_order{
+        border-radius: 50%;
+    height: 19px;
+    width: 20px;
+
+}
  @media (max-width: 768px) {
      .category-promo .section2-item {
          margin-bottom: 10px;
@@ -137,17 +164,5 @@
          height: auto;
      } */
  }
- .iti__selected-dial-code {
-    display: none!important;
-}
-.phn_code div.iti--allow-dropdown {
-    width: 100%;
-}
-.upload__Image {
-    font-size: 16px;
-    font-weight: 600;
-    width: 250px;
-}
-.setting_row label{
-    margin-bottom: 0px;
-}
+
+ 

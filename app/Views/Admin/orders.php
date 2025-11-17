@@ -12,7 +12,7 @@
                 <div class="col-md-4">
                     <ul class="breadcrumb-title">
                         <li class="breadcrumb-item">
-                            <a href="<?= base_url('admin/dashboard');?>"> <i class="fa fa-home"></i> </a>
+                            <a href="<?= base_url('admin/dashboard'); ?>"> <i class="fa fa-home"></i> </a>
                         </li>
                         <li class="breadcrumb-item"><a href="#!"> Orders</a>
                         </li>
@@ -40,7 +40,7 @@
                                         <div class="col-md-3">
                                             <div class="row">
                                                 <div class="col-lg-12 d-flex justify-content-end p-2">
-                                                    
+
                                                 </div>
                                             </div>
                                         </div>
@@ -56,10 +56,10 @@
                                                     <thead>
                                                         <tr>
                                                             <th>Sl.No.</th>
+                                                            <th>Order Number</th>
                                                             <th>Customer Name</th>
                                                             <th>Email</th>
                                                             <th>Contact Number</th>
-                                                            <th>Order Number</th>
                                                             <th>Order Date</th>
                                                             <th>Status</th>
                                                             <th>Action</th>
@@ -79,6 +79,3 @@
         </div>
     </div>
 </div>
-
-
-
