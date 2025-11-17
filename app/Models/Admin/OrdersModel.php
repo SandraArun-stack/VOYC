@@ -14,14 +14,41 @@ class OrdersModel extends Model
 
     protected $table = 'order_detail';
     protected $primaryKey = 'od_Id';
-    protected $allowedFields = ['tracker_Link', 'od_Status', 'cus_Id', 'design_Id'];
+    protected $allowedFields = [
+        'od_Id',
+        'od_number',
+        'od_Original_Price',
+        'od_Original_Price',
+        'od_Selling_Price',
+        'od_DiscountValue',
+        'od_DiscountType',
+        'od_createdon',
+        'od_createdby',
+        'od_modifyby',
+        'od_modifyon',
+        'pr_Code',
+        'add_Id',
+        'pr_Id',
+        'pri_Id',
+        'od_Grand_Total',
+        'od_Shipping_Address',
+        'design_Id',
+        'od_Status',
+        'od_Quantity',
+        'od_Size',
+        'tracker_Link',
+        'od_Status',
+        'cus_Id',
+        'design_Id'
+    ];
 
-    public function getDatatables($searchValue = null, $start = 0, $length = 10, $orderBy = 'order_detail.od_Id', $orderDir = 'DESC')
+    public function getDatatables($searchValue = null, $start = 0, $length = 10, $orderBy = 'order_detail.od_number', $orderDir = 'DESC')
     {
 
         $builder = $this->db->table('order_detail')
             ->select([
                 'order_detail.od_Id',
+                'order_detail.od_number',
                 'order_detail.od_Quantity',
                 'order_detail.od_Shipping_Address',
                 'order_detail.od_Status',
@@ -38,7 +65,9 @@ class OrdersModel extends Model
             ->where('od_Status!=', '')
             ->join('product', 'product.pr_Id = order_detail.pr_Id', 'left')
             ->join('customer', 'customer.cust_Id = order_detail.cus_Id', 'left')
-            ->join('address', 'address.add_Id = order_detail.add_Id', 'left');
+            ->join('address', 'address.add_Id = order_detail.add_Id', 'left')
+            ->groupBy('order_detail.od_number');
+        ;
         // print_r( $builder);exit();
 
         // Total records before filter
@@ -77,21 +106,20 @@ class OrdersModel extends Model
 
     }
 
-
-
-
-    // public function getOrder($od_id)
-    // {
-    //     return $this->db->table('order_detail')
-    //         ->select('order_detail.*, product.pr_Code, product.pr_Description, product.pr_Name')
-    //         ->join('product', 'product.pr_Id = order_detail.pr_Id')
-    //         ->where('order_detail.od_Id', $od_id)
-    //         ->whereIn('order_detail.od_Status', [1, 2, 3, 4]) // include only specific statuses
-    //         ->get()
-    //         ->getRow();
-
-    // }
-
+    public function getOrderById($od_number)
+    {
+        return $this->db->table('order_detail')
+            ->select('order_detail.od_Id')
+            ->where('order_detail.od_number', $od_number)
+            ->get()
+            ->getResult();
+    }
+    public function getOrderItemCount($orderNumber)
+    {
+        return $this->db->table('order_detail')
+            ->where('od_number', $orderNumber)
+            ->countAllResults();
+    }
 
     public function getOrder($od_id)
     {
@@ -119,31 +147,19 @@ class OrdersModel extends Model
             ->get()
             ->getRow();
     }
-    public function updateStatus($od_id, $tracker, $status)
+    public function updateStatus($od_number,  $status)
     {
 
         return $this->db->table('order_detail')
-            ->where('od_Id', $od_id)
+            ->where('od_number', $od_number)
             ->update([
-                'tracker_Link' => $tracker,
-                'od_Status' => $status
+                'od_Status' => $status,
+                 'od_modifyon' => date('Y-m-d H:i:s') 
             ]);
     }
-    public function getCustomisedImage($od_id)
+    public function getCustomisedImage($designId)
     {
-        $builder = $this->db->table('order_detail')
-            ->select('design_Id')
-            ->where('od_Id', $od_id)
-            ->get();
-
-        $result = $builder->getRow();
-
-        if (!$result || empty($result->design_Id) || $result->design_Id == 0) {
-            return null;
-        }
-
-        $designId = $result->design_Id;
-
+       
         $design = $this->db->table('design')
             ->select('front_Image, back_Image, RSleeve_Image, LSleeve_Image,User_Upload_Image')
             ->where('design_Id', $designId)
@@ -170,6 +186,19 @@ class OrdersModel extends Model
     }
 
 
+    public function getStatusByOrderNumber($od_number)
+    {
+        $od_Status= $this->db->table('order_detail')
+            ->select('od_Status')
+            ->where('od_number', $od_number)
+            ->orderBy('od_Id', 'ASC')  // just to be safe
+            ->get()
+            ->getRow()
+            ->od_Status;
+            
+        return $od_Status;
+
+    }
 
 
 }

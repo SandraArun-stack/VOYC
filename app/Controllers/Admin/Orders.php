@@ -61,6 +61,7 @@ class Orders extends BaseController
 
         $formattedData = [];
         foreach ($data['data'] as $row) {
+            $itemCount = $model->getOrderItemCount($row->od_number);
             $address = $row->od_Shipping_Address ?? '';
 
             $email = '';
@@ -74,18 +75,16 @@ class Orders extends BaseController
             }
 
             $formattedData[] = [
-
-                'cust_Name' => $row->cust_Name ?? 'N/A', // Send raw name only, not link
-                'od_Id' => $row->od_Id,
-                'add_Email' => $row->add_Email ?? 'N/A',   // ← Now from od_Shipping_Address
+                'od_Id' => $row->od_Id,  // ← ADD THIS
+                'cust_Name' => $row->cust_Name ?? 'N/A',
+                'od_number' => $row->od_number,
+                'item_count' => $itemCount,
+                'add_Email' => $row->add_Email ?? 'N/A',
                 'add_Phone' => $row->add_Phone ?? 'N/A',
-                'pr_Code' => $row->pr_Code ?? 'N/A',
-                'od_Quantity' => $row->od_Quantity ?? 'N/A',
                 'od_createdon' => !empty($row->od_createdon) ? date('d M Y', strtotime($row->od_createdon)) : 'N/A',
-                'od_Status' => $this->getStatusLabel($row->od_Status),
-                'actions' => '<a href="' . base_url('admin/orders/view/' . $row->od_Id) . '">
-                                    <i class="fa fa-eye"></i></a>',
-                                    'design_Id' => $row->design_Id ?? 0
+                'od_Status' => $model->getStatusByOrderNumber($row->od_number),
+                'actions' => '<a href="' . base_url('admin/orders/view/' . $row->od_Id) . '"><i class="fa fa-eye"></i></a>',
+                'design_Id' => $row->design_Id ?? 0
             ];
         }
 
@@ -114,69 +113,111 @@ class Orders extends BaseController
         }
     }
 
-    public function orderView($od_id)
+
+    public function OrderView($od_number)
     {
         $model = new \App\Models\Admin\OrdersModel();
+
         if (!$this->session->get('ad_uid')) {
             return redirect()->to(base_url('admin'));
         }
-        if ($this->request->isAJAX()) {
-            $order = $model->getOrder($od_id);
-            if (!$order) {
-                return $this->response->setJSON([
-                    'status' => false,
-                    'message' => 'Order not found'
-                ]);
-            }
-            $cust_Id = $order->cus_Id;
-            $add_Id = $order->add_Id;
-            $customer = $model->getCustomer($cust_Id);
-            $address = $model->getAddress($add_Id);
-            $Customisation_image = $model->getCustomisedImage($od_id);
 
-            return $this->response->setJSON([
-                'status' => true,
-                'data' => [
-                    'order' => $order,
-                    'customer' => $customer,
-                    'address' => $address,
-                    'Customisation_image' => $Customisation_image
-                ]
-            ]);
+        // Get rows by od_number
+        $orderRows = $model->getOrderById($od_number);
+
+        if (empty($orderRows)) {
+            return "Order not found";
         }
-        
-         $data['Customisation_image'] = $model->getCustomisedImage($od_id);
 
-        $data['od_Id'] = $od_id;
-        return view('Admin/common/header')
-            . view('Admin/common/leftmenu')
-            . view('Admin/order_view', $data)
-            . view('Admin/common/footer')
-            . view('Admin/page_scripts/orders_viewjs');
+        // Extract od_Id values
+        $odIds = array_map(fn($row) => $row->od_Id, $orderRows);
 
+        // Fetch complete order rows
+        $orders = [];
+        foreach ($odIds as $oid) {
+            $ord = $model->getOrder($oid);
+            if ($ord) {
+                $orders[] = $ord;   // only push valid ones
+            }
+        }
+
+        // Make sure at least one order exists
+        if (empty($orders)) {
+            return "Order not found or corrupted order entries.";
+        }
+
+        // First order provides customer/address
+        $first = $orders[0];
+        $status = $first->od_Status;
+        $customer = $model->getCustomer($first->cus_Id);
+        $address = $model->getAddress($first->add_Id);
+
+       
+        if (!$this->request->isAJAX()) {
+            $data = [
+                'od_number' => $od_number,
+                'orders' => $orders,
+                'customer' => $customer,
+                'address' => $address,
+                'status'    => $status 
+                // 'designs' => $designs
+            ];
+
+            return view('Admin/common/header')
+                . view('Admin/common/leftmenu')
+                . view('Admin/order_view', $data)
+                . view('Admin/common/footer')
+                . view('Admin/page_scripts/orders_viewjs');
+        }
+
+        // AJAX
+        return $this->response->setJSON([
+            'status' => true,
+            'data' => [
+                'orders' => $orders,
+                'customer' => $customer,
+                'address' => $address,
+                // 'designs' => $designs
+            ]
+        ]);
     }
 
-    public function orderStatusUpdation($od_id)
+    public function getDesignAjax()
+    {
+        $design_Id = $this->request->getPost('design_Id');
+
+        $model = new \App\Models\Admin\OrdersModel();
+        $design = $model->getCustomisedImage($design_Id);
+
+        if (!$design) {
+            return $this->response->setJSON([
+                'status' => false,
+                'message' => 'No design found.'
+            ]);
+        }
+
+        return $this->response->setJSON([
+            'status' => true,
+            'data' => $design
+        ]);
+    }
+
+
+
+    public function orderStatusUpdation($od_number)
     {
         $model = new \App\Models\Admin\OrdersModel();
-        $tracker = $this->input->getPost('tracker');
         $status = $this->input->getPost('status');
 
-        //echo $tracker; exit;
         if ($this->request->isAJAX()) {
-            $updation = $model->updateStatus($od_id, $tracker, $status);
+            $updation = $model->updateStatus($od_number,  $status);
             if ($updation) {
                 if (!$status) {
                     return $this->response->setJSON([
                         'status' => false,
                         'message' => 'Missing The Status.'
                     ]);
-                } elseif ($status == '4' && empty(trim($tracker))) {
-                    return $this->response->setJSON([
-                        'status' => false,
-                        'message' => 'Please Enter the Tracking Link.'
-                    ]);
-                }
+                } 
                 return $this->response->setJSON([
                     'status' => true,
                     'message' => 'Status Updated Successfully.'

@@ -31,6 +31,44 @@
                         </div>
                     </div><br />
                     <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <div class="col d-flex justify-content-between align-items-center">
+
+                                            <!-- Left Heading -->
+                                            <h5>Order Details</h5>
+
+                                            <!-- Right Side: Status + Dropdown -->
+                                            <div class="d-flex align-items-center">
+                                                <h5 class="mb-0 me-2">Status Update:</h5>
+
+                                                <!-- Dropdown -->
+                                                <select class="form-select orderStatusSelect"
+                                                    data-id="<?= $od_number ?>" style="width:150px;">
+                                                    <option value="1" <?= ($status == 1) ? 'selected' : '' ?>>New</option>
+                                                    <option value="2" <?= ($status == 2) ? 'selected' : '' ?>>Confirmed
+                                                    </option>
+                                                    <option value="3" <?= ($status == 3) ? 'selected' : '' ?>>Packed
+                                                    </option>
+                                                    <option value="4" <?= ($status == 4) ? 'selected' : '' ?>>Dispatched
+                                                    </option>
+                                                    <option value="5" <?= ($status == 5) ? 'selected' : '' ?>>Delivered
+                                                    </option>
+                                                </select>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="card-block" id="order-details"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="card mb-3">
                                 <div class="card-header">
@@ -43,6 +81,10 @@
                                 <div class="card-block" id="customer-details"></div>
                             </div>
 
+
+                        </div>
+                        <div class="col-md-6">
+
                             <div class="card">
                                 <div class="card-header">
                                     <div class="row">
@@ -54,73 +96,28 @@
                                 <div class="card-block" id="delivery-details"></div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    <div class="row">
-                                        <div class="col">
-                                            <h5>Order Details</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-block" id="order-details"></div>
-                            </div>
-                        </div>
                     </div>
-                    <?php if (!empty($Customisation_image)): ?>
 
-                        <?php
-                        $userUploads = $Customisation_image['User_Upload_Image'] ?? [];
-                        unset($Customisation_image['User_Upload_Image']); // remove it for clean loop
-                        ?>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="card mb-3">
-                                    <div class="card-header">
-                                        <h5>Customized Design</h5>
-                                    </div>
-                                    <div class="card-block" id="customised-Details">
-                                        <div class="d-flex flex-wrap gap-3 p-3">
-                                            <?php foreach ($Customisation_image as $key => $img): ?>
-                                                <?php if (!empty($img)): ?>
-                                                    <div class="text-center">
-                                                        <img src="<?= base_url('uploads/designs/' . esc($img)) ?>"
-                                                            alt="<?= esc($key) ?>" class="img-fluid rounded shadow-sm"
-                                                            style="max-width:150px;">
-                                                        <p class="mt-2 mb-0 text-capitalize">
-                                                            <?= str_replace('_', ' ', $key) ?>
-                                                        </p>
-                                                    </div>
-                                                <?php endif; ?>
-                                            <?php endforeach; ?>
-                                        </div>
-                                        <?php if (!empty($userUploads)): ?>
-                                            <div class="d-flex flex-wrap gap-3 p-3">
-                                                <?php foreach ($userUploads as $img): ?>
-                                                    <?php if (!empty($img)): ?>
-                                                        <?php if (!empty($img)): ?>
-                                                            <div class="text-center">
-                                                                <img src="<?= base_url('uploads/designs/' . esc($img)) ?>" alt="User Upload"
-                                                                    class="img-fluid rounded shadow-sm" style="max-width:150px;">
-                                                            </div>
-                                                        <?php endif; ?>
-                                                    <?php endif; ?>
-                                                <?php endforeach; ?>
-                                            </div>
-                                        <?php endif; ?>
-                                         <div class="d-flex flex-wrap gap-3 p-3">
-                                            <button class="btn btn-primary" id="DownloadCustomImages">Download</button>
-                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <?php endif; ?>
 
 
                 </div>
                 <!-- Page-body end -->
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="designModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Design Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="designModalBody">
+                <p class="text-center">Loading...</p>
+
+
             </div>
         </div>
     </div>

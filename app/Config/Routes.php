@@ -14,7 +14,7 @@ $routes->post('updatePassword', 'ForgotPassword::updatePassword');
 //shop
 $routes->get('men', 'Shop::index');
 $routes->get('women', 'Shop::index');
-$routes->get('shop', 'Shop::index'); 
+$routes->get('shop', 'Shop::index');
 $routes->post('fetchProductsBySubcategory', 'Shop::index');
 
 //product details
@@ -147,7 +147,7 @@ $routes->get('Return_refundpolicy', 'ReturnAndRefundPolicy::index');
 
 //oreder details
 $routes->match(['get', 'post'], 'orderdetails', 'OrderDetails::index');
- 
+
 $routes->post('orderdetails/placeOrder', 'OrderDetails::placeOrder');
 $routes->post('orderdetails/saveAddress', 'OrderDetails::saveAddress');
 
@@ -270,8 +270,9 @@ $routes->get('admin/get/themes', 'Admin\Themes::fetch_theme');
 //orders
 $routes->get('admin/orders', 'Admin\Orders::index');
 $routes->post('admin/orders/List', 'Admin\Orders::ajaxList');
-$routes->get('admin/orders/view/(:num)', 'Admin\Orders::orderView/$1');
-$routes->post('admin/orders/orderStatusUpdation/(:num)', 'Admin\Orders::orderStatusUpdation/$1');
+$routes->get('admin/orders/view/(:any)', 'Admin\Orders::OrderView/$1');
+$routes->post('admin/orders/orderStatusUpdation/(:any)', 'Admin\Orders::orderStatusUpdation/$1');
+$routes->post('admin/getDesign', 'Admin\Orders::getDesignAjax');
 
 
 
