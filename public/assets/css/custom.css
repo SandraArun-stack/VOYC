@@ -1558,7 +1558,19 @@ input[type="file"] {
     background: #f6f7fb;
 }
 
-
+.forgot-text{
+        color: #7e7e7e;
+}
+.forgot-input::placeholder {
+ font-size: 12px !important;
+    /* color: #888; optional */
+}
+#to-forgot-password{
+    color:black !important;
+}
+#to-login-from-forgot{
+    color: black !important;
+}
 @media only screen and (max-width: 991px) {
     .main__icon {
         display: flex !important;

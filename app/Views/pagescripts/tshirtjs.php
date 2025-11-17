@@ -285,11 +285,6 @@
 
         let selectedSize = null;
 
-        // $(document).on('click', '.selectable-size', function () {
-        //     $('.selectable-size').removeClass('selected');
-        //     $(this).addClass('selected');
-        //     selectedSize = $(this).data('prv-id');
-        // });
         let quantity = 1;
 
         function getBasePrice() {

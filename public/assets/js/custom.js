@@ -105,6 +105,14 @@ $(document).ready(function () {
 
         });
     });
+      $(document).on('click', '#to-login-from-forgot', function (e) {
+        e.preventDefault();
+        $('#registerView').fadeOut(200, function () {
+            $('#forgotPassView').addClass('d-none');
+            $('#loginView').fadeIn(200);
+
+        });
+    });
     $(document).on('click', '#to-forgot-password', function (e) {
         e.preventDefault();
         $('#loginView').fadeOut(200, function () {
