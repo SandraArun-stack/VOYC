@@ -39,13 +39,13 @@
                         : data;
                 }
             },
-            { data: 'pr_Stock' },
+            // { data: 'pr_Stock' },
             { data: 'status_switch' },
             { data: 'actions' }
         ],
         columnDefs: [
             {
-                targets: [4, 5], 
+                targets: [3, 4], 
                 orderable: false,
                 searchable: false
             }
