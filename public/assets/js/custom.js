@@ -5,6 +5,7 @@ window.onload = function () {
         mirror: true
     });
 };
+
 $(document).ready(function () {
     var currentUrl = window.location.href.toLowerCase();
 
@@ -29,10 +30,23 @@ $(document).ready(function () {
         $(".header__menu ul li").removeClass("active");
         $(this).parent().addClass("active");
     });
+    // $("#leader_board").on("click", function (e) {
+    //     e.preventDefault();
+    //     $("#categoriesModal").fadeIn(600);
+    // });
+
     $("#leader_board").on("click", function (e) {
         e.preventDefault();
-        $("#categoriesModal").fadeIn(600);
+
+        // show modal instantly (no fade)
+        $("#categoriesModal").css("display", "block");
+
+        // trigger AOS animation
+        setTimeout(() => {
+            AOS.refreshHard();
+        }, 50);
     });
+
 
     $(".close-btn").on("click", function () {
         $("#categoriesModal").hide();
@@ -112,6 +126,15 @@ $(document).ready(function () {
             $('#forgotPassView').removeClass('d-none');
         });
     });
+ $(document).on('click', '#to-login-from-forgot', function (e) {
+        e.preventDefault();
+        $('#registerView').fadeOut(200, function () {
+            $('#forgotPassView').addClass('d-none');
+            $('#loginView').fadeIn(200);
+
+        });
+    });
+
 
     //eye icon in register form
     $('.toggle-password').on('click', function () {
@@ -441,7 +464,7 @@ $(document).ready(function () {
         });
     });
 
-    
+
 
 });
 

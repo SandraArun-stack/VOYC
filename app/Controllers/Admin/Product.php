@@ -44,8 +44,7 @@ class Product extends BaseController
             $row['pr_Name'] = $row['pr_Name'] ?? 'N/A';
             $row['pr_Code'] = $row['pr_Code'] ?? 'N/A';
            
-            $row['pr_Stock'] = $row['pr_Stock'] ?? 'N/A';
-
+          
 
 
             // Status toggle switch
@@ -144,8 +143,8 @@ class Product extends BaseController
                                             ucfirst(strtolower(trim($product_description))));
 
 
-        $product_stock = $this->input->getPost('product_stock');
-        $reset_stock = $this->input->getPost('reset_stock');
+        // $product_stock = $this->input->getPost('product_stock');
+        // $reset_stock = $this->input->getPost('reset_stock');
         $sleeve_style   = ucwords(strtolower(trim($this->request->getPost('sleeve_style'))));
         $fabric   = ucwords(strtolower(trim($this->request->getPost('fabric'))));
         $stitching   = ucwords(strtolower(trim($this->request->getPost('stitching'))));
@@ -154,7 +153,7 @@ class Product extends BaseController
         
         $DisCountFrom = 0;     
         
-        if (empty($cat_id) || empty($product_name) || empty($product_code) || empty($product_stock)) {
+        if (empty($cat_id) || empty($product_name) || empty($product_code)) {
             return $this->response->setJSON([
                 'status' => 'error',
                 'message' => 'All Required Fields Must Be Filled.'
@@ -174,31 +173,23 @@ if (!preg_match('/^[a-zA-Z0-9 _\-()\/\\\\]+$/', $product_code)) {
         'message' => 'Invalid Product Code'
     ]);
 }
-if(!empty($product_description)) {
-if (!preg_match('/^[a-zA-Z0-9\s.,;:()\'"\/&_@+-]+$/', $product_description)) {
-    return $this->response->setJSON([
-        'status' => 'error',
-        'field' => 'product_description',
-        'message' => 'Description contains invalid characters. Allowed: letters, numbers, spaces, and basic punctuation.'
-    ]);
-}
-}
-if (!ctype_digit($product_stock)) {
-    return $this->response->setJSON([
-        'status' => 'error',
-        'field' => 'product_stock',
-        'message' => 'Product Stock Must be a Number.'
-    ]);
-}
+
+// if (!ctype_digit($product_stock)) {
+//     return $this->response->setJSON([
+//         'status' => 'error',
+//         'field' => 'product_stock',
+//         'message' => 'Product Stock Must be a Number.'
+//     ]);
+// }
 
 // Validate reset_stock
-if (!ctype_digit($reset_stock)) {
-    return $this->response->setJSON([
-        'status' => 'error',
-        'field' => 'reset_stock',
-        'message' => 'Reset Stock Must be a Number.'
-    ]);
-}
+// if (!ctype_digit($reset_stock)) {
+//     return $this->response->setJSON([
+//         'status' => 'error',
+//         'field' => 'reset_stock',
+//         'message' => 'Reset Stock Must be a Number.'
+//     ]);
+// }
 
 $allowedPattern = '/^[a-zA-Z0-9\s\-\&\/()]+$/';
 if(!empty($sleeve_style)){
@@ -274,8 +265,8 @@ if ($pr_custom === null || $pr_custom === '') {
             'pr_Description' => $product_description,
             'cat_Id' => $cat_id,
             'sub_Id' => $sub_id,
-            'pr_Stock' => $product_stock,
-            'pr_Reset_Stock' => $reset_stock,
+            // 'pr_Stock' => $product_stock,
+            // 'pr_Reset_Stock' => $reset_stock,
             'pr_Sleeve_Style' => $sleeve_style,
             'pr_Fabric' => $fabric,
             'pr_Stitch_Type' => $stitching,

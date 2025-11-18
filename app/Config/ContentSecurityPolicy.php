@@ -84,7 +84,7 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string
      */
-    public $childSrc = 'self';
+  public $childSrc = ['self', 'https://www.google.com', 'https://maps.google.com'];
 
     /**
      * Limits the origins that you can connect to (via XHR,
@@ -116,15 +116,14 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string|null
      */
-    public $frameAncestors;
-
+  public $frameAncestors = ['self', 'https://www.google.com', 'https://maps.google.com'];
     /**
      * The frame-src directive restricts the URLs which may
      * be loaded into nested browsing contexts.
      *
      * @var list<string>|string|null
      */
-    public $frameSrc;
+   public $frameSrc = ['self', 'https://www.google.com', 'https://maps.google.com'];
 
     /**
      * Restricts the origins allowed to deliver video and audio.

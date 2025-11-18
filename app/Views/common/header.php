@@ -108,7 +108,7 @@
                             <li>
                                 <a href="#" class="icon-with-text"><i class="bi bi-wallet2"></i>
                                     <div class="tip">2</div>
-                                     <span class="icon-label">Wallet</span>
+                                    <span class="icon-label">Wallet</span>
                                 </a>
                             </li>
                             <?php if ($session->get('isLoggedIn')): ?>
@@ -124,13 +124,13 @@
                             <li class="customization_icon_header">
                                 <a href="<?= base_url('allCustomizableProducts'); ?>" class="icon-with-text">
                                     <i class="custom-icon-customisation"></i>
-                                     <span class="icon-label">Design</span>
+                                    <span class="icon-label">Design</span>
                                 </a>
                             </li>
                             <li>
                                 <a href="#" id="leader_board" class="icon-with-text">
                                     <i class="bi bi-award-fill"></i>
-                                     <span class="icon-label">Winners</span>
+                                    <span class="icon-label">Winners</span>
                                 </a>
                             </li>
                         </ul>
@@ -317,19 +317,28 @@
 
                                 <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
                             </a>
-                            <h3 class="auth-title mb-0 text-center">Sign In</h3>
+                            <h3 class="auth-title mb-0 text-center">Forgot Password</h3>
                         </div>
                     </div>
 
                     <div class="modal-body">
                         <div class="alert alert-success m-1 p-2 w-auto d-none" id="forgotalert"></div>
                         <form id="forgotPassForm">
-                            <label>Email</label><span>&nbsp;*</span>
-                            <input type="email" name="forgot_email" class="form-control mb-3"
+                            <label class="d-block">Email <span>*</span></label>
+
+                            <input type="email" name="forgot_email" class="form-control mb-3 forgot-input"
                                 placeholder="Enter Your Email" required>
-                            <div class="submit_forgot w-100">
-                                <button type="button" id="btn_forgot_password" class="btn btn-dark"
-                                    data-url="<?= base_url('forgotPassword') ?>">Submit</button>
+                            <small class="forgot-text d-block mb-2">
+                                A Password Reset Link Will be Delivered to Your Email.
+                            </small>
+                            <div class="submit_forgot w-100 justify-content-between d-flex">
+                                <button type="button" id="btn_forgot_password" class="btn btn-dark w-100"
+                                    data-url="<?= base_url('forgotPassword') ?>">Send Reset Link</button>
+
+                            </div>
+                            <div class="d-flex justify-content-end mt-3">
+                                <a href="#" id="to-login-from-forgot" class="text-center align-items-center d-flex">Back
+                                    to Login</a>
                             </div>
                         </form>
 
@@ -338,6 +347,53 @@
             </div>
         </div>
     </div>
+    <div id="categoriesModal" class="custom-modal" data-aos="zoom-in" data-aos-duration="600">
+        <div class="custom-modal-content">
+            <div class="custom-layer">
+                <span class="close-btn">&times;</span>
+                <div class="leaderboard-header text-center">
+                    <h3 class="leaderboard-title">PLAYERS OF THE DAY</h3>
+                </div>
+                <div class="leaderboard-item winner-first">
+                    <div class="position-icon first">🥇</div>
+                    <img src="<?= base_url() . ASSET_PATH; ?>assets/img/winner/kid-first.jpg" alt=" Winner"
+                        class="winner-img">
+                    <div class="winner-info">
+                        <h4>John Doe</h4>
+                        <p>Score: 1500</p>
+                    </div>
+                </div>
+                <div class="leaderboard-item winner-second">
+                    <div class="position-icon first">🥈</div>
+                    <img src="<?= base_url() . ASSET_PATH; ?>assets/img/winner/kid-first.jpg" alt=" Winner"
+                        class="winner-img">
+                    <div class="winner-info ">
+                        <h4>John Doe</h4>
+                        <p>Score: 1500</p>
+                    </div>
+                </div>
+                <div class="leaderboard-item winner-third">
+                    <div class="position-icon first">🥉</div>
+                    <img src="<?= base_url() . ASSET_PATH; ?>assets/img/winner/kid-first.jpg" alt=" Winner"
+                        class="winner-img">
+                    <div class="winner-info ">
+                        <h4>John Doe</h4>
+                        <p>Score: 1500</p>
+                    </div>
+                </div>
+                <div class="leaderboard-item winner-fourth">
+                    <div class="position-icon first">🏅</div>
+                    <img src="<?= base_url() . ASSET_PATH; ?>assets/img/winner/kid-first.jpg" alt=" Winner"
+                        class="winner-img">
+                    <div class="winner-info ">
+                        <h4>John Doe</h4>
+                        <p>Score: 1500</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0">

@@ -111,7 +111,7 @@
 
                                         </div>
 
-                                        <div class="form-group row">
+                                        <!-- <div class="form-group row">
                                             <label class="col-sm-3 col-form-label">Product Stock<span
                                                     style="color: red;">*</span></label>
                                             <div class="col-sm-7">
@@ -121,8 +121,8 @@
                                                     placeholder="Enter the Product Stock" 
                                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '')">
                                             </div>
-                                        </div>
-                                        <div class="form-group row">
+                                        </div> -->
+                                        <!-- <div class="form-group row">
                                             <label class="col-sm-3 col-form-label">Product Reset Stock<span
                                                     style="color: red;">*</span></label>
                                             <div class="col-sm-7">
@@ -132,7 +132,7 @@
                                                     placeholder="Enter the Product Reset Stock"
                                                   >
                                             </div>
-                                        </div>
+                                        </div> -->
 
                                       <div class="form-group row">
                                             <label class="col-sm-3 col-form-label">Customisation</label>

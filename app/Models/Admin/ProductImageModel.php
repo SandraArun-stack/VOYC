@@ -89,10 +89,41 @@ class ProductImageModel extends Model
 
     public function deleteVariantById($prv_id)
     {
-        return $this->db->table('product_variants')
+        // Step 1: Get pri_Id from product_variants
+        $variant = $this->db->table('product_variants')
+            ->select('pri_Id')
+            ->where('prv_Id', $prv_id)
+            ->get()
+            ->getRow();
+
+        if (!$variant) {
+            return false;
+        }
+
+        $pri_id = $variant->pri_Id;
+
+        // Step 2: Mark the variant as deleted
+        $this->db->table('product_variants')
             ->where('prv_Id', $prv_id)
             ->update(['prv_Status' => 3]);
+
+        // Step 3: Check if there are any active variants left
+        $activeVariants = $this->db->table('product_variants')
+            ->where('pri_Id', $pri_id)
+            ->where('prv_Status', 1)
+            ->countAllResults();
+
+        // Step 4: If no active variants exist, update product_image status
+        if ($activeVariants == 0) {
+
+            $this->db->table('product_image')
+                ->where('pri_Id', $pri_id)
+                ->update(['pri_Status' => 3]);
+        }
+
+        return true;
     }
+
 
 
     // -------------------
