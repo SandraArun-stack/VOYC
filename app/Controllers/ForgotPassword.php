@@ -48,7 +48,7 @@ class ForgotPassword extends Controller
 
         // Email content
         $subject = 'Password Reset Request';
-       
+
         $logoUrl = base_url(ASSET_PATH . 'assets/img/logo-black.jpg');
 
         $message = '
@@ -166,34 +166,71 @@ class ForgotPassword extends Controller
         $user = $this->ForgotPasswordModel->where('reset_token', $token)->first();
 
         if (!$user || strtotime($user['reset_token_expiry']) < time()) {
-           return view('reset_expired');
+            return view('reset_expired');
         }
 
         return view('reset_password_form', ['token' => $token]);
     }
 
     // Step 3: Update password
+    // public function updatePassword()
+    // {
+    //     $token = $this->request->getPost('token');
+    //     $newPassword = md5($this->request->getPost('new_password'));
+    //     $user = $this->ForgotPasswordModel->where('reset_token', $token)->first();
+
+    //     if (!$user) {
+    //          return view('reset_expired');
+    //     }
+
+    //     if (strtotime($user['reset_token_expiry']) < time()) {
+    //         return view('reset_expired');
+    //     }
+
+
+    //     $this->ForgotPasswordModel->update($user['cust_Id'], [
+    //         'cust_Password' => $newPassword,
+    //         'reset_token' => null,
+    //         'reset_token_expiry' => null
+    //     ]);
+
+    //     return redirect()->to('/')->with('success', 'Password updated successfully');
+    // }
+
+
     public function updatePassword()
     {
         $token = $this->request->getPost('token');
-        $newPassword = md5($this->request->getPost('new_password'));
+        $newPassword = $this->request->getPost('new_password');
+        $confirmPassword = $this->request->getPost('confirm_password');
+
+        // Check password match
+        if ($newPassword !== $confirmPassword) {
+            return redirect()->back()->with('error', 'Passwords do not match. Please try again.');
+        }
+
+        // Hash password
+        $hashedPassword = md5($newPassword);
+
+        // Find user via token
         $user = $this->ForgotPasswordModel->where('reset_token', $token)->first();
 
         if (!$user) {
-             return view('reset_expired');
+            return view('reset_expired');
         }
 
         if (strtotime($user['reset_token_expiry']) < time()) {
             return view('reset_expired');
         }
 
-
+        // Update password
         $this->ForgotPasswordModel->update($user['cust_Id'], [
-            'cust_Password' => $newPassword,
+            'cust_Password' => $hashedPassword,
             'reset_token' => null,
             'reset_token_expiry' => null
         ]);
 
         return redirect()->to('/')->with('success', 'Password updated successfully');
     }
+
 }

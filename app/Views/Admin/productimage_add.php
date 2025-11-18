@@ -138,59 +138,74 @@
                                                             </div>
 
 
-
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="mt-3">
+                                                                        <label class="form-label"><b>Uploaded Front Image:</b></label><small>(choose a single image)</small>
+                                                                        <div class="d-flex flex-wrap gap-2 mb-2">
+                                                                            <?php if (!empty($productimages) && !empty($productimages[$index]->pri_Thumbnail)): ?>
+                                                                                <img src="<?= base_url('uploads/productmedia/' . $productimages[$index]->pri_Thumbnail) ?>"
+                                                                                    width="80" class="border p-1">
+                                                                            <?php endif; ?>
+                                                                        </div>
+                                                                        <input type="file" class="form-control" name="colors[<?= $index ?>][images][]" multiple>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                        <div class="mt-3">
+                                                                        <label class="form-label"><b>Uploaded Back Image:</b></label><small>(choose a single image)</small>
+                                                                        <div class="d-flex flex-wrap gap-2 mb-2">
+                                                                            <?php 
+                                                                            if (!empty($productimages) && !empty($productimages[$index]->pri_File_Name)) {
+                                                                                $sideImages = json_decode($productimages[$index]->pri_File_Name, true);
+                                                                                foreach ($sideImages as $img): ?>
+                                                                                    <img src="<?= base_url('uploads/productmedia/' . $img) ?>" width="80" class="border p-1">
+                                                                                <?php endforeach; 
+                                                                            } ?>
+                                                                        </div>
+                                                                        <input type="file" class="form-control" name="colors[<?= $index ?>][side_image][]" multiple>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                             <!-- File Upload -->
-                                                            <div class="mt-3">
-                                                                <label class="form-label">Uploaded Front Image:</label><small>(choose a single image)</small>
-                                                                <div class="d-flex flex-wrap gap-2 mb-2">
-                                                                    <?php if (!empty($productimages) && !empty($productimages[$index]->pri_Thumbnail)): ?>
-                                                                        <img src="<?= base_url('uploads/productmedia/' . $productimages[$index]->pri_Thumbnail) ?>"
-                                                                            width="80" class="border p-1">
-                                                                    <?php endif; ?>
-                                                                </div>
-                                                                <input type="file" class="form-control" name="colors[<?= $index ?>][images][]" multiple>
-                                                            </div>
+                                                           
 
-                                                            <div class="mt-3">
-                                                                <label class="form-label">Uploaded Back Image:</label><small>(choose a single image)</small>
-                                                                <div class="d-flex flex-wrap gap-2 mb-2">
-                                                                    <?php 
-                                                                    if (!empty($productimages) && !empty($productimages[$index]->pri_File_Name)) {
-                                                                        $sideImages = json_decode($productimages[$index]->pri_File_Name, true);
-                                                                        foreach ($sideImages as $img): ?>
-                                                                            <img src="<?= base_url('uploads/productmedia/' . $img) ?>" width="80" class="border p-1">
-                                                                        <?php endforeach; 
-                                                                    } ?>
-                                                                </div>
-                                                                <input type="file" class="form-control" name="colors[<?= $index ?>][side_image][]" multiple>
-                                                            </div>
+            
+                                                          
                                                            
                                                             <?php if (!empty($pr_custom['pr_custom']) && $pr_custom['pr_custom'] == 1): ?> 
-
-                                                                <div class="mt-3">
-                                                                    <label class="form-label">Right Sleeve Image</label><small>(Choose a Single Image)</small>
-                                                                    <div class="d-flex flex-wrap gap-2 mb-2">
-                                                                        <?php if (!empty($productimages) && !empty($productimages[$index]->RSleeve_Img)): ?>
-                                                                            <img src="<?= base_url('uploads/productmedia/' . $productimages[$index]->RSleeve_Img) ?>"
-                                                                                width="80" class="border p-1">
-                                                                        <?php endif; ?>
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="mt-3">
+                                                                            <label class="form-label"><b>Right Sleeve Image:</b></label><small>(Choose a Single Image)</small>
+                                                                            <div class="d-flex flex-wrap gap-2 mb-2">
+                                                                                <?php if (!empty($productimages) && !empty($productimages[$index]->RSleeve_Img)): ?>
+                                                                                    <img src="<?= base_url('uploads/productmedia/' . $productimages[$index]->RSleeve_Img) ?>"
+                                                                                        width="80" class="border p-1">
+                                                                                <?php endif; ?>
+                                                                            </div>
+                                                                            <input type="file" class="form-control"  name="colors[<?= $index ?>][RSleeve_Img][]" multiple>
+                                                                        </div>
                                                                     </div>
-                                                                    <input type="file" class="form-control" name="colors[<?= $index ?>][images][]" multiple>
-                                                                </div>
-
-                                                                <div class="mt-3">
-                                                                    <label class="form-label">Left Sleeve Image</label><small>(Choose a Single Image)</small>
-                                                                    <div class="d-flex flex-wrap gap-2 mb-2">
-                                                                        <?php if (!empty($productimages) && !empty($productimages[$index]->LSleeve_Img)): ?>
-                                                                            <img src="<?= base_url('uploads/productmedia/' . $productimages[$index]->LSleeve_Img) ?>"
-                                                                                width="80" class="border p-1">
-                                                                        <?php endif; ?>
+                                                                    <div class="col-md-6">
+                                                                        <div class="mt-3">
+                                                                            <label class="form-label"><b>Left Sleeve Image:</b></label><small>(Choose a Single Image)</small>
+                                                                            <div class="d-flex flex-wrap gap-2 mb-2">
+                                                                                <?php if (!empty($productimages) && !empty($productimages[$index]->LSleeve_Img)): ?>
+                                                                                    <img src="<?= base_url('uploads/productmedia/' . $productimages[$index]->LSleeve_Img) ?>"
+                                                                                        width="80" class="border p-1">
+                                                                                <?php endif; ?>
+                                                                            </div>
+                                                                            <input type="file" class="form-control" name="colors[<?= $index ?>][LSleeve_Img][]" multiple>
+                                                                        </div>
                                                                     </div>
-                                                                    <input type="file" class="form-control" name="colors[<?= $index ?>][images][]" multiple>
                                                                 </div>
+                                                                
+
+                                                                
                                                             
                                                             <?php else: ?>
-                                                             <div class="mt-3">
+                                                             <!-- <div class="mt-3">
                                                                 <label class="form-label">Additional Images</label><small>(You may choose multiple images)</small><br>
                                                                  <small>You will loss the current images while choose a file to add</small>
                                                                 <div class="d-flex flex-wrap gap-2 mb-2">
@@ -204,8 +219,23 @@
                                                                     } ?>
                                                                     </div>
                                                                 <input type="file" class="form-control" name="colors[<?= $index ?>][sleev_image][]" multiple>
-                                                            </div>
+                                                            </div> -->
                                                             <?php endif; ?>
+                                                              <div class="mt-3">
+                                                                <label class="form-label"><b>Additional Images:</b></label><small>(You may choose multiple images)</small><br>
+                                                                 <small>You will loss the current images while choose a image to add</small>
+                                                                <div class="d-flex flex-wrap gap-2 mb-2">
+                                                                   
+                                                                    <?php 
+                                                                    if (!empty($productimages) && !empty($productimages[$index]->pri_Sleev_Name)) {
+                                                                        $sideImages = json_decode($productimages[$index]->pri_Sleev_Name, true);
+                                                                        foreach ($sideImages as $img): ?>
+                                                                            <img src="<?= base_url('uploads/productmedia/' . $img) ?>" width="80" class="border p-1">
+                                                                        <?php endforeach; 
+                                                                    } ?>
+                                                                    </div>
+                                                                <input type="file" class="form-control" name="colors[<?= $index ?>][sleev_image][]" multiple>
+                                                            </div>
 
                                                         </div>
                                                     </div>
