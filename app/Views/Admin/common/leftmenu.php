@@ -55,6 +55,13 @@
                             <span class="pcoded-mcaret"></span>
                         </a>
                     </li>
+                    <li class="<?= ($segment == 'leaderboard') ? 'active' : '' ?>">
+                        <a href="<?php echo base_url('admin/leaderboard') ?>" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="bi bi-bar-chart"></i><b>D</b></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.main">Leaderboard</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li>
                     <!-- <li class="<?= ($segment == 'profile') ? 'active' : '' ?>">
                                     <a href="<?php echo base_url('admin/profile') ?>" class="waves-effect waves-dark">
                                         <span class="pcoded-micon"><i class="bi bi-person-circle"></i></span>

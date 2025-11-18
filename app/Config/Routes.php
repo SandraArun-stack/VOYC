@@ -275,7 +275,11 @@ $routes->get('admin/orders/view/(:any)', 'Admin\Orders::OrderView/$1');
 $routes->post('admin/orders/orderStatusUpdation/(:any)', 'Admin\Orders::orderStatusUpdation/$1');
 $routes->post('admin/getDesign', 'Admin\Orders::getDesignAjax');
 
-
+// leaderboard
+$routes->get('admin/leaderboard', 'Admin\Leaderboard::leaderboardlist');
+$routes->get('admin/leaderboard/add', 'Admin\Leaderboard::leaderboard');
+$routes->post('admin/leaderboard/save', 'Admin\Leaderboard::save');
+$routes->post('admin/leaderboard/ajaxList', 'Admin\Leaderboard::ajaxList');
 
 //profile
 $routes->get('admin/', 'Admin\Profile::index');
