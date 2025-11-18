@@ -161,8 +161,8 @@
                                             <div class="form-group row">
                                                 <label class="col-sm-2 col-form-label" style="font-size: 14px;">Confirm Password <span style="color: red;">*</span></label>
                                                 <div class="col-sm-6">
-                                                    <div class="input-group">
-                                                        <input type="password" class="form-control mb-0" name="confirm_password" id="confirm_password" 
+                                                    <div class="input-group mb-0">
+                                                        <input type="password" class="form-control" name="confirm_password" id="confirm_password" 
                                                             placeholder="Confirm password" style="font-size: 14px;" required autocomplete="off">
                                                         <span class="input-group-text" style="cursor: pointer;" onclick="togglePassword('confirm_password', this)">
                                                             <i class="fa fa-eye-slash"></i>

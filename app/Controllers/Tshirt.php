@@ -21,6 +21,10 @@ class Tshirt extends Controller
 
     public function index($prId = null, $priId = null)
     {
+        $session = session();
+        $userId = $session->get('user_id');
+        $cartCount = $this->CartModel->getCartItemCount($userId);
+
         if (!empty($prId) && !empty($priId)) {
             $cust_image = $this->tshirtModel->get_Image($prId, $priId);
             $allData = $this->tshirtModel->get_Data_For_Pr_Id($prId);
@@ -36,7 +40,7 @@ class Tshirt extends Controller
                     'allData' => $allData,
                     'customisationPrice' => $customisationPrice
                 ];
-                return view('common/header')
+                return view('common/header', ['cartCount' => $cartCount])
                     . view('tshirt', $data)
                     . view('common/footer')
                     . view('pagescripts/tshirtjs');
@@ -49,7 +53,7 @@ class Tshirt extends Controller
                 'customisationPrice' => $customisationPrice
             ];
 
-            return view('common/header')
+            return view('common/header', ['cartCount' => $cartCount])
                 . view('tshirt')
                 . view('common/footer')
                 . view('pagescripts/tshirtjs');
@@ -73,7 +77,7 @@ class Tshirt extends Controller
         $LsleeveImageData = $this->request->getPost('LSleeve_Img');
         $quantity = $this->request->getPost('quantity');
         $totalPrice = $this->request->getPost('totalPrice');
-$selectedSize = $this->request->getPost('selectedSize');
+        $selectedSize = $this->request->getPost('selectedSize');
         $uploadedImagesJson = $this->request->getPost('uploadedImages');
 
         $prId = $this->request->getPost('prId');
@@ -150,7 +154,7 @@ $selectedSize = $this->request->getPost('selectedSize');
             'created_on' => date('Y-m-d H:i:s'),
             'cart_Size' => $selectedSize,
             'cart_Quantity' => $quantity ?? 1,
-           'cart_Price' => $quantity > 0 ? ($totalPrice / $quantity) : $totalPrice  
+            'cart_Price' => $quantity > 0 ? ($totalPrice / $quantity) : $totalPrice
         ];
 
         $this->CartModel->insert($cartData);

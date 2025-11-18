@@ -57,7 +57,7 @@
                                 <div class="form-group phn_code ">
                                     <label style="width:100%;">Phone number</label>
                                     <input type="tel" id="phone" name="us_Phone" style="padding-left: 472px; font-size:14px;" class="form-control"
-                                        value="<?= esc($user['us_Phone'] ?? '') ?>" maxlength="15" required pattern="^[0-9+\-\s]{6,15}$">
+                                        value="<?= esc($user['us_Phone'] ?? '') ?>" maxlength="15"  pattern="^[0-9+\-\s]{6,15}$">
                                 </div>
                                 <button type="submit" class="btn btn-primary" style="font-size:14px;">Update Profile</button>
                             </form>

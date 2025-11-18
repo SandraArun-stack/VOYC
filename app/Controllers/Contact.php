@@ -2,6 +2,8 @@
 namespace App\Controllers;
 
 use App\Models\ContactModel;
+
+use App\Models\CartModel;
 use CodeIgniter\Controller;
 
 class Contact extends Controller
@@ -13,11 +15,16 @@ class Contact extends Controller
     {
         $this->session = \Config\Services::session();
         $this->request = \Config\Services::request();
+        $this->CartModel = new CartModel();
     }
 
     public function index()
     {
-        return view('common/header')
+        $session = session();
+    $userId  = $session->get('user_id');
+    $cartCount = $this->CartModel->getCartItemCount($userId);
+
+        return view('common/header', ['cartCount' => $cartCount])
             . view('contact')
             . view('common/footer')
             . view('pagescripts/contactjs');

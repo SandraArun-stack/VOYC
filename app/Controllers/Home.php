@@ -3,6 +3,7 @@
 namespace App\Controllers;
 use App\Models\NewProductModel;
 use App\Models\HomeModel;
+use App\Models\CartModel;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
@@ -23,13 +24,17 @@ class Home extends BaseController
         $this->request = \Config\Services::request();
         $this->productdisplayModel = new HomeModel();
         $this->reviewModel = new NewProductModel();
+         $this->CartModel = new CartModel();
     }
     public function index()
     {
+        $session = session();
+        $userId = $session->get('user_id');
+        $cartCount = $this->CartModel->getCartItemCount($userId);
         $newProductModel = new NewProductModel();
         $data['newPrdImg'] = $newProductModel->getNewPrdImage();
         $data['bestSeller'] = $newProductModel->getBestSeller();
-        return view('common/header')
+        return view('common/header', ['cartCount' => $cartCount])
             . view('index', $data)
             . view('common/footer')
             . view('pagescripts/indexjs');
@@ -62,6 +67,7 @@ class Home extends BaseController
         if (!preg_match('/^(?:\+91|91)?[6-9]\d{9}$/', $phone_number)) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Please enter a valid Indian phone number.']);
         }
+
         if ($password !== $confirm) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Passwords do not Match.']);
         }

@@ -109,7 +109,7 @@ $(document).ready(function () {
 var baseUrl = "<?= base_url() ?>";
 
 $('#custSubmit').click(function(e) {
-    debugger;
+  
 	 let pwd = $('#userpassword').val();
      if(pwd==""){
         $('#error-password').text('Please enter a password');

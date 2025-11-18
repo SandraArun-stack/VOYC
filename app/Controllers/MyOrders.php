@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Models\MyOrdersModel;
+use App\Models\CartModel;
 use CodeIgniter\Controller;
 
 class MyOrders extends Controller
@@ -15,6 +16,7 @@ class MyOrders extends Controller
         $this->session = \Config\Services::session();
         $this->request = \Config\Services::request();
         $this->MyOrdersModel = new MyOrdersModel();
+        $this->CartModel = new CartModel();
     }
 
     public function index($userId = null)
@@ -34,9 +36,10 @@ class MyOrders extends Controller
             'pager' => $pager,
             'breadcrumb' => 'My Orders'
         ];
+        $cartCount = $this->CartModel->getCartItemCount($userId);
 
-        return view('common/header')
-            . view('common/UserSideBar',$data)
+        return view('common/header', ['cartCount' => $cartCount])
+            . view('common/UserSideBar', $data)
             . view('myorders', $data)
             . view('common/footer')
             . view('pagescripts/myOrdersjs');
