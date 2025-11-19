@@ -33,7 +33,7 @@
                                 </div>
                                 <div class="sud__head__list">
                                     <a href="<?= base_url('my_orders'); ?>">
-                                        <p>Orders & Returns</p>
+                                        <p>Orders</p>
                                     </a>
                                     <!-- <p>My Wishlist</p> -->
                                 </div>

@@ -78,6 +78,11 @@ class CartModel extends Model
     {
         return $this->where('cust_Id', $userId)->delete();
     }
+    public function getCartItemCount($userId)
+    {
+        return $this->where('cust_Id', $userId)->where('cart_Status', 1)->countAllResults();
+    }
+
 
 
 }

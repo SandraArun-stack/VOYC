@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Models\ProductDetailModel;
+use App\Models\CartModel;
 use CodeIgniter\Controller;
 
 class ProductDetail extends Controller
@@ -15,10 +16,15 @@ class ProductDetail extends Controller
         $this->session = \Config\Services::session();
         $this->request = \Config\Services::request();
         $this->ProductDetailModel = new ProductDetailModel();
+        $this->CartModel = new CartModel();
     }
 
     public function index($prId = null, $priId = null)
     {
+        $session = session();
+        $userId = $session->get('user_id');
+        $cartCount = $this->CartModel->getCartItemCount($userId);
+
         if (!$prId && !$priId) {
             return redirect()->to(base_url('/'));
         }
@@ -35,7 +41,7 @@ class ProductDetail extends Controller
             'images' => $product['images']
         ];
 
-        return view('common/header')
+        return view('common/header', ['cartCount' => $cartCount])
             . view('product-details', $data)
             . view('common/footer')
             . view('pagescripts/productdetailsjs');
@@ -111,7 +117,7 @@ class ProductDetail extends Controller
         $designId = $this->request->getPost('design_Id');
         $quantity = $this->request->getPost('cart_Quantity') ?? 1;
         $cart_Price = $this->request->getPost('cart_Price');
- $cart_Size = $this->request->getPost('cart_Size');
+        $cart_Size = $this->request->getPost('cart_Size');
         if (
             !isset($custId) ||
             !isset($prId) ||
@@ -129,7 +135,7 @@ class ProductDetail extends Controller
             'design_Id' => $designId,
             'cart_Quantity' => $quantity,
             'cart_Price' => $cart_Price,
-            'cart_Size' => $cart_Size 
+            'cart_Size' => $cart_Size
         ];
 
         $result = $this->ProductDetailModel->saveToCart($data);

@@ -15,6 +15,7 @@ class Cart extends Controller
         $this->session = \Config\Services::session();
         $this->request = \Config\Services::request();
         $this->CartModel = new CartModel();
+
     }
 
     public function index($userId = null)
@@ -28,8 +29,8 @@ class Cart extends Controller
 
         $cartpriceTotal = $this->CartModel->getCartPrice($userId);
 
-
-        return view('common/header')
+        $cartCount = $this->CartModel->getCartItemCount($userId);
+        return view('common/header',['cartCount' => $cartCount])
             . view('cart', [
                 'cartItems' => $cartItems,
                 'cartpriceTotal' => $cartpriceTotal

@@ -179,7 +179,7 @@
                         <ul class="nav-right">
 
                             <li class="user-profile header-notification">
-                                <a href="#!" class="waves-effect waves-light">
+                                <a class="waves-effect waves-light">
                                     <?php
                                     $session = session();
                                     $username = $session->get('ad_uname');

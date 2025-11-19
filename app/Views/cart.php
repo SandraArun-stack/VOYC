@@ -117,13 +117,35 @@
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="cart__btn">
-                    <a href="#">Continue Shopping</a>
+                    <a href="#" id="continue_shopping">Continue Shopping</a>
                 </div>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-6">
-                <div class="cart__btn update__btn">
-                    <a href="#"><span class="icon_loading"></span> Update cart</a>
-                </div>
+            <div class="col-lg-4 offset-lg-2">
+                    <div class="cart__total__procced">
+                        <h6>Cart total</h6>
+                        <?php
+                        $calculatedTotal = 0;
+                        if (!empty($cartItems)) {
+                            foreach ($cartItems as $item) {
+                                $calculatedTotal += $item['cart_Price'] * $item['cart_Quantity'];
+                            }
+                        }
+                        ?>
+                        <ul>
+                            <li>Subtotal <span id="subtotal-amount">₹ 0.00</span></li>
+                            <li>Total <span id="total-amount">₹ 0.00</span></li>
+                        </ul>
+
+                        <a href="#" id="proceedCheckout" class="primary-btn proceed_check_out">
+                            Proceed to checkout
+                        </a>
+                        <form id="goCheckoutForm" action="<?= base_url('orderdetails') ?>" method="POST"
+                            style="display:none;">
+                            <input type="hidden" name="totalAmount" id="hiddenTotal">
+
+                        </form>
+
+                    </div>
             </div>
         </div>
         <div class="row">
@@ -136,7 +158,7 @@
                     </form> -->
                 </div>
             </div>
-            <div class="col-lg-4 offset-lg-2">
+            <!-- <div class="col-lg-4 offset-lg-2">
                 <div class="cart__total__procced">
                     <h6>Cart total</h6>
                     <?php
@@ -162,7 +184,7 @@
                     </form>
 
                 </div>
-            </div>
+            </div> -->
 
         </div>
     </div>

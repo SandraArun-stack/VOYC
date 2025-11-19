@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Models\MyProfileModel;
+use App\Models\CartModel;
 use CodeIgniter\Controller;
 
 class MyProfile extends Controller
@@ -15,6 +16,7 @@ class MyProfile extends Controller
         $this->session = \Config\Services::session();
         $this->request = \Config\Services::request();
         $this->MyProfileModel = new MyProfileModel();
+        $this->CartModel = new CartModel();
     }
 
     public function index()
@@ -29,9 +31,10 @@ class MyProfile extends Controller
             'user' => $this->MyProfileModel->getUserById($userId),
             'breadcrumb' => 'My Profile'
         ];
-
-        return view('common/header')
-            . view('common/UserSideBar',$data)
+        $cartCount = $this->CartModel->getCartItemCount($userId);
+        
+        return view('common/header', ['cartCount' => $cartCount])
+            . view('common/UserSideBar', $data)
             . view('myprofile', $data)
             . view('common/footer')
             . view('pagescripts/myprofilejs');
