@@ -42,6 +42,7 @@ class ProductImage extends BaseController
         $data = $model->getDatatables($pr_id);
         $total = $model->countAll($pr_id);
         $filtered = $model->countFiltered($pr_id);
+        $prname = $this->productimageModel->getProductName($pr_id);
 
         // Aggregate variants per product image
         $aggregated = [];
@@ -104,12 +105,15 @@ class ProductImage extends BaseController
                 <i class="bi bi-trash text-danger icon-clickable" style="cursor: pointer;" 
                 onclick="confirmDelete(' . $row['prv_Id'] . ')"></i>&nbsp;';
         }
+        // $productName = $aggregated ? reset($aggregated)['pr_Name'] : ($data[0]['pr_name'] ?? 'N/A');
+
 
         return $this->response->setJSON([
             'draw' => intval($this->request->getPost('draw')),
             'recordsTotal' => $total,
             'recordsFiltered' => $filtered,
-            'data' => array_values($aggregated)
+            'data' => array_values($aggregated),
+            'pr_Name' => $prname
         ]);
     }
 
@@ -180,7 +184,7 @@ class ProductImage extends BaseController
         return $template;
     }
 
-        public function update($pr_id, $pri_id)
+    public function update($pr_id, $pri_id)
     {
         $colorsData = $this->request->getPost('colors');
 
@@ -293,12 +297,14 @@ class ProductImage extends BaseController
 
     public function save()
     {
+
         $pri_id = $this->request->getPost('pri_id');
         $pr_id = $this->request->getPost('pr_id');
 
         if (!empty($pri_id)) {
             return $this->update($pr_id, $pri_id);
         }
+
 
         $colorsData = $this->request->getPost('colors');
         if (empty($colorsData) || empty($pr_id)) {
@@ -309,6 +315,9 @@ class ProductImage extends BaseController
         }
 
         $insertedAny = false;
+        $product = $this->productimageModel->checkCustomized($pr_id);
+
+        $isCustom = !empty($product) && $product['pr_custom'] == 1;
 
         foreach ($colorsData as $colorIndex => $colorGroup) {
             $color = trim($colorGroup['color'] ?? '');
@@ -333,10 +342,27 @@ class ProductImage extends BaseController
             $videoUploaded = $this->uploadFiles($_FILES, $colorIndex, 'videos', ['mp4', 'avi', 'mov', 'mkv', 'webm'], true);
 
             if (empty($thumbnailUploaded)) {
-                return $this->response->setJSON(['status' => 'error', 'msg' => 'Please Upload at Least One Thumbnail For Each Color.']);
+                return $this->response->setJSON(['status' => 'error', 'msg' => 'Please Upload a Front View of the Product.']);
             } elseif (empty($sideUploaded)) {
-                return $this->response->setJSON(['status' => 'error', 'msg' => 'Please Upload at Least One Side Image For Each Color.']);
+                return $this->response->setJSON(['status' => 'error', 'msg' => 'Please Upload a Back View of the Product.']);
             }
+
+            if ($isCustom) {
+                if (empty($RSleeve_Img)) {
+                    return $this->response->setJSON([
+                        'status' => 'error',
+                        'msg' => 'Right Sleeve Image is required for Custom Products.'
+                    ]);
+                }
+                if (empty($LSleeve_Img)) {
+                    return $this->response->setJSON([
+                        'status' => 'error',
+                        'msg' => 'Left Sleeve Image is required for Custom Products.'
+                    ]);
+                }
+            }
+
+
 
             // --- Insert Image Record ---
             $imageData = [
@@ -437,7 +463,6 @@ class ProductImage extends BaseController
         $db = \Config\Database::connect();
         $variantBuilder = $db->table('product_variants');
 
-        // 1️⃣ Get the variant (to know which pri_Id it belongs to)
         $variant = $variantBuilder->where('prv_Id', $prvId)->get()->getRow();
 
         if (!$variant) {
@@ -447,29 +472,24 @@ class ProductImage extends BaseController
             ]);
         }
 
-        // 2️⃣ Update the variant status
         $update = $variantBuilder
             ->where('prv_Id', $prvId)
             ->update(['prv_Status' => $newStatus]);
 
         if ($update) {
-            // 3️⃣ Get the pri_Id of this variant
             $priId = $variant->pri_id;
 
-            // 4️⃣ Count all ACTIVE variants under the same pri_Id
             $activeVariants = $db->table('product_variants')
                 ->where('pri_Id', $priId)
                 ->where('prv_Status', 1)
                 ->countAllResults();
 
-            // 5️⃣ Update product_image based on active variant count
             $imageStatus = ($activeVariants > 0) ? 1 : 2;
 
             $db->table('product_image')
                 ->where('pri_Id', $priId)
                 ->update(['pri_Status' => $imageStatus]);
 
-            // 6️⃣ Return success JSON
             return $this->response->setJSON([
                 'success' => true,
                 'message' => 'Product Variant Status Updated Successfully!',

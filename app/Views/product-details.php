@@ -317,4 +317,3 @@ $userId = session()->get('user_id');
     </div>
 </section>
 <!-- Product Details Section End -->
-

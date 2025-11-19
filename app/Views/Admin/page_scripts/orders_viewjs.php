@@ -97,7 +97,8 @@
                                 <th>Product Name</th>
                                 <th>Quantity</th>
                                 <th>Customized</th>
-                                <th>Price</th>
+                                <th>Price Per piece</th>
+                                <th>Total Price</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -133,6 +134,8 @@
 
                             </td>
                             <td>${Math.round(o.od_Selling_Price)}</td>
+                             <td>${o.od_Quantity * Math.round(o.od_Selling_Price)}</td>
+
                         </tr>
                     `;
                     });
@@ -140,7 +143,7 @@
                     // -------- Add Grand Total Row --------
                     productTable += `
                         <tr style="font-weight:bold; background:#f7f7f7;">
-                            <td colspan="4" class="text-end">Grand Total:</td>
+                            <td colspan="5" class="text-end">Grand Total:</td>
                             <td>${Math.round(grandTotal)}</td>
                         </tr>
                     </tbody>

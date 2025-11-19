@@ -21,19 +21,7 @@
         $('#grandTotal').text('₹ ' + grandTotal.toFixed(2));
     }
 
-    // function recalcCartTotal() {
-    //     var subtotal = 0;
 
-    //     $('.cart__total').each(function () {
-    //         // Get the text, remove currency symbol and commas
-    //         var totalText = $(this).text().replace(/[^\d.]/g, '');
-    //         subtotal += parseFloat(totalText) || 0;
-    //     });
-
-    //     // Update subtotal and total
-    //     $('#subtotal-amount').text('₹ ' + subtotal.toFixed(2));
-    //     $('#total-amount').text('₹ ' + subtotal.toFixed(2));
-    // }
 
     function recalcCartTotal() {
         let subtotal = 0;
@@ -119,6 +107,17 @@
                         row.remove();
                         updateGrandTotal();
                         recalcCartTotal();
+
+                        let cartCount = response.cartCount ?? 0;
+
+                        $("#headerCartCount").text(cartCount);
+
+                        if (cartCount == 0) {
+
+                            $('.cart__total__procced').closest('.col-lg-4').hide();
+
+                            $('.empty-cart-block').show();
+                        }
                     } else {
                         alert('Failed to remove item.');
                     }

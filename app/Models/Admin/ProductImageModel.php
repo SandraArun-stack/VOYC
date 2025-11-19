@@ -326,5 +326,15 @@ class ProductImageModel extends Model
 
     }
 
+    public function getProductName($pr_id)
+    {
+        $result = $this->db->table('product')
+            ->select('pr_Name')
+            ->where('pr_Id', $pr_id)
+            ->get()
+            ->getRowArray();
+
+        return $result ? $result['pr_Name'] : null;
+    }
 
 }

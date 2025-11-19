@@ -84,7 +84,7 @@ class Shop extends Controller
             $data = [
                 'category' => 'search',
                 'title' => 'Search Results',
-                'breadcrumb' => 'Search',
+                'breadcrumb' => $search,
                 'display_item' => $display_item,
                 'categories' => $categories,
                 'searchTerm' => $search

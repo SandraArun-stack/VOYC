@@ -62,7 +62,7 @@
                                                             id="front_Customization_Price"
                                                             name="front_Customization_Price"
                                                             value="<?= esc($front_Customization_Price ?? '') ?>""
-                                                            placeholder="Enter customization price">
+                                                            placeholder=" Enter customization price">
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3 setting_row">
@@ -75,7 +75,7 @@
                                                         <input type="text" class="form-control"
                                                             id="back_Customization_Price"
                                                             name="back_Customization_Price"
-                                                         value="<?= esc($back_Customization_Price ?? '') ?>"
+                                                            value="<?= esc($back_Customization_Price ?? '') ?>"
                                                             placeholder="Enter customization price">
                                                     </div>
 
@@ -83,22 +83,24 @@
                                                 <div class="row mb-3 setting_row">
                                                     <div class="col-md-3">
                                                         <label for="sleeve_Customization_Price">Sleeve Customization(₹)
-                                                        </label><br />
-                                                        <small>Charge Per Sleeve Style</small>
+                                                        </label>
+                                                        <small class="settings_charge_text d-block">(Charge Per Sleeve Customization)</small>
                                                     </div>
                                                     <div class="col-md-9">
                                                         <input type="text" class="form-control"
                                                             id="sleeve_Customization_Price"
                                                             name="sleeve_Customization_Price"
-                                                             value="<?= esc($sleeve_Customization_Price ?? '') ?>"
+                                                            value="<?= esc($sleeve_Customization_Price ?? '') ?>"
                                                             placeholder="Enter customization price">
                                                     </div>
 
                                                 </div>
                                                 <div class="row mb-3 setting_row">
                                                     <div class="col-md-3">
-                                                        <button type="button" id="btnUpdateCharge"
-                                                            class="btn btn-primary">Update</button>
+                                                        <a href="<?= base_url('admin/dashboard') ?>" class="btn btn-secondary">
+                                                            <i class="bi bi-x-circle"></i>Discard</a>
+                                                        <button type="button" id="btnUpdateCharge"  class="btn btn-primary">
+                                                            <i class="bi bi-check-circle"></i>Update</button>
                                                     </div>
                                                 </div>
                                             </div>
