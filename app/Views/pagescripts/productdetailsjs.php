@@ -178,7 +178,13 @@
 
                     if (sizes.length) {
 
-                        sizes.sort((a, b) => a.prv_Size.localeCompare(b.prv_Size, undefined, { numeric: true }));
+                        // sizes.sort((a, b) => a.prv_Size.localeCompare(b.prv_Size, undefined, { numeric: true }));
+
+                        const sizeOrder = ["S", "M", "L", "XL", "XXL"];
+
+                        sizes.sort((a, b) => {
+                            return sizeOrder.indexOf(a.prv_Size) - sizeOrder.indexOf(b.prv_Size);
+                        });
 
                         sizes.forEach(s => {
                             const sizeHtml = `
@@ -289,11 +295,11 @@
                 return;
             }
 
-          
+
 
             const prvId = selectedSize.closest('.size-option').data('size-id');
             const price = selectedSize.closest('.size-option').data('price');
-// alert(price);
+            // alert(price);
             const prId = "<?= $product['pr_Id'] ?>";
             const priId = $('input[name="color__radio"]:checked').data('pri-id');
             const designId = "<?= $product['design_Id'] ?? 0 ?>";
@@ -301,7 +307,7 @@
             //  Get the quantity selected by user
             const quantity = parseInt($('#quantity').val()) || 1;
             const sizeValue = selectedSize.val();
-            
+
             $.ajax({
                 url: "<?= base_url('addToCart') ?>",
                 type: "POST",
@@ -314,7 +320,7 @@
                     design_Id: designId,
                     cart_Quantity: quantity, //  send the correct quantity
                     cart_Price: price,
-                    cart_Size: sizeValue 
+                    cart_Size: sizeValue
                 },
                 success: function (response) {
                     if (response.status == 1) {

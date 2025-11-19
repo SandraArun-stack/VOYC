@@ -17,51 +17,116 @@
 
                 <div class="card-body">
                     <div class="row align-items-center">
-                        <!-- Profile Picture -->
-                        <!-- <div class="col-md-3 text-center mb-3 mb-md-0">
-                            <img src="<?= base_url('uploads/profile/default.png'); ?>" 
-                                 alt="Profile Picture" 
-                                 class="img-fluid rounded-circle mb-3 border border-2 border-secondary" 
-                                 style="width: 150px; height: 150px; object-fit: cover;">
-                            <p><small class="text-muted">Profile Picture</small></p>
-                        </div> -->
+                        <div class="col-md-12">
+                            <form id="inlineProfileForm">
+                                <input type="hidden" name="cust_Id" value="<?= esc($user['cust_Id']) ?>">
 
-                        <!-- Profile Info -->
-                        <div class="col-md-9">
-                            <div class="mb-2">
-                                <strong>Name:</strong> <?= esc($user['cust_Name']) ?>
-                            </div>
-                            <div class="mb-2">
-                                <strong>Email:</strong> <?= esc($user['cust_Email']) ?>
-                            </div>
-                            <div class="mb-2">
-                                <strong>Phone:</strong> <?= esc($user['cust_Phone']) ?>
-                            </div>
-                            <!-- <div class="mb-2">
-                                <strong>Account Status:</strong>
-                                <?php if ($user['cust_Status'] == 1): ?>
-                                    <span class="badge bg-success">Active</span>
-                                <?php else: ?>
-                                    <span class="badge bg-danger">Inactive</span>
-                                <?php endif; ?>
-                            </div> -->
+                                <!-- Name -->
+                                <div class="mb-2">
+                                    <strong>Name:</strong>
+                                    <input type="text" name="cust_Name" id="input_name"
+                                        value="<?= esc($user['cust_Name']) ?>" class="form-control editable-field"
+                                        disabled>
+                                </div>
+
+                                <!-- Email (NEVER editable) -->
+                                <div class="mb-2">
+                                    <strong>Email:</strong>
+                                    <input type="email" name="cust_Email" id="input_email"
+                                        value="<?= esc($user['cust_Email']) ?>" class="form-control" readonly>
+                                </div>
+
+                                <!-- Phone -->
+                                <div class="mb-2">
+                                    <strong>Phone:</strong>
+                                    <input type="text" name="cust_Phone" id="input_phone"
+                                        value="<?= esc($user['cust_Phone']) ?>" class="form-control editable-field"
+                                        disabled>
+                                    <div class="invalid-feedback">Enter a valid 10-digit Indian phone number</div>
+                                </div>
+
+                                <button type="button" id="editProfileBtn" class="btn  mt-3">Edit Profile
+                                </button>
+                                <button type="button" id="discardProfileBtn" class="btn btn-danger mt-3 d-none">
+                                    <i class="bi bi-x-circle"></i>
+                                    Cancel
+                                </button>
+                                <button type="submit" id="saveProfileBtn" class="btn mt-3 d-none" disabled>
+                                    <i class="bi bi-check-circle"></i>
+                                    Save Changes
+                                </button>
+
+                            </form>
                         </div>
-                    </div>
-
-                    <div class="text-end mt-3">
-                        <a href="#" class="btn btn-dark btn-sm">Edit Profile</a>
                     </div>
                 </div>
             </div>
 
-            <!-- Security Section -->
+
             <div class="card mb-4 shadow-sm" data-aos="fade-up" data-aos-duration="600">
                 <div class="card-header bg-dark text-white">
                     <strong>Security</strong>
                 </div>
+
                 <div class="card-body">
                     <p><strong>Password:</strong> ********</p>
-                    <a href="#" class="btn btn-outline-secondary btn-sm">Change Password</a>
+
+                    <!-- Change Password Button -->
+                    <button id="showChangePassword" class="btn btn-outline-secondary btn-sm">Change Password</button>
+
+                    <!-- Inline Password Form (Hidden by Default) -->
+                    <div id="passwordFormContainer" class="mt-3 d-none">
+
+                        <form id="changePasswordForm">
+                            <div class="mb-2 position-relative">
+                                <strong>Current Password <span style="color:red">*</span></strong>
+                                <input type="password" name="current_password" id="current_password"
+                                    class="form-control small-input" required>
+                                <i class="fa fa-eye-slash toggle-password-profile-password" data-target="current_password"></i>
+                            </div>
+
+                            <div class="mb-2 position-relative">
+                                <strong>New Password <span style="color:red">*</span></strong>
+                                <input type="password" name="new_password" id="new_password"
+                                    class="form-control small-input" minlength="6" maxlength="15" required>
+                                <i class="fa fa-eye-slash toggle-password-profile-password" data-target="new_password"></i>
+                            </div>
+
+                            <div class="mb-2 position-relative">
+                                <strong>Confirm Password <span style="color:red">*</span></strong>
+                                <input type="password" name="confirm_password" id="confirm_password"
+                                    class="form-control small-input" minlength="6" maxlength="15" required>
+                                <i class="fa fa-eye-slash toggle-password-profile-password" data-target="confirm_password"></i>
+                            </div>
+
+                            <!-- Current Password
+                            <div class=" position-relative">
+                                <label>Current Password <span style="color:red">*</span></label>
+                                <input type="password" name="current_password" id="current_password"
+                                    class="form-control pe-5" minlength="6" maxlength="15" required>
+                            </div>
+
+                            <div class=" position-relative">
+                                <label>New Password <span style="color:red">*</span></label>
+                                <input type="password" name="new_password" id="new_password" class="form-control pe-5"
+                                    minlength="6" maxlength="15" required>
+                            </div>
+
+                            <div class=" position-relative">
+                                <label>Confirm Password <span style="color:red">*</span></label>
+                                <input type="password" name="confirm_password" id="confirm_password"
+                                    class="form-control pe-5" minlength="6" maxlength="15" required>
+                            </div> -->
+
+                            <button type="button" id="cancelChangePassword" class="btn btn-danger mt-2"> <i
+                                    class="bi bi-x-circle"></i> Cancel</button>
+                            <button type="submit" class="btn btn-dark mt-2"> <i class="bi bi-check-circle"></i> Update
+                                Password</button>
+
+                        </form>
+
+                    </div>
+
                 </div>
             </div>
 
@@ -71,86 +136,5 @@
 </div>
 </div>
 </section>
-<!-- Edit Profile Modal -->
-<div class="modal fade" id="editProfileModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-dark text-white">
-                <h5 class="modal-title">Edit Profile</h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="editProfileForm">
-                    <input type="hidden" name="cust_Id" value="<?= esc($user['cust_Id']) ?>">
-                    <div class="mb-3">
-                        <label class="form-label">Name</label>
-                        <input type="text" name="cust_Name" class="form-control" value="<?= esc($user['cust_Name']) ?>"
-                            required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="email" name="cust_Email" class="form-control"
-                            value="<?= esc($user['cust_Email']) ?>" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Phone</label>
-                        <input type="text" name="cust_Phone" class="form-control"
-                            value="<?= esc($user['cust_Phone']) ?>" required>
-                    </div>
-                    <button type="submit" class="btn btn-dark w-100">Save Changes</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- Change Password Modal -->
-<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-dark text-white">
-                <h5 class="modal-title">Change Password</h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="changePasswordForm">
-
-                    <!-- Current Password -->
-                    <div class="form-group mb-3 position-relative">
-                        <label>Current Password <span style="color: red;">*</span></label>
-                        <input type="password" name="current_password" id="current_password" class="form-control pe-5"
-                            maxlength="15" minlength="6" placeholder="Current Password" style="font-size:14px;"
-                            required>
-                        <i class="fa fa-eye-slash toggle-password" data-target="current_password"
-                            style="position: absolute; top: 38px; right: 15px; cursor: pointer; z-index: 10; color: #666;"></i>
-                    </div>
-
-                    <!-- New Password -->
-                    <div class="form-group mb-3 position-relative">
-                        <label>New Password <span style="color: red;">*</span></label>
-                        <input type="password" name="new_password" id="new_password" class="form-control pe-5"
-                            maxlength="15" minlength="6" placeholder="New Password" style="font-size:14px;" required>
-                        <i class="fa fa-eye-slash toggle-password" data-target="new_password"
-                            style="position: absolute; top: 38px; right: 15px; cursor: pointer; z-index: 10; color: #666;"></i>
-                    </div>
-
-                    <!-- Confirm Password -->
-                    <div class="form-group mb-3 position-relative">
-                        <label>Confirm Password <span style="color: red;">*</span></label>
-                        <input type="password" name="confirm_password" id="confirm_password" class="form-control pe-5"
-                            maxlength="15" minlength="6" placeholder="Confirm Password" style="font-size:14px;"
-                            required>
-                        <i class="fa fa-eye-slash toggle-password" data-target="confirm_password"
-                            style="position: absolute; top: 38px; right: 15px; cursor: pointer; z-index: 10; color: #666;"></i>
-                    </div>
-
-                    <button type="submit" class="btn btn-dark w-100">Update Password</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>

@@ -30,7 +30,7 @@ class Cart extends Controller
         $cartpriceTotal = $this->CartModel->getCartPrice($userId);
 
         $cartCount = $this->CartModel->getCartItemCount($userId);
-        return view('common/header',['cartCount' => $cartCount])
+        return view('common/header', ['cartCount' => $cartCount])
             . view('cart', [
                 'cartItems' => $cartItems,
                 'cartpriceTotal' => $cartpriceTotal
@@ -49,9 +49,21 @@ class Cart extends Controller
         $cartModel = new \App\Models\CartModel();
 
         $updated = $cartModel->update($cartId, ['cart_Status' => 0]);
-
         if ($updated) {
-            return $this->response->setJSON(['status' => 'success']);
+
+            // Get logged-in user ID
+            $session = session();
+            $userId = $session->get('user_id');
+
+            // Count active items
+            $cartCount = $cartModel->where('cust_Id', $userId)
+                ->where('cart_Status', 1)
+                ->countAllResults();
+
+            return $this->response->setJSON([
+                'status' => 'success',
+                'cartCount' => $cartCount
+            ]);
         } else {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to update']);
         }

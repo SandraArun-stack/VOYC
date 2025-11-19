@@ -42,7 +42,7 @@
                                                     <div class="card-body">
                                                         <?php foreach ($cat['subcategories'] as $sub): ?>
                                                             <li class="form-check">
-                                                                <input class="form-check-input custom-check subcategory-filter"
+                                                                <input class="form-check-input custom-check subcategory-filter mt-2"
                                                                     type="checkbox" name="subcategories[]"
                                                                     value="<?= esc($sub['sub_Id']); ?>" id="sub_<?= $sub['sub_Id']; ?>"
                                                                     data-subcategory="<?= esc($sub['sub_Id']); ?>">

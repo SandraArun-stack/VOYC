@@ -1,4 +1,5 @@
 <script>
+
     var baseUrl = "<?= base_url() ?>";
     var csrfTokenName = "<?= csrf_token() ?>";
     var csrfHash = "<?= csrf_hash() ?>";
@@ -6,8 +7,72 @@
 
     $('#productList').DataTable({
         processing: true,
-        serverSide: true,
+        serverSide: false,
         order: [],
+        // ajax: {
+        //     url: baseUrl + "admin/productimage/ajaxList",
+        //     type: "POST",
+        //     data: function (d) {
+        //         d[csrfTokenName] = csrfHash;
+        //         d.pr_id = pr_id;
+        //     },
+        //     dataSrc: function (json) {
+        //         let expandedData = [];
+
+        //         if (json.data.length > 0) {
+        //             $('#productNameHeading').text(json.data[0].pr_Name);
+        //         }
+
+
+        //         // Fixed size order
+        //         const sizeOrder = ['S', 'M', 'L', 'XL', 'XXL', '3XL', '4XL'];
+
+        //         json.data.forEach(item => {
+        //             // Split string fields into arrays
+        //             let sizes = item.sizes ? item.sizes.split(',').map(s => s.trim()) : [];
+        //             let stocks = item.stocks ? item.stocks.split(',').map(s => s.trim()) : [];
+        //             let resetStocks = item.reset_stocks ? item.reset_stocks.split(',').map(s => s.trim()) : [];
+        //             let prices = item.prices ? item.prices.split(',').map(s => s.trim()) : [];
+        //             let color = Array.isArray(item.colors) ? item.colors[0] : item.colors;
+
+        //             // Pair each size with its corresponding stock, reset_stock, price
+        //             let combined = sizes.map((size, i) => ({
+        //                 size,
+        //                 stock: stocks[i] || '-',
+        //                 reset_stock: resetStocks[i] || '-',
+        //                 price: prices[i] || '-'
+        //             }));
+
+        //             // Sort based on defined order
+        //             combined.sort((a, b) => {
+        //                 let ai = sizeOrder.indexOf(a.size.toUpperCase());
+        //                 let bi = sizeOrder.indexOf(b.size.toUpperCase());
+        //                 if (ai === -1) ai = 999;
+        //                 if (bi === -1) bi = 999;
+        //                 return ai - bi;
+        //             });
+
+        //             // Push each row into DataTable data
+        //             combined.forEach((row) => {
+        //                 expandedData.push({
+        //                     pr_Name: item.pr_Name,
+        //                     size: row.size,
+        //                     color: color,
+        //                     stock: row.stock,
+        //                     reset_stock: row.reset_stock,
+        //                     price: row.price,
+        //                     status_switch: item.status_switch,
+        //                     actions: item.actions
+        //                 });
+        //             });
+        //         });
+
+        //         return expandedData;
+        //     }
+
+
+        // },
+
         ajax: {
             url: baseUrl + "admin/productimage/ajaxList",
             type: "POST",
@@ -15,60 +80,51 @@
                 d[csrfTokenName] = csrfHash;
                 d.pr_id = pr_id;
             },
-            dataSrc: function (json) {
+            dataFilter: function (response) {
+
+
+                let json = JSON.parse(response);
+                
+                $("#productNameHeading").text(json.pr_Name || "Product");
+
                 let expandedData = [];
 
-                if (json.data.length > 0) {
-                    $('#productNameHeading').text(json.data[0].pr_Name);
-                }
-
-
-                // Fixed size order
                 const sizeOrder = ['S', 'M', 'L', 'XL', 'XXL', '3XL', '4XL'];
 
                 json.data.forEach(item => {
-                    // Split string fields into arrays
-                    let sizes = item.sizes ? item.sizes.split(',').map(s => s.trim()) : [];
-                    let stocks = item.stocks ? item.stocks.split(',').map(s => s.trim()) : [];
-                    let resetStocks = item.reset_stocks ? item.reset_stocks.split(',').map(s => s.trim()) : [];
-                    let prices = item.prices ? item.prices.split(',').map(s => s.trim()) : [];
-                    let color = Array.isArray(item.colors) ? item.colors[0] : item.colors;
+                    let sizes = item.sizes.split(',').map(s => s.trim());
+                    let stocks = item.stocks.split(',').map(s => s.trim());
+                    let reset = item.reset_stocks.split(',').map(s => s.trim());
+                    let prices = item.prices.split(',').map(s => s.trim());
+                    let color = item.colors;
 
-                    // Pair each size with its corresponding stock, reset_stock, price
                     let combined = sizes.map((size, i) => ({
-                        size,
+                        pr_Name: item.pr_Name,
+                        size: size,
+                        color: color,
                         stock: stocks[i] || '-',
-                        reset_stock: resetStocks[i] || '-',
-                        price: prices[i] || '-'
+                        reset_stock: reset[i] || '-',
+                        price: prices[i] || '-',
+                        status_switch: item.status_switch,
+                        actions: item.actions
                     }));
 
-                    // Sort based on defined order
                     combined.sort((a, b) => {
-                        let ai = sizeOrder.indexOf(a.size.toUpperCase());
-                        let bi = sizeOrder.indexOf(b.size.toUpperCase());
-                        if (ai === -1) ai = 999;
-                        if (bi === -1) bi = 999;
-                        return ai - bi;
+                        return sizeOrder.indexOf(a.size) - sizeOrder.indexOf(b.size);
                     });
 
-                    // Push each row into DataTable data
-                    combined.forEach((row) => {
-                        expandedData.push({
-                            pr_Name: item.pr_Name,
-                            size: row.size,
-                            color: color,
-                            stock: row.stock,
-                            reset_stock: row.reset_stock,
-                            price: row.price,
-                            status_switch: item.status_switch,
-                            actions: item.actions
-                        });
-                    });
+                    expandedData.push(...combined);
                 });
 
-                return expandedData;
+                // 🔥 FIX: Update the REAL total counts BEFORE Datatables uses it
+                json.data = expandedData;
+                json.recordsTotal = expandedData.length;
+                json.recordsFiltered = expandedData.length;
+
+                return JSON.stringify(json);
             }
         },
+
 
         columns: [
             {
@@ -154,7 +210,7 @@
                         .show();
 
                     // Re-enable Save button if failed
-                    $saveBtn.prop('disabled', false).html('<i class="bi bi-check-circle"></i> Save');
+                    $saveBtn.prop('disabled', false);
                     isSubmitting = false; // allow retry
 
                     setTimeout(() => {
@@ -173,7 +229,7 @@
                     .show();
 
                 // Re-enable Save button if AJAX error
-                $saveBtn.prop('disabled', false).html('<i class="bi bi-check-circle"></i> Save');
+                $saveBtn.prop('disabled', false);
                 isSubmitting = false; // allow retry
 
                 setTimeout(() => {
@@ -303,7 +359,7 @@
 
                 <!-- ✅ Sleeve Images Upload -->
                 <div class="mb-3">
-                    <label class="form-label">Upload Sleeve Images</label>
+                    <label class="form-label">Upload Additional Images</label>
                     <input type="file" class="form-control image-input" name="colors[${index}][sleev_image][]" multiple accept="image/*">
                     
                 </div>

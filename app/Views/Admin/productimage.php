@@ -1,3 +1,17 @@
+<style>
+    .dataTables_wrapper .dataTables_paginate {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        flex-wrap: nowrap !important;
+        gap: 8px;
+        margin-top: 15px;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        white-space: nowrap !important;
+    }
+</style>
 <div class="pcoded-content">
     <!-- Page-header start -->
     <div class="page-header">

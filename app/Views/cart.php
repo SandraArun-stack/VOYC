@@ -18,7 +18,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <div class="shop__cart__table">
+                <div class="shop__cart__table text-center">
                     <table>
                         <?php if (!empty($cartItems)): ?>
                             <thead>
@@ -108,7 +108,7 @@
 
                             </tbody>
                         <?php else: ?>
-                            <p>Your cart is empty.</p>
+                            <p class="empty-cart-block">Your cart is empty.</p>
                         <?php endif; ?>
                     </table>
                 </div>
@@ -120,6 +120,7 @@
                     <a href="#" id="continue_shopping">Continue Shopping</a>
                 </div>
             </div>
+            <?php if (!empty($cartCount) && $cartCount > 0): ?>
             <div class="col-lg-4 offset-lg-2">
                     <div class="cart__total__procced">
                         <h6>Cart total</h6>
@@ -147,6 +148,7 @@
 
                     </div>
             </div>
+            <?php endif; ?>
         </div>
         <div class="row">
             <div class="col-lg-6">

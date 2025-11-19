@@ -116,6 +116,7 @@ class ProductDetailModel extends Model
         });
 
         $product['sizes'] = $variants; // ✅ Each item now has 'prv_Id', 'prv_Size', 'prv_price'
+        // echo '<pre>';print_r($variants);exit();
 
         // ✅ Reviews and ratings
         $reviews = $this->db->table('reviews r')

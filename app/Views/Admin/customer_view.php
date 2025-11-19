@@ -6,7 +6,7 @@
                 <div class="col-md-8">
                     <div class="page-header-title">
                         <h5 class="m-b-10"><?= isset($cust) ? 'Update Customer' : 'Add Customer'; ?></h5>
-                        <p class="m-b-0">Welcome to Zakhi Designs</p>
+                        <p class="m-b-0">Welcome to VOYC</p>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -29,6 +29,14 @@
             <div class="page-wrapper">
                 <!-- Page-body start -->
                 <div class="page-body">
+                    <div class="row mb-3">
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <button class="btn btn-secondary"
+                                onclick="window.location.href='<?= base_url('admin/customer'); ?>'">
+                                <i class="bi bi-arrow-left-circle"></i> Back to Customer List
+                            </button>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">

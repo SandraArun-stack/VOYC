@@ -1261,7 +1261,7 @@ input[type="file"] {
     display: inline-flex;
     align-items: center;
     border: 1px solid #ccc;
-    border-radius: 8px;
+    border-radius: 4px;
     overflow: hidden;
     margin-left: 10px;
 }
@@ -1270,7 +1270,7 @@ input[type="file"] {
     background: #f8f8f8;
     border: none;
     padding: 1px 9px;
-    font-size: 16px;
+    font-size: 20px;
     cursor: pointer !important;
     user-select: none;
 }
@@ -1583,6 +1583,36 @@ input[type="file"] {
 
 #to-login-from-forgot {
     color: black !important;
+}
+
+#saveProfileBtn {
+    background: #000 !important;
+    border-color: #000 !important;
+    color: #fff !important;
+}
+
+#editProfileBtn {
+    background: #000 !important;
+    border-color: #000 !important;
+    color: #fff !important;
+}
+
+/* Smaller input fields */
+.small-input {
+    font-size: 14px;
+    padding: 6px 35px 6px 10px;
+    /* space for icon on right */
+    height: 32px;
+}
+
+/* Eye toggle icon */
+.toggle-password-profile-password {
+       position: absolute;
+    top: 71%;
+    right: 6px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #000000;
 }
 
 @media only screen and (max-width: 991px) {

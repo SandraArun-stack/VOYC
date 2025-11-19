@@ -21,7 +21,7 @@
     var table = $('#orderList').DataTable({
         processing: true,
         serverSide: true,
-        scrollX: true,
+        // scrollX: true,
         order: [[6, 'desc']],
         ajax: {
             url: baseUrl + "admin/orders/List",

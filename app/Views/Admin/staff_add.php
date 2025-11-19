@@ -19,7 +19,7 @@
                 <div class="col-md-8">
                     <div class="page-header-title">
                         <h5 class="m-b-10"><?= isset($staff) ? 'Update Staff' : 'Add Staff'; ?></h5>
-                        <p class="m-b-0">Welcome to Zakhi Designs</p>
+                        <p class="m-b-0">Welcome to VOYC</p>
                     </div>
                 </div>
                 <div class="col-md-4">

@@ -5,7 +5,7 @@
             <div class="row align-items-center">
                 <div class="col-md-8">
                     <div class="page-header-title">
-                         <h5 class="m-b-10"><?= isset($product) ? 'Update Product' : 'Add Product'; ?></h5>
+                        <h5 class="m-b-10"><?= isset($product) ? 'Update Product' : 'Add Product'; ?></h5>
                         <p class="m-b-0">Welcome to VOYC</p>
                     </div>
                 </div>
@@ -14,9 +14,9 @@
                         <li class="breadcrumb-item">
                             <a href="<?= base_url('admin/dashboard'); ?>"> <i class="fa fa-home"></i> </a>
                         </li>
-                         <li class="breadcrumb-item"><a
+                        <li class="breadcrumb-item"><a
                                 href="#"><?= isset($product) ? 'Update Product' : 'Add Product'; ?></a>
-                            </li>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -30,6 +30,13 @@
                 <!-- Page-body start -->
                 <div class="page-body">
                     <div class="row">
+                        <div class="col-md-12 justify-content-end d-flex ">
+                            <button class="btn btn-secondary mb-3" 
+                                onclick="window.location.href='<?= base_url('admin/product'); ?>'">
+                                <i class="bi bi-arrow-left-circle"></i> Back to Product List
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
@@ -40,22 +47,24 @@
                                 </div>
                                 <div class="card-block">
                                     <form name="createProduct" id="createProduct" method="post" style="font-size:14px;">
-                                          <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label">Product For<span style="color: red;">*</span></label>
-                                                <div class="col-sm-7">
-                                                    <select class="form-control" name="pr_for" id="productFor" style="font-size:14px;" required>
-                                                        <option value="">-- Select --</option>
-                                                        <option value="Men" <?= isset($product) && $product['pr_for'] == 'Men' ? 'selected' : '' ?>>Men</option>
-                                                        <option value="Women" <?= isset($product) && $product['pr_for'] == 'Women' ? 'selected' : '' ?>>Women</option>
-                                                    </select>
-                                                </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label">Product For<span
+                                                    style="color: red;">*</span></label>
+                                            <div class="col-sm-7">
+                                                <select class="form-control" name="pr_for" id="productFor"
+                                                    style="font-size:14px;" required>
+                                                    <option value="">-- Select --</option>
+                                                    <option value="Men" <?= isset($product) && $product['pr_for'] == 'Men' ? 'selected' : '' ?>>Men</option>
+                                                    <option value="Women" <?= isset($product) && $product['pr_for'] == 'Women' ? 'selected' : '' ?>>Women</option>
+                                                </select>
                                             </div>
+                                        </div>
                                         <div class="form-group row">
                                             <label class="col-sm-3 col-form-label">Product Name <span
                                                     style="color: red;">*</span></label>
                                             <div class="col-sm-7">
                                                 <input type="text" name="product_name" id="productName"
-                                                    class="form-control"  maxlength="30" 
+                                                    class="form-control" maxlength="30"
                                                     value="<?= isset($product) ? ($product['pr_Name']) : '' ?>"
                                                     placeholder="Enter the Product Name" style="font-size:14px;">
                                             </div>
@@ -75,26 +84,29 @@
                                                     style="color: red;">*</span></label>
                                             <div class="col-sm-7">
                                                 <textarea rows="5" cols="5" class="form-control"
-                                                    name="product_description" id="productDes"
-                                                    placeholder=""style="font-size:14px;"><?= isset($product) ? $product['pr_Description'] : '' ?></textarea>
+                                                    name="product_description" id="productDes" placeholder=""
+                                                    style="font-size:14px;"><?= isset($product) ? $product['pr_Description'] : '' ?></textarea>
                                             </div>
                                         </div>
 
-                                       
+
 
                                         <div class="form-group row">
                                             <label class="col-sm-3 col-form-label">Category Name<span
                                                     style="color: red;">*</span></label>
                                             <div class="col-sm-7">
-                                                <select class="form-control fs-13" name="cat_id" id="categoryName" style="font-size:14px;"
-                                                    required>
-                                                    <option value="">-- Select Category --</option>
-                                                    <?php foreach ($categories as $cate): ?>
-                                                    <option value="<?= esc($cate->cat_Id); ?>"
-                                                        <?= isset($product) && $product['cat_Id']  == $cate->cat_Id ? 'selected' : '' ?>>
-                                                        <?= esc($cate->cat_Name); ?>
-                                                    </option>
-                                                    <?php endforeach; ?>
+                                                <select class="form-control fs-13" name="cat_id" id="categoryName"
+                                                    style="font-size:14px;" required>
+                                                    <?php if (empty($categories)): ?>
+                                                        <option value="">No category available</option>
+                                                    <?php else: ?>
+                                                        <option value="">-- Select Category --</option>
+                                                        <?php foreach ($categories as $cate): ?>
+                                                            <option value="<?= esc($cate->cat_Id); ?>" <?= isset($product) && $product['cat_Id'] == $cate->cat_Id ? 'selected' : '' ?>>
+                                                                <?= esc($cate->cat_Name); ?>
+                                                            </option>
+                                                        <?php endforeach; ?>
+                                                    <?php endif; ?>
                                                 </select>
                                             </div>
                                         </div>
@@ -103,10 +115,11 @@
                                         <div class="form-group row">
                                             <label class="col-sm-3 col-form-label">Subcategory Name</label>
                                             <div class="col-sm-7">
-                                                <select class="form-control fs-13" name="sub_id" id="subcategoryName" style="font-size:14px;">
+                                                <select class="form-control fs-13" name="sub_id" id="subcategoryName"
+                                                    style="font-size:14px;">
                                                     <option value="">-- Select Subcategory --</option>
                                                 </select>
-                                               
+
                                             </div>
 
                                         </div>
@@ -134,18 +147,20 @@
                                             </div>
                                         </div> -->
 
-                                      <div class="form-group row">
+                                        <div class="form-group row">
                                             <label class="col-sm-3 col-form-label">Customisation</label>
                                             <div class="col-sm-7 d-flex align-items-center">
                                                 <div class="form-check me-4">
-                                                    <input class="form-check-input" type="checkbox" name="pr_custom" id="customisable"
-                                                        value="1" <?= isset($product) && $product['pr_custom'] == 1 ? 'checked' : '' ?>>
-                                                    <label class="form-check-label" for="customisable">Customisable</label>
+                                                    <input class="form-check-input" type="checkbox" name="pr_custom"
+                                                        id="customisable" value="1" <?= isset($product) && $product['pr_custom'] == 1 ? 'checked' : '' ?>>
+                                                    <label class="form-check-label"
+                                                        for="customisable">Customisable</label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="pr_custom" id="nonCustomisable"
-                                                        value="0" <?= isset($product) && $product['pr_custom'] == 0 ? 'checked' : '' ?>>
-                                                    <label class="form-check-label" for="nonCustomisable">Non-Customisable</label>
+                                                    <input class="form-check-input" type="checkbox" name="pr_custom"
+                                                        id="nonCustomisable" value="0" <?= isset($product) && $product['pr_custom'] == 0 ? 'checked' : '' ?>>
+                                                    <label class="form-check-label"
+                                                        for="nonCustomisable">Non-Customisable</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -156,7 +171,7 @@
                                                 <input type="text" class="form-control"
                                                     value="<?= isset($product) ? ($product['pr_Sleeve_Style']) : '' ?>"
                                                     name="sleeve_style" id="sleeveStyle"
-                                                    placeholder="Enter the sleeve Style"style="font-size:14px;">
+                                                    placeholder="Enter the sleeve Style" style="font-size:14px;">
                                             </div>
                                         </div>
 
@@ -165,7 +180,8 @@
                                             <div class="col-sm-7">
                                                 <input type="text" class="form-control"
                                                     value="<?= isset($product) ? ($product['pr_Fabric']) : '' ?>"
-                                                    name="fabric" id="fabric" placeholder="Enter the Fabric" style="font-size:14px;">
+                                                    name="fabric" id="fabric" placeholder="Enter the Fabric"
+                                                    style="font-size:14px;">
                                             </div>
                                         </div>
 
@@ -178,9 +194,10 @@
                                                     placeholder="Enter the Stitching Style" style="font-size:14px;">
                                             </div>
                                         </div>
-										
+
                                         <div class="row justify-content-center">
-                                            <input type="hidden" name="pr_id" id="pr_id" value="<?= isset($product) ? $product['pr_Id'] : '' ?>">
+                                            <input type="hidden" name="pr_id" id="pr_id"
+                                                value="<?= isset($product) ? $product['pr_Id'] : '' ?>">
 
                                             <div class="button-group">
                                                 <button type="button" class="btn btn-secondary" style="font-size:14px;"
