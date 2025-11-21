@@ -41,7 +41,7 @@
             if (url) window.location.href = url;
         });
 
-        const itemsPerPage = 9;
+        const itemsPerPage = 12;
         const $cards = $(".product__card");
         const totalItems = $cards.length;
         const totalPages = Math.ceil(totalItems / itemsPerPage);

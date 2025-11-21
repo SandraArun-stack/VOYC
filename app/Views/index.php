@@ -101,7 +101,7 @@
                         $priId = $item['pri_Id'];
                         ?>
                         <!-- <div class="col-lg-3 col-md-4 col-sm-6 mb-4"> -->
-                        <div class="col-lg-3 col-md-4 col-sm-6 mb-4 product-box <?= strtolower(trim($item['pr_for'])) ?>">
+                        <div class="colxl-2 col-lg-2 col-md-4 col-sm-6 col-6 mb-4 product-box <?= strtolower(trim($item['pr_for'])) ?>">
 
 
                             <div class="product__item" data-url="<?= base_url("productdetails/$prId/$priId"); ?>">
@@ -114,16 +114,7 @@
                                         <img class="product-img" src="<?= base_url('assets/img/no-image.png'); ?>" alt="No Image" />
                                     <?php endif; ?>
 
-                                    <!-- <ul class="product__hover">
-                                        <?php if ($firstImage): ?>
-                                            <li>
-                                                <a href="<?= base_url('uploads/productmedia/' . $firstImage); ?>"
-                                                    class="image-popup"><span class="arrow_expand"></span></a>
-                                            </li>
-                                        <?php endif; ?>
-                                        <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                                        <li><a href="#"><span class="icon_bag_alt"></span></a></li>
-                                    </ul> -->
+                                   
                                 </div>
                                 <div class="product__item__text">
                                     <h6><?= esc($item['pr_Name'] ?? 'Product'); ?></h6>

@@ -36,16 +36,11 @@ class OrderDetails extends Controller
 
         $cartModel = new CartModel();
         $cartItems = $cartModel->getCartItems($userId);
-        // print_r($cartItems);
         return view('common/header', ['cartCount' => $cartCount])
             . view('orderdetails', ['cartItems' => $cartItems, 'totalAmount' => $totalAmount])
             . view('common/footer')
             . view('pagescripts/orderdetailsjs');
     }
-
-
-
-
 
     public function placeOrder()
     {
@@ -93,7 +88,6 @@ class OrderDetails extends Controller
 
         foreach ($products as $item) {
 
-            // $item['od_Id'] = $mainOrderId;
             $item['od_number'] = $orderNumber;
             $item['cus_Id'] = $userId;
             $item['add_Id'] = $add_Id;
@@ -101,16 +95,18 @@ class OrderDetails extends Controller
 
             $this->orderModel->createOrderItem($item);
 
-            $totalAmount += $item['od_Grand_Total'];
+            $rowTotal = $item['od_Quantity'] * $item['od_Selling_Price'];
+            $totalAmount += $rowTotal;
 
             $productRows .= "
+            
         <tr>
             <td style='padding:8px;border:1px solid #ccc;'>{$item['pr_Code']}</td>
             <td style='padding:8px;border:1px solid #ccc;'>{$item['pr_Name']}</td>
             <td style='padding:8px;border:1px solid #ccc;'>{$item['od_Size']}</td>
             <td style='padding:8px;border:1px solid #ccc;'>{$item['od_Quantity']}</td>
             <td style='padding:8px;border:1px solid #ccc;'>₹{$item['od_Selling_Price']}</td>
-            <td style='padding:8px;border:1px solid #ccc;'>₹{$item['od_Grand_Total']}</td>
+            <td style='padding:8px;border:1px solid #ccc;'>₹{$rowTotal}</td>
         </tr>";
         }
 
@@ -146,22 +142,31 @@ class OrderDetails extends Controller
             <img src='{$logoUrl}' style='width:160px;margin-bottom:20px;'>
         </div>
     ";
+        $formattedShippingAddress = "
+            <p class='my-0'><b>{$addressData['add_Name']}</b></p>
+            <p class='my-0' >Address: {$addressData['add_Street']}</p>
+            <p class='my-0'>{$addressData['add_Landmark']}</p>
+            <p class='my-0'>{$addressData['add_City']}, {$addressData['add_State']}, India – {$addressData['add_Pincode']}</p>
+            <p class='my-0'>Phone: {$addressData['add_Phone']}</p>
+            <p class='my-0'>Email: {$addressData['add_Email']}</p>
+        ";
+
 
         // ============================
         // CUSTOMER EMAIL
         // ============================
         $customerMessage = "
         {$emailHeader}
-        <p>Hello {$addressData['add_Name']},</p>
-        <p>Thank you for your order! Your order number is <b>{$orderNumber}</b>.</p>
+        <p class='my-0'>Hello {$addressData['add_Name']},</p>
+        <p class='my-0'>Thank you for your order! Your order number is <b>{$orderNumber}</b>.</p>
 
         <h3>Order Summary:</h3>
         {$productTable}
 
-        <h3>Shipping Address:</h3>
-        <p>{$shippingAddress}</p>
+        <h3 >Shipping Address:</h3>
+        <p class='my-0'>{$formattedShippingAddress}</p>
 
-        <p>Best Regards,<br><b>Voyc Team</b></p>
+        <p class='my-0'>Best Regards,<br><b>Voyc Team</b></p>
     ";
 
         $email->setFrom('smartloungework@gmail.com', 'Voyc');

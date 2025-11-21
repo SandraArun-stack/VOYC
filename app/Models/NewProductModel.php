@@ -30,7 +30,7 @@ class NewProductModel extends Model
             ->where('pi.pri_Status', 1)
             ->where('pi.pri_Id = (SELECT MAX(pi2.pri_Id) FROM product_image pi2 WHERE pi2.pr_Id = p.pr_Id)', null, false)
             ->orderBy('p.pr_Id', 'DESC')
-            ->limit(8)
+            ->limit(12)
             ->get()
             ->getResultArray();
 

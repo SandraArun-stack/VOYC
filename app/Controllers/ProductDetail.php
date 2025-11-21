@@ -30,6 +30,7 @@ class ProductDetail extends Controller
         }
 
         $product = $this->ProductDetailModel->get_prd_Details($prId, $priId);
+        $relatesProducts = $this->ProductDetailModel->getRelatedProducts($prId, $priId);
         // print_r($product); exit;
 
         if (!$product) {
@@ -38,7 +39,8 @@ class ProductDetail extends Controller
 
         $data = [
             'product' => $product,
-            'images' => $product['images']
+            'images' => $product['images'],
+             'relatedProducts' => $relatesProducts 
         ];
 
         return view('common/header', ['cartCount' => $cartCount])

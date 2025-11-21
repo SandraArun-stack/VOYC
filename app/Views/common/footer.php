@@ -29,7 +29,7 @@
                         <li><a href="<?= base_url(' '); ?>">Game Arena</a></li>
                         <li><a href="<?= base_url('allCustomizableProducts'); ?>">Customization</a></li>
                         <li><a href="<?= base_url('contact'); ?>">About</a></li>
-                        
+
                     </ul>
                 </div>
             </div>
@@ -86,11 +86,25 @@
     </div>
 </div>
 <!-- Search End -->
+<?php if (session()->getFlashdata('showLoginPopup')): ?>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            // Open the Bootstrap auth modal
+            var authModal = new bootstrap.Modal(document.getElementById('authModal'));
+            authModal.show();
+
+            // Show only login view
+            $('#loginView').fadeIn(200);
+            $('#registerView').hide();
+            $('#forgotPassView').addClass('d-none');
+        });
+    </script>
+<?php endif; ?>
 
 <!-- Js Plugins -->
 <script src="<?= base_url() . ASSET_PATH; ?>assets/js/jquery-3.3.1.min.js"></script>
 <script src="<?= base_url() . ASSET_PATH; ?>assets/js/bootstrap.min.js"></script>
-<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
 
 <script src="<?= base_url() . ASSET_PATH; ?>assets/js/jquery.magnific-popup.min.js"></script>
 <script src="<?= base_url() . ASSET_PATH; ?>assets/js/jquery-ui.min.js"></script>

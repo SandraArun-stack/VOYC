@@ -52,6 +52,17 @@
                                             <div id="message" style="display:none;"></div>
                                             <div id="messageBox" class="alert" style="display: none;"></div>
                                             <div class="table-responsive">
+                                                <div class="d-flex justify-content-end align-items-center mb-3">
+                                                    <label>Search by Status: &nbsp;</label>
+                                                    <select id="statusFilter" class="form-select" style="width:200px;">
+                                                        <option value="">All Status</option>
+                                                        <option value="1">New</option>
+                                                        <option value="2">Confirmed</option>
+                                                        <option value="3">Packed</option>
+                                                        <option value="4">Dispatched</option>
+                                                        <option value="5">Delivered</option>
+                                                    </select>
+                                                </div>
                                                 <table class="table table-hover" id="orderList">
                                                     <thead>
                                                         <tr>

@@ -1,36 +1,3 @@
-<!-- <style>
-.quantity-box {
-    display: flex;
-    align-items: center;
-    border: 1px solid #ddd;
-    border-radius: 50px;        /* Rounded edges */
-    overflow: hidden;
-    background-color: #f8f8f8;
-    height: 54px;
-    width: 136px;
-}
-.qty-btn {
-    width: 40px;
-    height: 40px;
-    border: none;
-    background: transparent;
-    font-size: 20px;
-    color: #000;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-.quantity-box input {
-    width: 50px;
-    text-align: center;
-    border: none;
-    background: transparent;
-    font-weight: 600;
-    color: #000;
-    font-size: 16px;
-}
-</style> -->
-
-
 <?php
 $userId = session()->get('user_id');
 ?>
@@ -314,6 +281,55 @@ $userId = session()->get('user_id');
                 </div>
             </div>
         </div>
+        <?php if (!empty($relatedProducts)): ?>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="related__title">
+                        <h5>RELATED PRODUCTS</h5>
+                    </div>
+                </div>
+
+                <?php foreach ($relatedProducts as $rp): ?>
+                    <div class="col-lg-2 col-md-3 col-sm-6">
+                        <div class="">
+                            <a href="<?= base_url("productdetails/{$rp->pr_Id}/{$rp->pri_Id}"); ?>">
+                                <div class="product__item__pic set-bg"
+                                    data-setbg="<?= base_url('uploads/productmedia/' . $rp->pri_Thumbnail); ?>">
+                                </div>
+                                <div class="product__item__text mt-2">
+                                    <h6 class="product_name_text"><?= $rp->pr_Name; ?></h6>
+                                    <div class="rating">
+                                        <?php
+                                        $avg = (float) $rp->avg_rating; // FIXED
+                                
+                                        for ($i = 1; $i <= 5; $i++) {
+
+                                            if ($i <= floor($avg)) {
+                                                echo '<i class="fa fa-star text-warning"></i>';
+
+                                            } elseif ($i == ceil($avg) && $avg - floor($avg) >= 0.5) {
+                                                echo '<i class="fa fa-star-half-o text-warning"></i>';
+
+                                            } else {
+                                                echo '<i class="fa fa-star-o text-muted"></i>';
+                                            }
+                                        }
+                                        ?>
+                                    </div>
+                                    <div class="product__price">₹ <?= number_format($rp->min_price); ?>
+                                    </div>
+                                </div>
+                            </a>
+
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+        
+
+
+
     </div>
 </section>
 <!-- Product Details Section End -->
