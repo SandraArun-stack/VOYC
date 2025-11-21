@@ -221,9 +221,11 @@
                     <div class="alert alert-success m-3 p-2 w-auto d-none" id="login_msg_alert"></div>
                     <div class="modal-body">
                         <form id="loginForm">
+                            
                             <label>Email</label><span>&nbsp;*</span>
                             <input type="text" name="login_email" class="form-control mb-3"
                                 placeholder="Enter Your Email" required>
+
                             <label>Password</label><span>&nbsp;*</span>
                             <div class="eye_icon mb-3">
                                 <input type="password" name="login_password" class="form-control"
@@ -241,6 +243,7 @@
                             <div class="text-center mt-3">
                                 <small class=""> Don’t have an account? <a href="#" id="to-register">Sign Up</a></small>
                             </div>
+
                             <div class="text-center mt-3">
                                 <small><a href="#" id="to-forgot-password">Forgot Password?</a></small>
                             </div>
@@ -250,7 +253,6 @@
 
                 <!-- REGISTER VIEW -->
                 <div id="registerView">
-
                     <div class="modal-header border-0 position-relative p-2">
                         <button type="button" class="btn border-0 bg-transparent position-absolute login_close"
                             data-bs-dismiss="modal" aria-label="Close">
@@ -259,7 +261,6 @@
 
                         <div class="d-flex flex-column justify-content-center align-items-center w-100 pt-3 pb-0">
                             <a href="<?= base_url('/'); ?>">
-
                                 <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
                             </a>
                             <h3 class="auth-title mb-0 text-center">Step Into Your Style</h3>
@@ -315,7 +316,6 @@
 
                         <div class="d-flex flex-column justify-content-center align-items-center w-100 pt-3 pb-0">
                             <a href="<?= base_url('/'); ?>">
-
                                 <img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg" alt="">
                             </a>
                             <h3 class="auth-title mb-0 text-center">Forgot Password</h3>
@@ -325,24 +325,26 @@
                     <div class="modal-body">
                         <div class="alert alert-success m-1 p-2 w-auto d-none" id="forgotalert"></div>
                         <form id="forgotPassForm">
-                            <label class="d-block">Email <span>*</span></label>
+                            <label class="d-block">
+                                Email <span>*</span>
+                            </label>
 
                             <small class="forgot-text d-block mb-1">
                                Enter Your Registered Email to Receive a Password Reset Link.
                             </small>
                             <input type="email" name="forgot_email" class="form-control mb-3 forgot-input"
                                 placeholder="Enter Your Email" required>
-                            <small class="forgot-text d-block mb-2 ml-1">
-                                A Password Reset Link Will be Delivered to Your Email.
-                            </small>
+                           
                             <div class="submit_forgot w-100 justify-content-between d-flex">
                                 <button type="button" id="btn_forgot_password" class="btn btn-dark w-100"
-                                    data-url="<?= base_url('forgotPassword') ?>">Send Reset Link</button>
-
+                                    data-url="<?= base_url('forgotPassword') ?>">
+                                    Send Reset Link
+                                </button>
                             </div>
                             <div class="d-flex justify-content-end mt-3">
-                                <a href="#" id="to-login-from-forgot" class="text-center align-items-center d-flex">Back
-                                    to Login</a>
+                                <a href="#" id="to-login-from-forgot" class="text-center align-items-center d-flex">
+                                    Back to Login
+                                </a>
                             </div>
                         </form>
 

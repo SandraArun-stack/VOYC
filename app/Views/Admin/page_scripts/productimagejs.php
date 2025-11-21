@@ -587,7 +587,7 @@
                     if (Math.abs(actualRatio - requiredRatio) > margin) {
 
                         errorBox.innerHTML =
-                            `Invalid Image: <b>${width}×${height}px</b>. Required ratio is <b>4:5</b>.`;
+                            `Invalid Image: <b>${width}×${height}px</b>. Required ratio is <b>4:5</b>(example: 400px×500px)`;
 
                         // reset file
                         inputElement.value = "";
@@ -596,6 +596,20 @@
                     URL.revokeObjectURL(objectURL);
                 };
             });
+        }
+    });
+    $(document).on("change", "input[name*='[sleev_image]']", function () {
+        const maxImages = 8;
+        const files = this.files;
+
+        // Find error container next to input field
+        const errorBox = $(this).closest('.mt-3').find('.image-error');
+
+        if (files.length > maxImages) {
+            errorBox.text(`You Can Upload a Maximum of ${maxImages} Images.`);
+            this.value = ""; // Clear the selected files
+        } else {
+            errorBox.text(""); // Remove error if valid
         }
     });
 

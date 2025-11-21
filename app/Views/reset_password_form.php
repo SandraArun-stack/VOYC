@@ -46,7 +46,7 @@
 
                 <h3 class="mb-3 text-center">Reset Your Password</h3>
                 <p class=" text-muted mb-1">
-                    Please create a strong password. Make sure both passwords match.
+                    Create a New Password for Your Account.
                 </p>
                 <?php if (session()->getFlashdata('error')): ?>
                     <div class="alert alert-danger">
@@ -79,7 +79,7 @@
                     <button type="submit" class="btn btn-dark w-100">Reset Password</button>
                 </form>
                 <div class="text-end mt-3">
-                    <a href="#" onclick="showLoginPopup()" class="text-decoration-none fw-bold">
+                    <a href="<?= base_url('/?login_popup=1') ?>" class="text-decoration-none text-dark fw-bold d-flex justify-content-end">
                         Back to Sign In
                     </a>
                 </div>

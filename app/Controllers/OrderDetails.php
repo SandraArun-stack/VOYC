@@ -70,6 +70,7 @@ class OrderDetails extends Controller
             'add_createdon' => date('Y-m-d H:i:s'),
             'add_createdby' => $createdBy
         ];
+        // print_r($addressData['add_Phone']);exit();
 
         $addressModel = new \App\Models\AddressModel();
         $add_Id = $addressModel->insert($addressData);
@@ -143,13 +144,29 @@ class OrderDetails extends Controller
         </div>
     ";
         $formattedShippingAddress = "
-            <p class='my-0'><b>{$addressData['add_Name']}</b></p>
-            <p class='my-0' >Address: {$addressData['add_Street']}</p>
-            <p class='my-0'>{$addressData['add_Landmark']}</p>
-            <p class='my-0'>{$addressData['add_City']}, {$addressData['add_State']}, India – {$addressData['add_Pincode']}</p>
-            <p class='my-0'>Phone: {$addressData['add_Phone']}</p>
-            <p class='my-0'>Email: {$addressData['add_Email']}</p>
-        ";
+    <div style='line-height:0.2'>
+        <p class='m-0'><strong>Name:</strong></p>
+        <p class='m-0'>{$addressData['add_Name']}</p>
+
+        <br>
+
+        <p class='m-0'><strong>Address:</strong></p>
+        <p class='m-0'>{$addressData['add_Street']}</p>
+        <p class='m-0'>{$addressData['add_Landmark']}</p>
+        <p class='m-0'>{$addressData['add_City']}, {$addressData['add_State']}, India – {$addressData['add_Pincode']}</p>
+
+        <br>
+
+        <p class='m-0'><strong>Phone:</strong></p>
+        <p class='m-0'>+91 {$addressData['add_Phone']}</p>
+
+        <br>
+
+        <p class='m-0'><strong>Email:</strong></p>
+        <p class='m-0'>{$addressData['add_Email']}</p>
+    </div>
+";
+
 
 
         // ============================
@@ -165,8 +182,8 @@ class OrderDetails extends Controller
 
         <h3 >Shipping Address:</h3>
         <p class='my-0'>{$formattedShippingAddress}</p>
-
-        <p class='my-0'>Best Regards,<br><b>Voyc Team</b></p>
+        <br/>
+        <p class='my-0' style='font-size:14px;'>Best Regards,<br><b>Voyc Team</b></p>
     ";
 
         $email->setFrom('smartloungework@gmail.com', 'Voyc');

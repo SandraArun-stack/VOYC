@@ -189,7 +189,7 @@ class MyProfile extends Controller
         }
 
         if (!$valid) {
-            return $this->response->setJSON(['success' => false, 'message' => 'Current password incorrect']);
+            return $this->response->setJSON(['success' => false, 'message' => 'The Current Password is Incorrect.']);
         }
 
         if ($new !== $confirm) {

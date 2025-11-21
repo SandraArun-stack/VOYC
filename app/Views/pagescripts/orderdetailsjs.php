@@ -59,19 +59,24 @@
             let phone = phoneInput.val().trim();
 
             phone = phone.replace(/[\s\-()]/g, '');
+            phone = phone.replace(/^\+?91/, '');
+            phone = phone.replace(/^0/, '');
+            phone = phone.slice(-10);
 
-            if (phone.length === 11 && phone.startsWith('0')) {
-                phone = phone.substring(1);
-            }
 
-            const indianPhoneRegex = /^(?:\+91|91)?[6-9]\d{9}$/;
+            // if (phone.length === 11 && phone.startsWith('0')) {
+            //     phone = phone.substring(1);
+            // }
+
+            const indianPhoneRegex = /^[6-9]\d{9}$/;
 
             if (!indianPhoneRegex.test(phone)) {
                 isValid = false;
                 phoneInput.css('border', '1px solid red');
                 message = 'Please enter a valid Indian phone number.';
             }
-
+            
+            phoneInput.val(phone);
             // If validation fails, stop submission
             if (!isValid) {
                 showMessage('' + message, 'error');
