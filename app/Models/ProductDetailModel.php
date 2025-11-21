@@ -222,7 +222,100 @@ class ProductDetailModel extends Model
             return 'inserted';
         }
     }
+    // public function getRelatedProducts($prId, $priId)
+    // {
+    //     $product = $this->db->table('product')
+    //         ->select('cat_Id, sub_Id,pr_for,pr_Custom')
+    //         ->where('pr_Id', $prId)
+    //         ->get()
+    //         ->getRow();
 
+    //     if (!$product) {
+    //         return [];
+    //     }
+
+    //     $catId = $product->cat_Id;
+    //     $subId = $product->sub_Id;
+    //     $prdFor = $product->pr_for;
+    //     $prCustom = $product->pr_Custom;
+
+
+    //     $builder = $this->db->table('product_image pi')
+    //         ->select('pi.pri_Id, pi.pri_Thumbnail, p.pr_Id, p.pr_Name, p.cat_Id, p.sub_Id')
+    //         ->join('product p', 'p.pr_Id = pi.pr_Id')
+    //         ->where('p.cat_Id', $catId)
+    //          ->where('p.pr_for', $prdFor)
+    //           ->where('p.pr_Custom', $prCustom)
+    //         ->where('p.pr_Id !=', $prId) 
+
+    //         ->where('pi.pri_Status', 1)
+    //         ->groupBy('p.pr_Id')             
+    //         ->orderBy('pi.pri_Id', 'DESC')     
+    //         ->limit(12);
+
+    //     if (!empty($subId) && $subId != 0) {
+    //         $builder->where('p.sub_Id', $subId);
+    //     }
+
+    //     return $builder->get()->getResult();
+
+    // }
+
+
+    public function getRelatedProducts($prId, $priId)
+    {
+        $product = $this->db->table('product')
+            ->select('cat_Id, sub_Id, pr_for, pr_Custom')
+            ->where('pr_Id', $prId)
+            ->get()
+            ->getRow();
+
+        if (!$product) {
+            return [];
+        }
+
+        $catId = $product->cat_Id;
+        $subId = $product->sub_Id;
+        $prdFor = $product->pr_for;
+        $prCustom = $product->pr_Custom;
+
+        $builder = $this->db->table('product_image pi')
+            ->select("
+            pi.pri_Id,
+            pi.pri_Thumbnail,
+            p.pr_Id,
+            p.pr_Name,
+            p.cat_Id,
+            p.sub_Id,
+            
+            /* 🔥 Lowest variant price */
+            (SELECT MIN(pv.prv_price)
+             FROM product_variants pv
+             WHERE pv.pr_Id = p.pr_Id
+             AND pv.prv_Status = 1) AS min_price,
+             
+            /* 🔥 Average rating */
+            (SELECT AVG(r.rating)
+             FROM reviews r
+             WHERE r.pr_Id = p.pr_Id
+             AND r.pr_Status = 1) AS avg_rating
+        ")
+            ->join('product p', 'p.pr_Id = pi.pr_Id')
+            ->where('p.cat_Id', $catId)
+            ->where('p.pr_for', $prdFor)
+            ->where('p.pr_Custom', $prCustom)
+            ->where('p.pr_Id !=', $prId)
+            ->where('pi.pri_Status', 1)
+            ->groupBy('p.pr_Id') // one row per product
+            ->orderBy('pi.pri_Id', 'DESC')
+            ->limit(12);
+
+        if (!empty($subId) && $subId != 0) {
+            $builder->where('p.sub_Id', $subId);
+        }
+
+        return $builder->get()->getResult();
+    }
 
 
 

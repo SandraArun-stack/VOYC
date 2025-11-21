@@ -57,7 +57,7 @@ class HomeModel extends Model
             return ['status' => 'error', 'message' => 'Your Account is Inactive. Please Contact Support.'];
         }
         if ($user['cust_Status'] == 3) {
-            return ['status' => 'error', 'message' => 'Your Account is Deleted.'];
+            return ['status' => 'error', 'message' => 'The Account is No Longer Available.'];
         }
 
         if ($user['cust_Password'] !== $data['password']) {

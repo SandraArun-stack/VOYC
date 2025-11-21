@@ -1,21 +1,21 @@
 
 
 <!-- Shop Section Begin -->
-<section class="shop spad">
+<section class="shop spad" id="allcustomisible_Product_view">
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 ">
                 <div class="row product-list">
                     <?php if (!empty($customizable_products)): ?>
                         <?php foreach ($customizable_products as $item): ?>
-                            <div class="col-md-3 mb-4 product__card">
+                            <div class="col-xl-2 col-lg-3 col-sm-4 col-6 mb-4 product__card">
                                 <div class="product__item"
                                     data-url="<?= base_url('productdetails/' . $item['pr_Id'] . '/' . $item['pri_Id']); ?>">
                                     <div class="product__item">
                                         <div class="product__item__pic set-bg"
                                             data-setbg="<?= base_url('uploads/productmedia/' . ($item['pri_Thumbnail'])) ?>">
 
-                                            <ul class="product__hover">
+                                            <!-- <ul class="product__hover">
                                                 <li>
                                                     <a href="<?= base_url('uploads/productmedia/' . ($item['pri_Thumbnail'])) ?>"
                                                         class="image-popup">
@@ -24,7 +24,7 @@
                                                 </li>
                                                 <li><a href="#"><span class="icon_heart_alt"></span></a></li>
                                                 <li><a href="#"><span class="icon_bag_alt"></span></a></li>
-                                            </ul>
+                                            </ul> -->
                                         </div>
                                         <div class="product__item__text">
                                             <h6><a href="#"><?= esc($item['pr_Name']) ?></a></h6>

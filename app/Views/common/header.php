@@ -55,11 +55,12 @@
                     <div class="tip">2</div>
                 </a></li>
             <li><a href="#"><i class="bi bi-award"></i>
-                    <div class="tip">2</div>
+                    <!-- <div class="tip">2</div> -->
                 </a></li>
         </ul>
         <div class="offcanvas__logo">
-            <a href="<?= base_url(' '); ?>"><img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo.jpg" alt=""></a>
+            <a href="<?= base_url(' '); ?>"><img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg"
+                    alt=""></a>
         </div>
         <div id="mobile-menu-wrap"></div>
         <div class="offcanvas__auth">
@@ -326,9 +327,12 @@
                         <form id="forgotPassForm">
                             <label class="d-block">Email <span>*</span></label>
 
+                            <small class="forgot-text d-block mb-1">
+                               Enter Your Registered Email to Receive a Password Reset Link.
+                            </small>
                             <input type="email" name="forgot_email" class="form-control mb-3 forgot-input"
                                 placeholder="Enter Your Email" required>
-                            <small class="forgot-text d-block mb-2">
+                            <small class="forgot-text d-block mb-2 ml-1">
                                 A Password Reset Link Will be Delivered to Your Email.
                             </small>
                             <div class="submit_forgot w-100 justify-content-between d-flex">

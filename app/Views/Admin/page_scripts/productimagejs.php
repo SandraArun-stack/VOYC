@@ -84,7 +84,7 @@
 
 
                 let json = JSON.parse(response);
-                
+
                 $("#productNameHeading").text(json.pr_Name || "Product");
 
                 let expandedData = [];
@@ -390,51 +390,51 @@
 
 
 
-        $(document).on('change', '.image-input', function () {
-            const input = this;
-            const previewDiv = $(input).siblings('.image-preview');
-            if (previewDiv.length) previewDiv.empty();
+        // $(document).on('change', '.image-input', function () {
+        //     const input = this;
+        //     const previewDiv = $(input).siblings('.image-preview');
+        //     if (previewDiv.length) previewDiv.empty();
 
-            const files = Array.from(input.files);
-            let valid = true;
+        //     const files = Array.from(input.files);
+        //     let valid = true;
 
-            files.forEach(file => {
-                if (!file.type.startsWith("image/")) {
-                    alert(`File "${file.name}" is not an image.`);
-                    input.value = "";
-                    valid = false;
-                    return;
-                }
+        //     files.forEach(file => {
+        //         if (!file.type.startsWith("image/")) {
+        //             alert(`File "${file.name}" is not an image.`);
+        //             input.value = "";
+        //             valid = false;
+        //             return;
+        //         }
 
-                const img = new Image();
-                const objectURL = URL.createObjectURL(file);
+        //         const img = new Image();
+        //         const objectURL = URL.createObjectURL(file);
 
-                img.onload = function () {
-                    if (img.width !== requiredWidth || img.height !== requiredHeight) {
-                        alert(`Image "${file.name}" must be ${requiredWidth}x${requiredHeight}px. Your image is ${img.width}x${img.height}px.`);
-                        input.value = "";
-                        valid = false;
-                    } else if (previewDiv.length) {
-                        previewDiv.append($('<img />', {
-                            src: objectURL,
-                            width: 100,
-                            height: 100,
-                            style: 'object-fit: cover; border:1px solid #ddd; border-radius:5px; margin-right:5px;'
-                        }));
-                    }
-                    URL.revokeObjectURL(objectURL);
-                };
+        //         img.onload = function () {
+        //             if (img.width !== requiredWidth || img.height !== requiredHeight) {
+        //                 alert(`Image "${file.name}" must be ${requiredWidth}x${requiredHeight}px. Your image is ${img.width}x${img.height}px.`);
+        //                 input.value = "";
+        //                 valid = false;
+        //             } else if (previewDiv.length) {
+        //                 previewDiv.append($('<img />', {
+        //                     src: objectURL,
+        //                     width: 100,
+        //                     height: 100,
+        //                     style: 'object-fit: cover; border:1px solid #ddd; border-radius:5px; margin-right:5px;'
+        //                 }));
+        //             }
+        //             URL.revokeObjectURL(objectURL);
+        //         };
 
-                img.onerror = function () {
-                    alert(`File "${file.name}" is not a valid image.`);
-                    input.value = "";
-                    valid = false;
-                    URL.revokeObjectURL(objectURL);
-                };
+        //         img.onerror = function () {
+        //             alert(`File "${file.name}" is not a valid image.`);
+        //             input.value = "";
+        //             valid = false;
+        //             URL.revokeObjectURL(objectURL);
+        //         };
 
-                img.src = objectURL;
-            });
-        });
+        //         img.src = objectURL;
+        //     });
+        // });
 
 
 
@@ -500,55 +500,105 @@
         });
     });
 
-    $(document).ready(function () {
-        const minWidth = 100;
-        const maxWidth = 2000;
-        const minHeight = 100;
-        const maxHeight = 2000;
+    // $(document).ready(function () {
+    //     const minWidth = 100;
+    //     const maxWidth = 2000;
+    //     const minHeight = 100;
+    //     const maxHeight = 2000;
 
-        $(document).on('change', '.image-input', function () {
-            const input = this;
-            const previewDiv = $(input).siblings('.image-preview');
-            if (previewDiv.length) previewDiv.empty();
+    //     $(document).on('change', '.image-input', function () {
+    //         const input = this;
+    //         const previewDiv = $(input).siblings('.image-preview');
+    //         if (previewDiv.length) previewDiv.empty();
 
-            const files = Array.from(input.files);
+    //         const files = Array.from(input.files);
 
-            files.forEach(file => {
-                const img = new Image();
-                const objectURL = URL.createObjectURL(file);
+    //         files.forEach(file => {
+    //             const img = new Image();
+    //             const objectURL = URL.createObjectURL(file);
 
-                img.onload = function () {
-                    if (img.width < minWidth || img.width > maxWidth || img.height < minHeight || img.height > maxHeight) {
-                        // Show modal with error message
-                        $('#imageErrorMsg').text(`"${file.name}" must be between ${minWidth}x${minHeight} and ${maxWidth}x${maxHeight}px. Your image is ${img.width}x${img.height}px.`);
-                        var myModal = new bootstrap.Modal(document.getElementById('imageErrorModal'));
-                        myModal.show();
+    //             img.onload = function () {
+    //                 if (img.width < minWidth || img.width > maxWidth || img.height < minHeight || img.height > maxHeight) {
+    //                     // Show modal with error message
+    //                     $('#imageErrorMsg').text(`"${file.name}" must be between ${minWidth}x${minHeight} and ${maxWidth}x${maxHeight}px. Your image is ${img.width}x${img.height}px.`);
+    //                     var myModal = new bootstrap.Modal(document.getElementById('imageErrorModal'));
+    //                     myModal.show();
 
-                        input.value = ""; // clear invalid file
-                    } else if (previewDiv.length) {
-                        const imgEl = $('<img />', {
-                            src: objectURL,
-                            width: 100,
-                            height: 100,
-                            style: 'object-fit: cover; border:1px solid #ddd; border-radius:5px; margin-right:5px;'
-                        });
-                        previewDiv.append(imgEl);
-                    }
-                    URL.revokeObjectURL(objectURL);
-                };
+    //                     input.value = ""; // clear invalid file
+    //                 } else if (previewDiv.length) {
+    //                     const imgEl = $('<img />', {
+    //                         src: objectURL,
+    //                         width: 100,
+    //                         height: 100,
+    //                         style: 'object-fit: cover; border:1px solid #ddd; border-radius:5px; margin-right:5px;'
+    //                     });
+    //                     previewDiv.append(imgEl);
+    //                 }
+    //                 URL.revokeObjectURL(objectURL);
+    //             };
 
-                img.onerror = function () {
-                    $('#imageErrorMsg').text(`"${file.name}" is not a valid image.`);
-                    var myModal = new bootstrap.Modal(document.getElementById('imageErrorModal'));
-                    myModal.show();
+    //             img.onerror = function () {
+    //                 $('#imageErrorMsg').text(`"${file.name}" is not a valid image.`);
+    //                 var myModal = new bootstrap.Modal(document.getElementById('imageErrorModal'));
+    //                 myModal.show();
 
-                    input.value = "";
-                    URL.revokeObjectURL(objectURL);
-                };
+    //                 input.value = "";
+    //                 URL.revokeObjectURL(objectURL);
+    //             };
 
-                img.src = objectURL;
+    //             img.src = objectURL;
+    //         });
+    //     });
+    // });
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        document.querySelectorAll("input[type='file']").forEach(fileInput => {
+            fileInput.addEventListener("change", function (event) {
+                validateUploadedImages(event.target);
             });
         });
+
+        function validateUploadedImages(inputElement) {
+            const errorBox = inputElement.nextElementSibling; // the .image-error div
+            if (!errorBox || !errorBox.classList.contains('image-error')) return;
+
+            errorBox.innerHTML = ""; // clear previous errors
+
+            const files = inputElement.files;
+            if (!files || files.length === 0) return;
+
+            Array.from(files).forEach(file => {
+                if (!file.type.startsWith("image/")) return;
+
+                const img = new Image();
+                const objectURL = URL.createObjectURL(file);
+                img.src = objectURL;
+
+                img.onload = function () {
+
+                    const width = img.width;
+                    const height = img.height;
+
+                    const requiredRatio = 4 / 5;   // 4:5
+                    const actualRatio = width / height;
+                    const margin = 0.02; // allow slight difference
+
+                    if (Math.abs(actualRatio - requiredRatio) > margin) {
+
+                        errorBox.innerHTML =
+                            `Invalid Image: <b>${width}×${height}px</b>. Required ratio is <b>4:5</b>.`;
+
+                        // reset file
+                        inputElement.value = "";
+                    }
+
+                    URL.revokeObjectURL(objectURL);
+                };
+            });
+        }
     });
+
+
 
 </script>

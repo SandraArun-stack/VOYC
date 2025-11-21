@@ -1,7 +1,7 @@
 <script>
 
     $(document).on('change', '.orderStatusSelect', function () {
-         let originalStatus = '';
+        let originalStatus = '';
 
         let currentStatus = $(this).val();
         let od_number = $(this).data('id');
@@ -96,8 +96,9 @@
                                 <th>Product Code</th>
                                 <th>Product Name</th>
                                 <th>Quantity</th>
+                                 <th>Price Per Piece</th>
                                 <th>Customized</th>
-                                <th>Price Per piece</th>
+                               
                                 <th>Total Price</th>
                             </tr>
                         </thead>
@@ -107,14 +108,17 @@
                     let grandTotal = 0;
 
                     orders.forEach(function (o) {
-                        grandTotal += parseFloat(o.od_Grand_Total);
+                        let rowTotal = o.od_Quantity * Math.round(o.od_Selling_Price);
+                        grandTotal += rowTotal;
 
                         productTable += `
                         <tr>
                             <td>${o.pr_Code}</td>
                             <td>${o.pr_Name}</td>
                             <td>${o.od_Quantity}</td>
-                             <td>
+                           
+                            <td>${Math.round(o.od_Selling_Price)}</td>
+                              <td>
                                 ${(!o.design_Id || o.design_Id == 0)
                                 ? `
                                 <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
@@ -133,8 +137,7 @@
                             }
 
                             </td>
-                            <td>${Math.round(o.od_Selling_Price)}</td>
-                             <td>${o.od_Quantity * Math.round(o.od_Selling_Price)}</td>
+                            <td>${rowTotal}</td>
 
                         </tr>
                     `;
@@ -144,7 +147,7 @@
                     productTable += `
                         <tr style="font-weight:bold; background:#f7f7f7;">
                             <td colspan="5" class="text-end">Grand Total:</td>
-                            <td>${Math.round(grandTotal)}</td>
+                           <td>${Math.round(grandTotal)}</td>
                         </tr>
                     </tbody>
                 </table>`;
@@ -158,7 +161,9 @@
                     <p><strong>Name:</strong> ${customer.cust_Name}</p>
                     <p><strong>Email:</strong> ${customer.cust_Email}</p>
                     <p><strong>Phone:</strong> ${customer.cust_Phone || 'N/A'}</p>
-                    <p><strong>Date of Birth:</strong> ${customer.cust_Dob || 'N/A'}</p>
+                    ${(customer.cust_Dob && customer.cust_Dob !== "0000-00-00")
+                            ? `<p><strong>Date of Birth:</strong> ${customer.cust_Dob}</p>`
+                            : ''}
                 `);
 
                     // ----------------------------

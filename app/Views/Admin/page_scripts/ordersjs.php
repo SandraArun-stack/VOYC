@@ -28,6 +28,7 @@
             type: "POST",
             data: function (d) {
                 d[csrfTokenName] = csrfHash;
+                d.statusFilter = $('#statusFilter').val();
             }
         },
         columns: [
@@ -77,7 +78,7 @@
                 render: function (data) {
                     return getStatusBadge(data);
                 }
-               
+
             },
             {
                 data: 'actions',
@@ -107,5 +108,8 @@
                 window.location.href = baseUrl + "admin/orders/view/" + data.od_number;
             });
         }
+    });
+    $('#statusFilter').on('change', function () {
+        table.ajax.reload();
     });
 </script>

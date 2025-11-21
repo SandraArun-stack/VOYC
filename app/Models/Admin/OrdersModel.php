@@ -42,7 +42,7 @@ class OrdersModel extends Model
         'design_Id'
     ];
 
-    public function getDatatables($searchValue = null, $start = 0, $length = 10, $orderBy = 'order_detail.od_number', $orderDir = 'DESC')
+    public function getDatatables($searchValue = null, $start = 0, $length = 10, $orderBy = 'order_detail.od_number', $orderDir = 'DESC', $statusFilter = null)
     {
 
         $builder = $this->db->table('order_detail')
@@ -68,9 +68,10 @@ class OrdersModel extends Model
             ->join('address', 'address.add_Id = order_detail.add_Id', 'left')
             ->groupBy('order_detail.od_number');
         ;
-        // print_r( $builder);exit();
+        if (!empty($statusFilter)) {
+            $builder->where('order_detail.od_Status', $statusFilter);
+        }
 
-        // Total records before filter
         $totalBuilder = clone $builder;
         $total = $totalBuilder->countAllResults(false);
 
@@ -147,19 +148,19 @@ class OrdersModel extends Model
             ->get()
             ->getRow();
     }
-    public function updateStatus($od_number,  $status)
+    public function updateStatus($od_number, $status)
     {
 
         return $this->db->table('order_detail')
             ->where('od_number', $od_number)
             ->update([
                 'od_Status' => $status,
-                 'od_modifyon' => date('Y-m-d H:i:s') 
+                'od_modifyon' => date('Y-m-d H:i:s')
             ]);
     }
     public function getCustomisedImage($designId)
     {
-       
+
         $design = $this->db->table('design')
             ->select('front_Image, back_Image, RSleeve_Image, LSleeve_Image,User_Upload_Image')
             ->where('design_Id', $designId)
@@ -188,14 +189,14 @@ class OrdersModel extends Model
 
     public function getStatusByOrderNumber($od_number)
     {
-        $od_Status= $this->db->table('order_detail')
+        $od_Status = $this->db->table('order_detail')
             ->select('od_Status')
             ->where('od_number', $od_number)
             ->orderBy('od_Id', 'ASC')  // just to be safe
             ->get()
             ->getRow()
             ->od_Status;
-            
+
         return $od_Status;
 
     }

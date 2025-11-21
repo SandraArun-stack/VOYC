@@ -42,6 +42,8 @@ class Orders extends BaseController
         $start = $this->request->getPost('start');
         $length = $this->request->getPost('length');
         $searchValue = $this->request->getPost('search')['value'];
+        $statusFilter = $this->request->getPost('statusFilter');
+
 
         $columnMap = [
             null,
@@ -57,7 +59,7 @@ class Orders extends BaseController
         $orderBy = $columnMap[$orderColumnIndex] ?? 'order_detail.od_Id';
 
         // Get paginated data
-        $data = $model->getDatatables($searchValue, $start, $length, $orderBy, $orderDirection);
+        $data = $model->getDatatables($searchValue, $start, $length, $orderBy, $orderDirection,$statusFilter);
 
         $formattedData = [];
         foreach ($data['data'] as $row) {

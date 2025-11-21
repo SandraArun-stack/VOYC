@@ -297,6 +297,7 @@ ol {
 	width: 100%;
 	z-index: 111;
 	background: black;
+	position: fixed;
 }
 
 .header__logo {
@@ -310,7 +311,7 @@ ol {
 .header__logo {
 	display: block;
 	width: 100%;
-	height: 100%;
+	height: 90%;
 	background: url("../img/logo.jpg") no-repeat left center;
 	background-size: contain;
 	/* scales the logo to fit */
@@ -428,7 +429,7 @@ ol {
 
 .header__right {
 	text-align: right;
-	padding: 30px 0 27px;
+	padding: 20px 0 26px;
 	position: relative;
 	overflow: visible;
 }
@@ -1013,6 +1014,7 @@ ol {
 
 .breadcrumb-option {
 	padding-top: 35px;
+	margin-top:125px;
 }
 
 .breadcrumb__links a {
@@ -1049,7 +1051,7 @@ ol {
 
 .categories {
 	overflow: hidden;
-	margin-top: 10px;
+	    margin-top: 114px;
 }
 
 .categories .container-fluid {
@@ -1175,11 +1177,11 @@ ol {
 }
 
 .product__item.sale .product__item__text .product__price {
-	color: #ca1515;
+	color: #000000;
 }
 
 .product__item__pic {
-	height: 360px;
+	height: 239px;
 	position: relative;
 	/* overflow: hidden; */
 }
@@ -1291,7 +1293,7 @@ ol {
 
 .product__item__text {
 	text-align: center;
-	padding-top: 22px;
+	padding-top: 0px;
 }
 
 .product__item__text h6 a {
@@ -1331,7 +1333,7 @@ ol {
 -----------------------*/
 
 .shop {
-	padding-top: 70px;
+	padding-top: 30px;
 	padding-bottom: 80px;
 }
 
@@ -1650,7 +1652,7 @@ ol {
 -----------------------*/
 
 .product-details {
-	padding-top: 70px;
+	padding-top: 35px;
 	padding-bottom: 50px;
 }
 
@@ -2145,6 +2147,7 @@ ol {
 	font-weight: 600;
 	text-transform: uppercase;
 	padding-bottom: 20px;
+	text-align: left;
 }
 
 .shop__cart__table tbody tr {
@@ -2170,6 +2173,7 @@ ol {
 .shop__cart__table tbody tr .cart__product__item .cart__product__item__title {
 	overflow: hidden;
 	padding-top: 23px;
+	    text-align: left;
 }
 
 .shop__cart__table tbody tr .cart__product__item .cart__product__item__title h6 {
@@ -2188,10 +2192,12 @@ ol {
 	color: #000;
 	font-weight: 600;
 	width: 190px;
+	text-align: left;
 }
 
 .shop__cart__table tbody tr .cart__quantity {
 	width: 190px;
+	text-align: left;
 }
 
 .shop__cart__table tbody tr .cart__quantity .pro-qty {
@@ -2215,6 +2221,7 @@ ol {
 	color: #000;
 	font-weight: 600;
 	width: 150px;
+	text-align: left;
 }
 
 .shop__cart__table tbody tr .cart__close {
@@ -3053,7 +3060,7 @@ ol {
 -----------------------*/
 
 .contact {
-	padding-top: 80px;
+	padding-top: 35px;
 	padding-bottom: 80px;
 }
 
@@ -3212,7 +3219,7 @@ ol {
 
 @media only screen and (min-width: 1200px) and (max-width: 1599px) {
 	.header__menu ul li {
-		margin-right: 20px;
+		margin-right: 16px;
 	}
 
 	.header {
@@ -3222,7 +3229,7 @@ ol {
 
 @media only screen and (min-width: 1200px) {
 	.container {
-		max-width: 1170px;
+		max-width: 1283px;
 	}
 }
 
@@ -3423,6 +3430,7 @@ ol {
 	.offcanvas__widget {
 		text-align: center;
 		margin-bottom: 20px;
+		margin-top: 30px;
 	}
 
 	.offcanvas__widget li {
@@ -3616,6 +3624,7 @@ ol {
 	.offcanvas__widget {
 		text-align: center;
 		margin-bottom: 20px;
+		margin-top: 30px;
 	}
 
 	.offcanvas__widget li {

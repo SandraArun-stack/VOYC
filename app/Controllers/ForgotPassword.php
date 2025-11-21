@@ -172,30 +172,6 @@ class ForgotPassword extends Controller
         return view('reset_password_form', ['token' => $token]);
     }
 
-    // Step 3: Update password
-    // public function updatePassword()
-    // {
-    //     $token = $this->request->getPost('token');
-    //     $newPassword = md5($this->request->getPost('new_password'));
-    //     $user = $this->ForgotPasswordModel->where('reset_token', $token)->first();
-
-    //     if (!$user) {
-    //          return view('reset_expired');
-    //     }
-
-    //     if (strtotime($user['reset_token_expiry']) < time()) {
-    //         return view('reset_expired');
-    //     }
-
-
-    //     $this->ForgotPasswordModel->update($user['cust_Id'], [
-    //         'cust_Password' => $newPassword,
-    //         'reset_token' => null,
-    //         'reset_token_expiry' => null
-    //     ]);
-
-    //     return redirect()->to('/')->with('success', 'Password updated successfully');
-    // }
 
 
     public function updatePassword()
@@ -230,7 +206,9 @@ class ForgotPassword extends Controller
             'reset_token_expiry' => null
         ]);
 
-        return redirect()->to('/')->with('success', 'Password updated successfully');
+        return redirect()->to('/')->with('success', 'Password Updated Successfully')
+            ->with('showLoginPopup', true);
+
     }
 
 }
