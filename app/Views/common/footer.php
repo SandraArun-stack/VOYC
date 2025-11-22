@@ -86,21 +86,8 @@
     </div>
 </div>
 <!-- Search End -->
-<?php if (session()->getFlashdata('showLoginPopup')): ?>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
 
-            // Open the Bootstrap auth modal
-            var authModal = new bootstrap.Modal(document.getElementById('authModal'));
-            authModal.show();
 
-            // Show only login view
-            $('#loginView').fadeIn(200);
-            $('#registerView').hide();
-            $('#forgotPassView').addClass('d-none');
-        });
-    </script>
-<?php endif; ?>
 
 <!-- Js Plugins -->
 <script src="<?= base_url() . ASSET_PATH; ?>assets/js/jquery-3.3.1.min.js"></script>
@@ -118,6 +105,14 @@
 <script src="<?= base_url() . ASSET_PATH; ?>assets/js/fabric.min.js"></script>
 <script src="<?= base_url() . ASSET_PATH; ?>assets/js/custom.js"></script>
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script>
+    // $(document).ready(function () {
+
+    //     // read flashdata sent from PHP
+       
+    // });
+
+</script>
 </body>
 
 </html>

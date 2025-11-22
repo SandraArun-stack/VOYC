@@ -87,6 +87,9 @@
             });
         });
 
+        $(document).on("click", ".close-preview", function () {
+            $("#designPreviewModal").modal("hide");
+        });
 
         $(document).on('click', '.cart-remove', function () {
             const cartId = $(this).attr('data-cart-id');
@@ -127,19 +130,32 @@
                 }
             });
         });
+        function hideIfInvalid(selector, value) {
+            const block = $(selector).closest('.col-md-3');
+
+            // Case 1: empty, null, undefined → hide
+            if (!value || value === "null" || value === "undefined" || value.trim() === "") {
+                block.hide();
+                return;
+            }
+
+            // Case 2: set src and hide if file does not exist (404)
+            $(selector)
+                .attr('src', value)
+                .off('error')                 // clear previous listener to avoid stacking
+                .on('error', function () {    // hide if broken image
+                    block.hide();
+                });
+
+            block.show();
+        }
 
         $(document).on('click', '.show-preview', function () {
-            debugger;
-            const front = $(this).data('front');
-            const back = $(this).data('back');
-            const Rsleeve = $(this).data('rsleeve');
-            const Lsleeve = $(this).data('lsleeve');
 
-            $('#previewFront').attr('src', front || '<?= base_url("uploads/productmedia/default.jpg") ?>');
-            $('#previewBack').attr('src', back || '<?= base_url("uploads/productmedia/default.jpg") ?>');
-            // $('#previewSleeve').attr('src', sleeve || '<?= base_url("uploads/productmedia/default.jpg") ?>');
-            $('#previewRSleeve').attr('src', Rsleeve || '<?= base_url("uploads/productmedia/default.jpg") ?>');
-            $('#previewLSleeve').attr('src', Lsleeve || '<?= base_url("uploads/productmedia/default.jpg") ?>');
+            hideIfInvalid('#previewFront', $(this).data('front'));
+            hideIfInvalid('#previewBack', $(this).data('back'));
+            hideIfInvalid('#previewRSleeve', $(this).data('rsleeve'));
+            hideIfInvalid('#previewLSleeve', $(this).data('lsleeve'));
 
             $('#designPreviewModal').modal('show');
         });

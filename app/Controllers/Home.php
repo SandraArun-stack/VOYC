@@ -24,17 +24,24 @@ class Home extends BaseController
         $this->request = \Config\Services::request();
         $this->productdisplayModel = new HomeModel();
         $this->reviewModel = new NewProductModel();
-         $this->CartModel = new CartModel();
+        $this->CartModel = new CartModel();
     }
     public function index()
     {
         $session = session();
+
+        if ($this->request->getGet('login_popup') == 1) {
+            $session->setFlashdata('showLoginPopup', true);
+        }
+        $showLoginPopup = $session->getFlashdata('showLoginPopup');
+
         $userId = $session->get('user_id');
         $cartCount = $this->CartModel->getCartItemCount($userId);
+
         $newProductModel = new NewProductModel();
         $data['newPrdImg'] = $newProductModel->getNewPrdImage();
         $data['bestSeller'] = $newProductModel->getBestSeller();
-        return view('common/header', ['cartCount' => $cartCount])
+        return view('common/header', ['cartCount' => $cartCount, 'showLoginPopup' => $showLoginPopup])
             . view('index', $data)
             . view('common/footer')
             . view('pagescripts/indexjs');

@@ -217,6 +217,9 @@ class ProductImage extends BaseController
             $sleeveUploaded = $this->uploadFiles($_FILES, $colorIndex, 'sleev_image', ['jpg', 'jpeg', 'png', 'webp']);
             $RSleeve_Img = $this->uploadFiles($_FILES, $colorIndex, 'RSleeve_Img', ['jpg', 'jpeg', 'png', 'webp']);
             $LSleeve_Img = $this->uploadFiles($_FILES, $colorIndex, 'LSleeve_Img', ['jpg', 'jpeg', 'png', 'webp']);
+           $videoUploaded = $this->uploadFiles($_FILES, $colorIndex, 'video', ['mp4','mov','avi','mkv'], true);
+
+
 
             // --- Preserve existing data if nothing new uploaded ---
             if (empty($thumbnailUploaded) && !empty($existingData['pri_Thumbnail'])) {
@@ -239,6 +242,12 @@ class ProductImage extends BaseController
                 $LSleeve_Img[] = $existingData['LSleeve_Img'];
             }
 
+            if (!$videoUploaded && !empty($existingData['pri_Video'])) {
+                $videoUploaded = $existingData['pri_Video'];  // ✔ string
+            }
+
+
+
             // --- Safety check ---
             if (empty($thumbnailUploaded) || empty($sideUploaded)) {
                 return $this->response->setJSON([
@@ -257,7 +266,9 @@ class ProductImage extends BaseController
                 'color_details' => json_encode(['color' => $color]),
                 'pri_Status' => 1,
                 'pri_updatedon' => date('Y-m-d H:i:s'),
-                'pri_updatedby' => $this->session->get('ad_uid')
+                'pri_updatedby' => $this->session->get('ad_uid'),
+               'pri_Video' => $videoUploaded ?: $existingData['pri_Video']
+
             ];
 
             $this->productimageModel->updateProductimage($pri_id, $imageData);
@@ -410,30 +421,84 @@ class ProductImage extends BaseController
             'msg' => 'No product images were saved.'
         ]);
     }
-    private function uploadFiles($filesArray, $colorIndex, $field, $allowedExt, $isVideo = false)
+    // private function uploadFiles($filesArray, $colorIndex, $field, $allowedExt, $isVideo = false)
+    // {
+    //     $uploaded = [];
+
+    //     if (!empty($filesArray['colors']['name'][$colorIndex][$field][0])) {
+    //         foreach ($filesArray['colors']['name'][$colorIndex][$field] as $i => $name) {
+    //             if ($filesArray['colors']['error'][$colorIndex][$field][$i] === 0) {
+    //                 $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+    //                 if (!in_array($ext, $allowedExt)) {
+    //                     throw new \RuntimeException("Invalid file type for {$field}. Allowed: " . implode(', ', $allowedExt));
+    //                 }
+
+    //                 $newName = uniqid('', true) . '.' . $ext;
+    //                 $destination = FCPATH . 'uploads/productmedia/' . $newName;
+
+    //                 if (move_uploaded_file($filesArray['colors']['tmp_name'][$colorIndex][$field][$i], $destination)) {
+    //                     $uploaded[] = $newName;
+    //                 }
+    //             }
+    //         }
+    //     }
+
+    //     return $uploaded;
+    // }
+    private function uploadFiles($filesArray, $colorIndex, $field, $allowedExt, $isSingleFile = false)
     {
+        // Nothing uploaded
+        if (empty($filesArray['colors']['name'][$colorIndex][$field])) {
+            return $isSingleFile ? null : [];
+        }
+
         $uploaded = [];
 
-        if (!empty($filesArray['colors']['name'][$colorIndex][$field][0])) {
-            foreach ($filesArray['colors']['name'][$colorIndex][$field] as $i => $name) {
-                if ($filesArray['colors']['error'][$colorIndex][$field][$i] === 0) {
-                    $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
-                    if (!in_array($ext, $allowedExt)) {
-                        throw new \RuntimeException("Invalid file type for {$field}. Allowed: " . implode(', ', $allowedExt));
-                    }
+        // CASE 1: Single File
+        if ($isSingleFile || !is_array($filesArray['colors']['name'][$colorIndex][$field])) {
 
-                    $newName = uniqid('', true) . '.' . $ext;
-                    $destination = FCPATH . 'uploads/productmedia/' . $newName;
+            $name = $filesArray['colors']['name'][$colorIndex][$field];
+            $error = $filesArray['colors']['error'][$colorIndex][$field];
+            $tmp = $filesArray['colors']['tmp_name'][$colorIndex][$field];
 
-                    if (move_uploaded_file($filesArray['colors']['tmp_name'][$colorIndex][$field][$i], $destination)) {
-                        $uploaded[] = $newName;
-                    }
+            if ($error === 0) {
+                $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+                if (!in_array($ext, $allowedExt)) {
+                    throw new \RuntimeException("Invalid file type for {$field}. Allowed: " . implode(', ', $allowedExt));
+                }
+
+                $newName = uniqid('', true) . '.' . $ext;
+                $dest = FCPATH . 'uploads/productmedia/' . $newName;
+
+                if (move_uploaded_file($tmp, $dest)) {
+                    return $newName;   // return string for single file
+                }
+            }
+
+            return null;
+        }
+
+        // CASE 2: Multiple Files
+        foreach ($filesArray['colors']['name'][$colorIndex][$field] as $i => $name) {
+            if ($filesArray['colors']['error'][$colorIndex][$field][$i] === 0) {
+
+                $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+                if (!in_array($ext, $allowedExt)) {
+                    throw new \RuntimeException("Invalid file type for {$field}. Allowed: " . implode(', ', $allowedExt));
+                }
+
+                $newName = uniqid('', true) . '.' . $ext;
+                $dest = FCPATH . 'uploads/productmedia/' . $newName;
+
+                if (move_uploaded_file($filesArray['colors']['tmp_name'][$colorIndex][$field][$i], $dest)) {
+                    $uploaded[] = $newName;
                 }
             }
         }
 
         return $uploaded;
     }
+
 
     public function delete($prv_id = null)
     {

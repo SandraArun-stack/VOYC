@@ -257,7 +257,8 @@
                                 </div>
 
                                 <div class="d-flex justify-content-between mt-2">
-                                    <label for="fontFamily" class="form-label fw-semibold text-center">Choose Font Style</label>
+                                    <label for="fontFamily" class="form-label fw-semibold text-center">Choose Font
+                                        Style</label>
                                     <button id="openFontPicker" class="btn btn-outline-secondary ">Fonts</button>
                                 </div>
                                 <!-- Available font listing -->
@@ -512,6 +513,8 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
+                                <div class="alert" id="alertAddtocart"></div>
+
                                 <div class="customisation__price  p-3 rounded-3">
                                     <h5 class="fw-semibold mb-3"><b>Customization Pricing Details</b></h5>
                                     <div class="d-flex justify-content-between py-2">
@@ -546,9 +549,13 @@
                                     </div>
 
 
-                                    <div class="d-flex justify-content-between pt-3 mt-3 border-top">
-                                        <span class="fw-bold">Total:</span>
-                                        <span class="fw-bold text-primary" id="priceTotal"></span>
+                                    <div class="d-flex justify-content-between pt-1 mt-2 border-top">
+                                        <span class="fw-bold">Subtotal:</span>
+                                        <span class="fw-bold text-secondary" id="priceSubtotal"></span>
+                                    </div>
+                                    <div class="d-flex justify-content-between pt-1 mt-1">
+                                        <b><span class="fw-bold">Total:</span></b>
+                                        <b><span class="fw-bold text-primary" id="priceTotal"></span></b>
                                     </div>
 
                                     <div class="d-flex justify-content-end pt-3 mt-3 border-top">

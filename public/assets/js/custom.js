@@ -126,7 +126,7 @@ $(document).ready(function () {
             $('#forgotPassView').removeClass('d-none');
         });
     });
- $(document).on('click', '#to-login-from-forgot', function (e) {
+    $(document).on('click', '#to-login-from-forgot', function (e) {
         e.preventDefault();
         $('#registerView').fadeOut(200, function () {
             $('#forgotPassView').addClass('d-none');
@@ -346,6 +346,22 @@ $(document).ready(function () {
             }
         });
     });
+
+    let showLoginPopup = "<?= $showLoginPopup ?? '' ?>";
+    // if flag not set → do nothing
+    if (!showLoginPopup) return;
+
+    // wait for video end
+    var introVideo = document.getElementById("introVideo");
+
+    if (introVideo) {
+        introVideo.addEventListener("ended", function () {
+            $("#registerView").hide();
+            $("#forgotPassView").addClass("d-none");
+            $("#loginView").fadeIn(200);
+            $("#authModal").modal("show");
+        });
+    }
 
 
 });

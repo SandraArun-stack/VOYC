@@ -140,11 +140,33 @@
                                                                 <?php endforeach; ?>
                                                             </div>
 
-
                                                             <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="col-md-6">
+                                                                    <div class="mt-3">
+                                                                        <label class="form-label"><b>Uploaded Video:</b></label><small>(Choose a Single Video)</small>
+                                                                        <div class="d-flex flex-wrap gap-2 mb-2">
+                                                                            <?php if (!empty($productimages) && !empty($productimages[$index]->pri_Video)): ?>
+                                                                                <video width="120" controls class="border p-1">
+                                                                                    <source src="<?= base_url('uploads/productmedia/' . $productimages[$index]->pri_Video) ?>" type="video/mp4">
+                                                                                </video>
+                                                                            <?php endif; ?>
+                                                                        </div>
+
+                                                                        <!-- FIXED: unique name -->
+                                                                        <input type="file" class="form-control" name="colors[<?= $index ?>][video]" accept="video/*">
+                                                                        <div class="image-error text-danger small mt-1 d-block"></div>
+                                                                    </div>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                
+
                                                                 <div class="col-md-6">
                                                                     <div class="mt-3">
                                                                         <label class="form-label"><b>Uploaded Front Image:</b></label><small>(Choose a Single Image)</small>
+                                                                        <small class="mb-3 loss-image-text text-danger d-block">Current Images Will be Cleared if You Select a New One</small>
                                                                         <div class="d-flex flex-wrap gap-2 mb-2">
                                                                             <?php if (!empty($productimages) && !empty($productimages[$index]->pri_Thumbnail)): ?>
                                                                                 <img src="<?= base_url('uploads/productmedia/' . $productimages[$index]->pri_Thumbnail) ?>"
@@ -158,6 +180,7 @@
                                                                 <div class="col-md-6">
                                                                         <div class="mt-3">
                                                                         <label class="form-label"><b>Uploaded Back Image:</b></label><small>(Choose a Single Image)</small>
+                                                                        <small class="mb-3 loss-image-text text-danger d-block">Current Images Will be Cleared if You Select a New One</small>
                                                                         <div class="d-flex flex-wrap gap-2 mb-2">
                                                                             <?php 
                                                                             if (!empty($productimages) && !empty($productimages[$index]->pri_File_Name)) {
@@ -179,6 +202,7 @@
                                                                     <div class="col-md-6">
                                                                         <div class="mt-3">
                                                                             <label class="form-label"><b>Right Sleeve Image:</b></label><small>(Choose a Single Image)</small>
+                                                                             <small class="mb-3 loss-image-text text-danger d-block">Current Images Will be Cleared if You Select a New One</small>
                                                                             <div class="d-flex flex-wrap gap-2 mb-2">
                                                                                 <?php if (!empty($productimages) && !empty($productimages[$index]->RSleeve_Img)): ?>
                                                                                     <img src="<?= base_url('uploads/productmedia/' . $productimages[$index]->RSleeve_Img) ?>"
@@ -192,6 +216,7 @@
                                                                     <div class="col-md-6">
                                                                         <div class="mt-3">
                                                                             <label class="form-label"><b>Left Sleeve Image:</b></label><small>(Choose a Single Image)</small>
+                                                                             <small class="mb-3 loss-image-text text-danger d-block">Current Images Will be Cleared if You Select a New One</small>
                                                                             <div class="d-flex flex-wrap gap-2 mb-2">
                                                                                 <?php if (!empty($productimages) && !empty($productimages[$index]->LSleeve_Img)): ?>
                                                                                     <img src="<?= base_url('uploads/productmedia/' . $productimages[$index]->LSleeve_Img) ?>"
@@ -206,8 +231,8 @@
                                                         
                                                             <?php endif; ?>
                                                               <div class="mt-3">
-                                                                <label class="form-label"><b>Additional Images:</b></label><small>(You may choose multiple images)</small>
-                                                                 <small class="mb-3 loss-image-text d-block">You will loss the current images while choose a image to add</small>
+                                                                <label class="form-label"><b>Additional Images:</b></label><small>(Maximum 8 Additional Images Allowed)</small>
+                                                                 <small class="mb-3 loss-image-text text-danger d-block">Current Images Will be Cleared if You Select a New One</small>
                                                                     <div class="d-flex flex-wrap gap-2 mb-2">
                                                                     
                                                                         <?php 
@@ -277,12 +302,14 @@
                                                                         accept="video/*">
                                                             </div>
                                                             <div class="mt-3 d-flex flex-column ">
-                                                                <label class="form-label upload__Image">Upload Front Image <span style="color:red;">*</span></label>
+                                                                <label class="form-label upload__Image ">Upload Front Image <span style="color:red;">*</span></label>
+                                                                <small class="d-block mb-2 text-primary">Please Upload Only One Image</small>
                                                                 <input type="file" class="form-control image-input" name="colors[0][images][]" multiple>
                                                                 <div class="image-error text-danger small mt-1 d-block"></div>
                                                             </div>
                                                             <div class="mt-3 d-flex flex-column">
                                                                 <label class="form-label upload__Image">Upload Back Image <span style="color:red;">*</span></label>
+                                                                <small class="d-block mb-2 text-primary">Please Upload Only One Image</small>
                                                                 <input type="file" class="form-control image-input" name="colors[0][side_image][]" multiple>
                                                                 <div class="image-error text-danger small mt-1 d-block"></div>
                                                             </div>
@@ -290,21 +317,29 @@
                                                             <?php if (!empty($pr_custom['pr_custom']) && $pr_custom['pr_custom'] == 1): ?>
                                                             <div class="mt-3 d-flex flex-column">
                                                                 <label class="form-label upload__Image">Right Sleeve Image <span style="color:red;">*</span></label>
+                                                                <small class="d-block mb-2 text-primary">Please Upload Only One Image</small>
                                                                 <input type="file" class="form-control image-input" name="colors[0][RSleeve_Img][]" >
                                                                 <div class="image-error text-danger small mt-1 d-block"></div>
                                                             </div>
                                                             <div class="mt-3 d-flex flex-column">
                                                                 <label class="form-label upload__Image">Left Sleeve Image <span style="color:red;">*</span></label>
+                                                                <small class="d-block mb-2 text-primary">Please Upload Only One Image</small>
                                                                 <input type="file" class="form-control image-input" name="colors[0][LSleeve_Img][]" >
                                                                 <div class="image-error text-danger small mt-1 d-block"></div>
                                                             </div>
                                                             <?php else: ?>
-                                                                <div class="mt-3 d-flex flex-column">
+                                                                <!-- <div class="mt-3 d-flex flex-column">
                                                                     <label class="form-label upload__Image">Upload Additional Images</label>
                                                                     <input type="file" class="form-control image-input" name="colors[0][sleev_image][]" multiple>
                                                                     <div class="image-error text-danger small mt-1 d-block"></div>
-                                                                </div>
+                                                                </div> -->
                                                             <?php endif; ?>
+                                                            <div class="mt-3 d-flex flex-column">
+                                                                    <label class="form-label upload__Image mb-1">Upload Additional Images</label>
+                                                                    <small class="d-block text-warning mb-2 ">Maximum 8 Additional Images Allowed</small>
+                                                                    <input type="file" class="form-control image-input" name="colors[0][sleev_image][]" multiple>
+                                                                    <div class="image-error text-danger small mt-1 d-block"></div>
+                                                                </div>
                                                         </div>
                                                     </div>
                                                 </div>

@@ -298,15 +298,16 @@
         function updatePreview() {
             let total = basePrice * quantity;
             let previewHTML = "";
+            let perItemDesignPrice = 0;
 
             $(".design-check:checked").each(function () {
                 const type = $(this).closest(".design-option").data("type");
                 const data = designData[type];
 
-                if (!data || typeof data.price !== "number") {
-                    console.warn("Missing designData for type:", type);
-                    return;
+                if (data && typeof data.price === "number") {
+                    perItemDesignPrice += data.price;
                 }
+
 
                 total += data.price * quantity;
 
@@ -337,6 +338,9 @@
 
             $(".selected-items").html(previewHTML);
             $("#priceTotal").text("₹" + total.toFixed(2));
+            let displaySubtotal = basePrice + perItemDesignPrice;
+
+            $("#priceSubtotal").text(`₹${displaySubtotal} × ${quantity}`);
         }
 
         $('.qty-btn-custom.plus-custom').click(function () {
@@ -372,6 +376,20 @@
         // const totalPrice = $("#priceTotal").text().replace(/[^\d\.]/g, '');
 
         $("#saveBtn").on("click", function () {
+            if ($(".design-check:checked").length === 0) {
+
+                $("#alertAddtocart")
+                    .removeClass()
+                    .addClass("alert alert-danger")
+                    .text("Please Select Where You Want Your Design Applied.")
+                    .fadeIn();
+
+                setTimeout(() => {
+                    $("#alertAddtocart").fadeOut();
+                }, 2500);
+
+                return;
+            }
 
             var $btn = $(this);
 
@@ -385,12 +403,16 @@
             const designs = {};
 
             const visibleImagesBase64 = [];
+            
+            const selectedViews = $(".design-check:checked").map(function () {
+                return $(this).closest(".design-option").data("type");
+            }).get();
 
-            Object.keys(canvasStates).forEach(view => {
+            // Instead of Object.keys(canvasStates).forEach
+            selectedViews.forEach(view => {
                 const viewState = canvasStates[view];
                 if (viewState && viewState.objects) {
                     viewState.objects.forEach(obj => {
-
                         if (obj.type === 'image' && !obj.overlay) {
                             const tempCanvas = new fabric.StaticCanvas(null, {
                                 width: canvas.width,
@@ -406,9 +428,7 @@
                                     angle: obj.angle || 0
                                 });
                                 tempCanvas.add(img);
-                                // visibleImagesBase64.push(
-                                //     tempCanvas.toDataURL({ format: 'jpeg', quality: 0.7 })
-                                // );
+
                                 visibleImagesBase64.push(
                                     tempCanvas.toDataURL({
                                         format: 'png',
@@ -419,14 +439,13 @@
 
                             });
                         }
-
                     });
                 }
             });
 
 
 
-            const exportAll = Object.keys(canvasStates).map(view => {
+            const exportAll = selectedViews.map(view => {
                 const tempCanvas = new fabric.Canvas(null, {
                     width: canvas.width,
                     height: canvas.height
@@ -775,12 +794,7 @@
         }
     };
 
-    // function updateCheckboxState() {
-    //     const hasObjects = canvas.getObjects().some(obj => !obj.isOverlay);
-    //     const checkbox = $(`.design-option[data-type="${currentView}"] .design-check`);
-    //     checkbox.prop('disabled', !hasObjects);
-    //     if (!hasObjects) checkbox.prop('checked', false);
-    // }
+
 
     function updateCheckboxState() {
         const viewMap = {
