@@ -275,7 +275,31 @@ $routes->get('admin/orders/view/(:any)', 'Admin\Orders::OrderView/$1');
 $routes->post('admin/orders/orderStatusUpdation/(:any)', 'Admin\Orders::orderStatusUpdation/$1');
 $routes->post('admin/getDesign', 'Admin\Orders::getDesignAjax');
 
+// leaderboard
+$routes->get('admin/leaderboard', 'Admin\Leaderboard::leaderboardlist');
+$routes->get('admin/leaderboard/add', 'Admin\Leaderboard::leaderboard');
+$routes->post('admin/leaderboard/save', 'Admin\Leaderboard::save');
+$routes->add('admin/leaderboard/ajaxList', 'Admin\Leaderboard::ajaxList');
+// subscription management
+$routes->get('admin/subscription', 'Admin\Subscription::subscriptionlist');
+$routes->get('admin/subscription/add', 'Admin\Subscription::index');
 
+// USER SUBSCRIPTIONS
+$routes->get('admin/usersubscriptions', 'Admin\UserSubscriptions::index');
+$routes->get('admin/usersubscriptions/list', 'Admin\UserSubscriptions::list');
+
+// TOKEN MANAGEMENT
+$routes->get('admin/token', 'Admin\Token::index');
+$routes->get('admin/token/list', 'Admin\Token::list');
+// DISCOUNT MANAGEMENT
+$routes->get('admin/discount', 'Admin\Discount::index');
+$routes->get('admin/discount/list', 'Admin\Discount::list');
+// game details 
+$routes->get('admin/game-details', 'Admin\GameDetails::index');
+$routes->get('admin/game-details/list', 'Admin\GameDetails::list');
+// game details view 
+$routes->get('admin/game-details-view', 'Admin\GameDetailsView::index');
+$routes->get('admin/game-details-view/list', 'Admin\GameDetailsView::list');
 
 //profile
 $routes->get('admin/', 'Admin\Profile::index');
