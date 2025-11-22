@@ -121,7 +121,7 @@
                 </div>
             </div>
             <?php if (!empty($cartCount) && $cartCount > 0): ?>
-            <div class="col-lg-4 offset-lg-2">
+                <div class="col-lg-4 offset-lg-2">
                     <div class="cart__total__procced">
                         <h6>Cart total</h6>
                         <?php
@@ -147,7 +147,7 @@
                         </form>
 
                     </div>
-            </div>
+                </div>
             <?php endif; ?>
         </div>
         <div class="row">
@@ -198,24 +198,30 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="designPreviewLabel">Design Preview</h5>
-                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+                <h5 class="modal-title">Design Preview</h5>
+
+                <button type="button" class="btn btn-sm close-preview" style="font-size: 25px; background:none; border:none;"
+                    data-bs-dismiss="modal">
+                    &times;
+                </button>
             </div>
+
+
             <div class="modal-body text-center row">
                 <div class="col-md-3">
-                    <p>Front View</p>
+                    <p class="mb-1 mt-2">Front View</p>
                     <img id="previewFront" src="" alt="Front" class="img-fluid border rounded" />
                 </div>
                 <div class="col-md-3">
-                    <p>Back View</p>
+                    <p class="mb-1 mt-2">Back View</p>
                     <img id="previewBack" src="" alt="Back" class="img-fluid border rounded" />
                 </div>
                 <div class="col-md-3">
-                    <p>Right Sleeve View</p>
+                    <p class="mb-1 mt-2">Right Sleeve View</p>
                     <img id="previewRSleeve" src="" alt="RSleeve" class="img-fluid border rounded" />
                 </div>
                 <div class="col-md-3">
-                    <p>Left Sleeve View</p>
+                    <p class="mb-1 mt-2">Left Sleeve View</p>
                     <img id="previewLSleeve" src="" alt="LSleeve" class="img-fluid border rounded" />
                 </div>
             </div>

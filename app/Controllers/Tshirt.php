@@ -107,10 +107,11 @@ class Tshirt extends Controller
         }
 
         // ✅ Use the private helper method
-        $frontFileName = $this->saveBase64Image($frontImageData, $uploadDir);
-        $backFileName = $this->saveBase64Image($backImageData, $uploadDir);
-        $RSleeveFileName = $this->saveBase64Image($RsleeveImageData, $uploadDir);
-        $LSleeveFileName = $this->saveBase64Image($LsleeveImageData, $uploadDir);
+        $frontFileName = $this->saveBase64Image($frontImageData, $uploadDir) ?? '';
+        $backFileName = $this->saveBase64Image($backImageData, $uploadDir) ?? '';
+        $RSleeveFileName = $this->saveBase64Image($RsleeveImageData, $uploadDir) ?? '';
+        $LSleeveFileName = $this->saveBase64Image($LsleeveImageData, $uploadDir) ?? '';
+
 
         $uploadedImageFileNames = [];
         if (!empty($uploadedImagesJson)) {
