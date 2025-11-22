@@ -104,8 +104,8 @@
 										<div class="form-group row">
                                             <label class="col-sm-2 col-form-label" style="font-size: 14px;">Contact Number</label>
                                             <div class="col-sm-6">
-                                                <input type="text" class="form-control" name="mobile" id="mobile" maxlength="15" minlength="7"
-                                                  value="<?= isset($staff) ? ($staff['us_Phone']) : '' ?>"   placeholder="Enter Contact Number." style="font-size: 14px;" required autocomplete="off">
+                                                <input type="text" class="form-control" name="mobile" id="mobile" maxlength="15" minlength="6"
+                                                  value="<?= isset($staff) ? ($staff['us_Phone']) : '' ?>"   placeholder="Enter Contact Number" style="font-size: 14px;" required autocomplete="off">
                                             <span class="text-danger error-msg" id="error-mobile"></span>
 											</div>
 											
