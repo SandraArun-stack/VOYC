@@ -62,15 +62,15 @@ class CustomerModel extends Model {
 	
 	//**************************Data table */
 	protected $table = 'customer';
-    protected $primaryKey = 'cust_Id';
-    protected $allowedFields = ['cust_Name', 'cust_Email','cust_Phone', 'cust_Status']; // Adjust to your table
+protected $primaryKey = 'cust_Id';
+protected $allowedFields = ['cust_Name', 'cust_Email', 'cust_Phone', 'cust_Status'];
 
-    // For DataTables
-     public function getDatatables(){
+public function getDatatables()
+{
     $postData = service('request')->getPost();
     $searchValue = '';
+
     if (!empty($postData['search']['value'])) {
-        // Remove all types of whitespace (space, tab, newline)
         $searchValue = preg_replace('/\s+/', '', $postData['search']['value']);
     }
 
@@ -78,10 +78,11 @@ class CustomerModel extends Model {
     $builder->select('c.*');
     $builder->where('c.cust_Status !=', 3);
 
+    // Search by name without spaces
     if (!empty($searchValue)) {
+        $escaped = $this->db->escapeLikeString($searchValue);
         $builder->groupStart();
-        // Remove spaces and tabs in DB column
-        $builder->where("REPLACE(REPLACE(c.cust_Name, ' ', ''), '\t', '') LIKE '%" . $this->db->escapeLikeString($searchValue) . "%'", null, false);
+        $builder->where("REPLACE(REPLACE(c.cust_Name, ' ', ''), '\t', '') LIKE '%$escaped%'", null, false);
         $builder->groupEnd();
     }
 
@@ -90,48 +91,37 @@ class CustomerModel extends Model {
         $builder->limit($postData['length'], $postData['start']);
     }
 
-    // Ordering
-    if (!empty($postData['order'])) {
-        $columns = ['c.cust_Name', 'c.cust_Email', 'c.cust_Phone', 'c.cust_Status'];
-        $orderCol = $columns[$postData['order'][0]['column']];
-        $orderDir = $postData['order'][0]['dir'];
-        $builder->orderBy($orderCol, $orderDir);
-    } else {
-        $builder->orderBy('c.cust_Id', 'DESC');
-    }
+    // Always order by newest first
+    $builder->orderBy('c.cust_Id', 'DESC');
 
     return $builder->get()->getResultArray();
-    }
+}
 
+public function countAll()
+{
+    return $this->db->table('customer')
+        ->where('cust_Status !=', 3)
+        ->countAllResults();
+}
 
-
-	public function countAll()
-	{
-		return $this->db->table('customer')
-			->where('cust_Status !=', 3)
-			->countAllResults();
-	} 
-	public function countFiltered(){
+public function countFiltered()
+{
     $postData = service('request')->getPost();
     $searchValue = '';
+
     if (!empty($postData['search']['value'])) {
-        // Remove all types of whitespace (space, tab, newline)
         $searchValue = preg_replace('/\s+/', '', $postData['search']['value']);
     }
 
-    $sql = "SELECT COUNT(*) as total 
-            FROM customer c 
-            WHERE c.cust_Status != 3";
+    $sql = "SELECT COUNT(*) as total FROM customer c WHERE c.cust_Status != 3";
 
     if (!empty($searchValue)) {
-        // Remove space and tab from DB column
         $escaped = $this->db->escapeLikeString($searchValue);
         $sql .= " AND REPLACE(REPLACE(c.cust_Name, ' ', ''), '\t', '') LIKE '%$escaped%'";
     }
 
-    $query = $this->db->query($sql);
-    return $query->getRow()->total;
-    }
+    return $this->db->query($sql)->getRow()->total;
+}
 
 
 }
