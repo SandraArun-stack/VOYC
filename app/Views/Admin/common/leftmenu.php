@@ -69,7 +69,7 @@
                             <span class="pcoded-mcaret"></span>
                         </a>
                     </li> -->
-                    <li class="pcoded-hasmenu <?= in_array($segment, ['leaderboard','subscription','usersubscriptions','token']) ? 'active pcoded-trigger' : '' ?>">
+                    <!-- <li class="pcoded-hasmenu <?= in_array($segment, ['leaderboard','subscription','usersubscriptions','token']) ? 'active pcoded-trigger' : '' ?>">
                         <a href="javascript:void(0)" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="bi bi-controller"></i></span>
                             <span class="pcoded-mtext">Game Arena</span>
@@ -119,7 +119,7 @@
 
     
                         </ul>
-                    </li>
+                    </li> -->
 
 
                     <!-- <li class="<?= ($segment == 'profile') ? 'active' : '' ?>">
