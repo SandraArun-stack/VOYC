@@ -48,44 +48,42 @@
                                         <!-- Hidden ID -->
                                         <input type="hidden" name="leaderboard_id"
                                                value="<?= isset($leaderboard['leaderboard_id']) ? $leaderboard['leaderboard_id'] : '' ?>">
-
-                                        <!-- Select Date -->
-                                        <div class="form-group row">
-                                            <label class="col-sm-2 col-form-label">Date <span style="color:red">*</span></label>
-                                            <div class="col-sm-6">
-                                                <input type="date" name="date" id="date" class="form-control"
-                                                       value="<?= isset($leaderboard) ? $leaderboard['date'] : '' ?>"
-                                                       required>
+                                        <!-- Date -->
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label">Date <span style="color:red">*</span></label>
+                                                <div class="col-sm-6">
+                                                    <input type="date" name="date" id="date" class="form-control"
+                                                        value="<?= isset($leaderboard) ? $leaderboard['date'] : '' ?>"
+                                                        required>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <!-- Game Name Dropdown -->
-                                        <div class="form-group row">
-                                            <label class="col-sm-2 col-form-label">Game Name <span style="color:red">*</span></label>
-                                            <div class="col-sm-6">
-                                                <select class="form-control" name="game_id" id="game_id" required>
-                                                    <option value="">-- Select Game --</option>
-                                                    <?php foreach ($games as $g): ?>
-                                                        <option value="<?= $g['game_id']; ?>"
-                                                            <?= isset($game) && $game['game_id'] == $g['game_id'] ? 'selected' : '' ?>>
-                                                            <?= $g['game_name']; ?>
-                                                        </option>
-                                                    <?php endforeach; ?>
-                                                </select>
-
+                                            <!-- Game Name Dropdown -->
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label">Game Name <span style="color:red">*</span></label>
+                                                <div class="col-sm-6">
+                                                    <select class="form-control" name="game_id" id="game_id" required>
+                                                        <option value="">-- Select Game --</option>
+                                                        <?php foreach ($games as $g): ?>
+                                                            <option value="<?= $g['game_id']; ?>"
+                                                                <?= isset($leaderboard) && $leaderboard['game_id'] == $g['game_id'] ? 'selected' : '' ?>>
+                                                                <?= $g['game_name']; ?>
+                                                            </option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <!-- No. of Turns -->
-                                        <div class="form-group row">
-                                            <label class="col-sm-2 col-form-label">No. of Turns <span style="color:red">*</span></label>
-                                            <div class="col-sm-6">
-                                                <input type="number" class="form-control" name="turns" id="turns"
-                                                       value="<?= isset($leaderboard) ? $leaderboard['turns'] : '' ?>"
-                                                       required min="1"
-                                                       placeholder="Enter number of turns">
+                                            <!-- No. of Turns -->
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label">No. of Turns <span style="color:red">*</span></label>
+                                                <div class="col-sm-6">
+                                                    <input type="number" class="form-control" name="turns"
+                                                        value="<?= isset($leaderboard) ? $leaderboard['turns'] : '' ?>"
+                                                        required min="1" placeholder="Enter number of turns">
+                                                </div>
                                             </div>
-                                        </div>
+
 
                                         <!-- Buttons -->
                                         <div class="row justify-content-center">

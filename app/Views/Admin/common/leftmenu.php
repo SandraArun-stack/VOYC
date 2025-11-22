@@ -55,13 +55,73 @@
                             <span class="pcoded-mcaret"></span>
                         </a>
                     </li>
-                    <li class="<?= ($segment == 'leaderboard') ? 'active' : '' ?>">
+                    <!-- <li class="<?= ($segment == 'leaderboard') ? 'active' : '' ?>">
                         <a href="<?php echo base_url('admin/leaderboard') ?>" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="bi bi-bar-chart"></i><b>D</b></span>
                             <span class="pcoded-mtext" data-i18n="nav.dash.main">Leaderboard</span>
                             <span class="pcoded-mcaret"></span>
                         </a>
                     </li>
+                    <li class="<?= ($segment == 'subscription') ? 'active' : '' ?>">
+                        <a href="<?php echo base_url('admin/subscription') ?>" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="bi bi-clipboard2-data"></i><b>D</b></span>
+                            <span class="pcoded-mtext" data-i18n="nav.dash.main">Manage Subscriptions</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                    </li> -->
+                    <li class="pcoded-hasmenu <?= in_array($segment, ['leaderboard','subscription','usersubscriptions','token']) ? 'active pcoded-trigger' : '' ?>">
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="bi bi-controller"></i></span>
+                            <span class="pcoded-mtext">Game Arena</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+
+                        <ul class="pcoded-submenu">
+                            <li class="<?= ($segment == 'leaderboard') ? 'active' : '' ?>">
+                                <a href="<?= base_url('admin/leaderboard') ?>">
+                                    <span class="pcoded-mtext">Leaderboard</span>
+                                </a>
+                            </li>
+                            <li class="<?= ($segment == 'game-details') ? 'active' : '' ?>">
+                                <a href="<?= base_url('admin/game-details') ?>">
+                                    <span class="pcoded-mtext">Game Details</span>
+                                </a>
+                            </li>
+                            <li class="<?= ($segment == 'game-details-view') ? 'active' : '' ?>">
+                                <a href="<?= base_url('admin/game-details-view') ?>">
+                                    <span class="pcoded-mtext">Game Detail View</span>
+                                </a>
+                            </li>
+
+
+                            <li class="<?= ($segment == 'subscription') ? 'active' : '' ?>">
+                                <a href="<?= base_url('admin/subscription') ?>">
+                                    <span class="pcoded-mtext">Manage Subscriptions</span>
+                                </a>
+                            </li>
+
+                            <li class="<?= ($segment == 'usersubscriptions') ? 'active' : '' ?>">
+                                <a href="<?= base_url('admin/usersubscriptions') ?>">
+                                    <span class="pcoded-mtext">User Subscriptions</span>
+                                </a>
+                            </li>
+
+                            <li class="<?= ($segment == 'token') ? 'active' : '' ?>">
+                                <a href="<?= base_url('admin/token') ?>">
+                                    <span class="pcoded-mtext">Token & Discount Management</span>
+                                </a>
+                            </li>
+                             <li class="<?= ($segment == 'discount') ? 'active' : '' ?>">
+                                <a href="<?= base_url('admin/discount') ?>">
+                                    <span class="pcoded-mtext">Discount Management</span>
+                                </a>
+                            </li>
+
+    
+                        </ul>
+                    </li>
+
+
                     <!-- <li class="<?= ($segment == 'profile') ? 'active' : '' ?>">
                                     <a href="<?php echo base_url('admin/profile') ?>" class="waves-effect waves-dark">
                                         <span class="pcoded-micon"><i class="bi bi-person-circle"></i></span>

@@ -9,111 +9,114 @@ class Leaderboard extends BaseController
 {
     public function __construct()
     {
-        $this->session = \Config\Services::session();
+        $this->session = session();
         $this->model = new LeaderboardModel();
         $this->gameModel = new GameModel();
-    }
-
-    public function index()
-    {
-        return redirect()->to(base_url('admin/leaderboardlist'));
     }
 
     public function leaderboardlist()
     {
         if (!$this->session->get('ad_uid')) {
-            return redirect()->to(base_url('admin'));
+            return redirect()->to('admin');
         }
 
-        $template  = view('Admin/common/header');
-        $template .= view('Admin/common/leftmenu');
-        $template .= view('Admin/leaderboardlist');  
-        $template .= view('Admin/common/footer');
-
-        return $template;
+        echo view('Admin/common/header');
+        echo view('Admin/common/leftmenu');
+        echo view('Admin/leaderboardlist');
+        echo view('Admin/common/footer');
     }
 
-    public function leaderboard()
+    public function leaderboard($id = null)
     {
         if (!$this->session->get('ad_uid')) {
-            return redirect()->to(base_url('admin'));
+            return redirect()->to('admin');
+        }
+
+        $data = [];
+        if ($id) {
+            $data['leaderboard'] = $this->model->find($id);
         }
 
         $data['games'] = $this->gameModel->findAll();
 
-        $template  = view('Admin/common/header');
-        $template .= view('Admin/common/leftmenu');
-        $template .= view('Admin/leaderboard', $data);
-        $template .= view('Admin/common/footer');
-
-        return $template;
+        echo view('Admin/common/header');
+        echo view('Admin/common/leftmenu');
+        echo view('Admin/leaderboard', $data);
+        echo view('Admin/common/footer');
     }
 
     public function save()
-    {
-        $gameId = $this->request->getPost('game_id');
+{
+    $id = $this->request->getPost('leaderboard_id');
+    $gameId = $this->request->getPost('game_id');
 
-        // Fetch game name based on game_id
-        $game = $this->gameModel->find($gameId);
+    // Get game name
+    $game = $this->gameModel->find($gameId);
 
-        $data = [
-            'date'      => $this->request->getPost('date'),
-            'game_id'   => $gameId,
-            'game_name' => $game['game_name'], 
-            'winners'   => $this->request->getPost('winners'),
-            'turns'     => $this->request->getPost('turns'),
-        ];
+    $data = [
+        'leaderboard_id' => $id,
+        'date' => $this->request->getPost('date'),
+        'game_id' => $gameId,
+        'game_name' => $game['game_name'],
+        'turns' => $this->request->getPost('turns'),
+    ];
 
-        $this->model->save($data);
-
-        return redirect()->to(base_url('admin/leaderboard'))
-            ->with('success', 'Leaderboard saved successfully');
+    if ($id) {
+        $data['updated_by'] = $this->session->get('ad_uid');
+    } else {
+        $data['created_by'] = $this->session->get('ad_uid');
     }
+
+    $this->model->save($data);
+
+    return redirect()->to(base_url('admin/leaderboard'))->with('success', 'Saved successfully');
+}
 
 
     public function ajaxList()
     {
-        $model = new LeaderboardModel();
-        $list = $model->getDatatables();
-
+        $list = $this->model->getDatatables();
         $data = [];
-        $no = $this->request->getPost('start');
+        $no = $_POST['start'];
 
         foreach ($list as $row) {
             $no++;
+
+            $actions = '
+                <a href="' . base_url("admin/leaderboard/" . $row['leaderboard_id']) . '" class="btn btn-primary btn-sm">Edit</a>
+                <button class="btn btn-danger btn-sm delete" data-id="' . $row['leaderboard_id'] . '">Delete</button>
+                <button class="btn btn-warning btn-sm block" data-id="' . $row['leaderboard_id'] . '">Block</button>
+            ';
+
             $data[] = [
                 $no,
                 $row['date'],
                 $row['game_name'],
                 $row['winners'],
                 $row['turns'],
-                '<button class="btn btn-primary btn-sm edit" data-id="' . $row['leaderboard_id'] . '">Edit</button>
-                 <button class="btn btn-danger btn-sm delete" data-id="' . $row['leaderboard_id'] . '">Delete</button>'
+                $actions
             ];
         }
 
         return $this->response->setJSON([
-            "draw" => intval($this->request->getPost('draw')),
-            "recordsTotal" => $model->countAll(),
-            "recordsFiltered" => $model->countFiltered(),
+            "draw" => intval($_POST['draw']),
+            "recordsTotal" => $this->model->countAll(),
+            "recordsFiltered" => $this->model->countFiltered(),
             "data" => $data
         ]);
     }
 
-    public function edit($id)
+    public function delete()
     {
-        if (!$this->session->get('ad_uid')) {
-            return redirect()->to(base_url('admin'));
-        }
+        $id = $this->request->getPost('id');
+        $this->model->update($id, ['status' => 9]);
+        return $this->response->setJSON(['status' => true]);
+    }
 
-        $data['game']  = $this->model->find($id);
-        $data['games'] = $this->gameModel->findAll();
-
-        $template  = view('Admin/common/header');
-        $template .= view('Admin/common/leftmenu');
-        $template .= view('Admin/leaderboard', $data);
-        $template .= view('Admin/common/footer');
-
-        return $template;
+    public function block()
+    {
+        $id = $this->request->getPost('id');
+        $this->model->update($id, ['status' => 2]);
+        return $this->response->setJSON(['status' => true]);
     }
 }

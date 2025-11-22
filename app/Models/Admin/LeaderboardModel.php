@@ -9,70 +9,49 @@ class LeaderboardModel extends Model
     protected $primaryKey = 'leaderboard_id';
 
     protected $allowedFields = [
-        'game_id',
-        'game_name',
-        'date',
-        'winners',
-        'turns'
+        'date', 'game_id', 'game_name', 'winners', 'turns',
+        'created_by', 'created_at', 'updated_by', 'updated_at', 'status'
     ];
 
-    // Columns for ordering and searching
-    protected $column_order = [
-        null, 'date', 'game_name', 'winners', 'turns'
-    ];
-    protected $column_search = [
-        'date', 'game_name', 'winners', 'turns'
-    ];
-    protected $order = ['leaderboard_id' => 'DESC'];
-
+    // Function to build query for DataTables with pagination and filtering
     private function _get_datatables_query()
     {
-        $request = service('request');
-        $searchValue = $request->getPost('search')['value'] ?? '';
+        $builder = $this->builder();
+        $builder->where('status !=', 9); // Exclude deleted records
 
-        $builder = $this->db->table($this->table);
-
-        // Searching
-        if ($searchValue != '') {
-            $builder->groupStart();
-            foreach ($this->column_search as $item) {
-                $builder->orLike($item, $searchValue);
-            }
-            $builder->groupEnd();
-        }
-
-        // Ordering
-        if ($request->getPost('order')) {
-            $col = $request->getPost('order')[0]['column'];
-            $dir = $request->getPost('order')[0]['dir'];
-            $builder->orderBy($this->column_order[$col], $dir);
-        } else {
-            $builder->orderBy(key($this->order), current($this->order));
+        // Check if there’s a search term
+        $searchValue = $_POST['search']['value'] ?? '';
+        if (!empty($searchValue)) {
+            $builder->groupStart()
+                ->like('game_name', $searchValue)
+                ->orLike('date', $searchValue)
+            ->groupEnd();
         }
 
         return $builder;
     }
 
+    // Function to get the leaderboard data with pagination
     public function getDatatables()
     {
-        $request = service('request');
         $builder = $this->_get_datatables_query();
 
-        if ($request->getPost('length') != -1) {
-            $builder->limit($request->getPost('length'), $request->getPost('start'));
+        if ($_POST['length'] != -1) {
+            $builder->limit($_POST['length'], $_POST['start']);
         }
 
         return $builder->get()->getResultArray();
     }
 
+    // Function to count the total number of records after applying filters
     public function countFiltered()
     {
-        $builder = $this->_get_datatables_query();
-        return $builder->countAllResults();
+        return $this->_get_datatables_query()->countAllResults(false);
     }
 
+    // Function to count the total number of records
     public function countAll()
     {
-        return $this->db->table($this->table)->countAllResults();
+        return $this->where('status !=', 9)->countAllResults();
     }
 }
