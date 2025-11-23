@@ -26,15 +26,17 @@ class MyOrders extends Controller
         if (!$userId) {
             return redirect()->to(base_url('/'));
         }
+        $search = $this->request->getGet('search');
         $perPage = 4;
 
-        $my_orders = $this->MyOrdersModel->getMyOrders($userId, $perPage);
+        $my_orders = $this->MyOrdersModel->getMyOrders($userId, $perPage, $search);
         $pager = $this->MyOrdersModel->pager;
 
         $data = [
             'my_orders' => $my_orders,
             'pager' => $pager,
-            'breadcrumb' => 'My Orders'
+            'breadcrumb' => 'My Orders',
+             'search' => $search
         ];
         $cartCount = $this->CartModel->getCartItemCount($userId);
 

@@ -7,7 +7,7 @@ $userId = session()->get('user_id');
             <div class="col-lg-12">
                 <div class="breadcrumb__links">
                     <a href="<?= base_url(' '); ?>"><i class="fa fa-home"></i>Home</a>
-                    <a href="#">Women’s </a>
+                    <a href="#"><?= esc($product['pr_for']) ?> </a>
                     <span><?= esc($product['pr_Name']) ?></span>
                 </div>
             </div>

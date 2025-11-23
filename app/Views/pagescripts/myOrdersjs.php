@@ -1,18 +1,14 @@
 <script>
     $(document).ready(function () {
-        //search order
 
-        // $('#orderSearch').on('keyup', function () {
-        //     const value = $(this).val().toLowerCase();
-        //     $('.my__orders__container .card').filter(function () {
-        //         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-        //     });
-        // });
         $('#orderSearch').on('keyup', function () {
             const value = $(this).val().toLowerCase().trim();
 
             let matchFound = false;
 
+            if (value.length === 0) {
+                window.location.href = "<?= base_url('myorders') ?>";
+            }
             $('.my__orders__container .card').each(function () {
                 const cardText = $(this).text().toLowerCase();
                 if (cardText.indexOf(value) > -1) {

@@ -72,7 +72,7 @@ class Home extends BaseController
         }
 
         if (!preg_match('/^(?:\+91|91)?[6-9]\d{9}$/', $phone_number)) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Please enter a valid Indian phone number.']);
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Please Enter a Valid Phone Number.']);
         }
 
         if ($password !== $confirm) {

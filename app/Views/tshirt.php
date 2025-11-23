@@ -75,11 +75,7 @@
                                             alt="Add Text">
                                         <div>Add Text</div>
                                     </div>
-                                    <!-- <div class="option" data-view="add_art">
-                                        <img src="<?= base_url() . ASSET_PATH; ?>assets/img/customize/landscape.png"
-                                            alt="Add Art">
-                                        <div>Add Art</div>
-                                    </div> -->
+                                    
                                     <div class="option" data-view="product_colors">
                                         <img src="<?= base_url() . ASSET_PATH; ?>assets/img/customize/change.png"
                                             alt="Change Products">
@@ -105,39 +101,7 @@
                                 </div>
                             </div>
 
-                            <!-- <div id="view-spec-upload-image" class="view-section d-none p-4">
-                                <h4>Image Properties</h4>
-                                <div class="d-flex justify-content-center">
-                                    <div id="image-details" class="text-center">
-                                        <div class="mb-3  d-flex align-items-center gap-3">
-                                            <label class="form-label">Width (cm)</label>
-                                            <div class="d-flex gap-2 Properties__scale">
-                                                <button id="decrease-width" class="btn btn-adjustor">−</button>
-                                                <input type="number" id="img-width"
-                                                    class="form-control w-25 text-center" readonly />
-                                                <button id="increase-width" class="btn btn-adjustor">+</button>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3  d-flex align-items-center gap-3">
-                                            <label class="form-label">Height (cm)</label>
-                                            <div class="d-flex gap-2 Properties__scale">
-                                                <button id="decrease-height" class="btn btn-adjustor">−</button>
-                                                <input type="number" id="img-height"
-                                                    class="form-control w-25 text-center" readonly />
-                                                <button id="increase-height" class="btn btn-adjustor">+</button>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex flex-column text-start">
-                                            <button id="center-image" class="btn btn-sm">
-                                                <i class="bi bi-align-center"></i> 
-                                            </button>
-                                            <small>center</small>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                             -->
+                           
 
                             <div id="view-spec-upload-image" class="view-section d-none p-2">
                                 <p>Image Properties</p>
@@ -246,14 +210,11 @@
                             </div>
 
                             <!-- Add Text View -->
-                            <div id="view-add_text" class="view-section d-none p-4 w-100">
+                            <div id="view-add_text" class="view-section pt-2 pl-2 w-100 d-none">
                                 <h3 class="mb-2">Customize Text</h3>
                                 <div class="d-flex justify-content-between mt-2">
                                     <label class="mb-1">Enter the Text on selected Box</label>
-
                                     <button id="addText" class="btn btn-dark">+ Add Text</button>
-
-
                                 </div>
 
                                 <div class="d-flex justify-content-between mt-2">
@@ -272,7 +233,6 @@
                                     <label class="form-label">Choose Text Color </label>
                                     <input type="color" id="textColor" value="#000000"
                                         class="form-control form-control-color" title="Choose your color">
-
                                 </div>
                                 <div class="d-flex flex-wrap justify-content-between mt-2">
                                     <label for="fontSize" class="form-label">Font Size &nbsp; </label>
@@ -284,9 +244,7 @@
                                             Bold
                                         </label>
                                         <input class="form-check-input" type="checkbox" id="boldToggle">
-
                                     </div>
-
                                 </div>
                                 <div class="mb-3 d-flex justify-content-between text__spec mt-2">
                                     <div class="form-check w-100 pl-0">
@@ -294,7 +252,6 @@
                                             Italic
                                         </label>
                                         <input class="form-check-input" type="checkbox" id="italicToggle">
-
                                     </div>
                                 </div>
                             </div>

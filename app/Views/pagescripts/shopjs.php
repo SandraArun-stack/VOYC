@@ -135,7 +135,7 @@
                             let html = '';
                             response.filtered_products.forEach(item => {
                                 html += `
-                                    <div class="col-lg-4 col-md-6 mb-4 product__card" style="opacity:1;">
+                                    <div class="col-lg-3 col-md-6 mb-4 product__card" style="opacity:1;">
                                         <div class="product__item" data-url="<?= base_url('productdetails'); ?>/${item.pr_Id}/${item.pri_Id}">
                                             <div class="product__item__pic set-bg"
                                                 data-setbg="<?= base_url('uploads/productmedia/'); ?>/${item.pri_Thumbnail}">
@@ -151,7 +151,7 @@
                                                 </ul>
                                             </div>
                                             <div class="product__item__text">
-                                                <h6><a href="#">${item.pr_Name}</a></h6>
+                                                <h6 class="product_name_text"><a href="#">${item.pr_Name}</a></h6>
                                                 <div class="rating">
                                                     ${generateStars(item.average_rating)}
                                                 </div>
@@ -218,7 +218,7 @@
 
                         response.filtered_products.forEach(item => {
                             html += `
-                                    <div class="col-lg-4 col-md-6 mb-4 product__card" style="opacity:1;">
+                                    <div class="col-lg-3 col-md-6 mb-4 product__card" style="opacity:1;">
                                         <div class="product__item" data-url="<?= base_url('productdetails'); ?>/${item.pr_Id}/${item.pri_Id}">
                                             <div class="product__item__pic set-bg"
                                                 data-setbg="<?= base_url('uploads/productmedia/'); ?>/${item.pri_Thumbnail}">
@@ -234,7 +234,7 @@
                                                 </ul>
                                             </div>
                                             <div class="product__item__text">
-                                                <h6><a href="#">${item.pr_Name}</a></h6>
+                                                <h6 class="product_name_text"><a href="#">${item.pr_Name}</a></h6>
                                                 <div class="rating">
                                                     ${generateStars(item.average_rating)}
                                                 </div>

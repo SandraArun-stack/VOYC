@@ -27,7 +27,7 @@ class ProductDetailModel extends Model
     public function get_prd_Details($prId, $priId)
     {
         $product = $this->db->table('product p')
-            ->select('p.pr_Id, p.pr_Name, p.pr_Selling_Price, p.pr_Description,p.pr_custom')
+            ->select('p.pr_Id, p.pr_Name, p.pr_Selling_Price, p.pr_Description,p.pr_custom,p.pr_for')
             ->where('p.pr_Id', $prId)
             ->where('p.pr_Status', 1)
             ->get()

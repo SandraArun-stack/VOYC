@@ -11,8 +11,11 @@
                         </div>
 
                         <div class="search-box position-relative">
-                            <input type="text" class="form-control" id="orderSearch" placeholder="Search orders...">
-                            <i class="bi bi-search search__my__order"></i>
+                            <form method="GET" class="position-relative">
+                                <input type="text" class="form-control" name="search" value="<?= esc($search) ?>"
+                                    placeholder="Search orders...">
+                                <i class="bi bi-search search__my__order"></i>
+                            </form>
                         </div>
                     </div>
                     <?php if (!empty($my_orders)): ?>
@@ -93,7 +96,8 @@
                                                                 <?php if (empty($order['review']) || is_null($order['review'])): ?>
                                                                     <b><a href="#" class="write_feedback">Write a Review</a></b>
                                                                 <?php else: ?>
-                                                                    <b><a href="#" class="see_feedback text-success">See My Feedback</a></b>
+                                                                    <b><a href="#" class="see_feedback text-success">See My
+                                                                            Feedback</a></b>
                                                                 <?php endif; ?>
                                                             </p>
                                                         </div>
@@ -127,7 +131,9 @@
                                             <div class="row mb-2 my_order_details">
                                                 <div class="col-12 mt-2">
 
-                                                    <p class="mb-2"><i class="bi bi-geo-alt-fill location-my-orders"></i>Shipping Address</p>
+                                                    <p class="mb-2"><i
+                                                            class="bi bi-geo-alt-fill location-my-orders"></i>Shipping Address
+                                                    </p>
                                                     <?php
                                                     $addressParts = explode(',', $order['od_Shipping_Address']);
                                                     $formattedAddress = '';

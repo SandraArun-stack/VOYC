@@ -117,7 +117,7 @@
                                    
                                 </div>
                                 <div class="product__item__text">
-                                    <h6><?= esc($item['pr_Name'] ?? 'Product'); ?></h6>
+                                    <h6 class="product_name_text"><?= esc($item['pr_Name'] ?? 'Product'); ?></h6>
                                     <div class="rating">
                                         <?php
                                         $avg = (float) $item['average_rating'];
