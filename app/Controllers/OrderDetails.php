@@ -45,7 +45,15 @@ class OrderDetails extends Controller
     public function placeOrder()
     {
         $userId = $this->session->get('user_id');
+
+        if(empty($userId)){
+           return redirect()->to(base_url('/'));
+        }
+
+        
+
         $createdBy = $userId;
+        
 
         // Decode products JSON
         $productsJson = $this->request->getPost('products');

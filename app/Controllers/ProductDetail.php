@@ -34,7 +34,7 @@ class ProductDetail extends Controller
         // print_r($product); exit;
 
         if (!$product) {
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound("Product not found");
+             return redirect()->to(base_url('/'));
         }
 
         $data = [

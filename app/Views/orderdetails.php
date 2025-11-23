@@ -38,19 +38,19 @@
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="checkout__form__input">
                                 <p>Last Name <span>*</span></p>
-                                <input type="text">
+                                <input type="text"  name="add_LastName">
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <div class="checkout__form__input">
                                 <p>Country <span>*</span></p>
-                                <input type="text">
+                                <input type="text" name="add_Country">
                             </div>
                             <div class="checkout__form__input">
                                 <p>Address <span>*</span></p>
                                 <input type="text" name="add_Street" placeholder="Street Address">
-                                <input type="" text" name="add_Landmark"
-                                    placeholder="Apartment. suite, unite ect ( optinal )">
+                                <input type="text" name="add_Landmark"
+                                    placeholder="Apartment, Suite, Unit, etc. (optional)">
                             </div>
                             <div class="checkout__form__input">
                                 <p>Town/City <span>*</span></p>

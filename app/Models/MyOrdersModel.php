@@ -28,34 +28,66 @@ class MyOrdersModel extends Model
     ];
 
 
-    public function getMyOrders($userId, $perPage = 4)
+    // public function getMyOrders($userId, $perPage = 4)
+    // {
+    //     $my_orders = $this->select("
+    //             order_detail.*,
+    //             r.rating AS review_rating, 
+    //             r.review,
+    //             r.created_at, 
+    //             p.pr_Name,
+    //             CASE 
+    //                 WHEN order_detail.design_Id = 0 OR order_detail.design_Id IS NULL 
+    //             THEN (SELECT pi.pri_Thumbnail 
+    //                   FROM product_image AS pi 
+    //                   WHERE pi.pri_Id = order_detail.pri_Id 
+    //                   LIMIT 1)
+    //         ELSE (SELECT d.front_Image 
+    //               FROM design AS d 
+    //               WHERE d.design_Id = order_detail.design_Id
+    //               LIMIT 1)
+    //     END AS order_Image
+    //         ")
+    //         ->join("reviews AS r", "r.od_Id = order_detail.od_Id", "left")
+    //         ->join("product AS p", "p.pr_Id = order_detail.pr_Id", "left")
+    //         ->where('order_detail.cus_Id', $userId)
+    //         ->where('order_detail.od_Status !=', 9)
+    //         ->orderBy('order_detail.od_createdon', 'DESC')
+    //         ->paginate($perPage);
+
+    //     return $my_orders;
+    // }
+
+
+    public function getMyOrders($userId, $perPage = 4, $search = null)
     {
-        $my_orders = $this->select("
-                order_detail.*,
-                r.rating AS review_rating, 
-                r.review,
-                r.created_at, 
-                p.pr_Name,
-                CASE 
-                    WHEN order_detail.design_Id = 0 OR order_detail.design_Id IS NULL 
-                THEN (SELECT pi.pri_Thumbnail 
-                      FROM product_image AS pi 
-                      WHERE pi.pri_Id = order_detail.pri_Id 
-                      LIMIT 1)
-            ELSE (SELECT d.front_Image 
-                  FROM design AS d 
-                  WHERE d.design_Id = order_detail.design_Id
-                  LIMIT 1)
+        $builder = $this->select("
+        order_detail.*,
+        r.rating AS review_rating, 
+        r.review,
+        r.created_at, 
+        p.pr_Name,
+        CASE 
+            WHEN order_detail.design_Id = 0 OR order_detail.design_Id IS NULL 
+                THEN (SELECT pi.pri_Thumbnail FROM product_image AS pi WHERE pi.pri_Id = order_detail.pri_Id LIMIT 1)
+            ELSE (SELECT d.front_Image FROM design AS d WHERE d.design_Id = order_detail.design_Id LIMIT 1)
         END AS order_Image
-            ")
+    ")
             ->join("reviews AS r", "r.od_Id = order_detail.od_Id", "left")
             ->join("product AS p", "p.pr_Id = order_detail.pr_Id", "left")
             ->where('order_detail.cus_Id', $userId)
-            ->where('order_detail.od_Status !=', 9)
-            ->orderBy('order_detail.od_createdon', 'DESC')
-            ->paginate($perPage);
+            ->where('order_detail.od_Status !=', 9);
 
-        return $my_orders;
+        if ($search) {
+            $builder->groupStart()
+                ->like('order_detail.od_number', $search)
+                ->orLike('p.pr_Name', $search)
+                ->orLike('p.pr_Code', $search)
+                ->groupEnd();
+        }
+
+        return $builder->orderBy('order_detail.od_createdon', 'DESC')
+            ->paginate($perPage);
     }
 
     public function insertRating($data)

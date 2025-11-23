@@ -1263,7 +1263,7 @@ input[type="file"] {
     border: 1px solid #ccc;
     border-radius: 4px;
     overflow: hidden;
-    margin-left: 10px;
+    /* margin-left: 10px; */
 }
 
 .qty-btn-custom {
@@ -1614,18 +1614,46 @@ input[type="file"] {
     cursor: pointer;
     color: #000000;
 }
-#allcustomisible_Product_view{
-        padding-top: 120px !important;
+
+#allcustomisible_Product_view {
+    padding-top: 120px !important;
 }
-.product_name_text{
-       min-height: 40px;       /* space for 2 lines */
-    line-height: 20px;      /* height of each line */
+
+.product_name_text {
+    min-height: 40px;
+    /* space for 2 lines */
+    line-height: 20px;
+    /* height of each line */
     display: flex;
-    align-items: center;    /* center text vertically */
+    align-items: center;
+    /* center text vertically */
     text-align: center;
-    justify-content: center;     /* center text horizontally (optional) */
+    justify-content: center;
+    /* center text horizontally (optional) */
     overflow: hidden;
 }
+
+.select-size-customization {
+    width: 91px;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+.select-size-customization,
+.select-size-customization option {
+    text-align: center;
+}
+
+.select-size-customization option {
+    padding: 8px 0 !important;
+    border-bottom: 1px solid #ddd !important;
+    text-align: center;
+}
+
+.select-size-customization option:last-child {
+    border-bottom: none !important;
+}
+
 @media only screen and (max-width: 991px) {
     .main__icon {
         display: flex !important;

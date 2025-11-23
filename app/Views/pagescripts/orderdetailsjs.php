@@ -25,6 +25,8 @@
 
             const requiredFields = [
                 { name: 'add_Name', label: 'First Name' },
+                { name: 'add_LastName', label: 'Last Name' },
+                { name: 'add_Country', label: 'Country' },
                 { name: 'add_Street', label: 'Street Address' },
                 { name: 'add_City', label: 'City' },
                 { name: 'add_State', label: 'State' },
@@ -75,12 +77,12 @@
                 phoneInput.css('border', '1px solid red');
                 message = 'Please enter a valid Indian phone number.';
             }
-            
+
             phoneInput.val(phone);
             // If validation fails, stop submission
             if (!isValid) {
                 showMessage('' + message, 'error');
-                $('html, body').animate({ scrollTop: $('.checkout__form').offset().top - 100 }, 500);
+                $('html, body').animate({ scrollTop: $('.checkout__form').offset().top - 300 }, 500);
                 return false;
             }
             var finalOrderTotal = $("#order-total").val();
@@ -126,7 +128,7 @@
                     if (response.status === 'success') {
                         showMessage('' + response.message, 'success');
                         setTimeout(function () {
-                            window.location.href = "<?= base_url('') ?>"; // redirect after success
+                            window.location.href = "<?= base_url('') ?>";
                         }, 2000);
                     } else {
                         showMessage(' ' + response.message, 'error');

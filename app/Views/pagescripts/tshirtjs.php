@@ -77,7 +77,7 @@
     }
 
     fabric.Object.prototype.transparentCorners = false;
-    fabric.Object.prototype.cornerColor = 'rgba(0,0,0,0)';
+    fabric.Object.prototype.cornerColor = 'rgba(11, 11, 11, 0)';
     fabric.Object.prototype.cornerStyle = 'circle';
     fabric.Object.prototype.cornerSize = 28;
 
@@ -191,7 +191,6 @@
         loadCanvasState(currentView);
         initThumbClick();
 
-        // $(".shirt-thumb").on("click", function () {
 
 
         $("#colorPicker").on("input", function () {
@@ -371,9 +370,7 @@
 
 
 
-        // Initial update
         updatePreview();
-        // const totalPrice = $("#priceTotal").text().replace(/[^\d\.]/g, '');
 
         $("#saveBtn").on("click", function () {
             if ($(".design-check:checked").length === 0) {
@@ -403,7 +400,7 @@
             const designs = {};
 
             const visibleImagesBase64 = [];
-            
+
             const selectedViews = $(".design-check:checked").map(function () {
                 return $(this).closest(".design-option").data("type");
             }).get();
@@ -884,26 +881,31 @@
                 reader.readAsDataURL(file);
             });
 
-            $("#uploadImage").val(""); // reset input
+            $("#uploadImage").val("");
         });
 
-        // --- When user clicks/selects an image ---
+
         // canvas.on("selection:created", function (e) {
         //     if (!e.selected || e.selected.length === 0) return;
         //     activeImage = e.selected[0];
         //     updateImageDimensionsUI(activeImage);
-        //     $("#view-spec-upload-image").removeClass("d-none");
+
+        //     if (window.currentView === "upload") {
+        //         $("#view-spec-upload-image").removeClass("d-none");
+
+        //     }
         // });
 
-        // // --- When user switches selection between objects ---
         // canvas.on("selection:updated", function (e) {
         //     if (!e.selected || e.selected.length === 0) return;
         //     activeImage = e.selected[0];
         //     updateImageDimensionsUI(activeImage);
-        //     $("#view-spec-upload-image").removeClass("d-none");
+
+        //     if (window.currentView === "upload") {
+        //         $("#view-spec-upload-image").removeClass("d-none");
+        //     }
         // });
 
-        // // --- When deselecting all ---
         // canvas.on("selection:cleared", function () {
         //     activeImage = null;
         //     $("#view-spec-upload-image").addClass("d-none");
@@ -911,44 +913,57 @@
 
         canvas.on("selection:created", function (e) {
             if (!e.selected || e.selected.length === 0) return;
-            activeImage = e.selected[0];
-            updateImageDimensionsUI(activeImage);
 
-            // ✅ Show image properties ONLY in upload view
-            if (window.currentView === "upload") {
+            activeImage = e.selected[0];
+
+            // Check if selected object is an image
+            if (activeImage.type === "image") {
+                updateImageDimensionsUI(activeImage);
                 $("#view-spec-upload-image").removeClass("d-none");
+                $("#view-add_text").addClass("d-none");
+            } else {
+                $("#view-spec-upload-image").addClass("d-none");
+                 $("#view-add_text").removeClass("d-none");
+                 $("#view-upload").addClass("d-none");
             }
         });
 
         canvas.on("selection:updated", function (e) {
             if (!e.selected || e.selected.length === 0) return;
-            activeImage = e.selected[0];
-            updateImageDimensionsUI(activeImage);
 
-            // ✅ Show image properties ONLY in upload view
-            if (window.currentView === "upload") {
+            activeImage = e.selected[0];
+
+            // Check again if it's an image
+            if (activeImage.type === "image") {
+                updateImageDimensionsUI(activeImage);
+                $("#view-upload").addClass("d-none");
                 $("#view-spec-upload-image").removeClass("d-none");
+                $("#view-add_text").addClass("d-none");
+            } else {
+                $("#view-spec-upload-image").addClass("d-none");
+                $("#view-add_text").removeClass("d-none");
+                 $("#view-upload").addClass("d-none");
             }
+           
         });
+        
 
         canvas.on("selection:cleared", function () {
             activeImage = null;
             $("#view-spec-upload-image").addClass("d-none");
+            
         });
 
-        // --- Update UI when resizing using Fabric controls (real-time) ---
         canvas.on("object:scaling", function (e) {
             if (!e.target || e.target.type !== "image") return;
             updateImageDimensionsUI(e.target);
         });
 
-        // --- Also update once scaling ends to ensure final values ---
         canvas.on("object:modified", function (e) {
             if (!e.target || e.target.type !== "image") return;
             updateImageDimensionsUI(e.target);
         });
 
-        // --- Width & Height button handlers ---
         $("#increase-width").on("click", function () {
             if (!activeImage) return;
             const w = parseFloat($("#img-width").val());
@@ -1130,6 +1145,8 @@
             active.set("flipY", !active.flipY);
             canvas.renderAll();
         });
+
+
 
 
 

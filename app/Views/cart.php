@@ -33,7 +33,9 @@
                             <tbody>
 
                                 <?php foreach ($cartItems as $item): ?>
-                                    <tr data-cartid="<?= esc($item['cart_Id']) ?>" class="cart-row">
+
+                                    <tr data-cartid="<?= esc($item['cart_Id']) ?>" class="cart-row clickable-row"
+                                        data-url="<?= base_url('productdetails/' . $item['pr_Id'] . '/' . $item['pri_Id']); ?>">
                                         <td class="cart__product__item">
                                             <?php
                                             $designImage = !empty($item['front_Image']) ? $item['front_Image'] : null;
@@ -104,6 +106,7 @@
                                             </span>
                                         </td>
                                     </tr>
+
                                 <?php endforeach; ?>
 
                             </tbody>
@@ -200,8 +203,8 @@
             <div class="modal-header">
                 <h5 class="modal-title">Design Preview</h5>
 
-                <button type="button" class="btn btn-sm close-preview" style="font-size: 25px; background:none; border:none;"
-                    data-bs-dismiss="modal">
+                <button type="button" class="btn btn-sm close-preview"
+                    style="font-size: 25px; background:none; border:none;" data-bs-dismiss="modal">
                     &times;
                 </button>
             </div>
