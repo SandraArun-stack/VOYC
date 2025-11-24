@@ -364,10 +364,12 @@
                                                 <i class="bi bi-x-circle"></i> Discard
                                             </button>
 
-                                            <button type="submit" class="btn btn-primary">
+                                            <button type="submit" class="btn btn-primary" id="saveBtn"
+                                                data-mode="<?= isset($pr_id) && !empty($productimages) ? 'update' : 'save' ?>">
                                                 <i class="bi bi-check-circle"></i>
                                                 <?= isset($pr_id) && !empty($productimages) ? 'Update' : 'Save' ?>
                                             </button>
+
                                         </div>
                                        
                                     </form>

@@ -91,9 +91,16 @@ class Staff extends BaseController
 			return $this->response->setJSON(['status' => 'error', 'msg' => 'Please Enter The Order Confirmation Email.']);
 		}
 		// Validate mobile
-		if (!empty($mobile) && ctype_digit($mobile) && strlen($mobile) < 7) {
-			return $this->response->setJSON(['status' => 'error', 'msg' => 'Phone Number Must Contain Minimum 7 Digits.']);
+		// Validate Indian Mobile Number
+		$indianPattern = '/^(?:\+91|0)?[6-9][0-9]{9}$/';
+
+		if (!preg_match($indianPattern, $mobile)) {
+			return $this->response->setJSON([
+				'status' => 'error',
+				'msg' => 'Please enter a valid Indian mobile number.'
+			]);
 		}
+
 		//validate password length
 
 		// if (!empty($oldpass) && (strlen($oldpass) < 6 || strlen($oldpass) > 20)) {

@@ -75,24 +75,23 @@
                 $('#error-staffotemail').text('');
             }
         });
+        const indianPhonePattern = /^(?:\+91|0)?[6-9]\d{9}$/;
+
         $('#mobile').on('input', function () {
-            let rawValue = $(this).val();
+            let value = $(this).val();
 
-            // Remove all characters except digits and optional starting '+'
-            rawValue = rawValue.replace(/[^\d+]/g, '');
+            // Allow only digits and optional leading + 
+            value = value.replace(/[^\d+]/g, '');
 
-            // Ensure '+' appears only at the beginning (if any)
-            if (rawValue.indexOf('+') > 0) {
-                rawValue = rawValue.replace(/\+/g, ''); // remove all '+' if not at start
+            // Prevent + in the middle
+            if (value.indexOf('+') > 0) {
+                value = value.replace(/\+/g, '');
             }
 
-            // Set cleaned value back to input
-            $(this).val(rawValue);
+            $(this).val(value);
 
-            const value = rawValue.replace(/\s+/g, '');
-
-            if (!phonePattern.test(value)) {
-                $('#error-mobile').text('Phone Number Must Be Minimum of 7 Digits.');
+            if (!indianPhonePattern.test(value)) {
+                $('#error-mobile').text('Enter Valid Indian Number.');
             } else {
                 $('#error-mobile').text('');
             }

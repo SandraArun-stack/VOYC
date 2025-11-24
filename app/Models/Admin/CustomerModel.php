@@ -62,67 +62,66 @@ class CustomerModel extends Model {
 	
 	//**************************Data table */
 	protected $table = 'customer';
-protected $primaryKey = 'cust_Id';
-protected $allowedFields = ['cust_Name', 'cust_Email', 'cust_Phone', 'cust_Status'];
+    protected $primaryKey = 'cust_Id';
+    protected $allowedFields = ['cust_Name', 'cust_Email', 'cust_Phone', 'cust_Status'];
 
-public function getDatatables()
-{
-    $postData = service('request')->getPost();
-    $searchValue = '';
+    public function getDatatables()
+    {
+        $postData = service('request')->getPost();
+        $searchValue = '';
 
-    if (!empty($postData['search']['value'])) {
-        $searchValue = preg_replace('/\s+/', '', $postData['search']['value']);
+        if (!empty($postData['search']['value'])) {
+            $searchValue = preg_replace('/\s+/', '', $postData['search']['value']);
+        }
+
+        $builder = $this->db->table('customer c');
+        $builder->select('c.*');
+        $builder->where('c.cust_Status !=', 3);
+
+        // Search by name without spaces
+        if (!empty($searchValue)) {
+            $escaped = $this->db->escapeLikeString($searchValue);
+            $builder->groupStart();
+            $builder->where("REPLACE(REPLACE(c.cust_Name, ' ', ''), '\t', '') LIKE '%$escaped%'", null, false);
+            $builder->groupEnd();
+        }
+
+        // Pagination
+        if (!empty($postData['length']) && $postData['length'] != -1) {
+            $builder->limit($postData['length'], $postData['start']);
+        }
+
+        // Always order by newest first
+        $builder->orderBy('c.cust_Id', 'DESC');
+
+        return $builder->get()->getResultArray();
     }
 
-    $builder = $this->db->table('customer c');
-    $builder->select('c.*');
-    $builder->where('c.cust_Status !=', 3);
-
-    // Search by name without spaces
-    if (!empty($searchValue)) {
-        $escaped = $this->db->escapeLikeString($searchValue);
-        $builder->groupStart();
-        $builder->where("REPLACE(REPLACE(c.cust_Name, ' ', ''), '\t', '') LIKE '%$escaped%'", null, false);
-        $builder->groupEnd();
+    public function countAll()
+    {
+        return $this->db->table('customer')
+            ->where('cust_Status !=', 3)
+            ->countAllResults();
     }
 
-    // Pagination
-    if (!empty($postData['length']) && $postData['length'] != -1) {
-        $builder->limit($postData['length'], $postData['start']);
+    public function countFiltered()
+    {
+        $postData = service('request')->getPost();
+        $searchValue = '';
+
+        if (!empty($postData['search']['value'])) {
+            $searchValue = preg_replace('/\s+/', '', $postData['search']['value']);
+        }
+
+        $sql = "SELECT COUNT(*) as total FROM customer c WHERE c.cust_Status != 3";
+
+        if (!empty($searchValue)) {
+            $escaped = $this->db->escapeLikeString($searchValue);
+            $sql .= " AND REPLACE(REPLACE(c.cust_Name, ' ', ''), '\t', '') LIKE '%$escaped%'";
+        }
+
+        return $this->db->query($sql)->getRow()->total;
     }
-
-    // Always order by newest first
-    $builder->orderBy('c.cust_Id', 'DESC');
-
-    return $builder->get()->getResultArray();
-}
-
-public function countAll()
-{
-    return $this->db->table('customer')
-        ->where('cust_Status !=', 3)
-        ->countAllResults();
-}
-
-public function countFiltered()
-{
-    $postData = service('request')->getPost();
-    $searchValue = '';
-
-    if (!empty($postData['search']['value'])) {
-        $searchValue = preg_replace('/\s+/', '', $postData['search']['value']);
-    }
-
-    $sql = "SELECT COUNT(*) as total FROM customer c WHERE c.cust_Status != 3";
-
-    if (!empty($searchValue)) {
-        $escaped = $this->db->escapeLikeString($searchValue);
-        $sql .= " AND REPLACE(REPLACE(c.cust_Name, ' ', ''), '\t', '') LIKE '%$escaped%'";
-    }
-
-    return $this->db->query($sql)->getRow()->total;
-}
-
 
 }
 

@@ -60,8 +60,6 @@ class Customer extends BaseController
 	}
 	public function createnew()
 	{
-
-
 		$cust_id = $this->input->getPost('cust_id');
 		// $custname = ;
 		$custname = ucwords(strtolower(trim($this->input->getPost('custname'))));
@@ -80,21 +78,20 @@ class Customer extends BaseController
 				'msg' => 'Invalid Email Format.'
 			]);
 		}
-		if(empty($mobile)){
+		if (empty($mobile)) {
 			return $this->response->setJSON([
 				'status' => 'error',
 				'msg' => 'Phone Number is Required.'
 			]);
 		}
-		
-		if (!preg_match('/^[0-9+\s\-()]{7,25}$/', $mobile)) {
+
+		// Indian Number Validation
+		if (!preg_match('/^(0[6-9]\d{9}|[6-9]\d{9})$/', $mobile)) {
 			return $this->response->setJSON([
-				'status' => 0,
-				'msg' => 'Phone Number is Invalid'
+				'status' => 'error',
+				'msg' => 'Please enter a valid Indian mobile number.'
 			]);
 		}
-
-
 
 		$customerModel = new \App\Models\Admin\CustomerModel();
 		if ($custname && $custemail) {
