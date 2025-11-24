@@ -88,11 +88,15 @@
                                             <label class="col-sm-2 col-form-label">Contact Number <span
                                                     style="color: red;">*</span></label>
                                             <div class="col-sm-6">
-                                                <input type="tel" class="form-control" name="mobile" id="mobile"
-                                                    pattern="^[0-9+\s\-\(\)]{7,25}$" inputmode="tel" maxlength="25"
-                                                    minlength="7"
-                                                    value="<?= isset($cust) ? esc($cust['cust_Phone']) : '' ?>"
-                                                    placeholder="Enter Contact Number" required>
+                                                <input type="tel" 
+                                                    class="form-control" 
+                                                    name="mobile" 
+                                                    id="mobile"
+                                                    pattern="^(0[6-9][0-9]{9}|[6-9][0-9]{9})$"
+                                                    maxlength="11"
+                                                    placeholder="Enter Indian Mobile Number" required>
+                                                <span id="error-mobile" class="text-danger small"></span>
+
                                             </div>
                                         </div>
 

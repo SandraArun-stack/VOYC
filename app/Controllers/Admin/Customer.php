@@ -60,8 +60,6 @@ class Customer extends BaseController
 	}
 	public function createnew()
 	{
-
-
 		$cust_id = $this->input->getPost('cust_id');
 		// $custname = ;
 		$custname = ucwords(strtolower(trim($this->input->getPost('custname'))));
@@ -80,21 +78,20 @@ class Customer extends BaseController
 				'msg' => 'Invalid Email Format.'
 			]);
 		}
-		if(empty($mobile)){
+		if (empty($mobile)) {
 			return $this->response->setJSON([
 				'status' => 'error',
 				'msg' => 'Phone Number is Required.'
 			]);
 		}
-		
-		if (!preg_match('/^[0-9+\s\-()]{7,25}$/', $mobile)) {
+
+		// Indian Number Validation
+		if (!preg_match('/^(0[6-9]\d{9}|[6-9]\d{9})$/', $mobile)) {
 			return $this->response->setJSON([
-				'status' => 0,
-				'msg' => 'Phone Number is Invalid'
+				'status' => 'error',
+				'msg' => 'Please enter a valid Indian mobile number.'
 			]);
 		}
-
-
 
 		$customerModel = new \App\Models\Admin\CustomerModel();
 		if ($custname && $custemail) {
@@ -243,22 +240,22 @@ class Customer extends BaseController
 			$row['cust_Phone'] = $row['cust_Phone'] ?? 'N/A';
 
 			$row['status_switch'] = '<div class="form-check form-switch">
-            <input class="form-check-input checkactive"
-                   type="checkbox"
-                   id="statusSwitch-' . $row['cust_Id'] . '"
-                   value="' . $row['cust_Id'] . '" ' . ($row['cust_Status'] == 1 ? 'checked' : '') . '>
-            <label class="form-check-label pl-0 label-check"
-                   for="statusSwitch-' . $row['cust_Id'] . '"></label>
-        </div>';
+				<input class="form-check-input checkactive"
+					type="checkbox"
+					id="statusSwitch-' . $row['cust_Id'] . '"
+					value="' . $row['cust_Id'] . '" ' . ($row['cust_Status'] == 1 ? 'checked' : '') . '>
+				<label class="form-check-label pl-0 label-check"
+					for="statusSwitch-' . $row['cust_Id'] . '"></label>
+			</div>';
 
 			$row['actions'] = '<a href="' . base_url('admin/customer/location/' . $row['cust_Id']) . '">
-            <i class="bi bi-geo-alt text-primary ms-2"></i>
-        </a>&nbsp;';
+				<i class="bi bi-geo-alt text-primary ms-2"></i>
+			</a>&nbsp;';
 			$row['actions'] .= '<a href="' . base_url('admin/customer/view/' . $row['cust_Id']) . '">
-            <i class="bi bi-pencil-square"></i>
-        </a>&nbsp;';
+				<i class="bi bi-pencil-square"></i>
+			</a>&nbsp;';
 			$row['actions'] .= '<i class="bi bi-trash text-danger icon-clickable" 
-            onclick="confirmDelete(' . $row['cust_Id'] . ')"></i>';
+				onclick="confirmDelete(' . $row['cust_Id'] . ')"></i>';
 		}
 
 		return $this->response->setJSON([
@@ -268,4 +265,6 @@ class Customer extends BaseController
 			'data' => $data
 		]);
 	}
+
+
 }

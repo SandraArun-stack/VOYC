@@ -69,7 +69,7 @@ $(document).ready(function () {
 
 $(document).ready(function () {
 	const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phonePattern = /^\d{10}$/;
+    const phonePattern = /^(0[6-9]\d{9}|[6-9]\d{9})$/;
 
 	$('#custname').on('input', function () {
         const value = $(this).val().trim();
@@ -91,11 +91,12 @@ $(document).ready(function () {
         if (!value) {
             $('#error-mobile').text('Phone number is required.');
         } else if (!phonePattern.test(value)) {
-            $('#error-mobile').text('Phone number must be 10 digits.');
+            $('#error-mobile').text('Enter a valid Indian mobile number.');
         } else {
             $('#error-mobile').text('');
         }
     });
+
 
     $('#userpassword').on('input', function () {
         const value = $(this).val().trim();

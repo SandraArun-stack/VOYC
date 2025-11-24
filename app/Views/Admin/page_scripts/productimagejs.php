@@ -170,9 +170,11 @@
         const $saveBtn = $form.find('button[type="submit"], #saveBtn');
 
         // Disable the Save button immediately
-        $saveBtn.prop('disabled', true)
-            .html('<i class="bi bi-check-circle"></i> Save');
+        let mode = $saveBtn.data('mode'); // read save OR update
+        mode = mode.charAt(0).toUpperCase() + mode.slice(1); // capitalize
 
+        $saveBtn.prop('disabled', true)
+            .html('<i class="bi bi-check-circle"></i> ' + mode);
         // Make sure disabled fields are included
         $form.find(':input:disabled').prop('disabled', false);
 
@@ -221,7 +223,9 @@
                         .show();
 
                     // Re-enable Save button if failed
-                    $saveBtn.prop('disabled', false);
+                    $saveBtn.prop('disabled', false)
+                        .html('<i class="bi bi-check-circle"></i> ' + mode);
+
                     isSubmitting = false; // allow retry
 
                     setTimeout(() => {
@@ -240,7 +244,9 @@
                     .show();
 
                 // Re-enable Save button if AJAX error
-                $saveBtn.prop('disabled', false);
+                $saveBtn.prop('disabled', false)
+                    .html('<i class="bi bi-check-circle"></i> ' + mode);
+
                 isSubmitting = false; // allow retry
 
                 setTimeout(() => {

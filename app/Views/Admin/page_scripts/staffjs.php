@@ -6,6 +6,8 @@
     $('#staffList').DataTable({
         processing: true,
         serverSide: true,
+        order: [], // IMPORTANT — disable ordering
+
         ajax: {
             url: baseUrl + "admin/staff/List",
             type: "POST",
@@ -13,54 +15,32 @@
                 d[csrfTokenName] = csrfHash;
             }
         },
+
         columns: [
             {
                 data: null,
                 render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1; // Serial number
+                    return meta.row + meta.settings._iDisplayStart + 1;
                 },
                 orderable: false,
                 searchable: false
             },
-            {
-                data: 'us_Name',
-                render: function (data, type, row) {
-                    return data && data.length > 20 ? data.substring(0, 20) + '...' : data;
-                }
-            },
-            {
-                data: 'us_Email'
-            },
-            {
-                data: 'us_Email2'
-            },
-            {
-                data: 'us_Phone',
-                render: function (data, type, row) {
-                    return (data === null || data === undefined || data.trim() === '') ? 'N/A' : data;
-                }
-            },
-            {
-                data: 'status_switch'
-            },
-            {
-                data: 'actions'
-            }
+            { data: 'us_Name' },
+            { data: 'us_Email' },
+            { data: 'us_Email2' },
+            { data: 'us_Phone' },
+            { data: 'status_switch' },
+            { data: 'actions' }
         ],
+
         columnDefs: [
             {
                 targets: [5, 6],
                 orderable: false,
                 searchable: false
-            },
-            {
-                targets: 5,
-                render: function (data, type, row) {
-                    return data;
-                }
             }
         ]
-    }); 
+    });
 
 
     $(document).ready(function () {
@@ -95,24 +75,23 @@
                 $('#error-staffotemail').text('');
             }
         });
+        const indianPhonePattern = /^(?:\+91|0)?[6-9]\d{9}$/;
+
         $('#mobile').on('input', function () {
-            let rawValue = $(this).val();
+            let value = $(this).val();
 
-            // Remove all characters except digits and optional starting '+'
-            rawValue = rawValue.replace(/[^\d+]/g, '');
+            // Allow only digits and optional leading + 
+            value = value.replace(/[^\d+]/g, '');
 
-            // Ensure '+' appears only at the beginning (if any)
-            if (rawValue.indexOf('+') > 0) {
-                rawValue = rawValue.replace(/\+/g, ''); // remove all '+' if not at start
+            // Prevent + in the middle
+            if (value.indexOf('+') > 0) {
+                value = value.replace(/\+/g, '');
             }
 
-            // Set cleaned value back to input
-            $(this).val(rawValue);
+            $(this).val(value);
 
-            const value = rawValue.replace(/\s+/g, '');
-
-            if (!phonePattern.test(value)) {
-                $('#error-mobile').text('Phone Number Must Be Minimum of 7 Digits.');
+            if (!indianPhonePattern.test(value)) {
+                $('#error-mobile').text('Enter Valid Indian Number.');
             } else {
                 $('#error-mobile').text('');
             }
