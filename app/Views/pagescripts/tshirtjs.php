@@ -921,10 +921,12 @@
                 updateImageDimensionsUI(activeImage);
                 $("#view-spec-upload-image").removeClass("d-none");
                 $("#view-add_text").addClass("d-none");
+                 $("#customize_main_ui").addClass("d-none");
             } else {
                 $("#view-spec-upload-image").addClass("d-none");
-                 $("#view-add_text").removeClass("d-none");
-                 $("#view-upload").addClass("d-none");
+                $("#view-add_text").removeClass("d-none");
+                $("#view-upload").addClass("d-none");
+                 $("#customize_main_ui").addClass("d-none");
             }
         });
 
@@ -942,17 +944,28 @@
             } else {
                 $("#view-spec-upload-image").addClass("d-none");
                 $("#view-add_text").removeClass("d-none");
-                 $("#view-upload").addClass("d-none");
+                $("#view-upload").addClass("d-none");
             }
-           
+
         });
-        
+
+
+        // canvas.on("selection:cleared", function () {
+        //     activeImage = null;
+        //     $("#view-spec-upload-image").addClass("d-none");
+
+        // });
 
         canvas.on("selection:cleared", function () {
             activeImage = null;
             $("#view-spec-upload-image").addClass("d-none");
-            
+            $("#view-add_text").addClass("d-none");
+            $("#view-upload").addClass("d-none");
+
+            $("#customize_main_ui").removeClass("d-none");
         });
+
+
 
         canvas.on("object:scaling", function (e) {
             if (!e.target || e.target.type !== "image") return;
