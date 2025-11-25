@@ -98,8 +98,7 @@
                                             data-quantity="<?= esc($item['cart_Quantity']) ?>">₹0.00</td>
 
                                         <td class="cart__close">
-                                            <!-- <span class="icon_close cart-remove"
-                                                data-cart-id="<?= esc($item['cart_Id']) ?>"></span> -->
+                                           
                                             <span class="cart-remove" data-cart-id="<?= esc($item['cart_Id']) ?>">
                                                 <i class="bi bi-trash3-fill"></i>
 
