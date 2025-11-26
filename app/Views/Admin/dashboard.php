@@ -117,7 +117,7 @@
                                         <table class="table table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th>Order Id</th>
+                                                    <th>Order Number</th>
                                                     <th>Customer Name</th>
                                                     <th>Total Quantity</th>
                                                     <th>Grand Total</th>
@@ -129,9 +129,8 @@
                                                 <?php if (!empty($todaysOrders)): ?>
                                                     <?php foreach ($todaysOrders as $order): ?>
                                                         <tr>
-                                                            <!-- Order ID -->
-                                                            <td>#<?= esc($order->od_Id); ?></td>
-
+                                                            <!-- Order Number -->
+                                                            <td>#<?= esc($order->od_Number); ?></td>
                                                             <!-- Customer Name -->
                                                             <td><?= esc($order->customer_name); ?></td>
 
@@ -155,7 +154,7 @@
                                                                 ];
                                                                 $statusText = $statusLabels[$order->od_Status] ?? 'New';
                                                                 ?>
-                                                                <a href="<?= base_url('admin/orders/view/' . $order->od_Id); ?>"
+                                                                <a href="<?= base_url('admin/orders/view/' . $order->od_Number); ?>"
                                                                 style="text-decoration: none;">
                                                                     <span class="badge badge-info">
                                                                         <?= esc($statusText); ?>

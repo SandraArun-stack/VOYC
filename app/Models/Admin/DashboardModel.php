@@ -107,25 +107,25 @@ class DashboardModel extends Model
 
     public function getTodaysOrders()
     {
-        $todayStart = date('Y-m-d 00:00:00');
-        $todayEnd   = date('Y-m-d 23:59:59');
+        $today = date('Y-m-d');
 
         return $this->db->table('order_detail AS od')
             ->select('
-                MAX(od.od_Id) as od_Id,
-                SUM(od.od_Quantity) as total_quantity,
-                SUM(od.od_Grand_Total) as total_grand,
-                MAX(od.od_Status) as od_Status,
+                od.od_Number,
+                SUM(od.od_Quantity) AS total_quantity,
+                MAX(od.od_Grand_Total) AS total_grand,
+                MAX(od.od_Status) AS od_Status,
+                MAX(od.od_createdon) AS created_on,
                 c.cust_Name AS customer_name
             ')
             ->join('customer AS c', 'c.cust_Id = od.cus_Id', 'left')
-            ->where('od.od_createdon >=', $todayStart)
-            ->where('od.od_createdon <=', $todayEnd)
-            ->groupBy('od.cus_Id')  
-            ->orderBy('od.od_Id', 'DESC')
+            ->where('DATE(od.od_createdon)', $today)
+            ->groupBy('od.od_Number')     
+            ->orderBy('created_on', 'DESC')
             ->get()
             ->getResult();
     }
+
 
     // public function getLatestProducts()
     // {
