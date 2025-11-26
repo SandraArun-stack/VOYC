@@ -32,52 +32,100 @@ class DashboardModel extends Model
         return $this->db->table('customer')->where('cust_Status', '1')->countAllResults();
     }
 
+    // public function getAnnualRevenue()
+    // {
+    //     $currentMonth = date('n'); // Numeric representation of month (1-12)
+    //     $currentYear = date('Y');
+
+    //     if ($currentMonth >= 4) {
+    //         // We're in current financial year starting April 1st this year
+    //         $startDate = date('Y-04-01 00:00:00'); // April 1st of current year
+    //         $endDate = date(($currentYear + 1) . '-03-31 23:59:59'); // March 31st of next year
+    //     } else {
+    //         // We're in financial year that started last year
+    //         $startDate = date(($currentYear - 1) . '-04-01 00:00:00');
+    //         $endDate = date($currentYear . '-03-31 23:59:59');
+    //     }
+
+    //     $result = $this->db->table($this->table)
+    //         ->selectSum('od_Grand_Total', 'total_revenue')
+    //         ->where('od_Status', '4')
+    //         ->where('od_createdon >=', $startDate)
+    //         ->where('od_createdon <=', $endDate)
+    //         ->get()
+    //         ->getRow();
+
+    //     return $result->total_revenue ?? 0;
+    // }
+
     public function getAnnualRevenue()
     {
-        $currentMonth = date('n'); // Numeric representation of month (1-12)
-        $currentYear = date('Y');
+        $currentMonth = date('n');
+        $currentYear  = date('Y');
 
         if ($currentMonth >= 4) {
-            // We're in current financial year starting April 1st this year
-            $startDate = date('Y-04-01 00:00:00'); // April 1st of current year
-            $endDate = date(($currentYear + 1) . '-03-31 23:59:59'); // March 31st of next year
+            $startDate = $currentYear . '-04-01 00:00:00';
+            $endDate   = ($currentYear + 1) . '-03-31 23:59:59';
         } else {
-            // We're in financial year that started last year
-            $startDate = date(($currentYear - 1) . '-04-01 00:00:00');
-            $endDate = date($currentYear . '-03-31 23:59:59');
+            $startDate = ($currentYear - 1) . '-04-01 00:00:00';
+            $endDate   = $currentYear . '-03-31 23:59:59';
         }
 
-        $result = $this->db->table($this->table)
-            ->selectSum('od_Grand_Total', 'total_revenue')
-            ->where('od_Status', '4')
-            ->where('od_createdon >=', $startDate)
-            ->where('od_createdon <=', $endDate)
-            ->get()
-            ->getRow();
+        $builder = $this->db->table('order_detail');
+        $builder->select('IFNULL(SUM(od_Grand_Total), 0) as total_revenue');
+        
+        // EXCLUDE cancelled records (status != 9)
+        $builder->where('od_Status !=', 9);
 
-        return $result->total_revenue ?? 0;
+        $builder->where('od_createdon >=', $startDate);
+        $builder->where('od_createdon <=', $endDate);
+
+        $result = $builder->get()->getRow();
+
+        return $result ? $result->total_revenue : 0;
     }
 
 
-     public function getTodaysOrders()
+
+    //  public function getTodaysOrders()
+    // {
+    //     $todayStart = date('Y-m-d 00:00:00');
+    //     $todayEnd   = date('Y-m-d 23:59:59');
+
+    //     return $this->db->table('order_detail AS od')
+    //         ->select('od.od_Id, od.od_Grand_Total, od.od_Selling_Price, od.od_DiscountValue, 
+    //                 od.od_DiscountType, od.od_Status, c.cust_Name AS customer_name, 
+    //                 p.pr_Name AS product_name')
+    //         ->join('customer AS c', 'c.cust_Id = od.cus_Id', 'left')
+    //         ->join('product AS p', 'p.pr_Id = od.pr_Id', 'left')
+    //         ->where('od.od_createdon >=', $todayStart)
+    //         ->where('od.od_createdon <=', $todayEnd)
+    //         ->orderBy('od.od_createdon', 'DESC')
+    //         ->get()
+    //         ->getResult();
+    // }
+
+public function getTodaysOrders()
     {
         $todayStart = date('Y-m-d 00:00:00');
         $todayEnd   = date('Y-m-d 23:59:59');
 
         return $this->db->table('order_detail AS od')
-            ->select('od.od_Id, od.od_Grand_Total, od.od_Selling_Price, od.od_DiscountValue, 
-                    od.od_DiscountType, od.od_Status, c.cust_Name AS customer_name, 
-                    p.pr_Name AS product_name')
+            ->select('
+                MAX(od.od_Id) as od_Id,
+                SUM(od.od_Quantity) as total_quantity,
+                SUM(od.od_Grand_Total) as total_grand,
+                MAX(od.od_Status) as od_Status,
+                c.cust_Name AS customer_name
+            ')
             ->join('customer AS c', 'c.cust_Id = od.cus_Id', 'left')
-            ->join('product AS p', 'p.pr_Id = od.pr_Id', 'left')
             ->where('od.od_createdon >=', $todayStart)
             ->where('od.od_createdon <=', $todayEnd)
-            ->orderBy('od.od_createdon', 'DESC')
+            ->groupBy('od.cus_Id')  
+            ->orderBy('od.od_Id', 'DESC')
             ->get()
             ->getResult();
     }
-
-
 
     // public function getLatestProducts()
     // {
