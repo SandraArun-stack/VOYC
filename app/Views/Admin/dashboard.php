@@ -110,52 +110,41 @@
                             <div class="card table-card">
                                 <div class="card-header">
                                     <h5>Today's Order</h5>
-
                                 </div>
+
                                 <div class="card-block">
                                     <div class="table-responsive">
                                         <table class="table table-hover">
                                             <thead>
                                                 <tr>
-
                                                     <th>Order Id</th>
                                                     <th>Customer Name</th>
-                                                    <th>Product Name</th>
-                                                    <th>Total Price</th>
-                                                    <th>Selling Price</th>
-                                                    <th>Discount</th>
+                                                    <th>Total Quantity</th>
                                                     <th>Grand Total</th>
                                                     <th>Order Status</th>
                                                 </tr>
                                             </thead>
+
                                             <tbody>
                                                 <?php if (!empty($todaysOrders)): ?>
                                                     <?php foreach ($todaysOrders as $order): ?>
                                                         <tr>
+                                                            <!-- Order ID -->
                                                             <td>#<?= esc($order->od_Id); ?></td>
 
+                                                            <!-- Customer Name -->
+                                                            <td><?= esc($order->customer_name); ?></td>
 
+                                                            <!-- Total Quantity -->
+                                                            <td><?= esc($order->total_quantity); ?></td>
 
+                                                            <!-- Grand Total -->
                                                             <td>
-
-                                                                <?= esc($order->customer_name); ?>
-
+                                                                <i class="bi bi-currency-rupee"></i>
+                                                                <?= esc(number_format($order->total_grand, 2)); ?>
                                                             </td>
 
-                                                            <td><?= esc($order->product_name); ?></td>
-                                                            <td><i
-                                                                    class="bi bi-currency-rupee"></i><?= esc(number_format($order->od_Grand_Total, 2)); ?>
-                                                            </td>
-                                                            <td><i
-                                                                    class="bi bi-currency-rupee"></i><?= esc(number_format($order->od_Selling_Price, 2)); ?>
-                                                            </td>
-                                                            <td>
-                                                                <?= esc($order->od_DiscountValue); ?>
-                                                                <?= esc($order->od_DiscountType); ?>
-                                                            </td>
-                                                            <td><i
-                                                                    class="bi bi-currency-rupee"></i><?= esc(number_format($order->od_Grand_Total, 2)); ?>
-                                                            </td>
+                                                            <!-- Order Status -->
                                                             <td>
                                                                 <?php
                                                                 $statusLabels = [
@@ -167,29 +156,31 @@
                                                                 $statusText = $statusLabels[$order->od_Status] ?? 'New';
                                                                 ?>
                                                                 <a href="<?= base_url('admin/orders/view/' . $order->od_Id); ?>"
-                                                                    style="text-decoration: none;">
-                                                                    <span
-                                                                        class="badge badge-info"><?= esc($statusText); ?></span>
+                                                                style="text-decoration: none;">
+                                                                    <span class="badge badge-info">
+                                                                        <?= esc($statusText); ?>
+                                                                    </span>
                                                                 </a>
                                                             </td>
                                                         </tr>
                                                     <?php endforeach; ?>
                                                 <?php else: ?>
                                                     <tr>
-                                                        <td colspan="7" class="text-center">No orders today.</td>
+                                                        <td colspan="5" class="text-center">No orders today.</td>
                                                     </tr>
                                                 <?php endif; ?>
                                             </tbody>
-
                                         </table>
+
                                         <div class="text-right m-r-20">
-                                            <a href="<?php echo base_url('admin/orders') ?>"
-                                                class=" b-b-primary text-primary">View all Orders</a>
+                                            <a href="<?= base_url('admin/orders'); ?>"
+                                            class="b-b-primary text-primary">View all Orders</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
 
                         <!--  project and team member end -->
 

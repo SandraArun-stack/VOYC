@@ -105,7 +105,7 @@ class DashboardModel extends Model
     //         ->getResult();
     // }
 
-public function getTodaysOrders()
+    public function getTodaysOrders()
     {
         $todayStart = date('Y-m-d 00:00:00');
         $todayEnd   = date('Y-m-d 23:59:59');
