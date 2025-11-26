@@ -34,7 +34,7 @@
 
                                 <?php foreach ($cartItems as $item): ?>
 
-                                    <tr data-cartid="<?= esc($item['cart_Id']) ?>" class="cart-row clickable-row"
+                                    <tr data-cartid="<?= esc($item['cart_Id']) ?>" class=" clickable-row"
                                         data-url="<?= base_url('productdetails/' . $item['pr_Id'] . '/' . $item['pri_Id']); ?>">
                                         <td class="cart__product__item">
                                             <?php
@@ -55,7 +55,9 @@
                                             <?php endif; ?>
 
                                             <div class="cart__product__item__title">
-                                                <h6><?= esc($item['pr_Name']) ?></h6>
+                                               <a href="<?= base_url('productdetails/' . $item['pr_Id'] . '/' . $item['pri_Id']); ?>">
+                                                 <h6><?= esc($item['pr_Name']) ?></h6>
+                                                </a>
                                                 <?php
                                                 $sizeOptions = json_decode($item['size_options'], true) ?? [];
                                                 $currentSize = $item['cart_Size'] ?? '';

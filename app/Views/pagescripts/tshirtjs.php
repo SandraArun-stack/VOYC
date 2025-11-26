@@ -241,7 +241,6 @@
             }
         });
 
-
         $("#fontSize").on("input", function () {
             const active = canvas.getActiveObject();
             if (active && active.type === "i-text") {
@@ -356,8 +355,6 @@
         $(".design-check").on("change", function () {
             updatePreview();
         });
-
-
 
         updatePreview();
 
@@ -742,11 +739,9 @@
         let thumbImages = {};
         let currentThumbView = currentView;
 
-        // --- Helper conversion functions ---
         const pxToCm = (px) => (px / dpi) * cmPerInch;
         const cmToPx = (cm) => (cm / cmPerInch) * dpi;
 
-        // --- Helper: Update UI fields based on image size ---
         function updateImageDimensionsUI(img) {
             if (!img) return;
             const widthInCm = pxToCm(img.getScaledWidth());
@@ -755,7 +750,6 @@
             $("#img-height").val(heightInCm.toFixed(2));
         }
 
-        // --- Helper: Apply new dimensions from controls ---
         function applyDimensions(img, newWidthCm, newHeightCm) {
             if (!img) return;
             img.scaleToWidth(cmToPx(newWidthCm));
@@ -772,6 +766,7 @@
                 const reader = new FileReader();
                 reader.onload = function (f) {
                     const base64Data = f.target.result;
+                    //  uploadedImagesBase64.push(base64Data);
                     if (canvas.getActiveObject() && canvas.getActiveObject().type === "image") {
                         const active = canvas.getActiveObject(); active.setSrc(base64Data,
                             function () { active.setCoords(); canvas.renderAll(); });
@@ -830,13 +825,6 @@
 
         });
 
-
-        // canvas.on("selection:cleared", function () {
-        //     activeImage = null;
-        //     $("#view-spec-upload-image").addClass("d-none");
-
-        // });
-
         canvas.on("selection:cleared", function () {
             activeImage = null;
             $("#view-spec-upload-image").addClass("d-none");
@@ -845,8 +833,6 @@
 
             $("#customize_main_ui").removeClass("d-none");
         });
-
-
 
         canvas.on("object:scaling", function (e) {
             if (!e.target || e.target.type !== "image") return;
@@ -1039,10 +1025,6 @@
             active.set("flipY", !active.flipY);
             canvas.renderAll();
         });
-
-
-
-
 
     });
 

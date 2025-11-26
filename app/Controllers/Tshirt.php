@@ -122,6 +122,7 @@ class Tshirt extends Controller
         $uploadedImageFileNames = [];
         if (!empty($uploadedImagesJson)) {
             $uploadedImages = json_decode($uploadedImagesJson, true);
+
             if (is_array($uploadedImages)) {
                 foreach ($uploadedImages as $base64Image) {
                     $fileName = $this->saveBase64Image($base64Image, $uploadDir);
@@ -131,7 +132,7 @@ class Tshirt extends Controller
                 }
             }
         }
-
+        
         if (!$frontFileName && !$backFileName && !$RSleeveFileName && !$LSleeveFileName) {
             return $this->response->setJSON([
                 'status' => 'error',

@@ -221,20 +221,20 @@
             $('#goCheckoutForm').submit();
         });
 
-        $(".clickable-row").on("click", function (e) {
+        // $(".clickable-row").on("click", function (e) {
 
-            if (
-                $(e.target).closest(".cart-size-dropdown").length ||
-                $(e.target).closest(".cart-remove").length ||
-                $(e.target).closest(".show-preview").length ||
-                e.target.tagName === "SELECT" ||
-                e.target.tagName === "OPTION"
-            ) {
-                return; // Skip redirect
-            }
+        //     if (
+        //         $(e.target).closest(".cart-size-dropdown").length ||
+        //         $(e.target).closest(".cart-remove").length ||
+        //         $(e.target).closest(".show-preview").length ||
+        //         e.target.tagName === "SELECT" ||
+        //         e.target.tagName === "OPTION"
+        //     ) {
+        //         return; // Skip redirect
+        //     }
 
-            window.location.href = $(this).data("url");
-        });
+        //     window.location.href = $(this).data("url");
+        // });
 
     });
 
