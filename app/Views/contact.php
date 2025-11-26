@@ -26,20 +26,25 @@
                         <ul>
                             <li>
                                 <h6><i class="fa fa-map-marker"></i> Address</h6>
-                                <p>160 Pennsylvania Ave NW, Washington, Castle, PA 16101-5161</p>
+                                <p>
+                                    The Praveen Mills,<br>
+                                    12, A.K Nagar, Seiyankadu,<br>
+                                    Karumarampalayam, Mannarai P.O,<br>
+                                    Tiruppur, Tamil Nadu - 641607
+                                </p>
                             </li>
                             <li>
                                 <h6><i class="fa fa-phone"></i> Phone</h6>
-                                <p><span>125-711-811</span><span>125-668-886</span></p>
+                                <p><span>+91 9790375604</span></p>
                             </li>
                             <li>
                                 <h6><i class="fa fa-headphones"></i> Support</h6>
-                                <p>Support.photography@gmail.com</p>
+                                <p>thepostmangroupllp@gmail.com</p>
                             </li>
                         </ul>
                     </div>
                     <div class="contact__form">
-                        <h5>SEND MESSAGE</h5>
+                        <h5>CONTACT US</h5>
                         <form id="contactForm">
                             <input type="text" name="fullname" placeholder="Name" required>
                             <input type="text" name="email" placeholder="Email" required>
@@ -52,10 +57,16 @@
             </div>
             <div class="col-lg-6 col-md-6">
                 <div class="contact__map">
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d48158.305462977965!2d-74.13283844036356!3d41.02757295168286!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2e440473470d7%3A0xcaf503ca2ee57958!2sSaddle%20River%2C%20NJ%2007458%2C%20USA!5e0!3m2!1sen!2sbd!4v1575917275626!5m2!1sen!2sbd"
+                    <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d221.4257394180256!2d77.36602947734453!3d11.118255332808856!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2s!5e1!3m2!1sen!2sin!4v1764132667075!5m2!1sen!2sin%22"
+                        height="780" style="border:0" allowfullscreen="">
+                    </iframe> -->
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3914.9342749476864!2d77.36610999999999!3d11.118272999999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTHCsDA3JzA1LjgiTiA3N8KwMjEnNTguMCJF!5e0!3m2!1sen!2sin!4v1764140200200!5m2!1sen!2sin%22"
                         height="780" style="border:0" allowfullscreen="">
                     </iframe>
+                    <!-- <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d48158.305462977965!2d-74.13283844036356!3d41.02757295168286!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2e440473470d7%3A0xcaf503ca2ee57958!2sSaddle%20River%2C%20NJ%2007458%2C%20USA!5e0!3m2!1sen!2sbd!4v1575917275626!5m2!1sen!2sbd"
+                        height="780" style="border:0" allowfullscreen="">
+                    </iframe> -->
                 </div>
             </div>
         </div>

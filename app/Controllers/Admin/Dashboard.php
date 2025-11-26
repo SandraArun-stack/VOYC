@@ -38,21 +38,21 @@ class Dashboard extends BaseController
 		// Decode images for each product
 		// After $latestProducts = $this->dashboardModel->getLatestProducts();
 
-foreach ($latestProducts as &$product) {
-    $product->main_image = null;
+		foreach ($latestProducts as &$product) {
+			$product->main_image = null;
 
-    if (!empty($product->pri_Thumbnail)) {
-        // Try decode — if valid JSON array, take first element
-        $decoded = json_decode($product->pri_Thumbnail, true);
+			if (!empty($product->pri_Thumbnail)) {
+				// Try decode — if valid JSON array, take first element
+				$decoded = json_decode($product->pri_Thumbnail, true);
 
-        if (json_last_error() === JSON_ERROR_NONE && is_array($decoded) && !empty($decoded[0])) {
-            $product->main_image = $decoded[0];
-        } else {
-            // Not JSON or decode failed -> treat as plain filename
-            $product->main_image = $product->pri_Thumbnail;
-        }
-    }
-}
+				if (json_last_error() === JSON_ERROR_NONE && is_array($decoded) && !empty($decoded[0])) {
+					$product->main_image = $decoded[0];
+				} else {
+					// Not JSON or decode failed -> treat as plain filename
+					$product->main_image = $product->pri_Thumbnail;
+				}
+			}
+		}
 
 
 
