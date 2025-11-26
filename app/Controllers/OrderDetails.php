@@ -46,14 +46,14 @@ class OrderDetails extends Controller
     {
         $userId = $this->session->get('user_id');
 
-        if(empty($userId)){
-           return redirect()->to(base_url('/'));
+        if (empty($userId)) {
+            return redirect()->to(base_url('/'));
         }
 
-        
+
 
         $createdBy = $userId;
-        
+
 
         // Decode products JSON
         $productsJson = $this->request->getPost('products');
@@ -215,7 +215,8 @@ class OrderDetails extends Controller
         {$productTable}
 
         <h3>Shipping Address:</h3>
-        <p>{$shippingAddress}</p>
+       <p class='my-0'>{$formattedShippingAddress}</p>
+        <br/>
 
         <p>Order Time: " . date('d M Y, h:i A') . "</p>
     ";

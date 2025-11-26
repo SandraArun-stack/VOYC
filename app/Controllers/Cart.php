@@ -40,34 +40,36 @@ class Cart extends Controller
     }
     public function remove()
     {
-        $cartId = $this->request->getPost('cart_Id');
+       $cartId = $this->request->getPost('cart_Id');
 
-        // if (empty($cartId)) {
-        //     return $this->response->setJSON(['status' => 'error', 'message' => 'Cart ID missing']);
-        // }
+        if (!$cartId) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Cart ID missing']);
+        }
 
         $cartModel = new \App\Models\CartModel();
 
         $updated = $cartModel->update($cartId, ['cart_Status' => 0]);
+
         if ($updated) {
 
-            // Get logged-in user ID
             $session = session();
             $userId = $session->get('user_id');
 
-            // Count active items
-            $cartCount = $cartModel->where('cust_Id', $userId)
-                ->where('cart_Status', 1)
-                ->countAllResults();
+            $cartCount = $userId ?
+                $cartModel->where('cust_Id', $userId)
+                    ->where('cart_Status', 1)
+                    ->countAllResults()
+                : 0;
 
             return $this->response->setJSON([
                 'status' => 'success',
                 'cartCount' => $cartCount
             ]);
-        } else {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to update']);
         }
+
+        return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to update']);
     }
+
     public function updateQuantity()
     {
         $cartId = $this->request->getPost('cart_id');

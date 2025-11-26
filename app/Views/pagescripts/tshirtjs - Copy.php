@@ -191,6 +191,8 @@
         loadCanvasState(currentView);
         initThumbClick();
 
+
+
         $("#colorPicker").on("input", function () {
             applyDressColor($(this).val());
         });
@@ -209,6 +211,7 @@
             canvas.renderAll();
         });
 
+
         $("#textColor").on("input", function () {
             const active = canvas.getActiveObject();
             if (active && active.type === "i-text") {
@@ -225,6 +228,7 @@
             }
         });
 
+
         $("#boldToggle").on("change", function () {
             const a = canvas.getActiveObject();
             if (a && a.type === "i-text") {
@@ -233,6 +237,7 @@
             }
         });
 
+
         $("#italicToggle").on("change", function () {
             const a = canvas.getActiveObject();
             if (a && a.type === "i-text") {
@@ -240,6 +245,7 @@
                 canvas.renderAll();
             }
         });
+
 
         $("#fontSize").on("input", function () {
             const active = canvas.getActiveObject();
@@ -251,8 +257,10 @@
 
         let uploadedImagesBase64 = [];
 
+
         $("#resetOverlayBtn").on("click", resetOverlayToBackground);
 
+        // Lock/unlock dress (to avoid accidental moves after you place it)
         $("#lockOverlay").on("change", function () {
             if (!shirtOverlay) return;
             const locked = $(this).is(":checked");
@@ -264,6 +272,7 @@
             canvas.renderAll();
         });
 
+        // Delete selected
         $("#deleteBtn").on("click", function () {
             debugger;
             const active = canvas.getActiveObject();
@@ -283,6 +292,7 @@
         }
 
         let basePrice = getBasePrice();
+
 
         function updatePreview() {
             let total = basePrice * quantity;
@@ -340,6 +350,7 @@
             updatePreview(); // recalc total
         });
 
+        // ✅ Quantity decrement
         $('.qty-btn-custom.minus-custom').click(function () {
             let $wrapper = $(this).closest('.quantity-wrapper-custom');
             let $value = $wrapper.find('.quantity-value-custom');
@@ -352,11 +363,176 @@
             }
         });
 
+        // Bind change event
         $(".design-check").on("change", function () {
             updatePreview();
         });
 
+
+
         updatePreview();
+
+        // $("#saveBtn").on("click", function () {
+        //     const viewMap = {
+        //         right: "RSleeve_Img",
+        //         left: "LSleeve_Img"
+        //     };
+        //     if ($(".design-check:checked").length === 0) {
+
+        //         $("#alertAddtocart")
+        //             .removeClass()
+        //             .addClass("alert alert-danger")
+        //             .text("Please Select Where You Want Your Design Applied.")
+        //             .fadeIn();
+
+        //         setTimeout(() => {
+        //             $("#alertAddtocart").fadeOut();
+        //         }, 2500);
+
+        //         return;
+        //     }
+
+        //     var $btn = $(this);
+
+        //     var $alertBox = $('#design_msg_alert');
+        //     saveCurrentCanvasState();
+
+        //     $btn.prop('disabled', true).text('Processing...');
+
+        //     let totalText = $("#priceTotal").text();
+        //     let totalPrice = parseFloat(totalText.replace(/[^\d\.]/g, '')) || 0;
+        //     const designs = {};
+
+        //     const visibleImagesBase64 = [];
+
+        //     const selectedViews = $(".design-check:checked").map(function () {
+        //         return $(this).closest(".design-option").data("type");
+        //     }).get();
+
+        //     // Instead of Object.keys(canvasStates).forEach
+        //     selectedViews.forEach(view => {
+        //         const mappedView = viewMap[view] || view;
+        //         const viewState = canvasStates[mappedView];
+        //         if (viewState && viewState.objects) {
+        //             viewState.objects.forEach(obj => {
+        //                 if (obj.type === 'image' && !obj.overlay) {
+        //                     const tempCanvas = new fabric.StaticCanvas(null, {
+        //                         width: canvas.width,
+        //                         height: canvas.height
+        //                     });
+
+        //                     fabric.Image.fromURL(obj.src || obj._element.src, function (img) {
+        //                         img.set({
+        //                             scaleX: obj.scaleX,
+        //                             scaleY: obj.scaleY,
+        //                             left: obj.left,
+        //                             top: obj.top,
+        //                             angle: obj.angle || 0
+        //                         });
+        //                         tempCanvas.add(img);
+
+        //                         visibleImagesBase64.push(
+        //                             tempCanvas.toDataURL({
+        //                                 format: 'png',
+        //                                 quality: 0.7,
+        //                                 enableRetinaScaling: false
+        //                             })
+        //                         );
+
+        //                     });
+        //                 }
+        //             });
+        //         }
+        //     });
+
+
+
+        //     const exportAll = selectedViews.map(view => {
+        //         const mappedView = viewMap[view] || view;
+
+        //         const tempCanvas = new fabric.Canvas(null, {
+        //             width: canvas.width,
+        //             height: canvas.height
+        //         });
+
+        //         return new Promise(resolve => {
+        //             tempCanvas.loadFromJSON(
+        //                 { objects: canvasStates[mappedView].objects },
+        //                 function () {
+        //                     fabric.Image.fromURL(canvasStates[mappedView].overlay, function (img) {
+        //                         img.set({ selectable: false, evented: false });
+        //                         img.scaleToWidth(tempCanvas.width);
+        //                         img.scaleToHeight(tempCanvas.height);
+        //                         tempCanvas.add(img);
+        //                         tempCanvas.sendToBack(img);
+        //                         tempCanvas.renderAll();
+
+        //                         const dataURL = tempCanvas.toDataURL({ format: "jpeg", quality: 0.7 });
+        //                        designs[mappedView] = dataURL;  
+        //                         resolve();
+        //                     });
+        //                 }
+        //             );
+        //         });
+        //     });
+
+
+
+        //     Promise.all(exportAll).then(() => {
+
+        //         $.ajax({
+        //             url: "<?= base_url('saveDesign') ?>",
+        //             method: "POST",
+        //             data: {
+        //                 front: designs.front,
+        //                 back: designs.back,
+        //                 RSleeve_Img: designs.RSleeve_Img,
+        //                 LSleeve_Img: designs.LSleeve_Img,
+        //                 // uploadedImages: JSON.stringify(uploadedImagesBase64),
+        //                 uploadedImages: JSON.stringify(visibleImagesBase64),
+        //                 prId: $('input[name="prId"]').val(),
+        //                 priId: $('input[name="priId"]').val(),
+        //                 quantity: quantity,
+        //                 totalPrice: totalPrice,
+        //                 selectedSize: $("#summarySize").text().trim(),
+
+        //             },
+
+        //             success: function (response) {
+        //                 if (response.status === 'login_required') {
+        //                     authModal.show();
+        //                     $('#loginView').show();
+        //                     $('#registerView').hide();
+        //                     $('#forgotPassView').hide();
+        //                     return;
+        //                 } else if (response.status === 'success') {
+        //                     $alertBox
+        //                         .removeClass('d-none alert-danger')
+        //                         .addClass('alert alert-success')
+        //                         .text(response.message || 'Registration successful!')
+        //                         .fadeIn();
+
+        //                     setTimeout(() => {
+        //                         $alertBox.fadeOut(400);
+        //                         window.location.href = response.redirect;
+        //                     }, 2000);
+        //                 } else if (response.status === 'error') {
+        //                     $alertBox
+        //                         .removeClass('d-none alert-success')
+        //                         .addClass('alert alert-danger')
+        //                         .text(response.message || 'Registration failed!')
+        //                         .fadeIn();
+        //                     setTimeout(() => {
+        //                         $alertBox.fadeOut(400);
+        //                     }, 2000);
+        //                 }
+        //             },
+        //             error: function (xhr, status, error) {
+        //                 console.error("Error saving design:", error);
+        //             }
+        //         });
+        //     });
+        // });
 
         $("#saveBtn").on("click", function () {
 
@@ -385,19 +561,23 @@
                 return $(this).closest(".design-option").data("type");
             }).get();
 
+            // ⚡ SUPER FAST SAVE – NO TEMP CANVAS CREATION
             function exportView(viewKey) {
                 return new Promise((resolve) => {
 
                     const realKey = viewMap[viewKey] || viewKey;
                     const state = canvasStates[realKey];
 
+                    // 1. Create lightweight static canvas
                     let tmp = new fabric.StaticCanvas(null, {
                         width: canvas.width,
                         height: canvas.height
                     });
 
+                    // 2. Load objects synchronously
                     tmp.loadFromJSON({ objects: state.objects }, function () {
 
+                        // 3. Load overlay *one time only*
                         fabric.Image.fromURL(state.overlay, function (img) {
                             img.set({
                                 selectable: false,
@@ -411,6 +591,7 @@
                             tmp.setBackgroundImage(img, () => {
                                 tmp.renderAll();
 
+                                // 4. Minimize Base64 size
                                 const data64 = tmp.toDataURL({
                                     format: "jpeg",
                                     quality: 0.65
@@ -426,6 +607,7 @@
                 });
             }
 
+            // RUN EXPORT SEQUENTIALLY to avoid async overload
             (async () => {
                 for (let v of selectedViews) {
                     await exportView(v);
@@ -437,7 +619,6 @@
                     timeout: 30000, // 30 seconds
                     data: {
                         designs: JSON.stringify(designs),
-                        uploadedImages: JSON.stringify(uploadedImagesBase64),
                         prId: $('input[name="prId"]').val(),
                         priId: $('input[name="priId"]').val(),
                         quantity: quantity,
@@ -457,6 +638,7 @@
             })();
 
         });
+
 
         $(document).on('click', '.color-card', function () {
             const priId = $(this).data('priid');
@@ -502,12 +684,14 @@
                      data-src="${thumbSrc}" 
                      data-view="front" class="shirt-thumb" />`);
 
+                    // ✅ Add front view to canvas and update view state
                     addOverlay(thumbSrc);
                     currentView = 'front';
                     canvasStates[currentView].overlay = thumbSrc;
                     highlightThumb(thumbSrc);
                 }
 
+                // --- Back Image(s)
                 if (selected.pri_File_Name && Array.isArray(selected.pri_File_Name)) {
                     selected.pri_File_Name.forEach((image, index) => {
                         const imgSrc = "<?= base_url('uploads/productmedia/') ?>" + image;
@@ -517,6 +701,7 @@
                     });
                 }
 
+                // --- Sleeve Image(s)
                 if (selected.RSleeve_Img && Array.isArray(selected.RSleeve_Img)) {
                     selected.RSleeve_Img.forEach(image => {
                         const imgSrc = "<?= base_url('uploads/productmedia/') ?>" + image;
@@ -538,6 +723,8 @@
             }
             initThumbClick();
         });
+
+
 
     });
 
@@ -591,6 +778,10 @@
 
         canvasStates[currentView].overlay = updatedImage;
 
+        // if (designData[currentView]) {
+        //     designData[currentView].img = updatedImage;
+        // }
+        //31-10
         const viewMap = {
             RSleeve: 'right',
             RSleeve_Img: 'right',
@@ -622,17 +813,19 @@
             const newView = $(this).data("view");
             const src = $(this).data("src");
 
+            // ✅ remember which thumb we're editing
             currentThumbView = newView;
 
             if (newView === currentView) return;
 
-            saveCurrentCanvasState();      
-            currentView = newView;         
-            loadCanvasState(currentView);  
+            saveCurrentCanvasState();      // save current canvas
+            currentView = newView;         // update view
+            loadCanvasState(currentView);  // load new view
             addOverlay(src);
             highlightThumb(src);
         });
     }
+
 
     $('.sidebar-item, #customize_main_ui .option').on('click', function () {
         const viewId = $(this).data('view');
@@ -682,6 +875,8 @@
 
     });
 
+    //price
+
     $(document).on('click', '#addSleeveBtn', function () {
         $(this).hide();
         $('#sleeveContainer').removeClass('d-none').addClass('d-flex');
@@ -691,6 +886,8 @@
     var backPrice = parseFloat($('#back_Customization_Price').val()) || 0;
     var RSleevePrice = parseFloat($('#sleeve_Customization_Price').val()) || 0;
     var LSleevePrice = parseFloat($('#sleeve_Customization_Price').val()) || 0;
+
+
 
     const designData = {
         front: {
@@ -710,6 +907,8 @@
             img: ''
         }
     };
+
+
 
     function updateCheckboxState() {
         const viewMap = {
@@ -739,9 +938,11 @@
         let thumbImages = {};
         let currentThumbView = currentView;
 
+        // --- Helper conversion functions ---
         const pxToCm = (px) => (px / dpi) * cmPerInch;
         const cmToPx = (cm) => (cm / cmPerInch) * dpi;
 
+        // --- Helper: Update UI fields based on image size ---
         function updateImageDimensionsUI(img) {
             if (!img) return;
             const widthInCm = pxToCm(img.getScaledWidth());
@@ -750,6 +951,7 @@
             $("#img-height").val(heightInCm.toFixed(2));
         }
 
+        // --- Helper: Apply new dimensions from controls ---
         function applyDimensions(img, newWidthCm, newHeightCm) {
             if (!img) return;
             img.scaleToWidth(cmToPx(newWidthCm));
@@ -757,35 +959,74 @@
             canvas.renderAll();
             updateImageDimensionsUI(img);
         }
-      
+
+        // --- Handle image uploads ---
+        // --- Handle image uploads ---
         $("#uploadImage").on("change", function (e) {
             const files = e.target.files;
-            if (!files.length)
-                return;
+            if (!files.length) return;
+
             Array.from(files).forEach((file, index) => {
                 const reader = new FileReader();
+
                 reader.onload = function (f) {
                     const base64Data = f.target.result;
-                    //  uploadedImagesBase64.push(base64Data);
+
+                    // ✅ if an image is selected, replace its source
                     if (canvas.getActiveObject() && canvas.getActiveObject().type === "image") {
-                        const active = canvas.getActiveObject(); active.setSrc(base64Data,
-                            function () { active.setCoords(); canvas.renderAll(); });
-                    }
-                    else {
+                        const active = canvas.getActiveObject();
+                        active.setSrc(base64Data, function () {
+                            active.setCoords();
+                            canvas.renderAll();
+                        });
+                    } else {
+                        // ✅ otherwise, create a *new image*
                         fabric.Image.fromURL(base64Data, function (img) {
                             img.set({
-                                left: 100 + index * 20, top: 150 + index * 20,
-                                hasControls: true, selectable: true
+                                left: 100 + index * 20,
+                                top: 150 + index * 20,
+                                hasControls: true,
+                                selectable: true
                             });
-                            img.scaleToWidth(150); canvas.add(img).setActiveObject(img);
+                            img.scaleToWidth(150);
+                            canvas.add(img).setActiveObject(img);
                             canvas.renderAll();
                         });
                     }
                 };
+
                 reader.readAsDataURL(file);
             });
+
             $("#uploadImage").val("");
         });
+
+
+        // canvas.on("selection:created", function (e) {
+        //     if (!e.selected || e.selected.length === 0) return;
+        //     activeImage = e.selected[0];
+        //     updateImageDimensionsUI(activeImage);
+
+        //     if (window.currentView === "upload") {
+        //         $("#view-spec-upload-image").removeClass("d-none");
+
+        //     }
+        // });
+
+        // canvas.on("selection:updated", function (e) {
+        //     if (!e.selected || e.selected.length === 0) return;
+        //     activeImage = e.selected[0];
+        //     updateImageDimensionsUI(activeImage);
+
+        //     if (window.currentView === "upload") {
+        //         $("#view-spec-upload-image").removeClass("d-none");
+        //     }
+        // });
+
+        // canvas.on("selection:cleared", function () {
+        //     activeImage = null;
+        //     $("#view-spec-upload-image").addClass("d-none");
+        // });
 
         canvas.on("selection:created", function (e) {
             if (!e.selected || e.selected.length === 0) return;
@@ -825,6 +1066,13 @@
 
         });
 
+
+        // canvas.on("selection:cleared", function () {
+        //     activeImage = null;
+        //     $("#view-spec-upload-image").addClass("d-none");
+
+        // });
+
         canvas.on("selection:cleared", function () {
             activeImage = null;
             $("#view-spec-upload-image").addClass("d-none");
@@ -833,6 +1081,8 @@
 
             $("#customize_main_ui").removeClass("d-none");
         });
+
+
 
         canvas.on("object:scaling", function (e) {
             if (!e.target || e.target.type !== "image") return;
@@ -1025,6 +1275,10 @@
             active.set("flipY", !active.flipY);
             canvas.renderAll();
         });
+
+
+
+
 
     });
 

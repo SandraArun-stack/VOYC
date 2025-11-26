@@ -91,20 +91,18 @@
             $("#designPreviewModal").modal("hide");
         });
 
-        $(document).on('click', '.cart-remove', function () {
-            const cartId = $(this).attr('data-cart-id');
-            // if (!cartId) {
-            //     alert('Cart ID missing');
-            //     return;
-            // }
+        $(document).on('click', '.cart-remove', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+           const cartId = $(this).attr('data-cart-id');
+
+            
             const row = $(this).closest('tr');
 
             $.ajax({
                 url: "<?= base_url('cart/remove') ?>",
                 method: "POST",
-                data: {
-                    cart_Id: cartId
-                },
+               data: { cart_Id: cartId },
                 success: function (response) {
                     if (response.status === 'success') {
                         row.remove();
@@ -130,6 +128,7 @@
                 }
             });
         });
+
         function hideIfInvalid(selector, value) {
             const block = $(selector).closest('.col-md-3');
 
@@ -196,19 +195,19 @@
             $.post("<?= base_url('cart/updateQuantity') ?>", { cart_id: cartId, quantity: newVal });
         });
 
-        $(document).on('click', '.cart-remove', function () {
-            var $row = $(this).closest('tr');
-            var cartId = $row.data('cartid');
+        // $(document).on('click', '.cart-remove', function () {
+        //     var $row = $(this).closest('tr');
+        //     var cartId = $row.data('cartid');
 
-            $.post("<?= base_url('cart/remove') ?>", { cart_id: cartId }, function (res) {
-                if (res.status === 'success') {
-                    $row.remove();
-                    recalcCartTotal();
-                } else {
-                    alert(res.message || 'Failed to remove item');
-                }
-            }, 'json');
-        });
+        //     $.post("<?= base_url('cart/remove') ?>", { cart_id: cartId }, function (res) {
+        //         if (res.status === 'success') {
+        //             $row.remove();
+        //             recalcCartTotal();
+        //         } else {
+        //             alert(res.message || 'Failed to remove item');
+        //         }
+        //     }, 'json');
+        // });
 
         $('#proceedCheckout').click(function (e) {
             e.preventDefault();
@@ -222,20 +221,20 @@
             $('#goCheckoutForm').submit();
         });
 
-        $(".clickable-row").on("click", function (e) {
+        // $(".clickable-row").on("click", function (e) {
 
-            if (
-                $(e.target).closest(".cart-size-dropdown").length ||
-                $(e.target).closest(".cart-remove").length ||
-                $(e.target).closest(".show-preview").length ||
-                e.target.tagName === "SELECT" ||
-                e.target.tagName === "OPTION"
-            ) {
-                return; // Skip redirect
-            }
+        //     if (
+        //         $(e.target).closest(".cart-size-dropdown").length ||
+        //         $(e.target).closest(".cart-remove").length ||
+        //         $(e.target).closest(".show-preview").length ||
+        //         e.target.tagName === "SELECT" ||
+        //         e.target.tagName === "OPTION"
+        //     ) {
+        //         return; // Skip redirect
+        //     }
 
-            window.location.href = $(this).data("url");
-        });
+        //     window.location.href = $(this).data("url");
+        // });
 
     });
 

@@ -161,8 +161,6 @@
                                                                 </div>
                                                             </div>
                                                             <div class="row">
-                                                                
-
                                                                 <div class="col-md-6">
                                                                     <div class="mt-3">
                                                                         <label class="form-label"><b>Uploaded Front Image:</b></label><small>(Choose a Single Image)</small>

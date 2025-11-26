@@ -71,25 +71,31 @@ class Tshirt extends Controller
             ]);
         }
 
-        $frontImageData = $this->request->getPost('front');
-        $backImageData = $this->request->getPost('back');
-        $RsleeveImageData = $this->request->getPost('RSleeve_Img');
-        $LsleeveImageData = $this->request->getPost('LSleeve_Img');
+
+        $designsJson = $this->request->getPost('designs');
+        $designs = json_decode($designsJson, true);
+
+        if (!is_array($designs)) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Invalid design data'
+            ]);
+        }
+
+        // Extract views (your new optimized JS sends these keys)
+        $frontImageData = $designs['front'] ?? null;
+        $backImageData = $designs['back'] ?? null;
+        $RsleeveImageData = $designs['RSleeve_Img'] ?? null;
+        $LsleeveImageData = $designs['LSleeve_Img'] ?? null;
+
         $quantity = $this->request->getPost('quantity');
         $totalPrice = $this->request->getPost('totalPrice');
         $selectedSize = $this->request->getPost('selectedSize');
         $uploadedImagesJson = $this->request->getPost('uploadedImages');
 
+
         $prId = $this->request->getPost('prId');
         $priId = $this->request->getPost('priId');
-        // $prvId = $this->request->getPost('prvId');
-
-        // if (empty($prvId)) {
-        //     return $this->response->setJSON([
-        //         'status' => 'error',
-        //         'message' => 'Select the Size You Want.'
-        //     ]);
-        // }
 
 
         // echo $prvId;exit();
@@ -116,6 +122,7 @@ class Tshirt extends Controller
         $uploadedImageFileNames = [];
         if (!empty($uploadedImagesJson)) {
             $uploadedImages = json_decode($uploadedImagesJson, true);
+
             if (is_array($uploadedImages)) {
                 foreach ($uploadedImages as $base64Image) {
                     $fileName = $this->saveBase64Image($base64Image, $uploadDir);
@@ -125,7 +132,7 @@ class Tshirt extends Controller
                 }
             }
         }
-
+        
         if (!$frontFileName && !$backFileName && !$RSleeveFileName && !$LSleeveFileName) {
             return $this->response->setJSON([
                 'status' => 'error',
@@ -166,7 +173,6 @@ class Tshirt extends Controller
             'file_name' => [
                 'front' => $frontFileName,
                 'back' => $backFileName,
-                // 'sleeve' => $sleeveFileName
                 'RSleeve_Image' => $RSleeveFileName,
                 'LSleeve_Image' => $LSleeveFileName
             ],

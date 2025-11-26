@@ -470,7 +470,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="alert" id="alertAddtocart"></div>
+                                <div class="alert d-none" id="alertAddtocart"></div>
 
                                 <div class="customisation__price  p-3 rounded-3">
                                     <h5 class="fw-semibold mb-3"><b>Customization Pricing Details</b></h5>

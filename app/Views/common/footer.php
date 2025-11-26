@@ -5,7 +5,7 @@
             <div class="col-lg-4 col-md-6 col-sm-7">
                 <div class="footer__about">
                     <div class="footer__logo">
-                        <a href="#"><img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo.jpg" alt=""></a>
+                         <a href="<?= base_url('/'); ?>"><img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo.jpg" alt=""></a>
                     </div>
                     <p>Location</p>
                     <!-- <div class="footer__payment">
