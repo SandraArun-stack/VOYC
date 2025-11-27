@@ -339,3 +339,11 @@ $routes->post('admin/save', 'Admin::createnew');
 // $routes->get('orderdetails', 'OrderDetails::index');
 // $routes->post('orderdetails/placeOrder', 'OrderDetails::placeOrder');
 // $routes->post('orderdetails/saveAddress', 'OrderDetails::saveAddress');
+
+
+
+// --------------------------------API----------------------------------------//
+$routes->post('game/saveGame', 'Admin\GameDetails::saveGame');
+$routes->get('game/getAll', 'Admin\GameDetails::getAllGames');
+$routes->get('game/getById/(:num)', 'Admin\GameDetails::getGameById/$1');
+$routes->delete('game/deleteGame/(:num)', 'Admin\GameDetails::deleteGameById/$1');
