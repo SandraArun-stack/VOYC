@@ -144,7 +144,7 @@ class Product extends BaseController
         $product_description = $this->input->getPost('product_description');
         $product_description = preg_replace('/[\x{200E}\x{200F}\x{202A}-\x{202E}\x{2066}-\x{2069}]/u', '', $product_description);
         $product_description = trim($product_description);
-
+        $product_description = ucfirst($product_description);
 
         // $product_stock = $this->input->getPost('product_stock');
         // $reset_stock = $this->input->getPost('reset_stock');
