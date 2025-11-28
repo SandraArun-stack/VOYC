@@ -134,14 +134,17 @@ class Product extends BaseController
         $cat_id = $this->input->getPost('cat_id');
         $product_name = trim($this->input->getPost('product_name'));
         $product_name = ucwords(strtolower(trim($product_name)));
-        $product_code = trim($this->request->getPost('product_code')); // ✅ CodeIgniter 4
+        $product_code = trim($this->request->getPost('product_code')); //  CodeIgniter 4
 
+        // $product_description = $this->input->getPost('product_description');
+
+        // $product_description = preg_replace_callback('/([.!?]\s*)([a-z])/',
+        //                                     fn($m) => $m[1] . strtoupper($m[2]), 
+        //                                     ucfirst(strtolower(trim($product_description))));
         $product_description = $this->input->getPost('product_description');
-
-        $product_description = preg_replace_callback('/([.!?]\s*)([a-z])/',
-                                            fn($m) => $m[1] . strtoupper($m[2]), 
-                                            ucfirst(strtolower(trim($product_description))));
-
+        $product_description = preg_replace('/[\x{200E}\x{200F}\x{202A}-\x{202E}\x{2066}-\x{2069}]/u', '', $product_description);
+        $product_description = trim($product_description);
+        $product_description = ucfirst($product_description);
 
         // $product_stock = $this->input->getPost('product_stock');
         // $reset_stock = $this->input->getPost('reset_stock');

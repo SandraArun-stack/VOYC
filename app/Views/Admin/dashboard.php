@@ -117,7 +117,7 @@
                                         <table class="table table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th>Order Id</th>
+                                                    <th>Order Number</th>
                                                     <th>Customer Name</th>
                                                     <th>Total Quantity</th>
                                                     <th>Grand Total</th>
@@ -129,9 +129,8 @@
                                                 <?php if (!empty($todaysOrders)): ?>
                                                     <?php foreach ($todaysOrders as $order): ?>
                                                         <tr>
-                                                            <!-- Order ID -->
-                                                            <td>#<?= esc($order->od_Id); ?></td>
-
+                                                            <!-- Order Number -->
+                                                            <td>#<?= esc($order->od_Number); ?></td>
                                                             <!-- Customer Name -->
                                                             <td><?= esc($order->customer_name); ?></td>
 
@@ -155,7 +154,7 @@
                                                                 ];
                                                                 $statusText = $statusLabels[$order->od_Status] ?? 'New';
                                                                 ?>
-                                                                <a href="<?= base_url('admin/orders/view/' . $order->od_Id); ?>"
+                                                                <a href="<?= base_url('admin/orders/view/' . $order->od_Number); ?>"
                                                                 style="text-decoration: none;">
                                                                     <span class="badge badge-info">
                                                                         <?= esc($statusText); ?>
@@ -185,76 +184,96 @@
                         <!--  project and team member end -->
 
                         <div class="col-xl-12 col-md-12">
-                            <div class="card table-card">
-                                <div class="card-header">
-                                    <h5>Latest Products</h5>
-                                </div>
-                                <div class="card-block">
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>Sl No</th>
-                                                    <th>Product Code</th>
-                                                    <th>Product Name</th>
-                                                    <th>Product Image</th>
-                                                    <th>MRP</th>
-                                                    <!-- <th>Selling Price</th> -->
-                                                    <!-- <th>Product Stock</th> -->
-                                                    <th>Details</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php $i = 1;
-                                                foreach ($latestProducts as $product): ?>
+                        <div class="card table-card">
+                            <div class="card-header">
+                                <h5>Latest Products</h5>
+                            </div>
+                            <div class="card-block">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Sl No</th>
+                                                <th>Product Code</th>
+                                                <th>Product Name</th>
+                                                <th>Product Image</th>
+                                                <th>MRP</th>
+                                                <th>Details</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <?php if (!empty($latestProducts)): ?>
+                                                <?php $i = 1; foreach ($latestProducts as $product): ?>
+
+                                                    <?php
+                                                        // Safe image handling
+                                                        $imageSrc = !empty($product->main_image ?? $product->pri_Thumbnail ?? null)
+                                                            ? base_url('uploads/productmedia/' . ($product->main_image ?? $product->pri_Thumbnail))
+                                                            : base_url('public/Admin/assets/images/default.jpg');
+
+                                                        //  Safe price handling (supports product-wise & variant-wise query)
+                                                        $price = $product->min_price 
+                                                                ?? $product->prv_price 
+                                                                ?? 0;
+                                                    ?>
+
                                                     <tr>
                                                         <td><?= $i++; ?></td>
-                                                        <td><?= esc($product->pr_Code); ?></td>
-                                                        <td><?= esc($product->pr_Name); ?></td>
+
+                                                        <td><?= esc($product->pr_Code ?? '-'); ?></td>
 
                                                         <td>
-                                                            <?php
-                                                            $imageSrc = !empty($product->main_image)
-                                                                ? base_url('uploads/productmedia/' . esc($product->main_image))
-                                                                : base_url('public/Admin/assets/images/default.jpg');
-                                                            ?>
+                                                            <?= esc($product->pr_Name ?? '-'); ?>
 
-                                                            <img src="<?= $imageSrc ?>" alt="<?= esc($product->pr_Name); ?>"
-                                                                class="img-thumbnail view-image" data-img="<?= $imageSrc ?>"
-                                                                style="height: 80px; cursor: pointer;">
-                                                        </td>
-
-
-                                                        <td>
-                                                            <?php if ($product->min_price && $product->max_price && $product->min_price != $product->max_price): ?>
-                                                                <i
-                                                                    class="bi bi-currency-rupee"></i><?= esc($product->min_price); ?>
-                                                                - <i
-                                                                    class="bi bi-currency-rupee"></i><?= esc($product->max_price); ?>
-                                                            <?php else: ?>
-                                                                <i
-                                                                    class="bi bi-currency-rupee"></i><?= esc($product->min_price ?? 0); ?>
+                                                            <?php if (!empty($product->prv_Color)): ?>
+                                                                <br>
+                                                                <small class="text-muted">
+                                                                    Color: <?= esc($product->prv_Color); ?>
+                                                                </small>
                                                             <?php endif; ?>
                                                         </td>
 
-                                                        <!-- <td><?= esc($product->pr_Stock); ?></td> -->
-                                                        <td><a
-                                                                href="<?= base_url('admin/product/view/' . $product->pr_Id); ?>">View
-                                                                Details</a>
-                                                    </tr>
-                                                <?php endforeach; ?>
-                                            </tbody>
-                                        </table>
+                                                        <td>
+                                                            <img src="<?= $imageSrc; ?>"
+                                                                class="img-thumbnail view-image"
+                                                                data-img="<?= $imageSrc; ?>"
+                                                                style="height: 80px; cursor:pointer;">
+                                                        </td>
 
-                                        <div class="text-right m-r-20">
-                                            <a href="<?= base_url('admin/product') ?>"
-                                                class="b-b-primary text-primary">View all Products</a>
-                                        </div>
+                                                        <td>
+                                                            <i class="bi bi-currency-rupee"></i>
+                                                            <?= esc(number_format($price, 2)); ?>
+                                                        </td>
+
+                                                        <td>
+                                                            <a href="<?= base_url('admin/product/view/' . ($product->pr_Id ?? 0)); ?>">
+                                                                View Details
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+
+                                                <?php endforeach; ?>
+                                            <?php else: ?>
+                                                <tr>
+                                                    <td colspan="6" class="text-center">No products found.</td>
+                                                </tr>
+                                            <?php endif; ?>
+
+                                        </tbody>
+                                    </table>
+
+                                    <div class="text-right m-r-20">
+                                        <a href="<?= base_url('admin/product') ?>" class="b-b-primary text-primary">
+                                            View all Products
+                                        </a>
                                     </div>
 
                                 </div>
                             </div>
                         </div>
+                    </div>
+
                     </div>
                 </div>
                 <!-- Page-body end -->

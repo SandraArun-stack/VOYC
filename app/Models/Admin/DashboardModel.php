@@ -107,25 +107,25 @@ class DashboardModel extends Model
 
     public function getTodaysOrders()
     {
-        $todayStart = date('Y-m-d 00:00:00');
-        $todayEnd   = date('Y-m-d 23:59:59');
+        $today = date('Y-m-d');
 
         return $this->db->table('order_detail AS od')
             ->select('
-                MAX(od.od_Id) as od_Id,
-                SUM(od.od_Quantity) as total_quantity,
-                SUM(od.od_Grand_Total) as total_grand,
-                MAX(od.od_Status) as od_Status,
+                od.od_Number,
+                SUM(od.od_Quantity) AS total_quantity,
+                MAX(od.od_Grand_Total) AS total_grand,
+                MAX(od.od_Status) AS od_Status,
+                MAX(od.od_createdon) AS created_on,
                 c.cust_Name AS customer_name
             ')
             ->join('customer AS c', 'c.cust_Id = od.cus_Id', 'left')
-            ->where('od.od_createdon >=', $todayStart)
-            ->where('od.od_createdon <=', $todayEnd)
-            ->groupBy('od.cus_Id')  
-            ->orderBy('od.od_Id', 'DESC')
+            ->where('DATE(od.od_createdon)', $today)
+            ->groupBy('od.od_Number')     
+            ->orderBy('created_on', 'DESC')
             ->get()
             ->getResult();
     }
+
 
     // public function getLatestProducts()
     // {
@@ -140,62 +140,91 @@ class DashboardModel extends Model
     // }
 
 
+//     public function getLatestProducts()
+// {
+//     $products = $this->db->table('product p')
+//         ->select('p.pr_Id, p.pr_Code, p.pr_Name, p.pr_Stock, pi.pri_Thumbnail')
+//         ->join('product_image pi', 'pi.pr_id = p.pr_Id', 'left')
+//         ->where('p.pr_Status', 1)
+//         ->orderBy('p.pr_createdon', 'DESC')
+//         ->limit(10)
+//         ->get()
+//         ->getResult();
+
+//     $sizes_order = ['S', 'M', 'L', 'XL', 'XXL'];
+
+//     foreach ($products as &$product) {
+//         // Get variants for this product
+//         $variants = $this->db->table('product_variants')
+//             ->select('prv_Size, prv_price')
+//             ->where('pr_Id', $product->pr_Id)
+//             ->where('prv_Status', 1)
+//             ->get()
+//             ->getResult();
+
+//         $minPrice = null;
+//         $maxPrice = null;
+
+//         // Find min price (first available size)
+//         foreach ($sizes_order as $size) {
+//             foreach ($variants as $v) {
+//                 if ($v->prv_Size == $size) {
+//                     $minPrice = $v->prv_price;
+//                     break 2;
+//                 }
+//             }
+//         }
+
+//         // Find max price (last available size)
+//         for ($i = count($sizes_order) - 1; $i >= 0; $i--) {
+//             foreach ($variants as $v) {
+//                 if ($v->prv_Size == $sizes_order[$i]) {
+//                     $maxPrice = $v->prv_price;
+//                     break 2;
+//                 }
+//             }
+//         }
+
+//         $product->min_price = $minPrice ?? 0;
+//         $product->max_price = $maxPrice ?? 0;
+
+//         // Set main image
+//         $product->main_image = !empty($product->pri_Thumbnail) ? $product->pri_Thumbnail : null;
+//     }
+
+//     return $products;
+// }
     public function getLatestProducts()
-{
-    $products = $this->db->table('product p')
-        ->select('p.pr_Id, p.pr_Code, p.pr_Name, p.pr_Stock, pi.pri_Thumbnail')
-        ->join('product_image pi', 'pi.pr_id = p.pr_Id', 'left')
-        ->where('p.pr_Status', 1)
-        ->orderBy('p.pr_createdon', 'DESC')
-        ->limit(10)
-        ->get()
-        ->getResult();
-
-    $sizes_order = ['S', 'M', 'L', 'XL', 'XXL'];
-
-    foreach ($products as &$product) {
-        // Get variants for this product
-        $variants = $this->db->table('product_variants')
-            ->select('prv_Size, prv_price')
-            ->where('pr_Id', $product->pr_Id)
-            ->where('prv_Status', 1)
+    {
+        $products = $this->db->table('product p')
+            ->select('p.pr_Id, p.pr_Code, p.pr_Name, p.pr_Stock, pi.pri_Thumbnail')
+            ->join('product_image pi', 'pi.pr_id = p.pr_Id', 'inner')
+            ->where('p.pr_Status', 1)
+            ->where('pi.pri_Thumbnail IS NOT NULL')
+            ->where('pi.pri_Thumbnail !=', '')
+            ->orderBy('p.pr_createdon', 'DESC')
+            ->limit(10)
             ->get()
             ->getResult();
 
-        $minPrice = null;
-        $maxPrice = null;
+        foreach ($products as &$product) {
+            $variant = $this->db->table('product_variants')
+                ->select('prv_price')
+                ->where('pr_Id', $product->pr_Id)
+                ->where('prv_Size', 'S')
+                ->where('prv_Status', 1)
+                ->orderBy('prv_Id', 'DESC')   
+                ->limit(1)                   
+                ->get()
+                ->getRow();
 
-        // Find min price (first available size)
-        foreach ($sizes_order as $size) {
-            foreach ($variants as $v) {
-                if ($v->prv_Size == $size) {
-                    $minPrice = $v->prv_price;
-                    break 2;
-                }
-            }
+            $product->min_price = $variant->prv_price ?? 0;
+
+            $product->main_image = $product->pri_Thumbnail;
         }
 
-        // Find max price (last available size)
-        for ($i = count($sizes_order) - 1; $i >= 0; $i--) {
-            foreach ($variants as $v) {
-                if ($v->prv_Size == $sizes_order[$i]) {
-                    $maxPrice = $v->prv_price;
-                    break 2;
-                }
-            }
-        }
-
-        $product->min_price = $minPrice ?? 0;
-        $product->max_price = $maxPrice ?? 0;
-
-        // Set main image
-        $product->main_image = !empty($product->pri_Thumbnail) ? $product->pri_Thumbnail : null;
+        return $products;
     }
-
-    return $products;
-}
-
-
 
 
     public function getLast7DaysOrdersCount()
