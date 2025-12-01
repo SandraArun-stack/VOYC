@@ -212,11 +212,11 @@ class ProductImage extends BaseController
             }
 
             // --- Upload new files (reuse helper) ---
-            $thumbnailUploaded = $this->uploadFiles($_FILES, $colorIndex, 'images', ['jpg', 'jpeg', 'png', 'webp']);
-            $sideUploaded = $this->uploadFiles($_FILES, $colorIndex, 'side_image', ['jpg', 'jpeg', 'png', 'webp']);
-            $sleeveUploaded = $this->uploadFiles($_FILES, $colorIndex, 'sleev_image', ['jpg', 'jpeg', 'png', 'webp']);
-            $RSleeve_Img = $this->uploadFiles($_FILES, $colorIndex, 'RSleeve_Img', ['jpg', 'jpeg', 'png', 'webp']);
-            $LSleeve_Img = $this->uploadFiles($_FILES, $colorIndex, 'LSleeve_Img', ['jpg', 'jpeg', 'png', 'webp']);
+            $thumbnailUploaded = $this->uploadFiles($_FILES, $colorIndex, 'images', ['jpg', 'jpeg', 'png', 'webp','avif']);
+            $sideUploaded = $this->uploadFiles($_FILES, $colorIndex, 'side_image', ['jpg', 'jpeg', 'png', 'webp','avif']);
+            $sleeveUploaded = $this->uploadFiles($_FILES, $colorIndex, 'sleev_image', ['jpg', 'jpeg', 'png', 'webp','avif']);
+            $RSleeve_Img = $this->uploadFiles($_FILES, $colorIndex, 'RSleeve_Img', ['jpg', 'jpeg', 'png', 'webp','avif']);
+            $LSleeve_Img = $this->uploadFiles($_FILES, $colorIndex, 'LSleeve_Img', ['jpg', 'jpeg', 'png', 'webp','avif']);
            $videoUploaded = $this->uploadFiles($_FILES, $colorIndex, 'video', ['mp4','mov','avi','mkv'], true);
 
 
@@ -345,11 +345,11 @@ class ProductImage extends BaseController
             }
 
             // --- Upload all file types using helper ---
-            $thumbnailUploaded = $this->uploadFiles($_FILES, $colorIndex, 'images', ['jpg', 'jpeg', 'png', 'webp']);
-            $sideUploaded = $this->uploadFiles($_FILES, $colorIndex, 'side_image', ['jpg', 'jpeg', 'png', 'webp']);
-            $sleeveUploaded = $this->uploadFiles($_FILES, $colorIndex, 'sleev_image', ['jpg', 'jpeg', 'png', 'webp']);
-            $RSleeve_Img = $this->uploadFiles($_FILES, $colorIndex, 'RSleeve_Img', ['jpg', 'jpeg', 'png', 'webp']);
-            $LSleeve_Img = $this->uploadFiles($_FILES, $colorIndex, 'LSleeve_Img', ['jpg', 'jpeg', 'png', 'webp']);
+            $thumbnailUploaded = $this->uploadFiles($_FILES, $colorIndex, 'images', ['jpg', 'jpeg', 'png', 'webp','avif']);
+            $sideUploaded = $this->uploadFiles($_FILES, $colorIndex, 'side_image', ['jpg', 'jpeg', 'png', 'webp','avif']);
+            $sleeveUploaded = $this->uploadFiles($_FILES, $colorIndex, 'sleev_image', ['jpg', 'jpeg', 'png', 'webp','avif']);
+            $RSleeve_Img = $this->uploadFiles($_FILES, $colorIndex, 'RSleeve_Img', ['jpg', 'jpeg', 'png', 'webp','avif']);
+            $LSleeve_Img = $this->uploadFiles($_FILES, $colorIndex, 'LSleeve_Img', ['jpg', 'jpeg', 'png', 'webp','avif']);
             $videoUploaded = $this->uploadFiles($_FILES, $colorIndex, 'videos', ['mp4', 'avi', 'mov', 'mkv', 'webm'], true);
 
             if (empty($thumbnailUploaded)) {
