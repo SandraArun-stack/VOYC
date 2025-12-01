@@ -65,8 +65,8 @@
                                                     <select class="form-control" name="game_id" id="game_id" required>
                                                         <option value="">-- Select Game --</option>
                                                         <?php foreach ($games as $g): ?>
-                                                            <option value="<?= $g['game_id']; ?>"
-                                                                <?= isset($leaderboard) && $leaderboard['game_id'] == $g['game_id'] ? 'selected' : '' ?>>
+                                                            <option value="<?= $g['game_Id']; ?>"
+                                                                <?= isset($leaderboard) && $leaderboard['game_Id'] == $g['game_Id'] ? 'selected' : '' ?>>
                                                                 <?= $g['game_name']; ?>
                                                             </option>
                                                         <?php endforeach; ?>

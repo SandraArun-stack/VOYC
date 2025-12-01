@@ -48,17 +48,17 @@ class Leaderboard extends BaseController
     public function save()
 {
     $id = $this->request->getPost('leaderboard_id');
-    $gameId = $this->request->getPost('game_id');
+    $gameId = $this->request->getPost('game_Id');
 
     // Get game name
     $game = $this->gameModel->find($gameId);
 
     $data = [
-        'leaderboard_id' => $id,
-        'date' => $this->request->getPost('date'),
-        'game_id' => $gameId,
+        'lb_Id' => $id,
+        'lb_date' => $this->request->getPost('date'),
+        'game_Id' => $gameId,
         'game_name' => $game['game_name'],
-        'turns' => $this->request->getPost('turns'),
+        // 'turns' => $this->request->getPost('turns'),
     ];
 
     if ($id) {

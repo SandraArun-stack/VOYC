@@ -256,18 +256,6 @@ $routes->get('admin/customer_address/view/(:num)/(:num)', 'Admin\Customer_addres
 $routes->post('admin/customer_address/save', 'Admin\Customer_address::createnew');
 $routes->post('admin/customer_address/delete/(:any)', 'Admin\Customer_address::deleteAddress/$1');
 
-
-
-//Themes
-$routes->get('admin/themes', 'Admin\Themes::index');
-$routes->post('admin/themes/List', 'Admin\Themes::ajaxList');
-$routes->post('admin/themes/status', 'Admin\Themes::updateStatus');
-$routes->get('admin/themes/add', 'Admin\Themes::addbanner'); // Create
-$routes->get('admin/themes/add/(:num)', 'Admin\Themes::addbanner/$1'); // Edit
-$routes->post('admin/themes/delete/(:any)', 'Admin\Themes::deleteBanner/$1');
-$routes->post('admin/themes/save_file', 'Admin\Themes::save_file');
-$routes->get('admin/get/themes', 'Admin\Themes::fetch_theme');
-
 //orders
 $routes->get('admin/orders', 'Admin\Orders::index');
 $routes->post('admin/orders/List', 'Admin\Orders::ajaxList');
