@@ -23,28 +23,33 @@
         </div>
     </div>
 
-    <div class="pcoded-inner-content">
+   <div class="pcoded-inner-content">
+        <div class="main-body">
+            <div class="page-wrapper">
+                <div class="page-body">
 
-        <div class="card">
-            <div class="card-block">
-                <div class="table-responsive">
+                    <div class="card">
+                        <div class="card-block table-border-style">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="tokenList">
+                                    <thead>
+                                         <tr>
+                                            <th>Sl.No.</th>
+                                            <th>User Name</th>
+                                            <th>Subscription Discount (%)</th>
+                                            <th>Additional Discount (%)</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
 
-                    <table class="table table-hover" id="discountList">
-                        <thead>
-                            <tr>
-                                <th>Sl.No.</th>
-                                <th>User Name</th>
-                                <th>Subscription Discount (%)</th>
-                                <th>Additional Discount (%)</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                    </table>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
             </div>
         </div>
-
     </div>
 
 </div>

@@ -64,23 +64,16 @@
                                                 <div class="col-sm-6">
                                                     <select class="form-control" name="game_id" id="game_id" required>
                                                         <option value="">-- Select Game --</option>
-                                                        <?php foreach ($games as $g): ?>
-                                                            <option value="<?= $g['game_Id']; ?>"
-                                                                <?= isset($leaderboard) && $leaderboard['game_Id'] == $g['game_Id'] ? 'selected' : '' ?>>
-                                                                <?= $g['game_name']; ?>
-                                                            </option>
-                                                        <?php endforeach; ?>
                                                     </select>
                                                 </div>
                                             </div>
 
                                             <!-- No. of Turns -->
                                             <div class="form-group row">
-                                                <label class="col-sm-2 col-form-label">No. of Turns <span style="color:red">*</span></label>
+                                                <label class="col-sm-2 col-form-label">No. of Tokens <span style="color:red">*</span></label>
                                                 <div class="col-sm-6">
-                                                    <input type="number" class="form-control" name="turns"
-                                                        value="<?= isset($leaderboard) ? $leaderboard['turns'] : '' ?>"
-                                                        required min="1" placeholder="Enter number of turns">
+                                                    <input type="number" class="form-control" name="tokens"
+                                                        >
                                                 </div>
                                             </div>
 
@@ -91,7 +84,7 @@
 
                                                 <!-- Discard -->
                                                 <button type="button" class="btn btn-secondary"
-                                                        onclick="window.location.href='<?= base_url('admin/leaderboard'); ?>'">
+                                                        onclick="window.location.href='<?= base_url('admin/game-details'); ?>'">
                                                     <i class="bi bi-x-circle"></i> Discard
                                                 </button>
 

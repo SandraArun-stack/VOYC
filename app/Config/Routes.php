@@ -265,7 +265,8 @@ $routes->post('admin/getDesign', 'Admin\Orders::getDesignAjax');
 
 // leaderboard
 $routes->get('admin/leaderboard', 'Admin\Leaderboard::leaderboardlist');
-$routes->get('admin/leaderboard/add', 'Admin\Leaderboard::leaderboard');
+
+$routes->get('admin/leaderboard/tee_winners', 'Admin\Leaderboard::teeWinners');
 $routes->post('admin/leaderboard/save', 'Admin\Leaderboard::save');
 $routes->add('admin/leaderboard/ajaxList', 'Admin\Leaderboard::ajaxList');
 // subscription management
@@ -285,6 +286,7 @@ $routes->get('admin/discount/list', 'Admin\Discount::list');
 // game details 
 $routes->get('admin/game-details', 'Admin\GameDetails::index');
 $routes->get('admin/game-details/list', 'Admin\GameDetails::list');
+$routes->get('admin/add_game/add', 'Admin\GameDetails::gameView');
 // game details view 
 $routes->get('admin/game-details-view', 'Admin\GameDetailsView::index');
 $routes->get('admin/game-details-view/list', 'Admin\GameDetailsView::list');

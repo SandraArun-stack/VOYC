@@ -35,11 +35,12 @@
                                         <tr>
                                             <th>Sl.No.</th>
                                             <th>User Name</th>
-                                            <th>Subscription Date</th>
-                                            <th>Expiry</th>
-                                            <th>Subscription Plan</th>
+                                            <th>Plan Name</th>
                                             <th>Discount</th>
-                                            <th>Token</th>
+                                            <th>Subscription Date</th>
+                                            <th>Expiry Date</th>
+                                            <th>Status</th>
+                                            <!-- <th>Token</th> -->
                                             <th>Action</th>
                                         </tr>
                                     </thead>

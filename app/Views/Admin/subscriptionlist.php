@@ -46,59 +46,53 @@
 
                                             <div class="table-responsive">
                                                 <table class="table table-hover">
-    <thead>
-        <tr>
-            <th>Sl.No</th>
-            <th>Plan Name</th>
-            <th>Rate</th>
-            <th>Validity (Days)</th>
-            <th>Discount</th>
-            <th>No. of Turns</th>
-            
-            <th>Action</th>
-        </tr>
-    </thead>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Sl.No</th>
+                                                            <th>Plan Name</th>
+                                                            <th>Rate</th>
+                                                            <th>Validity (Days)</th>
+                                                            <th>Discount</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
 
-    <tbody>
+                                                    <tbody>
 
-        <!-- Row 1 -->
-        <tr>
-            <td>1</td>
-            <td>One Day</td>
-            <td>₹9</td>
-            <td>1</td>
-            <td>20%</td>
-            <td>2</td>
-           
-            <td>
-                <a href="#" class="text-primary"><i class="bi bi-pencil-square"></i></a>
-                &nbsp;&nbsp;
-                <a href="#" class="text-warning"><i class="bi bi-slash-circle"></i></a>
-                &nbsp;&nbsp;
-                <a href="#" class="text-danger"><i class="bi bi-trash"></i></a>
-            </td>
-        </tr>
+                                                        <!-- Row 1 -->
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>One Day</td>
+                                                            <td>₹9</td>
+                                                            <td>1</td>
+                                                            <td>20%</td>
+                                                            <td>
+                                                                <a href="#" class="text-primary"><i class="bi bi-pencil-square"></i></a>
+                                                                &nbsp;&nbsp;
+                                                                <a href="#" class="text-warning"><i class="bi bi-slash-circle"></i></a>
+                                                                &nbsp;&nbsp;
+                                                                <a href="#" class="text-danger"><i class="bi bi-trash"></i></a>
+                                                            </td>
+                                                        </tr>
 
-        <!-- Row 2 -->
-        <tr>
-            <td>2</td>
-            <td>One Month</td>
-            <td>₹234</td>
-            <td>30</td>
-            <td>25%</td>
-            <td>2</td>
-            
-            <td>
-                <a href="#" class="text-primary"><i class="bi bi-pencil-square"></i></a>
-                &nbsp;&nbsp;
-                <a href="#" class="text-warning"><i class="bi bi-slash-circle"></i></a>
-                &nbsp;&nbsp;
-                <a href="#" class="text-danger"><i class="bi bi-trash"></i></a>
-            </td>
-        </tr>
+                                                        <!-- Row 2 -->
+                                                        <tr>
+                                                            <td>2</td>
+                                                            <td>One Month</td>
+                                                            <td>₹234</td>
+                                                            <td>30</td>
+                                                            <td>25%</td>
+                                                            <td>
+                                                                <a href="#" class="text-primary"><i class="bi bi-pencil-square"></i></a>
+                                                                &nbsp;&nbsp;
+                                                                <a href="#" class="text-warning"><i class="bi bi-slash-circle"></i></a>
+                                                                &nbsp;&nbsp;
+                                                                <a href="#" class="text-danger"><i class="bi bi-trash"></i></a>
+                                                            </td>
+                                                        </tr>
 
-    </tbody>
-</table>
+                                                    </tbody>
+                                                </table>
 
                                             </div>
 
