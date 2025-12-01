@@ -53,11 +53,3 @@
     </div>
 
 </div>
-
-<script>
-$(function () {
-    $('#discountList').DataTable({
-        ajax: '<?= base_url("admin/discount/list") ?>'
-    });
-});
-</script>
