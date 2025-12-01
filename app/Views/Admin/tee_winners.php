@@ -14,7 +14,7 @@
                         <li class="breadcrumb-item">
                             <a href="<?= base_url('admin/dashboard'); ?>"> <i class="fa fa-home"></i> </a>
                         </li>
-                        <li class="breadcrumb-item"><a href="#">Leaderboard</a>
+                        <li class="breadcrumb-item"><a href="#">Tee Winners</a>
                         </li>
                     </ul>
                 </div>
@@ -34,21 +34,10 @@
                             <div class="card">
                                 <div class="card-header">
                                     <div class="row">
-                                        <div class="col-md-2">
-
+                                        <div class="col text-end">
+                                            <button class="btn btn-secondary" id="backToLeaderboard">Back to Leaderboard</button>
                                         </div>
-                                        <div class="col-md-7">
-
-                                        </div>
-										<div class="col-md-3">
-                                            <div class="row">
-                                                <div class="col-lg-12 d-flex justify-content-end p-2">
-                                                    <a href="<?= base_url('admin/leaderboard/tee_winners'); ?>" class="btn btn-primary">Tee Winners</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                    </div>
+                                    </div><br />
                                 </div>
                                 <div class="card-block">
                                 <div class="card">
@@ -65,6 +54,7 @@
                                                                 <th>Game Name</th>
                                                                 <th>Score</th>
                                                                 <th>Rank</th>
+                                                                 <th>Status</th>
                                                                 <th>Action</th>
                                                             </tr>
                                                         </thead>

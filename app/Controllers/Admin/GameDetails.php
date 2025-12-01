@@ -26,7 +26,21 @@ class GameDetails extends BaseController
         echo view('Admin/game_details_list');
         echo view('Admin/common/footer');
     }
+    public function gameView($id = null)
+    {
+        if (!$this->session->get('ad_uid')) {
+            return redirect()->to('admin');
+        }
 
+        $data = [];
+       
+        // $data['games'] = $this-> gameModel->findAll();
+
+        echo view('Admin/common/header');
+        echo view('Admin/common/leftmenu');
+        echo view('Admin/add_game', $data);
+        echo view('Admin/common/footer');
+    }
     public function list()
     {
         $games = $this->model->orderBy('id', 'DESC')->findAll();

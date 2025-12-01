@@ -84,7 +84,7 @@
                             </li>
                             <li class="<?= ($segment == 'game-details') ? 'active' : '' ?>">
                                 <a href="<?= base_url('admin/game-details') ?>">
-                                    <span class="pcoded-mtext">Game Details</span>
+                                    <span class="pcoded-mtext">Game </span>
                                 </a>
                             </li>
                             <li class="<?= ($segment == 'game-details-view') ? 'active' : '' ?>">
@@ -108,7 +108,7 @@
 
                             <li class="<?= ($segment == 'token') ? 'active' : '' ?>">
                                 <a href="<?= base_url('admin/token') ?>">
-                                    <span class="pcoded-mtext">Token & Discount Management</span>
+                                    <span class="pcoded-mtext">Token Management</span>
                                 </a>
                             </li>
                              <li class="<?= ($segment == 'discount') ? 'active' : '' ?>">

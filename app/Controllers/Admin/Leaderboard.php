@@ -26,22 +26,16 @@ class Leaderboard extends BaseController
         echo view('Admin/common/footer');
     }
 
-    public function leaderboard($id = null)
+    
+    public function teeWinners()
     {
         if (!$this->session->get('ad_uid')) {
             return redirect()->to('admin');
         }
 
-        $data = [];
-        if ($id) {
-            $data['leaderboard'] = $this->model->find($id);
-        }
-
-        $data['games'] = $this->gameModel->findAll();
-
         echo view('Admin/common/header');
         echo view('Admin/common/leftmenu');
-        echo view('Admin/leaderboard', $data);
+        echo view('Admin/tee_winners');
         echo view('Admin/common/footer');
     }
 
