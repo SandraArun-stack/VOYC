@@ -9,10 +9,7 @@ class SettingsModel extends Model
     protected $primaryKey = 'common_table_Id';
     protected $allowedFields = ['common_table_Id', 'field', 'value'];
 
-    // public function getCustomizationCharge()
-    // {
-    //     return $this->where('field', 'customization_charge')->first();  // This returns an object
-    // }
+
 
     public function getCustomizationCharges()
     {
@@ -20,7 +17,10 @@ class SettingsModel extends Model
         $fields = [
             'front_Customization_Price',
             'back_Customization_Price',
-            'sleeve_Customization_Price'
+            'sleeve_Customization_Price',
+            'leaderboard_count',
+            'winning_percentage',
+            'extra_discount_percentage'
         ];
 
         $result = $this->whereIn('field', $fields)->findAll();
@@ -28,7 +28,10 @@ class SettingsModel extends Model
         $charges = [
             'front_Customization_Price' => '',
             'back_Customization_Price' => '',
-            'sleeve_Customization_Price' => ''
+            'sleeve_Customization_Price' => '',
+            'leaderboard_count' => '',
+            'winning_percentage' => '',
+            'extra_discount_percentage' => ''
         ];
 
         foreach ($result as $row) {
