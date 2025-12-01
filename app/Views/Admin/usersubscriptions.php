@@ -54,11 +54,3 @@
         </div>
     </div>
 </div>
-
-<script>
-$(function() {
-    $('#userSubList').DataTable({
-        ajax: '<?= base_url("admin/usersubscriptions/list") ?>'
-    });
-});
-</script>
