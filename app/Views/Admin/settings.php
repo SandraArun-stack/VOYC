@@ -57,7 +57,7 @@
                                                         <label for="front_Customization_Price">Front
                                                             Customization(₹)</label>
                                                     </div>
-                                                    <div class="col-md-9">
+                                                    <div class="col-md-6">
                                                         <input type="text" class="form-control"
                                                             id="front_Customization_Price"
                                                             name="front_Customization_Price"
@@ -71,7 +71,7 @@
                                                             Customization(₹)</label>
 
                                                     </div>
-                                                    <div class="col-md-9">
+                                                    <div class="col-md-6">
                                                         <input type="text" class="form-control"
                                                             id="back_Customization_Price"
                                                             name="back_Customization_Price"
@@ -86,7 +86,7 @@
                                                         </label>
                                                         <small class="settings_charge_text d-block">(Charge Per Sleeve Customization)</small>
                                                     </div>
-                                                    <div class="col-md-9">
+                                                    <div class="col-md-6">
                                                         <input type="text" class="form-control"
                                                             id="sleeve_Customization_Price"
                                                             name="sleeve_Customization_Price"
@@ -97,9 +97,59 @@
                                                 </div>
                                                 <div class="row mb-3 setting_row">
                                                     <div class="col-md-3">
-                                                        <a href="<?= base_url('admin/dashboard') ?>" class="btn btn-secondary">
+                                                        <label for="">Leaderboard Count
+                                                        </label>
+                                                        <small class="settings_charge_text d-block">
+                                                           (Number of Players With Premium Access)</small>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <input type="text" class="form-control"
+                                                            id="leaderboard_count"
+                                                            name="leaderboard_count"
+                                                            value="<?= esc($leaderboard_count ?? '') ?>"
+                                                            placeholder="Enter the Leaderboard Winner Count">
+                                                    </div>
+
+                                                </div>
+                                                <div class="row mb-3 setting_row">
+                                                    <div class="col-md-3">
+                                                        <label for="">Winning Percentage
+                                                        </label>
+                                                        <small class="settings_charge_text d-block">
+                                                           (Specify What Percentage of Winners Get a Free Customized Tee)</small>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <input type="text" class="form-control"
+                                                            id="winning_percentage"
+                                                            name="winning_percentage"
+                                                            value="<?= esc($winning_percentage ?? '') ?>"
+                                                            placeholder="Enter the Percent of Winners Receiving Free Tee">
+                                                    </div>
+
+                                                </div>
+                                                <div class="row mb-3 setting_row">
+                                                    <div class="col-md-3">
+                                                        <label for="">Extra Discount Percentage
+                                                        </label>
+                                                        <small class="settings_charge_text d-block">
+                                                          (Discount Percentage for Players Outside the Top Winners)</small>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <input type="text" class="form-control"
+                                                            id="extra_discount_percentage"
+                                                            name="extra_discount_percentage"
+                                                            value="<?= esc($extra_discount_percentage ?? '') ?>"
+                                                            placeholder="Enter the Discount Percentage">
+                                                    </div>
+
+                                                </div>
+                                                <div class="row mb-3 setting_row">
+                                                    <div class="col-md-3">
+                                                        <a href="<?= base_url('admin/dashboard') ?>"
+                                                            class="btn btn-secondary">
                                                             <i class="bi bi-x-circle"></i>Discard</a>
-                                                        <button type="button" id="btnUpdateCharge"  class="btn btn-primary">
+                                                        <button type="button" id="btnUpdateCharge"
+                                                            class="btn btn-primary">
                                                             <i class="bi bi-check-circle"></i>Update</button>
                                                     </div>
                                                 </div>
