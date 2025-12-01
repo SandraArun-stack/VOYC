@@ -61,15 +61,15 @@
                             <span class="pcoded-mtext" data-i18n="nav.dash.main">Leaderboard</span>
                             <span class="pcoded-mcaret"></span>
                         </a>
-                    </li>
-                    <li class="<?= ($segment == 'subscription') ? 'active' : '' ?>">
+                    </li> -->
+                    <!-- <li class="<?= ($segment == 'subscription') ? 'active' : '' ?>">
                         <a href="<?php echo base_url('admin/subscription') ?>" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="bi bi-clipboard2-data"></i><b>D</b></span>
                             <span class="pcoded-mtext" data-i18n="nav.dash.main">Manage Subscriptions</span>
                             <span class="pcoded-mcaret"></span>
                         </a>
                     </li> -->
-                    <!-- <li class="pcoded-hasmenu <?= in_array($segment, ['leaderboard','subscription','usersubscriptions','token']) ? 'active pcoded-trigger' : '' ?>">
+                    <li class="pcoded-hasmenu <?= in_array($segment, ['leaderboard','subscription','usersubscriptions','token']) ? 'active pcoded-trigger' : '' ?>">
                         <a href="javascript:void(0)" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="bi bi-controller"></i></span>
                             <span class="pcoded-mtext">Game Arena</span>
@@ -119,7 +119,7 @@
 
     
                         </ul>
-                    </li> -->
+                    </li>
 
 
                     <!-- <li class="<?= ($segment == 'profile') ? 'active' : '' ?>">
