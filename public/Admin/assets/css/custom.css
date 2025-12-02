@@ -156,6 +156,7 @@
     color: #797979;
     font-size: 13px;
 }
+
  @media (max-width: 768px) {
      .category-promo .section2-item {
          margin-bottom: 10px;
