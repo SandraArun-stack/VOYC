@@ -29,7 +29,7 @@
                 <!-- Page-body start -->
                 <div class="page-body">
                     <div class="row">
-                        <div class="col-md-12"> 
+                        <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
                                     <div class="row">
@@ -40,17 +40,20 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="card-block">
 
                                     <div class="table-responsive">
-                                        <table class="table table-hover" id="gameDetailsList">
+                                        <table class="table table-hover" id="gameMappings">
                                             <thead>
                                                 <tr>
                                                     <th>Sl.No.</th>
                                                     <th>Date</th>
                                                     <th>Game Name</th>
-                                                    <th>Number of Tokens</th>
+                                                    <th>Tokens</th>
+                                                    <th>Leaderboard Count</th>
+                                                    <th>Winning Percentage</th>
+                                                    <th>Discount Percentage</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -64,9 +67,7 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
 
 </div>
-
-
