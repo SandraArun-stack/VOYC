@@ -2,21 +2,21 @@
 $(document).ready(function() {
     // Initialize DataTable
     var table = $('#leaderboardList').DataTable({
-    processing: true,
-    serverSide: true,
-    ajax: {
-        url: "<?= base_url('admin/leaderboard/ajaxList'); ?>",
-        type: "POST"
-    },
-    columns: [
-        { data: "sl_no" },
-        { data: "date" },
-        { data: "game_name" },
-        { data: "winners" },
-        { data: "turns" },
-        { data: "action", orderable: false }
-    ]
-});
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: "<?= base_url('admin/leaderboard/ajaxList'); ?>",
+            type: "POST"
+        },
+        columns: [
+            { data: "sl_no" },
+            { data: "date" },
+            { data: "game_name" },
+            { data: "winners" },
+            { data: "turns" },
+            { data: "action", orderable: false }
+        ]
+    });
 
 
     // Delete Action
@@ -34,7 +34,7 @@ $(document).ready(function() {
             table.ajax.reload();
         }, 'json');
     });
-});
+
 
 
     // Delete
