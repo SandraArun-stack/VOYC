@@ -12,34 +12,57 @@ class Subscription extends BaseController
         $this->model = new SubscriptionModel();
     }
 
-    public function subscriptionlist()
+    public function index()
     {
         if (!$this->session->get('ad_uid')) {
             return redirect()->to('admin');
         }
-
-        echo view('Admin/common/header');
-        echo view('Admin/common/leftmenu');
-        echo view('Admin/subscriptionlist');
-        echo view('Admin/common/footer');
+        $template = view('Admin/common/header');
+		$template .= view('Admin/common/leftmenu');
+        $template .= view('Admin/subscriptionlist');
+		$template .= view('Admin/common/footer');
+		$template .= view('Admin/page_scripts/subscriptionjs');
+        return $template;
     }
-
-    public function index($id = null)
+    public function ajaxList()
     {
-        if (!$this->session->get('ad_uid')) {
-            return redirect()->to('admin');
+        $model = new SubscriptionModel(); 
+        $data = $model->getDatatables();
+        $total = $model->countAll();
+        $filtered = $model->countFiltered();
+
+        foreach ($data as &$row) {
+
+            if (!empty($row['sp_plan_name'])) {
+                if ($row['sp_plan_name'] === strtoupper($row['sp_plan_name'])) {
+                    $row['sp_plan_name'] = $row['sp_plan_name'];
+                } else {
+                    $row['sp_plan_name'] = ucwords(strtolower($row['sp_plan_name']));
+                }
+            } else {
+                $row['sp_plan_name'] = 'N/A';
+            }
+            $row['sp_amount'] = !empty($row['sp_amount']) ? (int)$row['sp_amount'] : '0';
+            $row['sp_validity'] = !empty($row['sp_validity']) ? $row['sp_validity'] : '0';
+            if (!empty($row['sp_discount'])) {
+                $discount = (int)$row['sp_discount'];
+                $row['sp_discount'] = $discount . '%';
+            } else {
+                $row['sp_discount'] = '0%';
+            }
+            $row['actions'] = '<a href="' . base_url('admin/subscription/add/' . $row['sp_Id']) . '" class="" title="Edit">
+                    <i class="bi bi-pencil-square"></i>
+                </a>
+                &nbsp;
+                    <i class="bi bi-trash text-danger" onclick="confirmDelete(' . $row['sp_Id'] . ')" title="Delete"></i>';
         }
 
-        $data = [];
-
-        if ($id) {
-            $data['subscription'] = $this->model->find($id);
-        }
-
-        echo view('Admin/common/header');
-        echo view('Admin/common/leftmenu');
-        echo view('Admin/subscription', $data);
-        echo view('Admin/common/footer');
+        return $this->response->setJSON([
+            'draw' => intval($this->request->getPost('draw')),
+            'recordsTotal' => $total,
+            'recordsFiltered' => $filtered,
+            'data' => $data
+        ]);
     }
     public function save()
     {
@@ -81,19 +104,14 @@ class Subscription extends BaseController
         $pageIndex = (int) $this->request->getGet('pageIndex');
         $pageSize  = (int) $this->request->getGet('pageSize');
         $search    = $this->request->getGet('search');
-
         if ($pageSize <= 0) {
             $pageSize = 10;
         }
-
         if ($pageIndex < 0) {
             $pageIndex = 0;
         }
-
         $offset = $pageIndex * $pageSize;
-
         $data = $this->model->getAllSubscriptions($pageSize, $offset, $search);
-
         return $this->response->setJSON([
             'success' => true,
             'message' => 'Subscriptions fetched successfully.',
@@ -125,4 +143,5 @@ class Subscription extends BaseController
             'data'    => $subscription
         ]);
     }
+
 }

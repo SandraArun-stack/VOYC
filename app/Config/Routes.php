@@ -257,12 +257,12 @@ $routes->post('admin/getDesign', 'Admin\Orders::getDesignAjax');
 
 // leaderboard
 $routes->get('admin/leaderboard', 'Admin\Leaderboard::index');
-$routes->get('admin/leaderboard/tee_winners', 'Admin\Leaderboard::teeWinners');
+// $routes->get('admin/leaderboard/tee_winners', 'Admin\Leaderboard::teeWinners');
 $routes->post('admin/leaderboard/list', 'Admin\Leaderboard::ajaxList');
 
 // subscription management
-$routes->get('admin/subscription', 'Admin\Subscription::subscriptionlist');
-$routes->get('admin/subscription/add', 'Admin\Subscription::index');
+$routes->get('admin/subscription', 'Admin\Subscription::index');
+$routes->post('admin/subscription/list', 'Admin\Subscription::ajaxList');
 
 // USER SUBSCRIPTIONS
 $routes->get('admin/usersubscriptions', 'Admin\UserSubscriptions::index');
@@ -285,6 +285,8 @@ $routes->get('admin/add_game/add', 'Admin\Games::gameView');
 $routes->post('admin/game/saveGameMapping', 'Admin\Games::saveGameMapping');
 $routes->post('admin/game/ajaxList', 'Admin\Games::ajaxList');
 $routes->get('admin/game/edit/', 'Admin\Games::edit');
+$routes->get('admin/game/edit/(:num)', 'Admin\Games::edit/$1');
+$routes->post('admin/game/delete', 'Admin\Games::delete');
 
 // game details view 
 $routes->get('admin/game-details-view', 'Admin\GameDetailsView::index');
