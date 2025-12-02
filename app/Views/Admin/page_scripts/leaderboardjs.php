@@ -1,60 +1,46 @@
 <script>
 $(document).ready(function() {
-    // Initialize DataTable
-    var table = $('#leaderboardList').DataTable({
+    var baseUrl = "<?= base_url() ?>";
+    var csrfTokenName = "<?= csrf_token() ?>";
+    var csrfHash = "<?= csrf_hash() ?>";
+
+    $('#leaderboardList').DataTable({
         processing: true,
         serverSide: true,
+        order: [],
+
         ajax: {
-            url: "<?= base_url('admin/leaderboard/ajaxList'); ?>",
-            type: "POST"
+            url: baseUrl + "admin/leaderboard/List",
+            type: "POST",
+            data: function (d) {
+                d[csrfTokenName] = csrfHash;
+            }
         },
+
         columns: [
-            { data: "sl_no" },
-            { data: "date" },
-            { data: "game_name" },
-            { data: "winners" },
-            { data: "turns" },
-            { data: "action", orderable: false }
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                },
+                orderable: false,
+                searchable: false
+            },
+            { data: 'lb_date' },
+            { data: 'game_name' },
+            { data: 'player' },
+            { data: 'lb_score' },
+            { data: 'lb_rank' },
+            { data: 'actions' }
+        ],
+
+        columnDefs: [
+            {
+                targets: [6],
+                orderable: false,
+                searchable: false
+            }
         ]
-    });
-
-
-    // Delete Action
-    $(document).on('click', '.delete', function() {
-        if (!confirm("Delete this record?")) return;
-
-        $.post("<?= base_url('admin/leaderboard/delete'); ?>", { id: $(this).data("id") }, function(response) {
-            table.ajax.reload();
-        }, 'json');
-    });
-
-    // Block Action
-    $(document).on('click', '.block', function() {
-        $.post("<?= base_url('admin/leaderboard/block'); ?>", { id: $(this).data("id") }, function(response) {
-            table.ajax.reload();
-        }, 'json');
-    });
-
-
-
-    // Delete
-    $(document).on('click', '.delete', function() {
-        if (!confirm("Delete this record?")) return;
-
-        $.post("<?= base_url('admin/leaderboard/delete'); ?>", {
-            id: $(this).data("id")
-        }, function(response) {
-            table.ajax.reload();
-        }, 'json');
-    });
-
-    // Block
-    $(document).on('click', '.block', function() {
-        $.post("<?= base_url('admin/leaderboard/block'); ?>", {
-            id: $(this).data("id")
-        }, function(response) {
-            table.ajax.reload();
-        }, 'json');
     });
 });
 </script>
