@@ -6,52 +6,87 @@ use CodeIgniter\Model;
 class LeaderboardModel extends Model
 {
     protected $table = 'leaderboard';
-    protected $primaryKey = 'leaderboard_id';
+    protected $primaryKey = 'lb_Id';
 
     protected $allowedFields = [
-        'date', 'game_id', 'game_name', 'winners', 'turns',
-        'created_by', 'created_at', 'updated_by', 'updated_at', 'status'
+        'cust_Id',
+        'game_Id',
+        'lb_date',
+        'lb_score',
+        'lb_rank',
+        'lb_discount',
+        'player_Id',
+        'lb_created_by',
+        'lb_created_at',
+        'lb_updated_by',
+        'lb_updated_at'
     ];
 
-    // Function to build query for DataTables with pagination and filtering
-    private function _get_datatables_query()
-    {
-        $builder = $this->builder();
-        $builder->where('status !=', 9); // Exclude deleted records
-
-        // Check if there’s a search term
-        $searchValue = $_POST['search']['value'] ?? '';
-        if (!empty($searchValue)) {
-            $builder->groupStart()
-                ->like('game_name', $searchValue)
-                ->orLike('date', $searchValue)
-            ->groupEnd();
-        }
-
-        return $builder;
-    }
-
-    // Function to get the leaderboard data with pagination
     public function getDatatables()
     {
-        $builder = $this->_get_datatables_query();
+        $postData = service('request')->getPost();
+        $searchValue = '';
 
-        if ($_POST['length'] != -1) {
-            $builder->limit($_POST['length'], $_POST['start']);
+        if (!empty($postData['search']['value'])) {
+            $searchValue = $this->db->escapeLikeString(trim($postData['search']['value']));
+        }
+
+        $builder = $this->db->table('leaderboard lb');
+        $builder->select('
+            lb.lb_Id,
+            lb.lb_date,
+            lb.lb_score,
+            lb.lb_rank,
+            g.game_name,
+            c.cust_Name AS player
+        ');
+
+        $builder->join('game g', 'g.game_Id = lb.game_Id', 'left');
+        $builder->join('customer c', 'c.cust_Id = lb.cust_Id', 'left');
+
+        if (!empty($searchValue)) {
+            $builder->groupStart();
+            $builder->like('g.game_name', $searchValue);
+            $builder->orLike('c.cust_Name', $searchValue);
+            $builder->groupEnd();
+        }
+
+        $builder->orderBy('lb.lb_Id', 'DESC');
+
+        if (!empty($postData['length']) && $postData['length'] != -1) {
+            $builder->limit($postData['length'], $postData['start']);
         }
 
         return $builder->get()->getResultArray();
     }
 
-    // Function to count the total number of records after applying filters
-    public function countFiltered()
-    {
-        return $this->_get_datatables_query()->countAllResults(false);
-    }
-
-    // Function to count the total number of records
     public function countAll()
     {
-        return $this->where('status !=', 9)->countAllResults();
+        return $this->db->table('leaderboard')->countAllResults();
+    }
+
+    public function countFiltered()
+    {
+        $postData = service('request')->getPost();
+        $searchValue = '';
+
+        if (!empty($postData['search']['value'])) {
+            $searchValue = $this->db->escapeLikeString(trim($postData['search']['value']));
+        }
+
+        $builder = $this->db->table('leaderboard lb');
+        $builder->select('COUNT(*) as total');
+
+        $builder->join('game g', 'g.game_Id = lb.game_Id', 'left');
+        $builder->join('customer c', 'c.cust_Id = lb.cust_Id', 'left');
+
+        if (!empty($searchValue)) {
+            $builder->groupStart();
+            $builder->like('g.game_name', $searchValue);
+            $builder->orLike('c.cust_Name', $searchValue);
+            $builder->groupEnd();
+        }
+
+        return $builder->get()->getRow()->total;
     }
 }

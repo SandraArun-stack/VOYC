@@ -61,8 +61,8 @@
                                                             <tr>
                                                                 <th>Sl.No.</th>
                                                                 <th>Date</th>
-                                                                <th>Player Name</th>
                                                                 <th>Game Name</th>
+                                                                <th>Player Name</th>
                                                                 <th>Score</th>
                                                                 <th>Rank</th>
                                                                 <th>Action</th>

@@ -3,7 +3,12 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
 use App\Models\Admin\LeaderboardModel;
-use App\Models\Admin\GameModel;
+
+use App\Models\Admin\GameDetailsModel;
+use App\Models\Admin\CustomerModel;
+
+use App\Models\Admin\GamesModel;
+
 
 class Leaderboard extends BaseController
 {
@@ -39,64 +44,37 @@ class Leaderboard extends BaseController
         echo view('Admin/common/footer');
     }
 
-//     public function save()
-// {
-//     $id = $this->request->getPost('leaderboard_id');
-//     $gameId = $this->request->getPost('game_Id');
-
-//     // Get game name
-//     $game = $this->gameModel->find($gameId);
-
-//     $data = [
-//         'lb_Id' => $id,
-//         'lb_date' => $this->request->getPost('date'),
-//         'game_Id' => $gameId,
-//         'game_name' => $game['game_name'],
-//         // 'turns' => $this->request->getPost('turns'),
-//     ];
-
-//     if ($id) {
-//         $data['updated_by'] = $this->session->get('ad_uid');
-//     } else {
-//         $data['created_by'] = $this->session->get('ad_uid');
-//     }
-
-//     $this->model->save($data);
-
-//     return redirect()->to(base_url('admin/leaderboard'))->with('success', 'Saved successfully');
-// }
-
 
     public function ajaxList()
     {
-        $list = $this->model->getDatatables();
-        $data = [];
-        $no = $_POST['start'];
+        $model = new LeaderboardModel();
+        $data = $model->getDatatables();
+        $total = $model->countAll();
+        $filtered = $model->countFiltered();
 
-        foreach ($list as $row) {
-            $no++;
+        foreach ($data as &$row) {
 
-            $actions = '
-                <a href="' . base_url("admin/leaderboard/" . $row['leaderboard_id']) . '" class="btn btn-primary btn-sm">Edit</a>
-                <button class="btn btn-danger btn-sm delete" data-id="' . $row['leaderboard_id'] . '">Delete</button>
-                <button class="btn btn-warning btn-sm block" data-id="' . $row['leaderboard_id'] . '">Block</button>
+            $row['lb_date']   = $row['lb_date'] ?? 'N/A';
+            $row['game_name'] = $row['game_name'] ?? 'N/A';
+            $row['player']    = $row['player'] ?? 'N/A';
+            $row['lb_score']  = $row['lb_score'] ?? '0';
+            $row['lb_rank']   = $row['lb_rank'] ?? '0';
+
+            // Action Button
+            $row['actions'] = '
+                <a href="' . base_url('admin/leaderboard/view/' . $row['lb_Id']) . '" title="View">
+                    <i class="bi bi-eye"></i>
+                </a>&nbsp;
+                <i class="bi bi-trash text-danger icon-clickable"
+                   onclick="confirmDelete(' . $row['lb_Id'] . ')"></i>
             ';
-
-            $data[] = [
-                $no,
-                $row['date'],
-                $row['game_name'],
-                $row['winners'],
-                $row['turns'],
-                $actions
-            ];
         }
 
         return $this->response->setJSON([
-            "draw" => intval($_POST['draw']),
-            "recordsTotal" => $this->model->countAll(),
-            "recordsFiltered" => $this->model->countFiltered(),
-            "data" => $data
+            'draw'            => intval($this->request->getPost('draw')),
+            'recordsTotal'    => $total,
+            'recordsFiltered' => $filtered,
+            'data'            => $data
         ]);
     }
 
