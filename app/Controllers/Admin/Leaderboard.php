@@ -13,86 +13,52 @@ class Leaderboard extends BaseController
         $this->session = session();
         $this->model = new LeaderboardModel();
         $this->gameModel = new GamesModel();
+        $this->customerModel = new CustomerModel(); 
     }
- 
-    public function leaderboardlist()
+    public function index()
     {
         if (!$this->session->get('ad_uid')) {
             return redirect()->to('admin');
         }
- 
-        echo view('Admin/common/header');
-        echo view('Admin/common/leftmenu');
-        echo view('Admin/leaderboardlist');
-        echo view('Admin/common/footer');
+        $template = view('Admin/common/header');
+		$template .= view('Admin/common/leftmenu');
+        $template .= view('Admin/leaderboardlist');
+		$template .= view('Admin/common/footer');
+		$template .= view('Admin/page_scripts/leaderboardjs');
+        return $template;
     }
- 
-   
     public function teeWinners()
     {
         if (!$this->session->get('ad_uid')) {
             return redirect()->to('admin');
         }
- 
-        echo view('Admin/common/header');
-        echo view('Admin/common/leftmenu');
-        echo view('Admin/tee_winners');
-        echo view('Admin/common/footer');
+        $template = view('Admin/common/header');
+		$template .= view('Admin/common/leftmenu');
+        $template .= view('Admin/tee_winners');
+        $template .= view('Admin/common/footer');
+        return $template;
     }
- 
-//     public function save()
-// {
-//     $id = $this->request->getPost('leaderboard_id');
-//     $gameId = $this->request->getPost('game_Id');
- 
-//     // Get game name
-//     $game = $this->gameModel->find($gameId);
- 
-//     $data = [
-//         'lb_Id' => $id,
-//         'lb_date' => $this->request->getPost('date'),
-//         'game_Id' => $gameId,
-//         'game_name' => $game['game_name'],
-//         // 'turns' => $this->request->getPost('turns'),
-//     ];
- 
-//     if ($id) {
-//         $data['updated_by'] = $this->session->get('ad_uid');
-//     } else {
-//         $data['created_by'] = $this->session->get('ad_uid');
-//     }
- 
-//     $this->model->save($data);
- 
-//     return redirect()->to(base_url('admin/leaderboard'))->with('success', 'Saved successfully');
-// }
- 
- 
     public function ajaxList()
     {
         $model = new LeaderboardModel();
         $data = $model->getDatatables();
         $total = $model->countAll();
         $filtered = $model->countFiltered();
- 
+
         foreach ($data as &$row) {
- 
-            $row['lb_date']   = $row['lb_date'] ?? 'N/A';
-            $row['game_name'] = $row['game_name'] ?? 'N/A';
-            $row['player']    = $row['player'] ?? 'N/A';
+
+            if (!empty($row['lb_date'])) {
+                $row['lb_date'] = date('d M Y', strtotime($row['lb_date']));
+            } else {
+                $row['lb_date'] = 'N/A';
+            }
+            $row['game_name'] = !empty($row['game_name']) ? ucwords(strtolower($row['game_name'])) : 'N/A';
+            $row['player'] = !empty($row['player']) ? ucwords(strtolower($row['player'])) : 'N/A';
             $row['lb_score']  = $row['lb_score'] ?? '0';
             $row['lb_rank']   = $row['lb_rank'] ?? '0';
- 
-            // Action Button
-            $row['actions'] = '
-                <a href="' . base_url('admin/leaderboard/view/' . $row['lb_Id']) . '" title="View">
-                    <i class="bi bi-eye"></i>
-                </a>&nbsp;
-                <i class="bi bi-trash text-danger icon-clickable"
-                   onclick="confirmDelete(' . $row['lb_Id'] . ')"></i>
-            ';
+            // $row['lb_status'] = $row['lb_status'] ?? 0;
         }
- 
+
         return $this->response->setJSON([
             'draw'            => intval($this->request->getPost('draw')),
             'recordsTotal'    => $total,
@@ -100,18 +66,4 @@ class Leaderboard extends BaseController
             'data'            => $data
         ]);
     }
- 
-    public function delete()
-    {
-        $id = $this->request->getPost('id');
-        $this->model->update($id, ['status' => 9]);
-        return $this->response->setJSON(['status' => true]);
-    }
- 
-    public function block()
-    {
-        $id = $this->request->getPost('id');
-        $this->model->update($id, ['status' => 2]);
-        return $this->response->setJSON(['status' => true]);
-    }
-}
+ }

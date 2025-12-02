@@ -4,6 +4,9 @@ namespace App\Models\Admin;
 use CodeIgniter\Model;
 
 class CustomerModel extends Model {
+    protected $table = 'customer';
+    protected $primaryKey = 'cust_Id';
+    protected $allowedFields = ['cust_Name', 'cust_Email', 'cust_Phone', 'cust_Status'];
 	
         public function __construct() {
             $this->db = \Config\Database::connect();
@@ -61,10 +64,7 @@ class CustomerModel extends Model {
 	
 	
 	//**************************Data table */
-	protected $table = 'customer';
-    protected $primaryKey = 'cust_Id';
-    protected $allowedFields = ['cust_Name', 'cust_Email', 'cust_Phone', 'cust_Status'];
-
+	
     public function getDatatables()
     {
         $postData = service('request')->getPost();

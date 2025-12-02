@@ -40,13 +40,13 @@
                                         <div class="col-md-7">
 
                                         </div>
-										<div class="col-md-3">
+										<!-- <div class="col-md-3">
                                             <div class="row">
                                                 <div class="col-lg-12 d-flex justify-content-end p-2">
                                                     <a href="<?= base_url('admin/leaderboard/tee_winners'); ?>" class="btn btn-primary">Tee Winners</a>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> -->
                                         
                                     </div>
                                 </div>
@@ -65,7 +65,6 @@
                                                                 <th>Player Name</th>
                                                                 <th>Score</th>
                                                                 <th>Rank</th>
-                                                                <th>Action</th>
                                                             </tr>
                                                         </thead>
                                                     </table>
