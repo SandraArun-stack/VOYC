@@ -3,10 +3,10 @@ namespace App\Models\Admin;
 
 use CodeIgniter\Model;
 
-class GameDetailsModel extends Model
+class GamesModel extends Model
 {
     protected $table      = 'game';
-    protected $primaryKey = 'game_id';
+    protected $primaryKey = 'game_Id';
     protected $allowedFields = [
         'game_name',
         'game_details',
@@ -23,7 +23,7 @@ class GameDetailsModel extends Model
     {
         $builder = $this->db->table($this->table);
 
-        $builder->select('game.game_id,game.game_name,game.game_details,game.game_status,game.game_created_at,game.game_updated_at');
+        $builder->select('game.game_Id,game.game_name,game.game_details,game.game_status,game.game_created_at,game.game_updated_at');
 
         $builder->where('game.game_status !=', 9);
 
@@ -48,7 +48,7 @@ class GameDetailsModel extends Model
     }
     public function getGameById($game_Id)
     {
-        return $this->where('game_id', $game_Id)
+        return $this->where('game_Id', $game_Id)
                     ->where('game_status !=', '9')
                     ->first();
     }

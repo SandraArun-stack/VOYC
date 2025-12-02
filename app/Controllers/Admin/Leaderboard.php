@@ -3,7 +3,7 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
 use App\Models\Admin\LeaderboardModel;
-use App\Models\Admin\GameModel;
+use App\Models\Admin\GamesModel;
 
 class Leaderboard extends BaseController
 {
@@ -11,7 +11,7 @@ class Leaderboard extends BaseController
     {
         $this->session = session();
         $this->model = new LeaderboardModel();
-        $this->gameModel = new GameModel();
+        $this->gameModel = new GamesModel();
     }
 
     public function leaderboardlist()

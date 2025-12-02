@@ -55,7 +55,7 @@
                             <span class="pcoded-mcaret"></span>
                         </a>
                     </li>
-                    <li class="pcoded-hasmenu <?= in_array($segment, ['leaderboard','game-details','game-details-view','subscription','usersubscriptions','wallet']) ? 'active pcoded-trigger' : '' ?>">
+                    <li class="pcoded-hasmenu <?= in_array($segment, ['leaderboard','games','game-details-view','subscription','usersubscriptions','wallet']) ? 'active pcoded-trigger' : '' ?>">
                         <a href="javascript:void(0)" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="bi bi-controller"></i></span>
                             <span class="pcoded-mtext">Game Arena</span>
@@ -68,8 +68,8 @@
                                     <span class="pcoded-mtext">Leaderboard</span>
                                 </a>
                             </li>
-                            <li class="<?= ($segment == 'game-details') ? 'active' : '' ?>">
-                                <a href="<?= base_url('admin/game-details') ?>">
+                            <li class="<?= ($segment == 'games') ? 'active' : '' ?>">
+                                <a href="<?= base_url('admin/games') ?>">
                                     <span class="pcoded-mtext">Game </span>
                                 </a>
                             </li>
