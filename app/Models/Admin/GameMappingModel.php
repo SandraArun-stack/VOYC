@@ -26,11 +26,11 @@ class GameMappingModel extends Model
 
     public function getDatatables($search = null, $start = 0, $length = 10, $orderBy = 'gm_Id', $orderDir = 'DESC')
     {
+        // MAIN QUERY (Return Rows)
         $builder = $this->db->table($this->table)
             ->select("games_mapping.*, game.game_Name as game_name")
             ->join("game", "game.game_Id = games_mapping.game_Id", "left")
-            ->where("games_mapping.gm_status !=", 9)
-            ->orderBy("games_mapping.gm_Id", "DESC");
+            ->where("games_mapping.gm_status !=", '9');
 
         // Search filter
         if (!empty($search)) {
@@ -40,15 +40,15 @@ class GameMappingModel extends Model
                 ->groupEnd();
         }
 
-        // Total count
+        // Total count (ONLY active)
         $totalBuilder = $this->db->table($this->table)
-            ->where("gm_status !=", 9);
+            ->where("gm_status !=", '9');
         $total = $totalBuilder->countAllResults();
 
-        // Records after search
+        // Filtered count (ONLY active)
         $filteredBuilder = $this->db->table($this->table)
             ->join("game", "game.game_Id = games_mapping.game_Id", "left")
-            ->where("games_mapping.gm_status !=", 9);
+            ->where("games_mapping.gm_status !=", '9');
 
         if (!empty($search)) {
             $filteredBuilder->groupStart()
@@ -72,5 +72,6 @@ class GameMappingModel extends Model
             'filtered' => $filtered
         ];
     }
+
 
 }

@@ -52,6 +52,8 @@ class GamesModel extends Model
                     ->where('game_status !=', '9')
                     ->first();
     }
+
+    
     
 
 }

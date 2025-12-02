@@ -14,7 +14,7 @@ class Games extends BaseController
     public function __construct()
     {
         $this->session = session();
-        // $this->model = new GamesModel();
+        $this->db = \Config\Database::connect();
     }
 
     public function index()
@@ -81,6 +81,8 @@ class Games extends BaseController
     {
         $model = new GameMappingModel();
 
+        $game_map_id = $this->request->getPost('gm_Id');
+        // print_r($game_map_id);exit();
         $gameId = $this->request->getPost('game_Id');
         $gm_date = $this->request->getPost('gm_date');
         $tokens = $this->request->getPost('tokens');
@@ -91,7 +93,21 @@ class Games extends BaseController
         if (!$gameId || !$gm_date || !$tokens || !$leaderboard_count || !$winning_percentage || !$extra_discount_percentage) {
             return $this->response->setJSON([
                 'status' => 'error',
-                'message' => 'Please fill all required fields'
+                'message' => 'Please Fill All Required Fields'
+            ]);
+        }
+
+        if ($winning_percentage < 0 || $winning_percentage > 100) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Winning Percentage Must be Between 0 and 100'
+            ]);
+        }
+
+        if ($extra_discount_percentage < 0 || $extra_discount_percentage > 100) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Discount Percentage Must be Between 0 and 100'
             ]);
         }
 
@@ -107,11 +123,28 @@ class Games extends BaseController
             'gm_created_at' => date('Y-m-d H:i:s'),
         ];
 
-        $model->insert($data);
+        if ($game_map_id) {
+            // Edit: update existing record
+            $data['gm_updated_by'] = session()->get('ad_uid');
+            $data['gm_updated_at'] = date('Y-m-d H:i:s');
+
+            $model->update($game_map_id, $data);
+
+            $message = 'Game Mapping Updated Successfully';
+        } else {
+            // Add: insert new record
+            $data['gm_created_by'] = session()->get('ad_uid');
+            $data['gm_created_at'] = date('Y-m-d H:i:s');
+
+            $model->insert($data);
+
+            $message = 'Game Mapping Saved Successfully';
+        }
+
 
         return $this->response->setJSON([
             'status' => 'success',
-            'message' => 'Game Mapping Saved Successfully',
+            'message' =>  $message,
             'redirect' => base_url('admin/games')
         ]);
     }
@@ -153,12 +186,49 @@ class Games extends BaseController
 
     public function edit($id = null)
     {
+        $model = new GameMappingModel();
+
+        $game_map_Details = $model->find($id);
+
+        if (!$game_map_Details) {
+            return redirect()->to('admin/games')->with('error', 'Record not found');
+        }
+
+        $data['game_map_Details'] = $game_map_Details;
+
         echo view('Admin/common/header');
         echo view('Admin/common/leftmenu');
-        echo view('Admin/add_game');
+        echo view('Admin/add_game', $data);
         echo view('Admin/common/footer');
         echo view('Admin/page_scripts/gamesjs');
+    }
 
+    public function delete()
+    {
+        $id = $this->request->getPost('id');
+        $model = new \App\Models\Admin\GameMappingModel();
+
+        if (!$id) {
+            return $this->response->setJSON([
+                'success' => false,
+                'msg' => 'Invalid ID'
+            ]);
+        }
+
+        // Soft delete using model
+        $updated = $model->update($id, ['gm_status' => '9']);
+
+        if ($updated) {
+            return $this->response->setJSON([
+                'success' => true,
+                'msg' => 'Game Mapping Deleted Successfully'
+            ]);
+        } else {
+            return $this->response->setJSON([
+                'success' => false,
+                'msg' => 'Failed to Delete'
+            ]);
+        }
     }
 
 

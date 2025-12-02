@@ -11,6 +11,11 @@
                     options += `<option value="${game.game_Id}">${game.game_name}</option>`;
                 });
                 $('#game_Id').html(options);
+
+                let selectedGameId = "<?= $game_map_Details['game_Id'] ?? '' ?>";
+                if (selectedGameId) {
+                    $('#game_Id').val(selectedGameId);
+                }
             }
         });
 
@@ -32,7 +37,9 @@
                             .removeClass()
                             .addClass("alert alert-danger")
                             .text(response.message)
-                            .fadeIn();
+                            .fadeIn()
+                            .delay(3000)
+                            .fadeOut();
                         return;
                     }
 
@@ -42,7 +49,9 @@
                             .removeClass()
                             .addClass("alert alert-success")
                             .text(response.message)
-                            .fadeIn();
+                            .fadeIn()
+                            .delay(3000)
+                            .fadeOut();
 
                         setTimeout(() => {
                             window.location.href = response.redirect;
@@ -56,7 +65,9 @@
                         .removeClass()
                         .addClass("alert alert-danger")
                         .text("Error while saving.")
-                        .fadeIn();
+                        .fadeIn()
+                        .delay(3000)
+                        .fadeOut();;
                 }
             });
         });
@@ -64,9 +75,9 @@
         var table = $('#gameMappings').DataTable({
             processing: true,
             serverSide: true,
-            order: [], // disable default ordering (same as staff list)
-            responsive: true, // auto adjust columns
-            scrollX: false, // REMOVE horizontal scroll
+            order: [], 
+            responsive: true,
+            scrollX: false,
 
             ajax: {
                 url: "<?= base_url('admin/game/ajaxList'); ?>",
@@ -97,10 +108,10 @@
                     <a href="<?= base_url('admin/game/edit/'); ?>${id}" >
                         <i class="bi bi-pencil-square"></i>
                     </a>&nbsp;
-
              
                          <a data-id="${id}">
-                            <i class="bi bi-trash text-danger" ></i>
+                           <i class="bi bi-trash text-danger deleteMapping" data-id="${id}"></i>
+
                          </a>
                    
                 `;
@@ -112,12 +123,62 @@
 
             columnDefs: [
                 {
-                    targets: [7], // Disable ordering & searching for action column
+                    targets: [7],
                     orderable: false,
                     searchable: false
                 }
             ]
         });
+
+        $(document).on("click", ".deleteMapping", function () {
+            let id = $(this).data("id");
+            // alert(id);
+            confirmDelete(id);
+        });
+
+
+        function confirmDelete(id) {
+            // alert(id);
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You want to delete this game mapping?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Delete',
+                cancelButtonText: 'Cancel',
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        url: "<?= base_url('admin/game/delete'); ?>",
+                        method: "POST",
+                        dataType: "json",
+                        data: { id: id },
+                        success: function (response) {
+
+                            if (response.success) {
+                                Swal.fire('Deleted!', response.msg, 'success');
+
+                                let table = $('#gameMappings').DataTable();
+                                let currentPage = table.page();
+
+                                table.ajax.reload(() => {
+                                    if (table.data().count() === 0 && currentPage > 0) {
+                                        table.page(currentPage - 1).draw(false);
+                                    }
+                                }, false);
+
+                            } else {
+                                Swal.fire('Error', response.msg, 'error');
+                            }
+                        },
+                        error: function () {
+                            Swal.fire('Error', 'Something went wrong.', 'error');
+                        }
+                    });
+                }
+            });
+        }
 
     });
 </script>
