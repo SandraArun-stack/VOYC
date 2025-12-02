@@ -9,9 +9,59 @@ class SubscriptionModel extends Model
     protected $primaryKey = 'sp_Id';
 
     protected $allowedFields = [
-        'sp_plan_name','sp_validity','sp_token','sp_coupon_code','sp_status','sp_created_at','sp_created_by',
+        'sp_plan_name','sp_amount','sp_validity','sp_token','sp_coupon_code','sp_status','sp_created_at','sp_created_by',
         'sp_updated_at','sp_updated_by'	
     ];
+    public function getDatatables()
+    {
+        $postData = service('request')->getPost();
+        $searchValue = $postData['search']['value'] ?? '';
+
+        $builder = $this->db->table($this->table);
+
+        $builder->select('*');
+
+        if (!empty($searchValue)) {
+            $builder->groupStart();
+            $builder->like('sp_plan_name', $searchValue);
+            $builder->orLike('sp_amount', $searchValue);
+            $builder->orLike('sp_validity', $searchValue);
+            $builder->groupEnd();
+        }
+
+        if ($postData['length'] != -1) {
+            $builder->limit($postData['length'], $postData['start']);
+        }
+
+        // Optional: order by primary key
+        $builder->orderBy('sp_Id', 'ASC');
+
+        return $builder->get()->getResultArray();
+    }
+
+    public function countAll()
+    {
+        return $this->db->table($this->table)->countAllResults();
+    }
+
+    public function countFiltered()
+    {
+        $postData = service('request')->getPost();
+        $searchValue = $postData['search']['value'] ?? '';
+
+        $builder = $this->db->table($this->table);
+        $builder->select('COUNT(*) as total');
+
+        if (!empty($searchValue)) {
+            $builder->groupStart();
+            $builder->like('sp_plan_name', $searchValue);
+            $builder->orLike('sp_amount', $searchValue);
+            $builder->orLike('sp_validity', $searchValue);
+            $builder->groupEnd();
+        }
+
+        return $builder->get()->getRow()->total;
+    }
     public function getAllSubscriptions($limit, $offset, $search = null)
     {
         $builder = $this->builder();
