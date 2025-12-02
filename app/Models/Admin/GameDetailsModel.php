@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 class GameDetailsModel extends Model
 {
     protected $table      = 'game';
-    protected $primaryKey = 'game_Id';
+    protected $primaryKey = 'game_id';
     protected $allowedFields = [
         'game_name',
         'game_details',
