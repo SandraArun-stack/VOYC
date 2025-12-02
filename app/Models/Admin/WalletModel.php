@@ -3,7 +3,7 @@ namespace App\Models\Admin;
 
 use CodeIgniter\Model;
 
-class TokenModel extends Model
+class WalletModel extends Model
 {
     protected $table = 'user_tokens';
     protected $primaryKey = 'token_id';

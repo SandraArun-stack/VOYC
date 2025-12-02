@@ -26,7 +26,6 @@
         <div class="main-body">
             <div class="page-wrapper">
                 <div class="page-body">
-
                     <div class="card">
                         <div class="card-block table-border-style">
                             <div class="table-responsive">
