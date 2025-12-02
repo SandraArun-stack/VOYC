@@ -3,7 +3,8 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
 use App\Models\Admin\LeaderboardModel;
-use App\Models\Admin\GameModel;
+use App\Models\Admin\GameDetailsModel;
+use App\Models\Admin\CustomerModel;
 
 class Leaderboard extends BaseController
 {
@@ -69,34 +70,34 @@ class Leaderboard extends BaseController
 
     public function ajaxList()
     {
-        $list = $this->model->getDatatables();
-        $data = [];
-        $no = $_POST['start'];
+        $model = new LeaderboardModel();
+        $data = $model->getDatatables();
+        $total = $model->countAll();
+        $filtered = $model->countFiltered();
 
-        foreach ($list as $row) {
-            $no++;
+        foreach ($data as &$row) {
 
-            $actions = '
-                <a href="' . base_url("admin/leaderboard/" . $row['leaderboard_id']) . '" class="btn btn-primary btn-sm">Edit</a>
-                <button class="btn btn-danger btn-sm delete" data-id="' . $row['leaderboard_id'] . '">Delete</button>
-                <button class="btn btn-warning btn-sm block" data-id="' . $row['leaderboard_id'] . '">Block</button>
+            $row['lb_date']   = $row['lb_date'] ?? 'N/A';
+            $row['game_name'] = $row['game_name'] ?? 'N/A';
+            $row['player']    = $row['player'] ?? 'N/A';
+            $row['lb_score']  = $row['lb_score'] ?? '0';
+            $row['lb_rank']   = $row['lb_rank'] ?? '0';
+
+            // Action Button
+            $row['actions'] = '
+                <a href="' . base_url('admin/leaderboard/view/' . $row['lb_Id']) . '" title="View">
+                    <i class="bi bi-eye"></i>
+                </a>&nbsp;
+                <i class="bi bi-trash text-danger icon-clickable"
+                   onclick="confirmDelete(' . $row['lb_Id'] . ')"></i>
             ';
-
-            $data[] = [
-                $no,
-                $row['date'],
-                $row['game_name'],
-                $row['winners'],
-                $row['turns'],
-                $actions
-            ];
         }
 
         return $this->response->setJSON([
-            "draw" => intval($_POST['draw']),
-            "recordsTotal" => $this->model->countAll(),
-            "recordsFiltered" => $this->model->countFiltered(),
-            "data" => $data
+            'draw'            => intval($this->request->getPost('draw')),
+            'recordsTotal'    => $total,
+            'recordsFiltered' => $filtered,
+            'data'            => $data
         ]);
     }
 
