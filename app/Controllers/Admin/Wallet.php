@@ -2,15 +2,15 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
-use App\Models\Admin\TokenModel;
+use App\Models\Admin\WalletModel;
 use App\Models\UserModel;
 
-class Token extends BaseController
+class Wallet extends BaseController
 {
     public function __construct()
     {
         $this->session = session();
-        $this->token = new TokenModel();
+        $this->wallet = new WalletModel();
         $this->user = new UserModel();
     }
 
@@ -22,14 +22,14 @@ class Token extends BaseController
 
         echo view('Admin/common/header');
         echo view('Admin/common/leftmenu');
-        echo view('Admin/token');
+        echo view('Admin/wallet');
         echo view('Admin/common/footer');
     }
 
     public function list()
     {
-        $tokens = $this->token
-            ->select('user_tokens.*, user.username')
+        $wallets = $this->wallet
+            ->select('user_wallets.*, user.username')
             ->join('user', 'user.user_id = user_tokens.user_id')
             ->findAll();
 

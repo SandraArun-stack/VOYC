@@ -277,9 +277,9 @@ $routes->get('admin/subscription/add', 'Admin\Subscription::index');
 $routes->get('admin/usersubscriptions', 'Admin\UserSubscriptions::index');
 $routes->get('admin/usersubscriptions/list', 'Admin\UserSubscriptions::list');
 
-// TOKEN MANAGEMENT
-$routes->get('admin/token', 'Admin\Token::index');
-$routes->get('admin/token/list', 'Admin\Token::list');
+// User Wallet
+$routes->get('admin/wallet', 'Admin\Wallet::index');
+$routes->get('admin/wallet/list', 'Admin\Wallet::list');
 // DISCOUNT MANAGEMENT
 $routes->get('admin/discount', 'Admin\Discount::index');
 $routes->get('admin/discount/list', 'Admin\Discount::list');

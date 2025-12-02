@@ -39,32 +39,32 @@ class Leaderboard extends BaseController
         echo view('Admin/common/footer');
     }
 
-    public function save()
-{
-    $id = $this->request->getPost('leaderboard_id');
-    $gameId = $this->request->getPost('game_Id');
+//     public function save()
+// {
+//     $id = $this->request->getPost('leaderboard_id');
+//     $gameId = $this->request->getPost('game_Id');
 
-    // Get game name
-    $game = $this->gameModel->find($gameId);
+//     // Get game name
+//     $game = $this->gameModel->find($gameId);
 
-    $data = [
-        'lb_Id' => $id,
-        'lb_date' => $this->request->getPost('date'),
-        'game_Id' => $gameId,
-        'game_name' => $game['game_name'],
-        // 'turns' => $this->request->getPost('turns'),
-    ];
+//     $data = [
+//         'lb_Id' => $id,
+//         'lb_date' => $this->request->getPost('date'),
+//         'game_Id' => $gameId,
+//         'game_name' => $game['game_name'],
+//         // 'turns' => $this->request->getPost('turns'),
+//     ];
 
-    if ($id) {
-        $data['updated_by'] = $this->session->get('ad_uid');
-    } else {
-        $data['created_by'] = $this->session->get('ad_uid');
-    }
+//     if ($id) {
+//         $data['updated_by'] = $this->session->get('ad_uid');
+//     } else {
+//         $data['created_by'] = $this->session->get('ad_uid');
+//     }
 
-    $this->model->save($data);
+//     $this->model->save($data);
 
-    return redirect()->to(base_url('admin/leaderboard'))->with('success', 'Saved successfully');
-}
+//     return redirect()->to(base_url('admin/leaderboard'))->with('success', 'Saved successfully');
+// }
 
 
     public function ajaxList()

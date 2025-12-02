@@ -55,21 +55,7 @@
                             <span class="pcoded-mcaret"></span>
                         </a>
                     </li>
-                    <!-- <li class="<?= ($segment == 'leaderboard') ? 'active' : '' ?>">
-                        <a href="<?php echo base_url('admin/leaderboard') ?>" class="waves-effect waves-dark">
-                            <span class="pcoded-micon"><i class="bi bi-bar-chart"></i><b>D</b></span>
-                            <span class="pcoded-mtext" data-i18n="nav.dash.main">Leaderboard</span>
-                            <span class="pcoded-mcaret"></span>
-                        </a>
-                    </li> -->
-                    <!-- <li class="<?= ($segment == 'subscription') ? 'active' : '' ?>">
-                        <a href="<?php echo base_url('admin/subscription') ?>" class="waves-effect waves-dark">
-                            <span class="pcoded-micon"><i class="bi bi-clipboard2-data"></i><b>D</b></span>
-                            <span class="pcoded-mtext" data-i18n="nav.dash.main">Manage Subscriptions</span>
-                            <span class="pcoded-mcaret"></span>
-                        </a>
-                    </li> -->
-                    <li class="pcoded-hasmenu <?= in_array($segment, ['leaderboard','game-details','game-details-view','subscription','usersubscriptions','token','discount']) ? 'active pcoded-trigger' : '' ?>">
+                    <li class="pcoded-hasmenu <?= in_array($segment, ['leaderboard','game-details','game-details-view','subscription','usersubscriptions','wallet']) ? 'active pcoded-trigger' : '' ?>">
                         <a href="javascript:void(0)" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="bi bi-controller"></i></span>
                             <span class="pcoded-mtext">Game Arena</span>
@@ -92,8 +78,6 @@
                                     <span class="pcoded-mtext">Game Detail View</span>
                                 </a>
                             </li>
-
-
                             <li class="<?= ($segment == 'subscription') ? 'active' : '' ?>">
                                 <a href="<?= base_url('admin/subscription') ?>">
                                     <span class="pcoded-mtext">Manage Subscriptions</span>
@@ -106,14 +90,9 @@
                                 </a>
                             </li>
 
-                            <li class="<?= ($segment == 'token') ? 'active' : '' ?>">
-                                <a href="<?= base_url('admin/token') ?>">
-                                    <span class="pcoded-mtext">Token Management</span>
-                                </a>
-                            </li>
-                             <li class="<?= ($segment == 'discount') ? 'active' : '' ?>">
-                                <a href="<?= base_url('admin/discount') ?>">
-                                    <span class="pcoded-mtext">Discount Management</span>
+                            <li class="<?= ($segment == 'wallet') ? 'active' : '' ?>">
+                                <a href="<?= base_url('admin/wallet') ?>">
+                                    <span class="pcoded-mtext">User Wallet</span>
                                 </a>
                             </li>
 
