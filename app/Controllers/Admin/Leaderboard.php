@@ -3,8 +3,12 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
 use App\Models\Admin\LeaderboardModel;
+
 use App\Models\Admin\GameDetailsModel;
 use App\Models\Admin\CustomerModel;
+
+use App\Models\Admin\GamesModel;
+
 
 class Leaderboard extends BaseController
 {
@@ -12,7 +16,7 @@ class Leaderboard extends BaseController
     {
         $this->session = session();
         $this->model = new LeaderboardModel();
-        $this->gameModel = new GameModel();
+        $this->gameModel = new GamesModel();
     }
 
     public function leaderboardlist()
@@ -39,33 +43,6 @@ class Leaderboard extends BaseController
         echo view('Admin/tee_winners');
         echo view('Admin/common/footer');
     }
-
-//     public function save()
-// {
-//     $id = $this->request->getPost('leaderboard_id');
-//     $gameId = $this->request->getPost('game_Id');
-
-//     // Get game name
-//     $game = $this->gameModel->find($gameId);
-
-//     $data = [
-//         'lb_Id' => $id,
-//         'lb_date' => $this->request->getPost('date'),
-//         'game_Id' => $gameId,
-//         'game_name' => $game['game_name'],
-//         // 'turns' => $this->request->getPost('turns'),
-//     ];
-
-//     if ($id) {
-//         $data['updated_by'] = $this->session->get('ad_uid');
-//     } else {
-//         $data['created_by'] = $this->session->get('ad_uid');
-//     }
-
-//     $this->model->save($data);
-
-//     return redirect()->to(base_url('admin/leaderboard'))->with('success', 'Saved successfully');
-// }
 
 
     public function ajaxList()

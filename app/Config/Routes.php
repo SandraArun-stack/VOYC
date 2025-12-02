@@ -283,10 +283,12 @@ $routes->get('admin/wallet/list', 'Admin\Wallet::list');
 // DISCOUNT MANAGEMENT
 $routes->get('admin/discount', 'Admin\Discount::index');
 $routes->get('admin/discount/list', 'Admin\Discount::list');
-// game details 
-$routes->get('admin/game-details', 'Admin\GameDetails::index');
-$routes->get('admin/game-details/list', 'Admin\GameDetails::list');
-$routes->get('admin/add_game/add', 'Admin\GameDetails::gameView');
+// games
+$routes->get('admin/games', 'Admin\Games::index');
+$routes->get('admin/game-details/list', 'Admin\Games::list');
+$routes->get('admin/game-details/get_games_dropdown', 'Admin\Games::get_games_dropdown');
+$routes->get('admin/add_game/add', 'Admin\Games::gameView');
+$routes->post('admin/game/mappingsave', 'Admin\Games::saveGameMapping');
 // game details view 
 $routes->get('admin/game-details-view', 'Admin\GameDetailsView::index');
 $routes->get('admin/game-details-view/list', 'Admin\GameDetailsView::list');
