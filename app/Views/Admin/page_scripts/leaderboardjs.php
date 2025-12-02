@@ -10,7 +10,7 @@ $(document).ready(function() {
         order: [],
 
         ajax: {
-            url: baseUrl + "admin/leaderboard/List",
+            url: baseUrl + "admin/leaderboard/list",
             type: "POST",
             data: function (d) {
                 d[csrfTokenName] = csrfHash;
@@ -21,7 +21,13 @@ $(document).ready(function() {
             {
                 data: null,
                 render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
+
+                    let slNo = meta.row + meta.settings._iDisplayStart + 1;
+                    if (row.lb_status == 1) {
+                        return slNo +'👑 ' ;
+                    }
+
+                    return slNo;
                 },
                 orderable: false,
                 searchable: false
@@ -30,13 +36,12 @@ $(document).ready(function() {
             { data: 'game_name' },
             { data: 'player' },
             { data: 'lb_score' },
-            { data: 'lb_rank' },
-            { data: 'actions' }
+            { data: 'lb_rank' }
         ],
 
         columnDefs: [
             {
-                targets: [6],
+                targets: [5],
                 orderable: false,
                 searchable: false
             }
