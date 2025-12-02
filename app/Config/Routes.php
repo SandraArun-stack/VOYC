@@ -218,17 +218,9 @@ $routes->get('admin/product/image/(:num)', 'Admin\ProductImage::viewimage/$1');
 $routes->get('admin/product/image/add/(:num)', 'Admin\ProductImage::addProductImage/$1');
 $routes->get('admin/product/image/edit/(:num)/(:num)', 'Admin\ProductImage::addProductImage/$1/$2');
 $routes->post('admin/productimage/save', 'Admin\ProductImage::save');
-
 $routes->post('admin/productimage/ajaxList', 'Admin\ProductImage::ajaxList');
 $routes->post('admin/productimage/delete/(:num)', 'Admin\ProductImage::delete/$1');
 $routes->post('admin/productimage/status', 'Admin\ProductImage::changeStatus');
-
-
-
-
-
-
-
 
 
 //Staff
@@ -279,6 +271,7 @@ $routes->get('admin/usersubscriptions/list', 'Admin\UserSubscriptions::list');
 // User Wallet
 $routes->get('admin/wallet', 'Admin\Wallet::index');
 $routes->get('admin/wallet/list', 'Admin\Wallet::list');
+
 // DISCOUNT MANAGEMENT
 $routes->get('admin/discount', 'Admin\Discount::index');
 $routes->get('admin/discount/list', 'Admin\Discount::list');
@@ -312,12 +305,6 @@ $routes->post('admin/settings/updateCustomizationCharge', 'Admin\Settings::updat
 //logout
 $routes->post('admin/logout', 'Admin\Auth::logout');
 
-
-
-
-
-
-
 //banners
 $routes->get('admin/banner', 'Admin\Banner::index');
 $routes->post('admin/banner/List', 'Admin\Banner::ajaxList');
@@ -331,16 +318,6 @@ $routes->post('admin/banner/delete/(:any)', 'Admin\Banner::deleteBanner/$1');
 //admin_updation
 $routes->get('/admin', 'Admin::index');
 $routes->post('admin/save', 'Admin::createnew');
-//});
-
-//oreder details
-// $routes->get('orderdetails', 'OrderDetails::index');
-// $routes->post('orderdetails/placeOrder', 'OrderDetails::placeOrder');
-// $routes->post('orderdetails/saveAddress', 'OrderDetails::saveAddress');
-
-
-
-// --------------------------------API----------------------------------------//
 
 //game details api
 
