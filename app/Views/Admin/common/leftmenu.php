@@ -75,7 +75,7 @@
                             </li>
                             <li class="<?= ($segment == 'game-details-view') ? 'active' : '' ?>">
                                 <a href="<?= base_url('admin/game-details-view') ?>">
-                                    <span class="pcoded-mtext">Game Detail View</span>
+                                    <span class="pcoded-mtext">Game Players</span>
                                 </a>
                             </li>
                             <li class="<?= ($segment == 'subscription') ? 'active' : '' ?>">

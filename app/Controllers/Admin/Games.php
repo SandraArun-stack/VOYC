@@ -81,182 +81,85 @@ class Games extends BaseController
     {
         $model = new GameMappingModel();
 
-        $gameId = $this->request->getPost('game_id');
-        $date = $this->request->getPost('date');
-
-        if (!$gameId || !$date) {
-            return redirect()->back()->with('error', 'Please fill all required fields');
+        $gameId = $this->request->getPost('game_Id');
+        $gm_date = $this->request->getPost('gm_date');
+        $tokens = $this->request->getPost('tokens');
+        $leaderboard_count = $this->request->getPost('leaderboard_count');
+        $winning_percentage = $this->request->getPost('winning_percentage');
+        $extra_discount_percentage = $this->request->getPost('extra_discount_percentage');
+        // Validation
+        if (!$gameId || !$gm_date || !$tokens || !$leaderboard_count || !$winning_percentage || !$extra_discount_percentage) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Please fill all required fields'
+            ]);
         }
 
         $data = [
             'game_Id' => $gameId,
-            'gm_date' => $date,
-            'gm_status' => 1,
-            'gm_created_by' => session()->get('admin_id'),
+            'gm_date' => $gm_date,
+            'gm_tokens' => $tokens,
+            'gm_leaderboard_count' => $leaderboard_count,
+            'gm_free_tee_percentage' => $winning_percentage,
+            'gm_extra_discount' => $extra_discount_percentage,
+            'gm_status' => 2,
+            'gm_created_by' => session()->get('ad_uid'),
             'gm_created_at' => date('Y-m-d H:i:s'),
         ];
 
         $model->insert($data);
 
-        return redirect()->to(base_url('admin/game-details'))
-            ->with('success', 'Game mapping saved successfully');
+        return $this->response->setJSON([
+            'status' => 'success',
+            'message' => 'Game Mapping Saved Successfully',
+            'redirect' => base_url('admin/games')
+        ]);
     }
 
-    public function saveGame()
+    public function ajaxList()
     {
-        $data = $this->request->getJSON(true);
-        $us_Id = $data['us_Id'] ?? null;
+        $model = new GameMappingModel();
 
-        if (!$us_Id) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'User ID is required'
-            ]);
-        }
+        $start = $this->request->getPost('start');
+        $length = $this->request->getPost('length');
+        $search = $this->request->getPost('search')['value'];
 
-        if (!$us_Id) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Unauthorized access'
-            ]);
-        }
+        $orderColumnIndex = $this->request->getPost('order')[0]['column'] ?? 0;
+        $orderDir = $this->request->getPost('order')[0]['dir'] ?? 'DESC';
 
-        $data = $this->request->getJSON(true);
-        $game_Id = $data['game_Id'] ?? null;
-        $gameData = [
-            'game_name' => $data['game_name'] ?? '',
-            'game_details' => $data['game_details'] ?? '',
-            'game_status' => 1
+        $columns = [
+            null,
+            'gm_date',
+            'game.game_name',
+            'gm_tokens',
+            'gm_leaderboard_count',
+            'gm_free_tee_percentage',
+            'gm_extra_discount',
+            null
         ];
-        if (empty($gameData['game_name']) || empty($gameData['game_details'])) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Game name and details are required'
-            ]);
-        }
 
-        $gameModel = new GamesModel();
-        if ($game_Id) {
-            $gameData['game_updated_by'] = $us_Id;
-            $gameData['game_updated_at'] = date('Y-m-d H:i:s');
+        $orderBy = $columns[$orderColumnIndex] ?? "gm_Id";
 
-            $gameModel->update($game_Id, $gameData);
-            $gameData['game_Id'] = $game_Id;
-
-            return $this->response->setJSON([
-                'success' => true,
-                'message' => 'Game updated successfully',
-                'data' => [
-                    'game_Id' => $game_Id,
-                    'game_name' => $gameData['game_name'],
-                    'game_details' => $gameData['game_details'],
-                    'game_status' => $gameData['game_status'],
-                    'game_updated_by' => $gameData['game_updated_by'],
-                    'game_updated_at' => $gameData['game_updated_at'],
-                ]
-            ]);
-
-        } else {
-            $gameData['game_created_by'] = $us_Id;
-            $gameData['game_created_at'] = date('Y-m-d H:i:s');
-
-            $insertedId = $gameModel->insert($gameData);
-            $gameData['game_Id'] = $insertedId;
-
-            return $this->response->setJSON([
-                'success' => true,
-                'message' => 'Game created successfully',
-                'data' => [
-                    'game_Id' => $insertedId,
-                    'game_name' => $gameData['game_name'],
-                    'game_details' => $gameData['game_details'],
-                    'game_status' => $gameData['game_status'],
-                    'game_created_by' => $gameData['game_created_by'],
-                    'game_created_at' => $gameData['game_created_at'],
-                ]
-            ]);
-
-        }
-    }
-    public function getAllGames()
-    {
-        $pageIndex = (int) $this->request->getGet('pageIndex');
-        $pageSize = (int) $this->request->getGet('pageSize');
-        $search = $this->request->getGet('search');
-
-        if ($pageSize <= 0) {
-            $pageSize = 10;
-        }
-
-        $offset = $pageIndex * $pageSize;
-
-        $gameModel = new GamesModel();
-        $data = $gameModel->getAllGames($pageSize, $offset, $search);
+        // Get paginated result
+        $data = $model->getDatatables($search, $start, $length, $orderBy, $orderDir);
 
         return $this->response->setJSON([
-            'success' => true,
-            'message' => 'Games fetched successfully.',
-            'data' => $data['games'],
-            'total' => $data['total']
+            'draw' => intval($this->request->getPost('draw')),
+            'recordsTotal' => $data['total'],
+            'recordsFiltered' => $data['filtered'],
+            'data' => $data['data']
         ]);
     }
-    public function getGameById($game_Id)
+
+    public function edit($id = null)
     {
-        if (empty($game_Id)) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Game ID is required'
-            ]);
-        }
+        echo view('Admin/common/header');
+        echo view('Admin/common/leftmenu');
+        echo view('Admin/add_game');
+        echo view('Admin/common/footer');
+        echo view('Admin/page_scripts/gamesjs');
 
-        $gameModel = new GamesModel();
-        $game = $gameModel->getGameById($game_Id);
-
-        if (!$game) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Game not found'
-            ]);
-        }
-
-        return $this->response->setJSON([
-            'success' => true,
-            'message' => 'Game fetched successfully',
-            'data' => $game
-        ]);
     }
-    public function deleteGameById($game_Id)
-    {
-        if (empty($game_Id)) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Game ID is required'
-            ]);
-        }
-
-        $gameModel = new GamesModel();
-        $game = $gameModel->where('game_Id', $game_Id)
-            ->where('game_status !=', '9')
-            ->first();
-
-        if (!$game) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Game not found or already deleted'
-            ]);
-        }
-        $gameModel->update($game_Id, [
-            'game_status' => '9',
-            'game_updated_at' => date('Y-m-d H:i:s')
-        ]);
-
-        return $this->response->setJSON([
-            'success' => true,
-            'message' => 'Game deleted successfully',
-            'game_Id' => $game_Id
-        ]);
-    }
-
 
 
 }

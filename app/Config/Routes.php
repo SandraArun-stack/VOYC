@@ -264,11 +264,10 @@ $routes->post('admin/orders/orderStatusUpdation/(:any)', 'Admin\Orders::orderSta
 $routes->post('admin/getDesign', 'Admin\Orders::getDesignAjax');
 
 // leaderboard
-$routes->get('admin/leaderboard', 'Admin\Leaderboard::leaderboardlist');
-
+$routes->get('admin/leaderboard', 'Admin\Leaderboard::index');
 $routes->get('admin/leaderboard/tee_winners', 'Admin\Leaderboard::teeWinners');
-$routes->post('admin/leaderboard/save', 'Admin\Leaderboard::save');
-$routes->add('admin/leaderboard/ajaxList', 'Admin\Leaderboard::ajaxList');
+$routes->post('admin/leaderboard/list', 'Admin\Leaderboard::ajaxList');
+
 // subscription management
 $routes->get('admin/subscription', 'Admin\Subscription::subscriptionlist');
 $routes->get('admin/subscription/add', 'Admin\Subscription::index');
@@ -283,12 +282,17 @@ $routes->get('admin/wallet/list', 'Admin\Wallet::list');
 // DISCOUNT MANAGEMENT
 $routes->get('admin/discount', 'Admin\Discount::index');
 $routes->get('admin/discount/list', 'Admin\Discount::list');
+
+
 // games
 $routes->get('admin/games', 'Admin\Games::index');
 $routes->get('admin/game-details/list', 'Admin\Games::list');
 $routes->get('admin/game-details/get_games_dropdown', 'Admin\Games::get_games_dropdown');
 $routes->get('admin/add_game/add', 'Admin\Games::gameView');
-$routes->post('admin/game/mappingsave', 'Admin\Games::saveGameMapping');
+$routes->post('admin/game/saveGameMapping', 'Admin\Games::saveGameMapping');
+$routes->post('admin/game/ajaxList', 'Admin\Games::ajaxList');
+$routes->get('admin/game/edit/', 'Admin\Games::edit');
+
 // game details view 
 $routes->get('admin/game-details-view', 'Admin\GameDetailsView::index');
 $routes->get('admin/game-details-view/list', 'Admin\GameDetailsView::list');
@@ -303,6 +307,8 @@ $routes->post('admin/profile/list', 'Admin\Profile::ajaxList');
 //settings
 $routes->get('admin/settings', 'Admin\Settings::index');
 $routes->post('admin/settings/updateCustomizationCharge', 'Admin\Settings::updateCustomizationCharge');
+
+
 //logout
 $routes->post('admin/logout', 'Admin\Auth::logout');
 

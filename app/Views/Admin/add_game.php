@@ -42,41 +42,70 @@
 
                                     <div id="messageBox" class="alert alert-success" style="display:none;"></div>
 
-                                    <form id="gamemapingform" method="post" action="<?= base_url('admin/game/mappingsave'); ?>">
-
-
+                                    <form id="gamemapingform">
                                         <!-- Hidden ID -->
                                         <input type="hidden" name="leaderboard_id"
-                                               value="<?= isset($leaderboard['leaderboard_id']) ? $leaderboard['leaderboard_id'] : '' ?>">
+                                            value="<?= isset($leaderboard['leaderboard_id']) ? $leaderboard['leaderboard_id'] : '' ?>">
                                         <!-- Date -->
-                                            <div class="form-group row">
-                                                <label class="col-sm-2 col-form-label">Date <span style="color:red">*</span></label>
-                                                <div class="col-sm-6">
-                                                    <input type="date" name="date" id="date" class="form-control"
-                                                        value="<?= isset($leaderboard) ? $leaderboard['date'] : '' ?>"
-                                                        required>
-                                                </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label">Date <span
+                                                    style="color:red">*</span></label>
+                                            <div class="mt-2 col-sm-6">
+                                                <input type="date" name="gm_date" id="gm_date" class="form-control"
+                                                    value="<?= isset($leaderboard) ? $leaderboard['date'] : '' ?>"
+                                                    required>
                                             </div>
+                                        </div>
 
-                                            <!-- Game Name Dropdown -->
-                                            <div class="form-group row">
-                                                <label class="col-sm-2 col-form-label">Game Name <span style="color:red">*</span></label>
-                                                <div class="col-sm-6">
-                                                    <select class="form-control" name="game_id" id="game_id" required>
-                                                        <option value="">-- Select Game --</option>
-                                                    </select>
-                                                </div>
+                                        <!-- Game Name Dropdown -->
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label">Game Name <span
+                                                    style="color:red">*</span></label>
+                                            <div class="mt-2 col-sm-6">
+                                                <select class="form-control" name="game_Id" id="game_Id" required>
+                                                    <option value="">-- Select Game --</option>
+                                                </select>
                                             </div>
+                                        </div>
 
-                                            <!-- No. of Turns -->
-                                            <div class="form-group row">
-                                                <label class="col-sm-2 col-form-label">No. of Tokens <span style="color:red">*</span></label>
-                                                <div class="col-sm-6">
-                                                    <input type="number" class="form-control" name="tokens"
-                                                        >
-                                                </div>
+                                        <!-- No. of Turns -->
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label">No. of Tokens <span
+                                                    style="color:red">*</span></label>
+                                            <div class="mt-2 col-sm-6">
+                                                <input type="number" class="form-control" name="tokens">
                                             </div>
+                                        </div>
 
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label">Leaderboard Count <span
+                                                    style="color:red">*</span>
+                                                <small class="text-muted d-block">(Top Winners + Discound Winners)</small>
+                                            </label>    
+                                            <div class="mt-2 col-sm-6">
+                                                <input type="number" class="form-control" name="leaderboard_count">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label">Winning Percentage 
+                                                <span style="color:red">*</span>
+                                                <small class="text-muted d-block">(Specify What Percentage of Winners Get a Free Customized Tee)</small>
+                                            </label>
+                                            <div class="mt-2 col-sm-6">
+                                                <input type="number" class="form-control" name="winning_percentage">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label">Extra Discount Percentage 
+                                                <span style="color:red">*</span>
+                                                <small class="text-muted d-block">(Discount Percentage for Players Outside the Top Winners)</small>
+                                            </label>        
+                                            <div class="mt-2 col-sm-6">
+                                                <input type="number" class="form-control" name="extra_discount_percentage">
+                                            </div>
+                                        </div>
 
                                         <!-- Buttons -->
                                         <div class="row justify-content-center">
@@ -84,7 +113,7 @@
 
                                                 <!-- Discard -->
                                                 <button type="button" class="btn btn-secondary"
-                                                        onclick="window.location.href='<?= base_url('admin/game-details'); ?>'">
+                                                    onclick="window.location.href='<?= base_url('admin/games'); ?>'">
                                                     <i class="bi bi-x-circle"></i> Discard
                                                 </button>
 
