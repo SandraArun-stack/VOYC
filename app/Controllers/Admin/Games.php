@@ -5,7 +5,7 @@ namespace App\Controllers\Admin;
 use App\Controllers\BaseController;
 use App\Models\Admin\GameDetailsModel;
 
-class GameDetails extends BaseController
+class Games extends BaseController
 {
     protected $model;
     protected $session;
