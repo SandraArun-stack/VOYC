@@ -1,15 +1,11 @@
 <?php
 namespace App\Controllers\Admin;
-
+ 
 use App\Controllers\BaseController;
 use App\Models\Admin\LeaderboardModel;
-
-use App\Models\Admin\GameDetailsModel;
-use App\Models\Admin\CustomerModel;
-
 use App\Models\Admin\GamesModel;
-
-
+use App\Models\Admin\CustomerModel;
+ 
 class Leaderboard extends BaseController
 {
     public function __construct()
@@ -18,48 +14,75 @@ class Leaderboard extends BaseController
         $this->model = new LeaderboardModel();
         $this->gameModel = new GamesModel();
     }
-
+ 
     public function leaderboardlist()
     {
         if (!$this->session->get('ad_uid')) {
             return redirect()->to('admin');
         }
-
+ 
         echo view('Admin/common/header');
         echo view('Admin/common/leftmenu');
         echo view('Admin/leaderboardlist');
         echo view('Admin/common/footer');
     }
-
-    
+ 
+   
     public function teeWinners()
     {
         if (!$this->session->get('ad_uid')) {
             return redirect()->to('admin');
         }
-
+ 
         echo view('Admin/common/header');
         echo view('Admin/common/leftmenu');
         echo view('Admin/tee_winners');
         echo view('Admin/common/footer');
     }
-
-
+ 
+//     public function save()
+// {
+//     $id = $this->request->getPost('leaderboard_id');
+//     $gameId = $this->request->getPost('game_Id');
+ 
+//     // Get game name
+//     $game = $this->gameModel->find($gameId);
+ 
+//     $data = [
+//         'lb_Id' => $id,
+//         'lb_date' => $this->request->getPost('date'),
+//         'game_Id' => $gameId,
+//         'game_name' => $game['game_name'],
+//         // 'turns' => $this->request->getPost('turns'),
+//     ];
+ 
+//     if ($id) {
+//         $data['updated_by'] = $this->session->get('ad_uid');
+//     } else {
+//         $data['created_by'] = $this->session->get('ad_uid');
+//     }
+ 
+//     $this->model->save($data);
+ 
+//     return redirect()->to(base_url('admin/leaderboard'))->with('success', 'Saved successfully');
+// }
+ 
+ 
     public function ajaxList()
     {
         $model = new LeaderboardModel();
         $data = $model->getDatatables();
         $total = $model->countAll();
         $filtered = $model->countFiltered();
-
+ 
         foreach ($data as &$row) {
-
+ 
             $row['lb_date']   = $row['lb_date'] ?? 'N/A';
             $row['game_name'] = $row['game_name'] ?? 'N/A';
             $row['player']    = $row['player'] ?? 'N/A';
             $row['lb_score']  = $row['lb_score'] ?? '0';
             $row['lb_rank']   = $row['lb_rank'] ?? '0';
-
+ 
             // Action Button
             $row['actions'] = '
                 <a href="' . base_url('admin/leaderboard/view/' . $row['lb_Id']) . '" title="View">
@@ -69,7 +92,7 @@ class Leaderboard extends BaseController
                    onclick="confirmDelete(' . $row['lb_Id'] . ')"></i>
             ';
         }
-
+ 
         return $this->response->setJSON([
             'draw'            => intval($this->request->getPost('draw')),
             'recordsTotal'    => $total,
@@ -77,14 +100,14 @@ class Leaderboard extends BaseController
             'data'            => $data
         ]);
     }
-
+ 
     public function delete()
     {
         $id = $this->request->getPost('id');
         $this->model->update($id, ['status' => 9]);
         return $this->response->setJSON(['status' => true]);
     }
-
+ 
     public function block()
     {
         $id = $this->request->getPost('id');
