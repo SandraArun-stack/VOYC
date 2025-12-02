@@ -9,11 +9,11 @@
 
     function getStatusBadge(status) {
         switch (parseInt(status)) {
-            case 1: return '<span class="badge" style="background:green;">New</span>';
-            case 2: return '<span class="badge" style="background:yellow;color:#000;">Confirmed</span>';
-            case 3: return '<span class="badge" style="background:blue;">Packed</span>';
-            case 4: return '<span class="badge" style="background:orange;">Dispatched</span>';
-            case 5: return '<span class="badge" style="background:black;">Delivered</span>';
+            case 1: return '<span class="badge" style="padding:7px; font-size:12px; background:green;">New</span>';
+            case 2: return '<span class="badge" style="padding:7px; font-size:12px; background:yellow;color:#000;">Confirmed</span>';
+            case 3: return '<span class="badge" style="padding:7px; font-size:12px; background:blue;">Packed</span>';
+            case 4: return '<span class="badge" style="padding:7px; font-size:12px; background:orange;">Dispatched</span>';
+            case 5: return '<span class="badge" style="padding:7px; font-size:12px; background:black;">Delivered</span>';
             default: return '<span class="badge bg-secondary">Unknown</span>';
         }
     }
