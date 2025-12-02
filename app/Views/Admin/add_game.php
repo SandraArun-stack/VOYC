@@ -42,7 +42,7 @@
 
                                     <div id="messageBox" class="alert alert-success" style="display:none;"></div>
 
-                                    <form id="leaderboardForm" method="post" action="<?= base_url('admin/leaderboard/save'); ?>">
+                                    <form id="gamemapingform" method="post" action="<?= base_url('admin/game/mappingsave'); ?>">
 
 
                                         <!-- Hidden ID -->

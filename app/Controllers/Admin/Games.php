@@ -3,9 +3,10 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
-use App\Models\Admin\GameDetailsModel;
+use App\Models\Admin\GamesModel;
+use App\Models\Admin\GameMappingModel;
 
-class GameDetails extends BaseController
+class Games extends BaseController
 {
     protected $model;
     protected $session;
@@ -13,7 +14,7 @@ class GameDetails extends BaseController
     public function __construct()
     {
         $this->session = session();
-        $this->model = new GameDetailsModel();
+        // $this->model = new GamesModel();
     }
 
     public function index()
@@ -23,9 +24,9 @@ class GameDetails extends BaseController
 
         echo view('Admin/common/header');
         echo view('Admin/common/leftmenu');
-        echo view('Admin/game_details_list');
+        echo view('Admin/games');
         echo view('Admin/common/footer');
-        echo view('Admin/page_scripts/game_detailjs');
+        echo view('Admin/page_scripts/gamesjs');
     }
     public function gameView($id = null)
     {
@@ -41,10 +42,15 @@ class GameDetails extends BaseController
         echo view('Admin/common/leftmenu');
         echo view('Admin/add_game', $data);
         echo view('Admin/common/footer');
+        echo view('Admin/page_scripts/gamesjs');
     }
-    public function list()
+    public function list_games()
     {
-        $games = $this->model->orderBy('id', 'DESC')->findAll();
+        $gamesModel = new GamesModel();
+
+        $games = $gamesModel->where('game_status !=', 9)
+            ->orderBy('game_Id', 'DESC')
+            ->findAll();
 
         $data = [];
         $i = 1;
@@ -52,7 +58,7 @@ class GameDetails extends BaseController
         foreach ($games as $g) {
             $data[] = [
                 $i++,
-                date('d-m-Y', strtotime($g['created_on'])),
+                date('d-m-Y', strtotime($g['game_created_at'])),
                 $g['game_name'],
                 '<button class="btn btn-sm btn-primary">Edit</button>'
             ];
@@ -60,6 +66,42 @@ class GameDetails extends BaseController
 
         return json_encode(['data' => $data]);
     }
+    public function get_games_dropdown()
+    {
+        $gamesModel = new GamesModel();
+
+        $games = $gamesModel->where('game_status !=', 9)
+            ->orderBy('game_name', 'ASC')
+            ->findAll();
+
+        return $this->response->setJSON($games);
+    }
+
+    public function saveGameMapping()
+    {
+        $model = new GameMappingModel();
+
+        $gameId = $this->request->getPost('game_id');
+        $date = $this->request->getPost('date');
+
+        if (!$gameId || !$date) {
+            return redirect()->back()->with('error', 'Please fill all required fields');
+        }
+
+        $data = [
+            'game_Id' => $gameId,
+            'gm_date' => $date,
+            'gm_status' => 1,
+            'gm_created_by' => session()->get('admin_id'),
+            'gm_created_at' => date('Y-m-d H:i:s'),
+        ];
+
+        $model->insert($data);
+
+        return redirect()->to(base_url('admin/game-details'))
+            ->with('success', 'Game mapping saved successfully');
+    }
+
     public function saveGame()
     {
         $data = $this->request->getJSON(true);
@@ -80,7 +122,7 @@ class GameDetails extends BaseController
         }
 
         $data = $this->request->getJSON(true);
-        $game_Id = $data['game_id'] ?? null;
+        $game_Id = $data['game_Id'] ?? null;
         $gameData = [
             'game_name' => $data['game_name'] ?? '',
             'game_details' => $data['game_details'] ?? '',
@@ -93,19 +135,19 @@ class GameDetails extends BaseController
             ]);
         }
 
-        $gameModel = new GameDetailsModel();
+        $gameModel = new GamesModel();
         if ($game_Id) {
             $gameData['game_updated_by'] = $us_Id;
             $gameData['game_updated_at'] = date('Y-m-d H:i:s');
 
             $gameModel->update($game_Id, $gameData);
-            $gameData['game_id'] = $game_Id;
+            $gameData['game_Id'] = $game_Id;
 
             return $this->response->setJSON([
                 'success' => true,
                 'message' => 'Game updated successfully',
                 'data' => [
-                    'game_id' => $game_Id,
+                    'game_Id' => $game_Id,
                     'game_name' => $gameData['game_name'],
                     'game_details' => $gameData['game_details'],
                     'game_status' => $gameData['game_status'],
@@ -119,19 +161,19 @@ class GameDetails extends BaseController
             $gameData['game_created_at'] = date('Y-m-d H:i:s');
 
             $insertedId = $gameModel->insert($gameData);
-            $gameData['game_id'] = $insertedId;
+            $gameData['game_Id'] = $insertedId;
 
             return $this->response->setJSON([
                 'success' => true,
                 'message' => 'Game created successfully',
                 'data' => [
-                        'game_id' => $insertedId,
-                        'game_name' => $gameData['game_name'],
-                        'game_details' => $gameData['game_details'],
-                        'game_status' => $gameData['game_status'],
-                        'game_created_by' => $gameData['game_created_by'],
-                        'game_created_at' => $gameData['game_created_at'],
-                    ]
+                    'game_Id' => $insertedId,
+                    'game_name' => $gameData['game_name'],
+                    'game_details' => $gameData['game_details'],
+                    'game_status' => $gameData['game_status'],
+                    'game_created_by' => $gameData['game_created_by'],
+                    'game_created_at' => $gameData['game_created_at'],
+                ]
             ]);
 
         }
@@ -148,7 +190,7 @@ class GameDetails extends BaseController
 
         $offset = $pageIndex * $pageSize;
 
-        $gameModel = new GameDetailsModel();
+        $gameModel = new GamesModel();
         $data = $gameModel->getAllGames($pageSize, $offset, $search);
 
         return $this->response->setJSON([
@@ -167,7 +209,7 @@ class GameDetails extends BaseController
             ]);
         }
 
-        $gameModel = new GameDetailsModel();
+        $gameModel = new GamesModel();
         $game = $gameModel->getGameById($game_Id);
 
         if (!$game) {
@@ -192,8 +234,8 @@ class GameDetails extends BaseController
             ]);
         }
 
-        $gameModel = new GameDetailsModel();
-        $game = $gameModel->where('game_id', $game_Id)
+        $gameModel = new GamesModel();
+        $game = $gameModel->where('game_Id', $game_Id)
             ->where('game_status !=', '9')
             ->first();
 
@@ -211,7 +253,7 @@ class GameDetails extends BaseController
         return $this->response->setJSON([
             'success' => true,
             'message' => 'Game deleted successfully',
-            'game_id' => $game_Id
+            'game_Id' => $game_Id
         ]);
     }
 
