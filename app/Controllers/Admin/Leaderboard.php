@@ -48,10 +48,11 @@ class Leaderboard extends BaseController
         foreach ($data as &$row) {
 
             if (!empty($row['lb_date'])) {
-                $row['lb_date'] = date('d M Y', strtotime($row['lb_date']));
+                $row['lb_date'] = date('d-m-Y', strtotime($row['lb_date']));
             } else {
                 $row['lb_date'] = 'N/A';
             }
+
             $row['game_name'] = !empty($row['game_name']) ? ucwords(strtolower($row['game_name'])) : 'N/A';
             $row['player'] = !empty($row['player']) ? ucwords(strtolower($row['player'])) : 'N/A';
             $row['lb_score']  = $row['lb_score'] ?? '0';

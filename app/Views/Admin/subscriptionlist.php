@@ -44,6 +44,7 @@
                                                             <th>Rate</th>
                                                             <th>Validity(Days)</th>
                                                             <th>Discount</th>
+                                                            <th>Tokens</th>
                                                             <th>Action</th>
                                                         </tr>
                                                     </thead>

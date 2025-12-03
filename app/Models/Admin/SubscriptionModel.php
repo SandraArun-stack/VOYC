@@ -26,14 +26,13 @@ class SubscriptionModel extends Model
             $builder->like('sp_plan_name', $searchValue);
             $builder->orLike('sp_amount', $searchValue);
             $builder->orLike('sp_validity', $searchValue);
+            $builder->orLike('sp_token', $searchValue);
             $builder->groupEnd();
         }
 
         if ($postData['length'] != -1) {
             $builder->limit($postData['length'], $postData['start']);
         }
-
-        // Optional: order by primary key
         $builder->orderBy('sp_Id', 'ASC');
 
         return $builder->get()->getResultArray();
@@ -57,6 +56,7 @@ class SubscriptionModel extends Model
             $builder->like('sp_plan_name', $searchValue);
             $builder->orLike('sp_amount', $searchValue);
             $builder->orLike('sp_validity', $searchValue);
+            $builder->orLike('sp_token', $searchValue);
             $builder->groupEnd();
         }
 

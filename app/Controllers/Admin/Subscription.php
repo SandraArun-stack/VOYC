@@ -44,17 +44,16 @@ class Subscription extends BaseController
             }
             $row['sp_amount'] = !empty($row['sp_amount']) ? (int)$row['sp_amount'] : '0';
             $row['sp_validity'] = !empty($row['sp_validity']) ? $row['sp_validity'] : '0';
+            $row['sp_token'] = !empty($row['sp_token']) ? $row['sp_token'] : 'N/A';
             if (!empty($row['sp_discount'])) {
                 $discount = (int)$row['sp_discount'];
                 $row['sp_discount'] = $discount . '%';
             } else {
                 $row['sp_discount'] = '0%';
             }
-            $row['actions'] = '<a href="' . base_url('admin/subscription/add/' . $row['sp_Id']) . '" class="" title="Edit">
-                    <i class="bi bi-pencil-square"></i>
-                </a>
-                &nbsp;
-                    <i class="bi bi-trash text-danger" onclick="confirmDelete(' . $row['sp_Id'] . ')" title="Delete"></i>';
+            $row['actions'] = '<a href="' . base_url('admin/subscription/edit/' . $row['sp_Id']) . '" title="Edit">
+                <i class="bi bi-pencil-square"></i>
+            </a>';
         }
 
         return $this->response->setJSON([
@@ -64,39 +63,54 @@ class Subscription extends BaseController
             'data' => $data
         ]);
     }
+    public function add()
+    {
+        $template = view('Admin/common/header');
+		$template .= view('Admin/common/leftmenu');
+        $template .= view('Admin/subscriptionlist');
+		$template .= view('Admin/common/footer');
+		$template .= view('Admin/page_scripts/subscriptionjs');
+        return $template;
+    }
+    public function edit($id)
+    {
+        $model = new SubscriptionModel();
+        $subscription = $model->find($id);
+        if (!$subscription) {
+            return redirect()->to('admin/subscription')
+                ->with('error', 'Subscription not found.');
+        }
+        $template = view('Admin/common/header');
+		$template .= view('Admin/common/leftmenu');
+        $template .= view('Admin/subscription', ['subscription' => $subscription]);
+		$template .= view('Admin/common/footer');
+		$template .= view('Admin/page_scripts/subscriptionjs');
+        return $template;
+    }
     public function save()
     {
-        $data = $this->request->getJSON(true);
-        if (empty($data['sp_plan_name']) || empty($data['sp_validity'])) {
-            return $this->response->setJSON([
-                'status'  => false,
-                'message' => 'Plan name and validity are required'
-            ]);
-        }
-        if (empty($data['sp_Id'])) {
-            $data['sp_token'] = bin2hex(random_bytes(16));
-            $data['sp_created_at'] = date('Y-m-d H:i:s');
-            $data['sp_status'] = 1; 
-        } 
-        else {
-            $data['sp_updated_at'] = date('Y-m-d H:i:s');
-        }
-        if ($this->model->save($data)) {
+        $model = new SubscriptionModel();
 
-            $id = $data['sp_Id'] ?? $this->model->getInsertID();
+        $id = $this->request->getPost('subscription_id');
+        $data = [
+            'sp_plan_name' => $this->request->getPost('plan_name'),
+            'sp_amount' => $this->request->getPost('amount'),
+            'sp_validity' => $this->request->getPost('validity'),
+            'sp_discount' => $this->request->getPost('discount'),
+            'sp_token' => $this->request->getPost('token'),
+        ];
 
-            return $this->response->setJSON([
-                'status'  => true,
-                'message' => empty($data['sp_Id']) 
-                    ? 'Subscription created successfully' 
-                    : 'Subscription updated successfully',
-                'data' => $this->model->find($id)
-            ]);
+        if ($id) {
+            $model->update($id, $data);
+            $message = 'Subscription updated successfully';
+        } else {
+            $model->insert($data);
+            $message = 'Subscription added successfully';
         }
 
         return $this->response->setJSON([
-            'status'  => false,
-            'message' => 'Subscription save failed'
+            'status' => 'success',
+            'message' => $message
         ]);
     }
     public function getAllSubscriptions()
