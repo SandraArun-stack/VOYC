@@ -53,7 +53,7 @@
                                                     <th>Tokens</th>
                                                     <th>Leaderboard Count</th>
                                                     <th>Winning Percentage</th>
-                                                    <th>Discount Percentage</th>
+                                                    <th>Win Coupen Percentage</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>

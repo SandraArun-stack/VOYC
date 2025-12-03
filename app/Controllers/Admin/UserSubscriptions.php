@@ -64,8 +64,6 @@ class UserSubscriptions extends BaseController
                 $row['usersub_status'] = 2;
                 $row['status_badge']   = '<span class="badge bg-danger">Expired</span>';
             }
-            $row['actions'] = '<i class="bi bi-trash text-danger icon-clickable"
-                onclick="confirmDelete(' . $row['usersub_Id'] . ')"></i>';
         }
 
         return $this->response->setJSON([

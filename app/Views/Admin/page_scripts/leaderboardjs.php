@@ -32,7 +32,7 @@ $(document).ready(function() {
                 orderable: false,
                 searchable: false
             },
-            { data: 'lb_date' },
+            { data: 'lb_created_at' },
             { data: 'game_name' },
             { data: 'player' },
             { data: 'lb_score' },

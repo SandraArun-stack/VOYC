@@ -29,12 +29,11 @@ $(document).ready(function () {
             { data: 'usersub_discount' },
             { data: 'usersub_created_at' },
             { data: 'usersub_expiry' },
-            { data: 'status_badge' },
-            { data: 'actions' }
+            { data: 'status_badge' }
         ],
 
         columnDefs: [
-            { targets: [0,3,6,7], orderable: false, searchable:false }
+            { targets: [0,2,5,6], orderable: false, searchable:false }
         ]
     });
 

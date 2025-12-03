@@ -47,17 +47,16 @@ class Leaderboard extends BaseController
 
         foreach ($data as &$row) {
 
-            if (!empty($row['lb_date'])) {
-                $row['lb_date'] = date('d-m-Y', strtotime($row['lb_date']));
+            if (!empty($row['lb_created_at'])) {
+                $row['lb_created_at'] = date('d-m-Y', strtotime($row['lb_created_at']));
             } else {
-                $row['lb_date'] = 'N/A';
+                $row['lb_created_at'] = 'N/A';
             }
 
             $row['game_name'] = !empty($row['game_name']) ? ucwords(strtolower($row['game_name'])) : 'N/A';
-            $row['player'] = !empty($row['player']) ? ucwords(strtolower($row['player'])) : 'N/A';
+            $row['player']    = !empty($row['player']) ? ucwords(strtolower($row['player'])) : 'N/A';
             $row['lb_score']  = $row['lb_score'] ?? '0';
             $row['lb_rank']   = $row['lb_rank'] ?? '0';
-            // $row['lb_status'] = $row['lb_status'] ?? 0;
         }
 
         return $this->response->setJSON([
@@ -67,4 +66,5 @@ class Leaderboard extends BaseController
             'data'            => $data
         ]);
     }
+
  }

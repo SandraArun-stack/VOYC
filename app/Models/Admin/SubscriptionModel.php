@@ -15,29 +15,31 @@ class SubscriptionModel extends Model
     public function getDatatables()
     {
         $postData = service('request')->getPost();
-        $searchValue = $postData['search']['value'] ?? '';
+        $searchValue = trim($postData['search']['value'] ?? '');
+        $searchValue = preg_replace('/\s+/', '', $searchValue);
 
         $builder = $this->db->table($this->table);
-
         $builder->select('*');
 
         if (!empty($searchValue)) {
+            $escaped = $this->db->escapeLikeString($searchValue);
+
             $builder->groupStart();
-            $builder->like('sp_plan_name', $searchValue);
-            $builder->orLike('sp_amount', $searchValue);
-            $builder->orLike('sp_validity', $searchValue);
-            $builder->orLike('sp_token', $searchValue);
+            $builder->where("REPLACE(sp_plan_name, ' ', '') LIKE '%{$escaped}%'", null, false);
+            $builder->orWhere("REPLACE(sp_amount, ' ', '') LIKE '%{$escaped}%'", null, false);
+            $builder->orWhere("REPLACE(sp_validity, ' ', '') LIKE '%{$escaped}%'", null, false);
+            $builder->orWhere("REPLACE(sp_token, ' ', '') LIKE '%{$escaped}%'", null, false);
             $builder->groupEnd();
         }
 
         if ($postData['length'] != -1) {
             $builder->limit($postData['length'], $postData['start']);
         }
+
         $builder->orderBy('sp_Id', 'ASC');
 
         return $builder->get()->getResultArray();
     }
-
     public function countAll()
     {
         return $this->db->table($this->table)->countAllResults();
@@ -46,17 +48,20 @@ class SubscriptionModel extends Model
     public function countFiltered()
     {
         $postData = service('request')->getPost();
-        $searchValue = $postData['search']['value'] ?? '';
+        $searchValue = trim($postData['search']['value'] ?? '');
+        $searchValue = preg_replace('/\s+/', '', $searchValue);
 
         $builder = $this->db->table($this->table);
         $builder->select('COUNT(*) as total');
 
         if (!empty($searchValue)) {
+            $escaped = $this->db->escapeLikeString($searchValue);
+
             $builder->groupStart();
-            $builder->like('sp_plan_name', $searchValue);
-            $builder->orLike('sp_amount', $searchValue);
-            $builder->orLike('sp_validity', $searchValue);
-            $builder->orLike('sp_token', $searchValue);
+            $builder->where("REPLACE(sp_plan_name, ' ', '') LIKE '%{$escaped}%'", null, false);
+            $builder->orWhere("REPLACE(sp_amount, ' ', '') LIKE '%{$escaped}%'", null, false);
+            $builder->orWhere("REPLACE(sp_validity, ' ', '') LIKE '%{$escaped}%'", null, false);
+            $builder->orWhere("REPLACE(sp_token, ' ', '') LIKE '%{$escaped}%'", null, false);
             $builder->groupEnd();
         }
 

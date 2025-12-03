@@ -26,45 +26,40 @@ class GameMappingModel extends Model
 
     public function getDatatables($search = null, $start = 0, $length = 10, $orderBy = 'gm_Id', $orderDir = 'DESC')
     {
-        // MAIN QUERY (Return Rows)
+        $search = preg_replace('/\s+/', '', $search);
         $builder = $this->db->table($this->table)
             ->select("games_mapping.*, game.game_Name as game_name")
             ->join("game", "game.game_Id = games_mapping.game_Id", "left")
             ->where("games_mapping.gm_status !=", '9');
-
-        // Search filter
         if (!empty($search)) {
+            $escaped = $this->db->escapeLikeString($search);
+
             $builder->groupStart()
-                ->like("game.game_Name", $search)
-                ->orLike("games_mapping.gm_date", $search)
+                ->where("REPLACE(game.game_Name, ' ', '') LIKE '%{$escaped}%'", null, false)
+                ->orWhere("REPLACE(games_mapping.gm_date, ' ', '') LIKE '%{$escaped}%'", null, false)
                 ->groupEnd();
         }
-
-        // Total count (ONLY active)
-        $totalBuilder = $this->db->table($this->table)
-            ->where("gm_status !=", '9');
-        $total = $totalBuilder->countAllResults();
-
-        // Filtered count (ONLY active)
+        $total = $this->db->table($this->table)
+            ->where("gm_status !=", '9')
+            ->countAllResults();
         $filteredBuilder = $this->db->table($this->table)
             ->join("game", "game.game_Id = games_mapping.game_Id", "left")
             ->where("games_mapping.gm_status !=", '9');
 
         if (!empty($search)) {
+            $escaped = $this->db->escapeLikeString($search);
+
             $filteredBuilder->groupStart()
-                ->like("game.game_Name", $search)
-                ->orLike("games_mapping.gm_date", $search)
+                ->where("REPLACE(game.game_Name, ' ', '') LIKE '%{$escaped}%'", null, false)
+                ->orWhere("REPLACE(games_mapping.gm_date, ' ', '') LIKE '%{$escaped}%'", null, false)
                 ->groupEnd();
         }
 
         $filtered = $filteredBuilder->countAllResults();
-
-        // Order + pagination
         $builder->orderBy($orderBy, $orderDir);
         $builder->limit($length, $start);
 
-        $query = $builder->get();
-        $result = $query->getResultArray();
+        $result = $builder->get()->getResultArray();
 
         return [
             'data' => $result,
@@ -72,6 +67,5 @@ class GameMappingModel extends Model
             'filtered' => $filtered
         ];
     }
-
 
 }
