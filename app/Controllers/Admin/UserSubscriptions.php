@@ -3,7 +3,7 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
 use App\Models\Admin\UserSubscriptionsModel;
-use App\Models\UserModel;
+use App\Models\Admin\CustomerModel;
 use App\Models\Admin\SubscriptionModel;
 
 class UserSubscriptions extends BaseController
@@ -12,46 +12,68 @@ class UserSubscriptions extends BaseController
     {
         $this->session = session();
         $this->userSub = new UserSubscriptionsModel();
-        $this->user = new UserModel();
         $this->plan = new SubscriptionModel();
+        $this->customerModel = new CustomerModel(); 
     }
 
     public function index()
     {
         if (!$this->session->get('ad_uid')) {
-            return redirect()->to('/admin');
+            return redirect()->to('admin');
         }
-
-        echo view('Admin/common/header');
-        echo view('Admin/common/leftmenu');
-        echo view('Admin/usersubscriptions');
-        echo view('Admin/common/footer');
+        $template = view('Admin/common/header');
+		$template .= view('Admin/common/leftmenu');
+        $template .= view('Admin/usersubscriptions');
+		$template .= view('Admin/common/footer');
+		$template .= view('Admin/page_scripts/usersubscriptionjs');
+        return $template;
     }
 
-    public function list()
+    public function ajaxList()
     {
-        $subs = $this->userSub->select('user_subscription.*, user.username, subscription_plan.plan_name')
-            ->join('user', 'user.user_id = user_subscription.user_id')
-            ->join('subscription_plan', 'subscription_plan.subscription_id = user_subscription.subscription_id')
-            ->findAll();
+        $model    = new UserSubscriptionsModel();
+        $data     = $model->getDatatables();
+        $total    = $model->countAll();
+        $filtered = $model->countFiltered();
 
-        $data = [];
-        $i = 1;
+        foreach ($data as &$row) {
+            if (!empty($row['user_name'])) {
+                if ($row['user_name'] === strtoupper($row['user_name'])) {
+                    $row['user_name'] = $row['user_name'];
+                } else {
+                    $row['user_name'] = ucwords(strtolower($row['user_name']));
+                }
+            } else {
+                $row['user_name'] = 'N/A';
+            }
+            $row['plan_name'] = !empty($row['plan_name']) ? $row['plan_name'] : 'N/A';
+            if (!empty($row['usersub_discount'])) {
+                $row['usersub_discount'] = (int)$row['usersub_discount'] . '%';
+            } else {
+                $row['usersub_discount'] = '0%';
+            }
+            $row['usersub_created_at'] = date('d-m-Y', strtotime($row['usersub_created_at']));
+            $row['usersub_expiry']     = date('d-m-Y', strtotime($row['usersub_expiry']));
+            $today = date('Y-m-d');
+            $expiryDate = date('Y-m-d', strtotime($row['usersub_expiry']));
 
-        foreach ($subs as $s) {
-            $data[] = [
-                $i++,
-                $s['username'],
-                $s['start_date'],
-                $s['end_date'],
-                $s['plan_name'],
-                $s['discount'],
-                $s['token'],
-                '<a href="#" class="btn btn-primary btn-sm">View</a>'
-            ];
+            if ($expiryDate >= $today) {
+                $row['usersub_status'] = 1;
+                $row['status_badge']   = '<span class="badge bg-success">Active</span>';
+            } else {
+                $row['usersub_status'] = 2;
+                $row['status_badge']   = '<span class="badge bg-danger">Expired</span>';
+            }
+            $row['actions'] = '<i class="bi bi-trash text-danger icon-clickable"
+                onclick="confirmDelete(' . $row['usersub_Id'] . ')"></i>';
         }
 
-        return $this->response->setJSON(["data" => $data]);
+        return $this->response->setJSON([
+            'draw'            => intval($this->request->getPost('draw')),
+            'recordsTotal'    => $total,
+            'recordsFiltered' => $filtered,
+            'data'            => $data
+        ]);
     }
     public function createSubscribe()
     {

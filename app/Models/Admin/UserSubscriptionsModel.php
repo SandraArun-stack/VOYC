@@ -7,11 +7,74 @@ class UserSubscriptionsModel extends Model
 {
     protected $table = 'user_subscription';
     protected $primaryKey = 'usersub_Id';
-
     protected $allowedFields = [
-        'cust_Id','sp_Id','usersub_expiry','usersub_status','usersub_created_by','usersub_created_at','usersub_updated_by','usersub_updated_at'	
+        'cust_Id', 'sp_Id', 'usersub_expiry', 'usersub_status', 'usersub_discount', 'usersub_created_at', 'usersub_updated_at'
     ];
 
+    protected $returnType = 'array';
+
+     //Fetch data for DataTable with join
+     public function getDatatables()
+    {
+        $postData = service('request')->getPost();
+        $searchValue = $postData['search']['value'] ?? '';
+
+        $builder = $this->db->table('user_subscription us');
+        $builder->select('
+            us.usersub_Id,
+            us.usersub_status,
+            us.usersub_discount,
+            us.usersub_created_at,
+            us.usersub_expiry,
+            c.cust_Name AS user_name,
+            s.sp_plan_name AS plan_name
+        ');
+        $builder->join('customer c', 'c.cust_Id = us.cust_Id', 'left');
+        $builder->join('subscription_plan s', 's.sp_Id = us.sp_Id', 'left');
+        $builder->whereIn('us.usersub_status', [1, 2]);
+
+        if (!empty($searchValue)) {
+            $builder->groupStart();
+            $builder->like('c.cust_Name', $searchValue);
+            $builder->orLike('s.sp_plan_name', $searchValue);
+            $builder->groupEnd();
+        }
+
+        if (!empty($postData['length']) && $postData['length'] != -1) {
+            $builder->limit($postData['length'], $postData['start']);
+        }
+
+        $builder->orderBy('us.usersub_Id', 'DESC');
+
+        return $builder->get()->getResultArray();
+    }
+    public function countAll()
+    {
+        return $this->db->table('user_subscription')
+            ->whereIn('usersub_status', [1, 2])
+            ->countAllResults();
+    }
+    public function countFiltered()
+    {
+        $postData = service('request')->getPost();
+        $searchValue = $postData['search']['value'] ?? '';
+
+        $builder = $this->db->table('user_subscription us');
+        $builder->select('COUNT(us.usersub_Id) AS total');
+        $builder->join('customer c', 'c.cust_Id = us.cust_Id', 'left');
+        $builder->join('subscription_plan s', 's.sp_Id = us.sp_Id', 'left');
+        $builder->whereIn('us.usersub_status', [1, 2]);
+
+        if (!empty($searchValue)) {
+            $builder->groupStart();
+            $builder->like('c.cust_Name', $searchValue);
+            $builder->orLike('s.sp_plan_name', $searchValue);
+            $builder->groupEnd();
+        }
+
+        $row = $builder->get()->getRowArray();
+        return $row['total'] ?? 0;
+    }
     public function getAllUserSubscriptions($limit, $offset, $search = null)
     {
         $builder = $this->db->table($this->table . ' us');
