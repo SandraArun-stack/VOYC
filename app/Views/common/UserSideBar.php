@@ -44,7 +44,9 @@
                                     <h5>Game Arena</h5>
                                 </div>
                                 <div class="sud__head__list">
-                                    <p>Leader Board</p>
+                                    <a href="<?= base_url('userleaderboard'); ?>">
+                                        <p>Leader Board</p>
+                                    </a>
                                 </div>
                             </div>
                             <hr />
@@ -56,7 +58,9 @@
                                     <a href="<?= base_url('myprofile'); ?>">
                                         <p>My Profile</p>
                                     </a>
-                                    <p>My Wallet</p>
+                                    <a href="<?= base_url('mywallet'); ?>">
+                                        <p>My Wallet</p>
+                                    </a>
                                     <p>My Address</p>
                                     <!-- <p>My Wishlist</p> -->
                                     <p>Delete My Account</p>
