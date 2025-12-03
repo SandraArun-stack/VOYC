@@ -8,7 +8,7 @@
      border-bottom: none !important;
  }
 
- 
+
 
  .floating-label-group {
      position: relative;
@@ -124,6 +124,7 @@
  .banner-btm-spce {
      margin-bottom: 3px !important;
  }
+
  .iti__selected-dial-code {
      display: none !important;
  }
@@ -146,16 +147,24 @@
      background-color: #fff4f4 !important;
      font-weight: 600;
  }
-.notification_order{
-        border-radius: 50%;
-    height: 19px;
-    width: 20px;
 
-}
-.settings_charge_text{
-    color: #797979;
-    font-size: 13px;
-}
+ .notification_order {
+     border-radius: 50%;
+     height: 19px;
+     width: 20px;
+
+ }
+
+ .settings_charge_text {
+     color: #797979;
+     font-size: 13px;
+ }
+
+ .player_status {
+     padding: 5px;
+     font-size: 14px;
+ }
+
 
  @media (max-width: 768px) {
      .category-promo .section2-item {
@@ -170,7 +179,5 @@
      /* .product-img {
          height: auto;
      } */
-      
- }
 
- 
+ }

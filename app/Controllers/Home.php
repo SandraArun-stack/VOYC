@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Models\NewProductModel;
 use App\Models\HomeModel;
 use App\Models\CartModel;
+use App\Models\Admin\LeaderboardModel;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
@@ -25,7 +26,45 @@ class Home extends BaseController
         $this->productdisplayModel = new HomeModel();
         $this->reviewModel = new NewProductModel();
         $this->CartModel = new CartModel();
+        $this->LeaderboardModel = new LeaderboardModel();
     }
+    // public function index()
+    // {
+    //     $session = session();
+
+    //     if ($this->request->getGet('login_popup') == 1) {
+    //         $session->setFlashdata('showLoginPopup', true);
+    //     }
+    //     $showLoginPopup = $session->getFlashdata('showLoginPopup');
+
+    //     $userId = $session->get('user_id');
+    //     $cartCount = $this->CartModel->getCartItemCount($userId);
+
+    //     $newProductModel = new NewProductModel();
+    //     $data['newPrdImg'] = $newProductModel->getNewPrdImage();
+    //     $data['bestSeller'] = $newProductModel->getBestSeller();
+
+    //     $yesterday = date('Y-m-d', strtotime('-1 day'));
+
+    //     // Use the model created in constructor
+    //     $leaders = $this->LeaderboardModel
+    //         ->where('TRIM(lb_date)', $yesterday)
+    //         ->orderBy('lb_rank', 'ASC')
+    //         ->findAll();
+    //     $data['leaders'] = $leaders;
+    //     // ----------------------------------------------------
+
+    //     return view('common/header', [
+    //         'cartCount' => $cartCount,
+    //         'showLoginPopup' => $showLoginPopup
+    //     ])
+    //         . view('index', $data)
+    //         . view('common/footer')
+    //         . view('pagescripts/indexjs');
+    // }
+
+
+
     public function index()
     {
         $session = session();
@@ -33,19 +72,41 @@ class Home extends BaseController
         if ($this->request->getGet('login_popup') == 1) {
             $session->setFlashdata('showLoginPopup', true);
         }
+
         $showLoginPopup = $session->getFlashdata('showLoginPopup');
 
         $userId = $session->get('user_id');
         $cartCount = $this->CartModel->getCartItemCount($userId);
 
+        // Calculate yesterday
+        date_default_timezone_set('Asia/Kolkata');
+        $yesterday = date('Y-m-d', strtotime('-1 day'));
+        $yesterday_display = $yesterday;
+
+        // Fetch yesterday leaders
+        $leaders = $this->LeaderboardModel
+            ->where('lb_date', $yesterday)
+            ->orderBy('lb_rank', 'ASC')
+            ->findAll();
+
         $newProductModel = new NewProductModel();
-        $data['newPrdImg'] = $newProductModel->getNewPrdImage();
-        $data['bestSeller'] = $newProductModel->getBestSeller();
-        return view('common/header', ['cartCount' => $cartCount, 'showLoginPopup' => $showLoginPopup])
-            . view('index', $data)
-            . view('common/footer')
-            . view('pagescripts/indexjs');
+
+        $data = [
+            'cartCount' => $cartCount,
+            'showLoginPopup' => $showLoginPopup,
+            'newPrdImg' => $newProductModel->getNewPrdImage(),
+            'bestSeller' => $newProductModel->getBestSeller(),
+            'leaders' => $leaders,
+            'yesterday_display' => $yesterday_display,
+        ];
+
+        return
+            view('common/header', $data) .
+            view('index', $data) .
+            view('common/footer') .
+            view('pagescripts/indexjs');
     }
+
     public function registerUser()
     {
         $fullName = ucwords(strtolower(trim($this->request->getPost('fullname'))));
@@ -140,6 +201,8 @@ class Home extends BaseController
 
         return $this->response->setJSON(['status' => 'success', 'message' => 'Logged out successfully']);
     }
+
+
 
 }
 
