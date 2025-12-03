@@ -24,47 +24,61 @@ class PlayersModel extends Model
 
     public function getDatatables($search = null, $start = 0, $length = 10, $orderBy = 'player_Id', $orderDir = 'DESC')
     {
+    
+        $search = trim($search);
+        $searchNoSpace = preg_replace('/\s+/', '', $search);
         $builder = $this->db->table($this->table)
-            ->select("players.*, customer.cust_name as customer_name, game.game_name as game_name")
+            ->select("
+                players.*,
+                DATE_FORMAT(players.player_date, '%d-%m-%Y') AS player_date,
+                CONCAT(
+                    UPPER(LEFT(customer.cust_name, 1)),
+                    LOWER(SUBSTRING(customer.cust_name, 2))
+                ) AS customer_name,
+                CONCAT(
+                    UPPER(LEFT(game.game_name, 1)),
+                    LOWER(SUBSTRING(game.game_name, 2))
+                ) AS game_name
+            ", false)
             ->join("customer", "customer.cust_Id = players.cust_Id", "left")
             ->join("game", "game.game_Id = players.game_Id", "left")
-            ->where("players.player_status <>", '9');
-
+            ->where("players.player_status <>", 9);
         if (!empty($search)) {
+            $escaped = $this->db->escapeLikeString($searchNoSpace);
+
             $builder->groupStart()
-                ->like("customer.cust_name", $search)
-                ->orLike("game.game_name", $search)
-                ->orLike("players.player_date", $search)
+                ->where("REPLACE(customer.cust_name, ' ', '') LIKE '%{$escaped}%'", null, false)
+                ->orWhere("REPLACE(game.game_name, ' ', '') LIKE '%{$escaped}%'", null, false)
+                ->orWhere("REPLACE(players.player_date, ' ', '') LIKE '%{$escaped}%'", null, false)
                 ->groupEnd();
         }
-
         $total = $this->db->table($this->table)
-            ->where("player_status <>", '9')
+            ->where("player_status <>", 9)
             ->countAllResults();
-
         $filteredBuilder = $this->db->table($this->table)
             ->join("customer", "customer.cust_Id = players.cust_Id", "left")
             ->join("game", "game.game_Id = players.game_Id", "left")
-            ->where("players.player_status <>", '9');
+            ->where("players.player_status <>", 9);
 
         if (!empty($search)) {
+            $escaped = $this->db->escapeLikeString($searchNoSpace);
+
             $filteredBuilder->groupStart()
-                ->like("customer.cust_name", $search)
-                ->orLike("game.game_name", $search)
-                ->orLike("players.player_date", $search)
+                ->where("REPLACE(customer.cust_name, ' ', '') LIKE '%{$escaped}%'", null, false)
+                ->orWhere("REPLACE(game.game_name, ' ', '') LIKE '%{$escaped}%'", null, false)
+                ->orWhere("REPLACE(players.player_date, ' ', '') LIKE '%{$escaped}%'", null, false)
                 ->groupEnd();
         }
 
         $filtered = $filteredBuilder->countAllResults();
-
         $builder->orderBy($orderBy, $orderDir)
             ->limit($length, $start);
 
         $result = $builder->get()->getResultArray();
 
         return [
-            'data' => $result,
-            'total' => $total,
+            'data'     => $result,
+            'total'    => $total,
             'filtered' => $filtered
         ];
     }

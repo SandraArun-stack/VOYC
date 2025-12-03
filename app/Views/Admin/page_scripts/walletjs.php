@@ -1,45 +1,46 @@
 <script>
-    $(document).ready(function () {
-        // alert("hai");
-        var table = $('#UserWalletTable').DataTable({
-            processing: true,
-            serverSide: true,
-            order: [],
-            responsive: true,
-            scrollX: false,
+$(document).ready(function () {
 
-            ajax: {
-                url: "<?= base_url('admin/wallet/ajaxList'); ?>",
-                type: "POST"
-            },
+    $('#UserWalletTable').DataTable({
+        processing: true,
+        serverSide: true,
+        order: [],
+        responsive: true,
 
-            columns: [
-                {
-                    data: null,
-                    render: function (data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    },
-                    orderable: false,
-                    searchable: false
+        ajax: {
+            url: "<?= base_url('admin/wallet/ajaxList'); ?>",
+            type: "POST"
+        },
+
+        columns: [
+            {
+                data: null,
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
                 },
-                { data: 'cust_name' },
-                { data: 'uw_expiry' },
-                { data: 'uw_tokens' },
-                { data: 'uw_additional_token' },
-                { data: 'uw_additional_token' },
-                {
-                    data: 'uw_status',
-                    render: function (status) {
-                        return status === '1'
-                            ? `<span class="badge bg-success">Active</span>`
-                            : `<span class="badge bg-danger">Inactive</span>`;
-                    }
-                }
-            ],
+                orderable: false,
+                searchable: false
+            },
+            { data: 'cust_Name', defaultContent: '-' },
+            { data: 'uw_expiry', defaultContent: '-' },
+            { data: 'uw_tokens', defaultContent: '0' },
+            { data: 'uw_bonus_token', defaultContent: '0' },
+            { data: 'uw_purchased_token', defaultContent: '0' },
 
-            columnDefs: [
-                { targets: [0, 3, 4, 5, 6], orderable: false } // Disable sorting
-            ]
-        });
+            {
+                data: 'uw_status',
+                render: function (status) {
+                    return status == '1'
+                        ? '<span class="badge bg-success">Active</span>'
+                        : '<span class="badge bg-danger">Inactive</span>';
+                }
+            }
+        ],
+
+        columnDefs: [
+            { targets: [0, 3, 4, 5, 6], orderable: false }
+        ]
     });
+
+});
 </script>

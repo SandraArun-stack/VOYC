@@ -27,36 +27,37 @@ class Wallet extends BaseController
     }
 
     public function ajaxList()
-    {
-        $model = new WalletModel();
+{
+    $model = new \App\Models\Admin\WalletModel();
 
-        $start = $this->request->getPost('start');
-        $length = $this->request->getPost('length');
-        $search = $this->request->getPost('search')['value'];
+    $start  = $this->request->getPost('start');
+    $length = $this->request->getPost('length');
+    $search = $this->request->getPost('search')['value'] ?? '';
 
-        $orderColumnIndex = $this->request->getPost('order')[0]['column'] ?? 0;
-        $orderDir = $this->request->getPost('order')[0]['dir'] ?? 'DESC';
+    $orderColumnIndex = $this->request->getPost('order')[0]['column'] ?? 0;
+    $orderDir = $this->request->getPost('order')[0]['dir'] ?? 'DESC';
 
-        $columns = [
-            null,
-            'customer.cust_name',
-            'um_expiry',
-            'uw_tokens',
-            'uw_additional_token',
-            'uw_purchased_token',
-            'uw_status'
-        ];
+    $columns = [
+        null,
+        'customer.cust_Name',
+        'uw_expiry',
+        'uw_tokens',
+        'uw_bonus_token',       
+        'uw_purchased_token',  
+        'uw_status'
+    ];
 
-        $orderBy = $columns[$orderColumnIndex] ?? 'uw_Id';
+    $orderBy = $columns[$orderColumnIndex] ?? 'uw_Id';
 
-        $data = $model->getDatatables($search, $start, $length, $orderBy, $orderDir);
+    $data = $model->getDatatables($search, $start, $length, $orderBy, $orderDir);
 
-        return $this->response->setJSON([
-            'draw' => intval($this->request->getPost('draw')),
-            'recordsTotal' => $data['total'],
-            'recordsFiltered' => $data['filtered'],
-            'data' => $data['data']
-        ]);
-    }
+    return $this->response->setJSON([
+        'draw'            => intval($this->request->getPost('draw')),
+        'recordsTotal'    => $data['total'],
+        'recordsFiltered' => $data['filtered'],
+        'data'            => $data['data']
+    ]);
+}
+
 
 }

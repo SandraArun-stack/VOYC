@@ -24,17 +24,14 @@ class LeaderboardModel extends Model
     public function getDatatables()
     {
         $postData = service('request')->getPost();
-        $searchValue = $postData['search']['value'] ?? '';
-
-        // Yesterday
-        $yesterday = date('Y-m-d', strtotime('-1 day'));
+        $searchValue = trim($postData['search']['value'] ?? '');
+        $searchValue = preg_replace('/\s+/', '', $searchValue);
+        $today = date('Y-m-d');
 
         $builder = $this->db->table('leaderboard lb');
-
-        // Dynamic rank calculation
         $builder->select("
             lb.lb_Id,
-            lb.lb_date,
+            lb.lb_created_at,
             lb.lb_score,
             lb.lb_status,
             g.game_name,
@@ -43,37 +40,33 @@ class LeaderboardModel extends Model
                 SELECT COUNT(*) + 1
                 FROM leaderboard l2
                 WHERE l2.lb_score > lb.lb_score
-                AND DATE(l2.lb_date) = DATE(lb.lb_date)
+                AND DATE(l2.lb_created_at) = DATE(lb.lb_created_at)
             ) AS lb_rank
         ", false);
 
         $builder->join('game g', 'g.game_Id = lb.game_Id', 'left');
         $builder->join('customer c', 'c.cust_Id = lb.cust_Id', 'left');
 
-        // Show only yesterday winners
-        $builder->where('DATE(lb.lb_date)', $yesterday);
-
-        // Search
+        $builder->where('DATE(lb.lb_created_at)', $today);
         if (!empty($searchValue)) {
+            $escaped = $this->db->escapeLikeString($searchValue);
+
             $builder->groupStart();
-            $builder->like('g.game_name', $searchValue);
-            $builder->orLike('c.cust_Name', $searchValue);
-            $builder->orLike('lb.lb_score', $searchValue);
-            $builder->orLike('lb.lb_date', $searchValue);
+            $builder->where("REPLACE(g.game_name, ' ', '') LIKE '%{$escaped}%'", null, false);
+            $builder->orWhere("REPLACE(c.cust_Name, ' ', '') LIKE '%{$escaped}%'", null, false);
+            $builder->orWhere("REPLACE(lb.lb_score, ' ', '') LIKE '%{$escaped}%'", null, false);
+            $builder->orWhere("REPLACE(CAST(lb.lb_rank AS CHAR), ' ', '') LIKE '%{$escaped}%'", null, false);
             $builder->groupEnd();
         }
 
-        // Sort highest score → rank 1 first
         $builder->orderBy('lb.lb_score', 'DESC');
 
-        
         if ($postData['length'] != -1) {
             $builder->limit($postData['length'], $postData['start']);
         }
 
         return $builder->get()->getResultArray();
     }
-
     public function countAll()
     {
         return $this->db->table('leaderboard')->countAllResults();
@@ -81,9 +74,10 @@ class LeaderboardModel extends Model
     public function countFiltered()
     {
         $postData = service('request')->getPost();
-        $searchValue = $postData['search']['value'] ?? '';
+        $searchValue = trim($postData['search']['value'] ?? '');
+        $searchValue = preg_replace('/\s+/', '', $searchValue);
 
-        $yesterday = date('Y-m-d', strtotime('-1 day'));
+        $today = date('Y-m-d');
 
         $builder = $this->db->table('leaderboard lb');
         $builder->select('COUNT(*) as total');
@@ -91,18 +85,19 @@ class LeaderboardModel extends Model
         $builder->join('game g', 'g.game_Id = lb.game_Id', 'left');
         $builder->join('customer c', 'c.cust_Id = lb.cust_Id', 'left');
 
-        $builder->where('DATE(lb.lb_date)', $yesterday);
+        $builder->where('DATE(lb.lb_created_at)', $today);
 
         if (!empty($searchValue)) {
+            $escaped = $this->db->escapeLikeString($searchValue);
+
             $builder->groupStart();
-            $builder->like('g.game_name', $searchValue);
-            $builder->orLike('c.cust_Name', $searchValue);
-            $builder->orLike('lb.lb_score', $searchValue);
-            $builder->orLike('lb.lb_date', $searchValue);
+            $builder->where("REPLACE(g.game_name, ' ', '') LIKE '%{$escaped}%'", null, false);
+            $builder->orWhere("REPLACE(c.cust_Name, ' ', '') LIKE '%{$escaped}%'", null, false);
+            $builder->orWhere("REPLACE(lb.lb_score, ' ', '') LIKE '%{$escaped}%'", null, false);
+            $builder->orWhere("REPLACE(CAST(lb.lb_rank AS CHAR), ' ', '') LIKE '%{$escaped}%'", null, false);
             $builder->groupEnd();
         }
 
         return $builder->get()->getRow()->total;
     }
-
 }

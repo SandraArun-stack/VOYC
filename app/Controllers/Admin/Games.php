@@ -153,9 +153,12 @@ class Games extends BaseController
     {
         $model = new GameMappingModel();
 
-        $start = $this->request->getPost('start');
+        $start  = $this->request->getPost('start');
         $length = $this->request->getPost('length');
-        $search = $this->request->getPost('search')['value'];
+
+        // ✅ Trim + remove extra spaces for safe search
+        $search = trim($this->request->getPost('search')['value'] ?? '');
+        $search = preg_replace('/\s+/', '', $search);
 
         $orderColumnIndex = $this->request->getPost('order')[0]['column'] ?? 0;
         $orderDir = $this->request->getPost('order')[0]['dir'] ?? 'DESC';
@@ -173,8 +176,20 @@ class Games extends BaseController
 
         $orderBy = $columns[$orderColumnIndex] ?? "gm_Id";
 
-        // Get paginated result
         $data = $model->getDatatables($search, $start, $length, $orderBy, $orderDir);
+
+        // ✅ Format Date + Add % Sign
+        foreach ($data['data'] as &$row) {
+
+            // Date → 03-12-2025
+            if (!empty($row['gm_date'])) {
+                $row['gm_date'] = date('d-m-Y', strtotime($row['gm_date']));
+            }
+
+            // Add % sign (remove decimals)
+            $row['gm_free_tee_percentage'] = rtrim($row['gm_free_tee_percentage'], '.0') . '%';
+            $row['gm_extra_discount']      = rtrim($row['gm_extra_discount'], '.0') . '%';
+        }
 
         return $this->response->setJSON([
             'draw' => intval($this->request->getPost('draw')),
@@ -183,6 +198,7 @@ class Games extends BaseController
             'data' => $data['data']
         ]);
     }
+
 
     public function edit($id = null)
     {

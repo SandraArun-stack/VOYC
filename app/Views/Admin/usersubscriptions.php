@@ -40,7 +40,6 @@
                                             <th>Expiry Date</th>
                                             <th>Status</th>
                                             <!-- <th>Token</th> -->
-                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                 </table>
