@@ -221,7 +221,7 @@
                     <div class="alert alert-success m-3 p-2 w-auto d-none" id="login_msg_alert"></div>
                     <div class="modal-body">
                         <form id="loginForm">
-                            
+
                             <label>Email</label><span>&nbsp;*</span>
                             <input type="text" name="login_email" class="form-control mb-3"
                                 placeholder="Enter Your Email" required>
@@ -330,11 +330,11 @@
                             </label>
 
                             <small class="forgot-text d-block mb-1">
-                               Enter Your Registered Email to Receive a Password Reset Link.
+                                Enter Your Registered Email to Receive a Password Reset Link.
                             </small>
                             <input type="email" name="forgot_email" class="form-control mb-3 forgot-input"
                                 placeholder="Enter Your Email" required>
-                           
+
                             <div class="submit_forgot w-100 justify-content-between d-flex">
                                 <button type="button" id="btn_forgot_password" class="btn btn-dark w-100"
                                     data-url="<?= base_url('forgotPassword') ?>">
@@ -357,48 +357,53 @@
         <div class="custom-modal-content">
             <div class="custom-layer">
                 <span class="close-btn">&times;</span>
+
                 <div class="leaderboard-header text-center">
                     <h3 class="leaderboard-title">PLAYERS OF THE DAY</h3>
                 </div>
-                <div class="leaderboard-item winner-first">
-                    <div class="position-icon first">🥇</div>
-                    <img src="<?= base_url() . ASSET_PATH; ?>assets/img/winner/kid-first.jpg" alt=" Winner"
-                        class="winner-img">
-                    <div class="winner-info">
-                        <h4>John Doe</h4>
-                        <p>Score: 1500</p>
-                    </div>
-                </div>
-                <div class="leaderboard-item winner-second">
-                    <div class="position-icon first">🥈</div>
-                    <img src="<?= base_url() . ASSET_PATH; ?>assets/img/winner/kid-first.jpg" alt=" Winner"
-                        class="winner-img">
-                    <div class="winner-info ">
-                        <h4>John Doe</h4>
-                        <p>Score: 1500</p>
-                    </div>
-                </div>
-                <div class="leaderboard-item winner-third">
-                    <div class="position-icon first">🥉</div>
-                    <img src="<?= base_url() . ASSET_PATH; ?>assets/img/winner/kid-first.jpg" alt=" Winner"
-                        class="winner-img">
-                    <div class="winner-info ">
-                        <h4>John Doe</h4>
-                        <p>Score: 1500</p>
-                    </div>
-                </div>
-                <div class="leaderboard-item winner-fourth">
-                    <div class="position-icon first">🏅</div>
-                    <img src="<?= base_url() . ASSET_PATH; ?>assets/img/winner/kid-first.jpg" alt=" Winner"
-                        class="winner-img">
-                    <div class="winner-info ">
-                        <h4>John Doe</h4>
-                        <p>Score: 1500</p>
-                    </div>
-                </div>
+
+                <?php
+                // Icon array for ranks
+                $icons = [
+                    1 => "🥇",
+                    2 => "🥈",
+                    3 => "🥉",
+                    4 => "🏅"
+                ];
+
+                // Default image if none found
+                $defaultImg = base_url() . ASSET_PATH . "assets/img/winner/kid-first.jpg";
+
+                if (!empty($leaders)):
+                    foreach ($leaders as $index => $row):
+                        $rank = $row['lb_rank'];
+                        $playerName = $row['player_Id'];   // adjust if player table available
+                        $score = $row['lb_score'];
+                        ?>
+                        <div class="leaderboard-item winner-<?= strtolower($rank); ?>">
+                            <div class="position-icon first">
+                                <?= $icons[$rank] ?? "🏅"; ?>
+                            </div>
+
+                            <img src="<?= $defaultImg; ?>" alt="Winner" class="winner-img">
+
+                            <div class="winner-info">
+                                <h4><?= esc($playerName); ?></h4>
+                                <p>Score: <?= esc($score); ?></p>
+                            </div>
+                        </div>
+                    <?php
+                    endforeach;
+                else: ?>
+
+                    <p class="text-center text-danger">No records found for yesterday.</p>
+
+                <?php endif; ?>
+
             </div>
         </div>
     </div>
+
 
     <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">

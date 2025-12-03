@@ -1,17 +1,19 @@
 <?php
+
 namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
-use App\Models\Admin\WalletModel;
-use App\Models\UserModel;
+use App\Models\Admin\PlayersModel;
 
-class Wallet extends BaseController
+class Players extends BaseController
 {
+    protected $model;
+    protected $session;
+
     public function __construct()
     {
         $this->session = session();
-        $this->wallet = new WalletModel();
-        $this->user = new UserModel();
+        $this->model = new PlayersModel();
     }
 
     public function index()
@@ -21,14 +23,14 @@ class Wallet extends BaseController
 
         echo view('Admin/common/header');
         echo view('Admin/common/leftmenu');
-        echo view('Admin/wallet');
+        echo view('Admin/players');
         echo view('Admin/common/footer');
-        echo view('Admin/page_scripts/walletjs');
+        echo view('Admin/page_scripts/playersjs');
     }
 
     public function ajaxList()
     {
-        $model = new WalletModel();
+        $model = new PlayersModel();
 
         $start = $this->request->getPost('start');
         $length = $this->request->getPost('length');
@@ -39,15 +41,14 @@ class Wallet extends BaseController
 
         $columns = [
             null,
+            'player_date',
             'customer.cust_name',
-            'um_expiry',
-            'uw_tokens',
-            'uw_additional_token',
-            'uw_purchased_token',
-            'uw_status'
+            'game.game_name',
+            'player_score',
+            'player_winning_status'
         ];
 
-        $orderBy = $columns[$orderColumnIndex] ?? 'uw_Id';
+        $orderBy = $columns[$orderColumnIndex] ?? 'player_Id';
 
         $data = $model->getDatatables($search, $start, $length, $orderBy, $orderDir);
 
@@ -58,5 +59,6 @@ class Wallet extends BaseController
             'data' => $data['data']
         ]);
     }
+
 
 }
