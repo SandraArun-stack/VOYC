@@ -146,15 +146,15 @@ $routes->get('Return_refundpolicy', 'ReturnAndRefundPolicy::index');
 
 
 
-//oreder details
+//order details
 $routes->match(['get', 'post'], 'orderdetails', 'OrderDetails::index');
 
 $routes->post('orderdetails/placeOrder', 'OrderDetails::placeOrder');
 $routes->post('orderdetails/saveAddress', 'OrderDetails::saveAddress');
 
 
-
-
+//my wallet
+$routes->get('mywallet', 'MyWallet::index');
 
 
 

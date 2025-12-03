@@ -44,11 +44,11 @@ class Home extends BaseController
     //     $data['newPrdImg'] = $newProductModel->getNewPrdImage();
     //     $data['bestSeller'] = $newProductModel->getBestSeller();
 
-    //     $today = date('Y-m-d', strtotime('-1 day'));
+    //     $yesterday = date('Y-m-d', strtotime('-1 day'));
 
     //     // Use the model created in constructor
     //     $leaders = $this->LeaderboardModel
-    //         ->where('TRIM(lb_date)', $today)
+    //         ->where('TRIM(lb_date)', $yesterday)
     //         ->orderBy('lb_rank', 'ASC')
     //         ->findAll();
     //     $data['leaders'] = $leaders;
@@ -69,54 +69,13 @@ class Home extends BaseController
     {
         $session = session();
 
-        if ($this->request->getGet('login_popup') == 1) {
-            $session->setFlashdata('showLoginPopup', true);
-        }
-        $showLoginPopup = $session->getFlashdata('showLoginPopup');
-
-        $userId = $session->get('user_id');
-        $cartCount = $this->CartModel->getCartItemCount($userId);
-
-        $newProductModel = new NewProductModel();
-        $data['newPrdImg'] = $newProductModel->getNewPrdImage();
-        $data['bestSeller'] = $newProductModel->getBestSeller();
-
-        $today = date('Y-m-d');
-
-        // Get leaderboard limit for today from the games_mapping table
-        $gameMappingModel = new \App\Models\Admin\GameMappingModel();
-        $todayLimit = $gameMappingModel->where('gm_date', date('Y-m-d'))
-            ->first()['gm_leaderboard_count'] ?? 10; // Default to 10 if no value is found
-        // Ensure that todayLimit is an integer
-        $todayLimit = intval($todayLimit); // Ensure it's an integer
-
-        $playersModel = new \App\Models\Admin\PlayersModel();
-        $players = $playersModel
-            ->select('players.*, customer.cust_Name AS player_name')
-            ->join('customer', 'customer.cust_Id = players.cust_Id', 'left')
-            ->where('DATE(players.player_created_at)', $today)
-            ->orderBy('player_rank', 'ASC')
-            ->limit($todayLimit)
-            ->findAll();
-
-
-
-        // Get the names of the players by fetching data from the customer table
-
-
-        $data['players'] = $players;
-        // print_r($players);exit();
-        return view('common/header', [
-            'cartCount' => $cartCount,
-            'showLoginPopup' => $showLoginPopup,
-            'players'=>  $players
-        ])
-            . view('index', $data)
-            . view('common/footer')
-            . view('pagescripts/indexjs');
+      
+        return
+            view('common/header') .
+            view('index') .
+            view('common/footer') .
+            view('pagescripts/indexjs');
     }
-
-
 
     public function registerUser()
     {

@@ -354,6 +354,7 @@
         </div>
     </div>
     <div id="categoriesModal" class="custom-modal" data-aos="zoom-in" data-aos-duration="600">
+        
         <div class="custom-modal-content">
             <div class="custom-layer">
                 <span class="close-btn">&times;</span>
@@ -363,22 +364,25 @@
                 </div>
 
                 <?php
+// print_r($players);exit();
+
                 // Icon array for ranks
                 $icons = [
                     1 => "🥇",
                     2 => "🥈",
                     3 => "🥉",
                     4 => "🏅"
+                    
                 ];
 
                 // Default image if none found
                 $defaultImg = base_url() . ASSET_PATH . "assets/img/winner/kid-first.jpg";
 
-                if (!empty($leaders)):
-                    foreach ($leaders as $index => $row):
-                        $rank = $row['lb_rank'];
-                        $playerName = $row['player_Id'];   // adjust if player table available
-                        $score = $row['lb_score'];
+                if (!empty($players)):
+                    foreach ($players as $index => $row):
+                        $rank = $row['player_rank'];
+                        $playerName = $row['player_name'] ?? "Player " . $row['cust_Id'];
+                        $score = $row['player_score'];
                         ?>
                         <div class="leaderboard-item winner-<?= strtolower($rank); ?>">
                             <div class="position-icon first">
@@ -392,17 +396,15 @@
                                 <p>Score: <?= esc($score); ?></p>
                             </div>
                         </div>
-                    <?php
+                        <?php
                     endforeach;
                 else: ?>
-
                     <p class="text-center text-danger">No records found for yesterday.</p>
-
                 <?php endif; ?>
-
             </div>
         </div>
     </div>
+
 
 
     <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
