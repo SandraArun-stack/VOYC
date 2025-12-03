@@ -276,6 +276,7 @@ $routes->post('admin/usersubscriptions/save', 'Admin\UserSubscriptions::save');
 
 // User Wallet
 $routes->get('admin/wallet', 'Admin\Wallet::index');
+$routes->post('admin/wallet/ajaxList', 'Admin\Wallet::ajaxList');
 $routes->get('admin/wallet/list', 'Admin\Wallet::list');
  
 
