@@ -155,7 +155,8 @@ $routes->post('orderdetails/saveAddress', 'OrderDetails::saveAddress');
 
 //my wallet
 $routes->get('mywallet', 'MyWallet::index');
-
+$routes->post('mywallet/walletListAjax', 'MyWallet::walletListAjax');
+$routes->get('mywallet/getUserTokens', 'MyWallet::getUserTokens');
 
 
 
