@@ -208,7 +208,7 @@ $routes->post('admin/product/video', 'Admin\Product::ProductuploadVideo');
 $routes->post('admin/product/getVideo', 'Admin\Product::getVideo');
 $routes->post('admin/product/deletevideo', 'Admin\Product::deleteVideo');
 $routes->post('admin/product/status', 'Admin\Product::changeStatus');
-$routes->get('admin/product/view/(:any)', 'Admin\Product::viewProduct/$1');
+$routes->get('admin/product/view/(:num)/(:num)', 'Admin\Product::viewProduct/$1/$2');
 $routes->get('admin/update_stock/(:num)', 'Admin\Stock::updateStockForm/$1');
 $routes->post('admin/update_stock_value/(:num)', 'Admin\Stock::updateStock/$1');
 $routes->get('product/reviews_view/(:num)', 'Product::reviewsView/$1');

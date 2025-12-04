@@ -573,13 +573,13 @@ if ($pr_custom === null || $pr_custom === '') {
 
     //View Product
 
-    public function viewProduct($id)
+    public function viewProduct($pr_Id,$pri_Id)
 {
     if (!$this->session->get('ad_uid')) {
         return redirect()->to(base_url('admin'));
     }
 
-    $product = $this->productModel->getProductByIdFull($id);
+    $product = $this->productModel->getProductByIdFull($pr_Id, $pri_Id);
     $data['product'] = $product;
 
     $template = view('Admin/common/header');

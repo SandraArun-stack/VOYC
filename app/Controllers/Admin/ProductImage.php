@@ -421,30 +421,7 @@ class ProductImage extends BaseController
             'msg' => 'No product images were saved.'
         ]);
     }
-    // private function uploadFiles($filesArray, $colorIndex, $field, $allowedExt, $isVideo = false)
-    // {
-    //     $uploaded = [];
-
-    //     if (!empty($filesArray['colors']['name'][$colorIndex][$field][0])) {
-    //         foreach ($filesArray['colors']['name'][$colorIndex][$field] as $i => $name) {
-    //             if ($filesArray['colors']['error'][$colorIndex][$field][$i] === 0) {
-    //                 $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
-    //                 if (!in_array($ext, $allowedExt)) {
-    //                     throw new \RuntimeException("Invalid file type for {$field}. Allowed: " . implode(', ', $allowedExt));
-    //                 }
-
-    //                 $newName = uniqid('', true) . '.' . $ext;
-    //                 $destination = FCPATH . 'uploads/productmedia/' . $newName;
-
-    //                 if (move_uploaded_file($filesArray['colors']['tmp_name'][$colorIndex][$field][$i], $destination)) {
-    //                     $uploaded[] = $newName;
-    //                 }
-    //             }
-    //         }
-    //     }
-
-    //     return $uploaded;
-    // }
+    
     private function uploadFiles($filesArray, $colorIndex, $field, $allowedExt, $isSingleFile = false)
     {
         // Nothing uploaded

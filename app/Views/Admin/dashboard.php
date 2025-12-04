@@ -247,8 +247,8 @@
                                                         </td>
 
                                                         <td>
-                                                            <a href="<?= base_url('admin/product/view/' . ($product->pr_Id ?? 0)); ?>">
-                                                                View Details
+                                                            <a href="<?= base_url('admin/product/view/' . ($product->pr_Id ?? 0).'/'.($product->pri_Id ?? 0)); ?>">
+                                                                View Details 
                                                             </a>
                                                         </td>
                                                     </tr>
