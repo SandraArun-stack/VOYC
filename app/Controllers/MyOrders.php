@@ -4,7 +4,8 @@ namespace App\Controllers;
 use App\Models\MyOrdersModel;
 use App\Models\CartModel;
 use CodeIgniter\Controller;
-
+use App\Models\Admin\PlayersModel;
+use App\Models\Admin\GameMappingModel;
 class MyOrders extends Controller
 {
     protected $session;
@@ -17,6 +18,8 @@ class MyOrders extends Controller
         $this->request = \Config\Services::request();
         $this->MyOrdersModel = new MyOrdersModel();
         $this->CartModel = new CartModel();
+        $this->PlayersModel = new PlayersModel();
+        $this->GameMappingModel = new GameMappingModel();
     }
 
     public function index($userId = null)
@@ -36,11 +39,23 @@ class MyOrders extends Controller
             'my_orders' => $my_orders,
             'pager' => $pager,
             'breadcrumb' => 'My Orders',
-             'search' => $search
+            'search' => $search
         ];
+
         $cartCount = $this->CartModel->getCartItemCount($userId);
 
-        return view('common/header', ['cartCount' => $cartCount])
+        //leaderboard Count
+        $today = date('Y-m-d');
+        $todayLimit = $this->GameMappingModel->getTodayLeaderboardCount($today);
+        $todayLimit = intval($todayLimit);
+
+        $result = $this->PlayersModel->getTodayPlayers($today, $todayLimit, session()->get('user_id'));
+
+        return view('common/header', [
+            'cartCount' => $cartCount,
+            'players' => $result['players'],
+            'lastPlayer' => $result['lastPlayer']
+        ])
             . view('common/UserSideBar', $data)
             . view('myorders', $data)
             . view('common/footer')

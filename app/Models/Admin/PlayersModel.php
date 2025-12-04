@@ -24,7 +24,7 @@ class PlayersModel extends Model
 
     public function getDatatables($search = null, $start = 0, $length = 10, $orderBy = 'player_Id', $orderDir = 'DESC')
     {
-    
+
         $search = trim($search);
         $searchNoSpace = preg_replace('/\s+/', '', $search);
         $builder = $this->db->table($this->table)
@@ -77,9 +77,54 @@ class PlayersModel extends Model
         $result = $builder->get()->getResultArray();
 
         return [
-            'data'     => $result,
-            'total'    => $total,
+            'data' => $result,
+            'total' => $total,
             'filtered' => $filtered
+        ];
+    }
+
+    // public function getTodayPlayers($today, $limit)
+    // {
+    //     return $this->select('players.*, customer.cust_Name AS player_name')
+    //         ->join('customer', 'customer.cust_Id = players.cust_Id', 'left')
+    //         ->where('DATE(players.player_created_at)', $today)
+    //         ->orderBy('player_score', 'desc')
+    //         ->limit($limit)
+    //         ->findAll();
+    // }
+
+    public function getTodayPlayers($today, $limit, $sessionUserId = null)
+    {
+        $players = $this->select('players.*, customer.cust_Name AS player_name')
+            ->join('customer', 'customer.cust_Id = players.cust_Id', 'left')
+            ->where('DATE(players.player_created_at)', $today)
+            ->orderBy('player_score', 'desc')
+            ->limit($limit)
+            ->findAll();
+
+        $lastPlayer = null;
+
+        if ($sessionUserId) {
+            $exists = false;
+            foreach ($players as $p) {
+                if ($p['cust_Id'] == $sessionUserId) {
+                    $exists = true;
+                    break;
+                }
+            }
+
+            if (!$exists) {
+                $lastPlayer = $this->select('players.*, customer.cust_Name AS player_name')
+                    ->join('customer', 'customer.cust_Id = players.cust_Id', 'left')
+                    ->where('DATE(players.player_created_at)', $today)
+                    ->where('players.cust_Id', $sessionUserId)
+                    ->first();
+            }
+        }
+
+        return [
+            'players' => $players,
+            'lastPlayer' => $lastPlayer
         ];
     }
 

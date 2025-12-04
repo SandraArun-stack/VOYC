@@ -4,7 +4,8 @@ namespace App\Controllers;
 use App\Models\ShopModel;
 use App\Models\CartModel;
 use CodeIgniter\Controller;
-
+use App\Models\Admin\PlayersModel;
+use App\Models\Admin\GameMappingModel;
 
 class Shop extends Controller
 {
@@ -18,6 +19,8 @@ class Shop extends Controller
         $this->request = \Config\Services::request();
         $this->ShopModel = new ShopModel();
         $this->CartModel = new CartModel();
+        $this->PlayersModel = new PlayersModel();
+        $this->GameMappingModel = new GameMappingModel();
     }
 
 
@@ -33,6 +36,13 @@ class Shop extends Controller
         if (empty($segment)) {
             $segment = $uri->getSegment(1);
         }
+
+        //leaderboard Count
+        $today = date('Y-m-d');
+        $todayLimit = $this->GameMappingModel->getTodayLeaderboardCount($today);
+        $todayLimit = intval($todayLimit);
+
+        $result = $this->PlayersModel->getTodayPlayers($today, $todayLimit, session()->get('user_id'));
 
         // Handle AJAX filtering
         if ($this->request->isAJAX()) {
@@ -90,7 +100,11 @@ class Shop extends Controller
                 'searchTerm' => $search
             ];
 
-            return view('common/header', ['cartCount' => $cartCount])
+            return view('common/header', [
+                'cartCount' => $cartCount,
+                'players' => $result['players'],
+                'lastPlayer' => $result['lastPlayer']
+            ])
                 . view('shop', $data)
                 . view('common/footer')
                 . view('pagescripts/shopjs');
@@ -104,16 +118,22 @@ class Shop extends Controller
         $display_item = $this->ShopModel->getDisplayedItems($segment);
         $categories = $this->ShopModel->getUniqueCategoriesWithSub($segment);
 
+
+
         $data = [
             'category' => $segment,
             'title' => ucfirst($segment) . ' Shop',
             'breadcrumb' => ucfirst($segment),
             'display_item' => $display_item,
             'categories' => $categories,
-            'searchTerm' => '' 
+            'searchTerm' => ''
         ];
 
-        return view('common/header', ['cartCount' => $cartCount])
+        return view('common/header', [
+            'cartCount' => $cartCount,
+            'players' => $result['players'],
+            'lastPlayer' => $result['lastPlayer']
+        ])
             . view('shop', $data)
             . view('common/footer')
             . view('pagescripts/shopjs');

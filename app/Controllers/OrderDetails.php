@@ -4,6 +4,8 @@ namespace App\Controllers;
 use App\Models\OrderDetailsModel;
 use App\Models\AddressModel;
 use App\Models\CartModel;
+use App\Models\Admin\PlayersModel;
+use App\Models\Admin\GameMappingModel;
 use CodeIgniter\Controller;
 
 class OrderDetails extends Controller
@@ -18,6 +20,8 @@ class OrderDetails extends Controller
         $this->request = \Config\Services::request();
         $this->orderModel = new OrderDetailsModel();
         $this->CartModel = new CartModel();
+        $this->PlayersModel = new PlayersModel();
+        $this->GameMappingModel = new GameMappingModel();
     }
 
     // Show checkout page
@@ -26,6 +30,14 @@ class OrderDetails extends Controller
         $session = session();
         $userId = $session->get('user_id');
         $cartCount = $this->CartModel->getCartItemCount($userId);
+
+        //leaderboard Count
+        $today = date('Y-m-d');
+        $todayLimit = $this->GameMappingModel->getTodayLeaderboardCount($today);
+        $todayLimit = intval($todayLimit);
+
+        $result = $this->PlayersModel->getTodayPlayers($today, $todayLimit, session()->get('user_id'));
+
 
         $totalAmount = $this->request->getPost('totalAmount');
         $userId = $this->session->get('user_id');
@@ -36,7 +48,11 @@ class OrderDetails extends Controller
 
         $cartModel = new CartModel();
         $cartItems = $cartModel->getCartItems($userId);
-        return view('common/header', ['cartCount' => $cartCount])
+        return view('common/header', [
+            'cartCount' => $cartCount,
+            'players' => $result['players'],
+            'lastPlayer' => $result['lastPlayer']
+        ])
             . view('orderdetails', ['cartItems' => $cartItems, 'totalAmount' => $totalAmount])
             . view('common/footer')
             . view('pagescripts/orderdetailsjs');

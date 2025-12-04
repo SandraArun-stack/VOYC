@@ -4,7 +4,8 @@ namespace App\Controllers;
 use App\Models\tshirtModel;
 use App\Models\CartModel;
 use CodeIgniter\Controller;
-
+use App\Models\Admin\PlayersModel;
+use App\Models\Admin\GameMappingModel;
 class Tshirt extends Controller
 {
     protected $session;
@@ -17,6 +18,8 @@ class Tshirt extends Controller
         $this->request = \Config\Services::request();
         $this->tshirtModel = new tshirtModel();
         $this->CartModel = new CartModel();
+        $this->PlayersModel = new PlayersModel();
+        $this->GameMappingModel = new GameMappingModel();
     }
 
     public function index($prId = null, $priId = null)
@@ -24,6 +27,14 @@ class Tshirt extends Controller
         $session = session();
         $userId = $session->get('user_id');
         $cartCount = $this->CartModel->getCartItemCount($userId);
+
+        //leaderboard Count
+        $today = date('Y-m-d');
+        $todayLimit = $this->GameMappingModel->getTodayLeaderboardCount($today);
+        $todayLimit = intval($todayLimit);
+
+        $result = $this->PlayersModel->getTodayPlayers($today, $todayLimit, session()->get('user_id'));
+
 
         if (!empty($prId) && !empty($priId)) {
             $cust_image = $this->tshirtModel->get_Image($prId, $priId);
@@ -40,7 +51,11 @@ class Tshirt extends Controller
                     'allData' => $allData,
                     'customisationPrice' => $customisationPrice
                 ];
-                return view('common/header', ['cartCount' => $cartCount])
+                return view('common/header', [
+                    'cartCount' => $cartCount,
+                    'players' => $result['players'],
+                    'lastPlayer' => $result['lastPlayer']
+                ])
                     . view('tshirt', $data)
                     . view('common/footer')
                     . view('pagescripts/tshirtjs');
@@ -53,7 +68,11 @@ class Tshirt extends Controller
                 'customisationPrice' => $customisationPrice
             ];
 
-            return view('common/header', ['cartCount' => $cartCount])
+            return view('common/header', [
+                'cartCount' => $cartCount,
+                'players' => $result['players'],
+                'lastPlayer' => $result['lastPlayer']
+            ])
                 . view('tshirt')
                 . view('common/footer')
                 . view('pagescripts/tshirtjs');
@@ -132,7 +151,7 @@ class Tshirt extends Controller
                 }
             }
         }
-        
+
         if (!$frontFileName && !$backFileName && !$RSleeveFileName && !$LSleeveFileName) {
             return $this->response->setJSON([
                 'status' => 'error',

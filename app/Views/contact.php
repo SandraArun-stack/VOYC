@@ -20,7 +20,6 @@
             <div class="col-lg-6 col-md-6">
                 <div class="contact__content">
 
-                    <div id="formAlert" class="alert" style="display:none;"></div>
                     <div class="contact__address">
                         <h5>Contact info</h5>
                         <ul>
@@ -43,6 +42,8 @@
                             </li>
                         </ul>
                     </div>
+                    <div id="formAlert" class="alert" style="display:none;"></div>
+
                     <div class="contact__form">
                         <h5>CONTACT US</h5>
                         <form id="contactForm">

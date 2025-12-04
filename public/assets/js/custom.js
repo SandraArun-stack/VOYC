@@ -4,9 +4,12 @@ window.onload = function () {
         once: false,
         mirror: true
     });
+
 };
 
 $(document).ready(function () {
+    // AOS.refreshHard();
+
     var currentUrl = window.location.href.toLowerCase();
 
     if (currentUrl.includes("women")) {
@@ -30,32 +33,29 @@ $(document).ready(function () {
         $(".header__menu ul li").removeClass("active");
         $(this).parent().addClass("active");
     });
-    // $("#leader_board").on("click", function (e) {
-    //     e.preventDefault();
-    //     $("#categoriesModal").fadeIn(600);
-    // });
 
     $("#leader_board").on("click", function (e) {
         e.preventDefault();
 
-        // show modal instantly (no fade)
-        $("#categoriesModal").css("display", "block");
+        $("#categoriesModal").addClass("d-block");
 
-        // trigger AOS animation
         setTimeout(() => {
-            AOS.refreshHard();
+            // AOS.refreshHard();
+            // autoScrollPlayers();
         }, 50);
     });
 
 
     $(".close-btn").on("click", function () {
-        $("#categoriesModal").hide();
+        $("#categoriesModal").removeClass("d-block");
     });
+
     $(".product__item").on("click", function (e) {
         if (!$(e.target).closest(".product__hover").length) {
             window.location.href = $(this).data("url");
         }
     });
+
     $('.see-more').on('click', function () {
         var link = $(this);
         var reviewContainer = link.closest('.review-text');
@@ -70,6 +70,7 @@ $(document).ready(function () {
             link.text('See less');
         }
     });
+
     let reviewsPerPage = 5;
     let shown = reviewsPerPage;
     const totalReviews = $('.reviews-container .review-box').length;
@@ -82,6 +83,7 @@ $(document).ready(function () {
             $(this).fadeOut();
         }
     });
+
     const authModal = new bootstrap.Modal(document.getElementById('authModal'), {
         backdrop: true,
         keyboard: true
@@ -119,6 +121,7 @@ $(document).ready(function () {
 
         });
     });
+
     $(document).on('click', '#to-forgot-password', function (e) {
         e.preventDefault();
         $('#loginView').fadeOut(200, function () {
@@ -126,6 +129,7 @@ $(document).ready(function () {
             $('#forgotPassView').removeClass('d-none');
         });
     });
+
     $(document).on('click', '#to-login-from-forgot', function (e) {
         e.preventDefault();
         $('#registerView').fadeOut(200, function () {
@@ -360,22 +364,10 @@ $(document).ready(function () {
             $("#forgotPassView").addClass("d-none");
             $("#loginView").fadeIn(200);
             $("#authModal").modal("show");
+
         });
     }
-
-
-});
-
-// $(document).ready(function() {
-//     $("#search-toggle").click(function() {
-//         $("#search-bar").toggleClass("active");
-//         if ($("#search-bar").hasClass("active")) {
-//             $("#search-bar").focus();
-//         }
-//     });
-// });
-
-$(document).ready(function () {
+        
     $("#search-toggle").click(function () {
         $("#search-bar").toggleClass("active");
         if ($("#search-bar").hasClass("active")) {
@@ -409,8 +401,6 @@ $(document).ready(function () {
     $(document).on('click', '.dropdown-menu a', function () {
         $('.dropdown-menu').hide();
     });
-
-
 
     // 🔍 Search redirect
     $("#search-bar").on("keypress", function (e) {
@@ -479,6 +469,55 @@ $(document).ready(function () {
             }
         });
     });
+
+    function autoScrollPlayers() {
+        const box = document.getElementById("playersScroll");
+        if (!box) return;
+
+        // Ensure modal rendered
+        setTimeout(() => {
+            box.scrollTop = 0; // start at first item
+
+            const slowDuration = 1000;  // SLOW top → bottom
+            const fastDuration = 2000;  // FAST bottom → top
+
+            const startTop = 0;
+            const endBottom = box.scrollHeight - box.clientHeight;
+
+            // -------- SLOW scroll down ----------
+            let slowStartTime = null;
+            function slowScrollDown(ts) {
+                if (!slowStartTime) slowStartTime = ts;
+                const progress = ts - slowStartTime;
+                const t = Math.min(progress / slowDuration, 1);
+                box.scrollTop = startTop + t * (endBottom - startTop);
+                if (t < 1) {
+                    requestAnimationFrame(slowScrollDown);
+                } else {
+                    box.scrollTop = endBottom; // ensure exact bottom
+
+                    // -------- FAST scroll up ----------
+                    let fastStartTime = null;
+                    function fastScrollUp(ts2) {
+                        if (!fastStartTime) fastStartTime = ts2;
+                        const progress2 = ts2 - fastStartTime;
+                        const t2 = Math.min(progress2 / fastDuration, 1);
+                        box.scrollTop = endBottom - t2 * (endBottom - startTop);
+                        if (t2 < 1) {
+                            requestAnimationFrame(fastScrollUp);
+                        } else {
+                            box.scrollTop = startTop; // back to first item
+                        }
+                    }
+                    requestAnimationFrame(fastScrollUp);
+                }
+            }
+
+            requestAnimationFrame(slowScrollDown);
+        }, 200); // give modal time to render
+    }
+
+
 
 
 
