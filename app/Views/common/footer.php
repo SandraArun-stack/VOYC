@@ -90,7 +90,11 @@
 
 
 <!-- Js Plugins -->
+ 
 <script src="<?= base_url() . ASSET_PATH; ?>assets/js/jquery-3.3.1.min.js"></script>
+<!-- datatable-->
+<script src="<?= base_url() . ASSET_PATH; ?>assets/js/jquery.dataTables.min.js"></script>
+
 <script src="<?= base_url() . ASSET_PATH; ?>assets/js/bootstrap.min.js"></script>
 
 <script src="<?= base_url() . ASSET_PATH; ?>assets/js/jquery.magnific-popup.min.js"></script>
