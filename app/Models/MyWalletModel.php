@@ -22,48 +22,41 @@ class MyWalletModel extends Model
         'uw_updated_at'
     ];
     public function getDatatables($userId)
-{
-    $postData = service('request')->getPost();
-    $searchValue = trim($postData['search']['value'] ?? '');
+    {
+        $postData = service('request')->getPost();
+        $searchValue = preg_replace('/\s+/', '', $postData['search']['value'] ?? '');
 
-    $builder = $this->db->table('user_wallet uw');
+        $builder = $this->db->table('user_wallet uw');
+        $builder->select("
+            uw.uw_tokens,
+            uw.uw_purchased_token,
+            uw.uw_bonus_token,
+            us.usersub_status,
+            us.usersub_expiry,
+            sp.sp_plan_name AS plan_name,
+            sp.sp_validity   AS plan_validity
+        ");
 
-    $builder->select("
-        uw.uw_tokens,
-        uw.uw_purchased_token,
-        uw.uw_bonus_token,
+        $builder->join('user_subscription us', 'us.usersub_Id = uw.usersub_Id', 'left');
+        $builder->join('subscription_plan sp', 'sp.sp_Id = us.sp_Id', 'left');
 
-        us.usersub_status,
-        us.usersub_expiry,
+        $builder->where('uw.cust_Id', $userId);
 
-        sp.sp_plan_name AS plan_name,
-        sp.sp_validity   AS plan_validity
-    ");
+        if (!empty($searchValue)) {
+            $builder->groupStart();
+            $builder->like("REPLACE(sp.sp_plan_name, ' ', '')", $searchValue);
+            $builder->orLike("REPLACE(uw.uw_tokens, ' ', '')", $searchValue);
+            $builder->groupEnd();
+        }
+        $length = $postData['length'] ?? 10;
+        $start  = $postData['start'] ?? 0;
 
-    $builder->join('user_subscription us', 'us.usersub_Id = uw.usersub_Id', 'left');
-    $builder->join('subscription_plan sp', 'sp.sp_Id = us.sp_Id', 'left');
+        if ($length != -1) {
+            $builder->limit($length, $start);
+        }
 
-    $builder->where('uw.cust_Id', $userId);
-
-    if (!empty($searchValue)) {
-        $builder->groupStart();
-        $builder->like('sp.sp_plan_name', $searchValue);
-        $builder->orLike('uw.uw_tokens', $searchValue);
-        $builder->groupEnd();
+        return $builder->get()->getResultArray();
     }
-
-    $length = $postData['length'] ?? 10;
-    $start  = $postData['start'] ?? 0;
-
-    if ($length != -1) {
-        $builder->limit($length, $start);
-    }
-
-    return $builder->get()->getResultArray();
-}
-
-
-
     public function countAll($userId)
     {
         return $this->db->table('user_wallet')
@@ -74,7 +67,7 @@ class MyWalletModel extends Model
     public function countFiltered($userId)
     {
         $postData = service('request')->getPost();
-        $searchValue = trim($postData['search']['value'] ?? '');
+        $searchValue = preg_replace('/\s+/', '', $postData['search']['value'] ?? '');
 
         $builder = $this->db->table('user_wallet uw');
         $builder->join('user_subscription us', 'us.usersub_Id = uw.usersub_Id', 'left');
@@ -84,11 +77,10 @@ class MyWalletModel extends Model
 
         if (!empty($searchValue)) {
             $builder->groupStart();
-            $builder->like('sp.sp_plan_name', $searchValue);
-            $builder->orLike('uw.uw_tokens', $searchValue);
+            $builder->like("REPLACE(sp.sp_plan_name, ' ', '')", $searchValue);
+            $builder->orLike("REPLACE(uw.uw_tokens, ' ', '')", $searchValue);
             $builder->groupEnd();
         }
-
         return $builder->countAllResults();
     }
     public function getTotalTokens($userId)
