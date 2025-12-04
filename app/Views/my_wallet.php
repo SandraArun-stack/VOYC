@@ -9,34 +9,33 @@
                 </div>
             </div>
             <div class="row mb-3 align-items-center">
-                <!-- Left: Token Card -->
-                <div class="col-md-3">
+                <div class="col d-flex justify-content-between align-items-center">
+                    <!-- Left: Token Card -->
                     <div class="card shadow-sm card-token">
-                        <div class="card-body text-center">
-                            <h6 class="mb-1">Available Tokens</h6>
+                        <div class="card-body text-center py-2 px-3">
+                            <h6 class="mb-1">Tokens 🪙</h6>
                             <h6 class="text-primary" id="userTokens"></h6>
                         </div>
                     </div>
-                </div>
 
-                <!-- Right: Topup Button -->
-                <div class="col-md-6 text-right">
-                    <button class="btn btn-success mt-4" id="topupBtn">
+                    <!-- Right: Topup Button -->
+                    <button class="btn black text-white" id="topupBtn">
                         <i class="fa fa-plus"></i> Topup
                     </button>
                 </div>
             </div>
-            
+
+
             <div>
                 <!-- <div class="card-header bg-dark text-white">
                     <strong>Details</strong>
                 </div> -->
 
                 <div>
-                    
+
                     <div>
-                        <table id="tokenTable" class="table table-bordered table-striped">
-                            <thead class="thead-dark">
+                        <table id="tokenTable" class="table table-bordered DataTableWebsite">
+                            <thead class="off-white">
                                 <tr>
                                     <th>Plan Name</th>
                                     <th>Validity</th>
@@ -59,4 +58,3 @@
 </div>
 </div>
 </section>
-

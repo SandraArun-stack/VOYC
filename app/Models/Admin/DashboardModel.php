@@ -61,19 +61,19 @@ class DashboardModel extends Model
     public function getAnnualRevenue()
     {
         $currentMonth = date('n');
-        $currentYear  = date('Y');
+        $currentYear = date('Y');
 
         if ($currentMonth >= 4) {
             $startDate = $currentYear . '-04-01 00:00:00';
-            $endDate   = ($currentYear + 1) . '-03-31 23:59:59';
+            $endDate = ($currentYear + 1) . '-03-31 23:59:59';
         } else {
             $startDate = ($currentYear - 1) . '-04-01 00:00:00';
-            $endDate   = $currentYear . '-03-31 23:59:59';
+            $endDate = $currentYear . '-03-31 23:59:59';
         }
 
         $builder = $this->db->table('order_detail');
         $builder->select('IFNULL(SUM(od_Grand_Total), 0) as total_revenue');
-        
+
         // EXCLUDE cancelled records (status != 9)
         $builder->where('od_Status !=', 9);
 
@@ -120,7 +120,7 @@ class DashboardModel extends Model
             ')
             ->join('customer AS c', 'c.cust_Id = od.cus_Id', 'left')
             ->where('DATE(od.od_createdon)', $today)
-            ->groupBy('od.od_Number')     
+            ->groupBy('od.od_Number')
             ->orderBy('created_on', 'DESC')
             ->get()
             ->getResult();
@@ -140,7 +140,7 @@ class DashboardModel extends Model
     // }
 
 
-//     public function getLatestProducts()
+    //     public function getLatestProducts()
 // {
 //     $products = $this->db->table('product p')
 //         ->select('p.pr_Id, p.pr_Code, p.pr_Name, p.pr_Stock, pi.pri_Thumbnail')
@@ -151,9 +151,9 @@ class DashboardModel extends Model
 //         ->get()
 //         ->getResult();
 
-//     $sizes_order = ['S', 'M', 'L', 'XL', 'XXL'];
+    //     $sizes_order = ['S', 'M', 'L', 'XL', 'XXL'];
 
-//     foreach ($products as &$product) {
+    //     foreach ($products as &$product) {
 //         // Get variants for this product
 //         $variants = $this->db->table('product_variants')
 //             ->select('prv_Size, prv_price')
@@ -162,10 +162,10 @@ class DashboardModel extends Model
 //             ->get()
 //             ->getResult();
 
-//         $minPrice = null;
+    //         $minPrice = null;
 //         $maxPrice = null;
 
-//         // Find min price (first available size)
+    //         // Find min price (first available size)
 //         foreach ($sizes_order as $size) {
 //             foreach ($variants as $v) {
 //                 if ($v->prv_Size == $size) {
@@ -175,7 +175,7 @@ class DashboardModel extends Model
 //             }
 //         }
 
-//         // Find max price (last available size)
+    //         // Find max price (last available size)
 //         for ($i = count($sizes_order) - 1; $i >= 0; $i--) {
 //             foreach ($variants as $v) {
 //                 if ($v->prv_Size == $sizes_order[$i]) {
@@ -185,41 +185,54 @@ class DashboardModel extends Model
 //             }
 //         }
 
-//         $product->min_price = $minPrice ?? 0;
+    //         $product->min_price = $minPrice ?? 0;
 //         $product->max_price = $maxPrice ?? 0;
 
-//         // Set main image
+    //         // Set main image
 //         $product->main_image = !empty($product->pri_Thumbnail) ? $product->pri_Thumbnail : null;
 //     }
 
-//     return $products;
+    //     return $products;
 // }
     public function getLatestProducts()
     {
         $products = $this->db->table('product p')
-            ->select('p.pr_Id, p.pr_Code, p.pr_Name, p.pr_Stock, pi.pri_Thumbnail')
+            ->select('p.pr_Id, p.pr_Code, p.pr_Name, p.pr_Stock, pi.pri_Thumbnail,pi.pri_Id,pi.pri_Status')
             ->join('product_image pi', 'pi.pr_id = p.pr_Id', 'inner')
             ->where('p.pr_Status', 1)
+            ->where('pi.pri_Status', 1)
             ->where('pi.pri_Thumbnail IS NOT NULL')
             ->where('pi.pri_Thumbnail !=', '')
             ->orderBy('p.pr_createdon', 'DESC')
             ->limit(10)
             ->get()
             ->getResult();
+            
+        $sizes = ['S', 'M', 'L', 'XL', 'XXL'];
 
         foreach ($products as &$product) {
-            $variant = $this->db->table('product_variants')
-                ->select('prv_price')
-                ->where('pr_Id', $product->pr_Id)
-                ->where('prv_Size', 'S')
-                ->where('prv_Status', 1)
-                ->orderBy('prv_Id', 'DESC')   
-                ->limit(1)                   
-                ->get()
-                ->getRow();
+            $variant = null;
+
+            foreach ($sizes as $size) {
+                // fetch variant with active status
+                $variant = $this->db->table('product_variants')
+                    ->select('prv_price')
+                    ->where('pri_Id', $product->pri_Id)
+                    ->where('prv_Size', $size)
+                    ->where('prv_Status', 1) // only active variants
+                    ->orderBy('prv_Id', 'DESC')
+                    ->limit(1)
+                    ->get()
+                    ->getRow();
+
+                if ($variant) {
+                    // found the smallest available active size
+                    break;
+                }
+                // if not found or prv_Status != 1, continue to next size
+            }
 
             $product->min_price = $variant->prv_price ?? 0;
-
             $product->main_image = $product->pri_Thumbnail;
         }
 
