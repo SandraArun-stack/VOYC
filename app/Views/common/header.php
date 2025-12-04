@@ -399,7 +399,7 @@
                         <?php
                     endforeach;
                 else: ?>
-                    <p class="text-center text-danger">No records found for yesterday.</p>
+                    <p class="text-center text-danger">No records found for Today.</p>
                 <?php endif; ?>
             </div>
         </div>

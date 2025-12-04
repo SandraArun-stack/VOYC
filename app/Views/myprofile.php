@@ -99,25 +99,6 @@
                                 <i class="fa fa-eye-slash toggle-password-profile-password" data-target="confirm_password"></i>
                             </div>
 
-                            <!-- Current Password
-                            <div class=" position-relative">
-                                <label>Current Password <span style="color:red">*</span></label>
-                                <input type="password" name="current_password" id="current_password"
-                                    class="form-control pe-5" minlength="6" maxlength="15" required>
-                            </div>
-
-                            <div class=" position-relative">
-                                <label>New Password <span style="color:red">*</span></label>
-                                <input type="password" name="new_password" id="new_password" class="form-control pe-5"
-                                    minlength="6" maxlength="15" required>
-                            </div>
-
-                            <div class=" position-relative">
-                                <label>Confirm Password <span style="color:red">*</span></label>
-                                <input type="password" name="confirm_password" id="confirm_password"
-                                    class="form-control pe-5" minlength="6" maxlength="15" required>
-                            </div> -->
-
                             <button type="button" id="cancelChangePassword" class="btn btn-danger mt-2"> <i
                                     class="bi bi-x-circle"></i> Cancel</button>
                             <button type="submit" class="btn btn-dark mt-2"> <i class="bi bi-check-circle"></i> Update
