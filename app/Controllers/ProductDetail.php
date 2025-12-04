@@ -4,7 +4,8 @@ namespace App\Controllers;
 use App\Models\ProductDetailModel;
 use App\Models\CartModel;
 use CodeIgniter\Controller;
-
+use App\Models\Admin\PlayersModel;
+use App\Models\Admin\GameMappingModel;
 class ProductDetail extends Controller
 {
     protected $session;
@@ -17,6 +18,8 @@ class ProductDetail extends Controller
         $this->request = \Config\Services::request();
         $this->ProductDetailModel = new ProductDetailModel();
         $this->CartModel = new CartModel();
+        $this->PlayersModel = new PlayersModel();
+        $this->GameMappingModel = new GameMappingModel();
     }
 
     public function index($prId = null, $priId = null)
@@ -24,6 +27,14 @@ class ProductDetail extends Controller
         $session = session();
         $userId = $session->get('user_id');
         $cartCount = $this->CartModel->getCartItemCount($userId);
+
+        //leaderboard Count
+        $today = date('Y-m-d');
+        $todayLimit = $this->GameMappingModel->getTodayLeaderboardCount($today);
+        $todayLimit = intval($todayLimit);
+
+        $result = $this->PlayersModel->getTodayPlayers($today, $todayLimit, session()->get('user_id'));
+
 
         if (!$prId && !$priId) {
             return redirect()->to(base_url('/'));
@@ -34,16 +45,20 @@ class ProductDetail extends Controller
         // print_r($product); exit;
 
         if (!$product) {
-             return redirect()->to(base_url('/'));
+            return redirect()->to(base_url('/'));
         }
 
         $data = [
             'product' => $product,
             'images' => $product['images'],
-             'relatedProducts' => $relatesProducts 
+            'relatedProducts' => $relatesProducts
         ];
 
-        return view('common/header', ['cartCount' => $cartCount])
+        return view('common/header', [
+            'cartCount' => $cartCount,
+            'players' => $result['players'],
+            'lastPlayer' => $result['lastPlayer']
+        ])
             . view('product-details', $data)
             . view('common/footer')
             . view('pagescripts/productdetailsjs');

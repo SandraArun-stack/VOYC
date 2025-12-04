@@ -4,6 +4,8 @@ namespace App\Controllers;
 use App\Models\MyProfileModel;
 use App\Models\CartModel;
 use CodeIgniter\Controller;
+use App\Models\Admin\PlayersModel;
+use App\Models\Admin\GameMappingModel;
 
 class MyProfile extends Controller
 {
@@ -17,6 +19,8 @@ class MyProfile extends Controller
         $this->request = \Config\Services::request();
         $this->MyProfileModel = new MyProfileModel();
         $this->CartModel = new CartModel();
+        $this->PlayersModel = new PlayersModel();
+        $this->GameMappingModel = new GameMappingModel();
     }
 
     public function index()
@@ -33,7 +37,18 @@ class MyProfile extends Controller
         ];
         $cartCount = $this->CartModel->getCartItemCount($userId);
 
-        return view('common/header', ['cartCount' => $cartCount])
+        //leaderboard Count
+        $today = date('Y-m-d');
+        $todayLimit = $this->GameMappingModel->getTodayLeaderboardCount($today);
+        $todayLimit = intval($todayLimit);
+
+        $result = $this->PlayersModel->getTodayPlayers($today, $todayLimit, session()->get('user_id'));
+
+        return view('common/header', [
+            'cartCount' => $cartCount,
+            'players' => $result['players'],
+            'lastPlayer' => $result['lastPlayer']
+        ])
             . view('common/UserSideBar', $data)
             . view('myprofile', $data)
             . view('common/footer')

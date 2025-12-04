@@ -15,7 +15,10 @@
         rel="stylesheet">
 
     <!-- Css Styles -->
-    <link href="https://fonts.googleapis.com/css2?family=Playwrite+HU:wght@100..400&display=swap" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Playwrite+HU:wght@100..400&display=swap" rel="stylesheet"> -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap"
+        rel="stylesheet">
 
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/font-awesome.min.css" type="text/css">
@@ -353,18 +356,17 @@
             </div>
         </div>
     </div>
-    <div id="categoriesModal" class="custom-modal" data-aos="zoom-in" data-aos-duration="600">
-        
-        <div class="custom-modal-content">
-            <div class="custom-layer">
-                <span class="close-btn">&times;</span>
+    <div id="categoriesModal" class="d-none custom-modal" data-aos="zoom-in" data-aos-duration="600">
 
-                <div class="leaderboard-header text-center">
-                    <h3 class="leaderboard-title">PLAYERS OF THE DAY</h3>
-                </div>
+        <div class="custom-modal-content">
+            <span class="close-btn">&times;</span>
+
+            <div class="leaderboard-header text-center mb-2">
+                <h3 class="leaderboard-title">PLAYERS OF THE DAY</h3>
+            </div>
+            <div class="leaders-scroll" id="playersScroll">
 
                 <?php
-// print_r($players);exit();
 
                 // Icon array for ranks
                 $icons = [
@@ -372,7 +374,7 @@
                     2 => "🥈",
                     3 => "🥉",
                     4 => "🏅"
-                    
+
                 ];
 
                 // Default image if none found
@@ -400,6 +402,24 @@
                     endforeach;
                 else: ?>
                     <p class="text-center text-danger">No records found for Today.</p>
+                <?php endif; ?>
+                <?php if ($lastPlayer): ?>
+                    <!-- <div class="leaderboard-item current-user">
+                        <h4><?= esc($lastPlayer['player_name']) ?> (You)</h4>
+                        <p>Score: <?= esc($lastPlayer['player_score']) ?></p>
+                    </div> -->
+                    <div class="leaderboard-item winner-<?= strtolower($rank); ?>">
+                        <div class="position-icon first">
+                            <?= $icons[$rank] ?? "🏅"; ?>
+                        </div>
+
+                        <img src="<?= $defaultImg; ?>" alt="Winner" class="winner-img">
+
+                        <div class="winner-info">
+                            <h4><?= esc($lastPlayer['player_name']) ?> (You)</h4>
+                            <p>Score: <?= esc($lastPlayer['player_score']) ?></p>
+                        </div>
+                    </div>
                 <?php endif; ?>
             </div>
         </div>

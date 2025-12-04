@@ -57,27 +57,48 @@
 
 .custom-modal-content {
     background: #000;
-    height: calc(100% - 78px);
+    height: calc(100% - 45px);
     width: 100%;
     margin: 0px 15px 20px auto;
-    padding: 20px;
+    padding: 20px 30px;
     box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
     border-radius: 0;
-    overflow: hidden;
     position: absolute;
     top: 116px;
+    overflow: visible;
 }
 
-.custom-layer {
-    background: #000;
-    border-radius: 0;
-    padding: 20px;
+.leaders-scroll {
+    height: calc(100% - 120px);
+    overflow-y: auto;
+    padding-right: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.leaders-scroll::-webkit-scrollbar {
+    width: 8px;
+}
+
+.leaders-scroll::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.leaders-scroll::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #a78bfa, #6366f1);
+    border-radius: 10px;
+    border: 2px solid rgba(0, 0, 0, 0.4);
+}
+
+.leaders-scroll::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #c084fc, #818cf8);
 }
 
 .close-btn {
     position: absolute;
-    top: 20px;
-    right: 30px;
+    top: -15px;
+    right: 15px;
     font-size: 30px;
     cursor: pointer;
     color: #fff;
@@ -88,22 +109,14 @@
 }
 
 .leaderboard-title {
-    font-family: 'Playwrite HU', sans-serif;
-    font-size: 22px;
+    font-family: 'Comic Neue', sans-serif;
+    font-size: 34px;
     display: inline-block;
     position: relative;
     color: #fff;
     margin-bottom: 20px;
 }
 
-/* .leaderboard-title::after {
-    content: "";
-    display: block;
-    height: 3px;
-    background: #fff;
-    width: 100%;
-    margin: 5px auto 0;
-} */
 
 .leaderboard-item {
     display: flex;
@@ -114,7 +127,8 @@
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s, box-shadow 0.2s;
     border: 3px solid #9891ac;
-    background: wheat;
+    background: #ededed;
+    ;
 }
 
 .position-icon {

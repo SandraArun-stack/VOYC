@@ -68,4 +68,10 @@ class GameMappingModel extends Model
         ];
     }
 
+    public function getTodayLeaderboardCount($today)
+    {
+        $row = $this->where('gm_date', $today)->first();
+        return $row['gm_leaderboard_count'] ?? 10; // default
+    }
+
 }

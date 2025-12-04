@@ -33,7 +33,7 @@
 
             // alert(fullname);
             // if (fullname === "" || email === "" || contact_no === "" || message === "") {
-            //      $('html, body').animate({ scrollTop: 0 }, 'fast');
+            //      $('html, body').animate({ scrollTop: 0 }, 300);
             //     showAlert("Please Fill in All Fields!", 'danger');
             //     return;
             // }
@@ -60,19 +60,19 @@
             }
 
             if (hasError) {
-                $('html, body').animate({ scrollTop: 0 }, 'fast');
+                // $('html, body').animate({ scrollTop: 10 }, 300);
                 showAlert("Please Fill in All Fields!", 'danger');
                 return;
             }
             // Validation
             if (!isValidEmail(email)) {
-                $('html, body').animate({ scrollTop: 0 }, 'fast');
+                // $('html, body').animate({ scrollTop: 10 }, 300);
                 showAlert("Please Enter a Valid Email Address!", 'danger');
                 return;
             }
 
             if (!isValidIndianPhone(contact_no)) {
-                $('html, body').animate({ scrollTop: 0 }, 'fast');
+                // $('html, body').animate({ scrollTop: 10 }, 300);
                 showAlert("Enter Valid Indian Mobile Number", 'danger');
                 return;
             }
@@ -85,7 +85,7 @@
             dataType: "json",
             success: function (response) {
                 if (response.status === "success") {
-                    $('html, body').animate({ scrollTop: 0 }, 'fast');
+                    // $('html, body').animate({ scrollTop: 0 }, 300);
                     showAlert("Thank you! Your Enquiry Has Been Sent. We Will Get Back to You Soon.", 'success');
                     $("#contactForm")[0].reset();
                     $("#contactForm input, #contactForm textarea").css("border", "1px solid #ccc");

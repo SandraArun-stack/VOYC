@@ -3,7 +3,8 @@ namespace App\Controllers;
 
 use App\Models\CartModel;
 use CodeIgniter\Controller;
-
+use App\Models\Admin\PlayersModel;
+use App\Models\Admin\GameMappingModel;
 class Cart extends Controller
 {
     protected $session;
@@ -15,6 +16,8 @@ class Cart extends Controller
         $this->session = \Config\Services::session();
         $this->request = \Config\Services::request();
         $this->CartModel = new CartModel();
+        $this->PlayersModel = new PlayersModel();
+        $this->GameMappingModel = new GameMappingModel();
 
     }
 
@@ -30,7 +33,20 @@ class Cart extends Controller
         $cartpriceTotal = $this->CartModel->getCartPrice($userId);
 
         $cartCount = $this->CartModel->getCartItemCount($userId);
-        return view('common/header', ['cartCount' => $cartCount])
+
+        //leaderboard Count
+        $today = date('Y-m-d');
+        $todayLimit = $this->GameMappingModel->getTodayLeaderboardCount($today);
+        $todayLimit = intval($todayLimit);
+
+        $result = $this->PlayersModel->getTodayPlayers($today, $todayLimit, session()->get('user_id'));
+
+
+        return view('common/header', [
+            'cartCount' => $cartCount,
+            'players' => $result['players'],
+            'lastPlayer' => $result['lastPlayer']
+        ])
             . view('cart', [
                 'cartItems' => $cartItems,
                 'cartpriceTotal' => $cartpriceTotal
@@ -40,7 +56,7 @@ class Cart extends Controller
     }
     public function remove()
     {
-       $cartId = $this->request->getPost('cart_Id');
+        $cartId = $this->request->getPost('cart_Id');
 
         if (!$cartId) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Cart ID missing']);

@@ -5,20 +5,14 @@ use App\Models\NewProductModel;
 use App\Models\HomeModel;
 use App\Models\CartModel;
 use App\Models\Admin\LeaderboardModel;
-use CodeIgniter\HTTP\RequestInterface;
-use CodeIgniter\HTTP\ResponseInterface;
-use Psr\Log\LoggerInterface;
-
+use App\Models\Admin\PlayersModel;
+use App\Models\Admin\GameMappingModel;
 class Home extends BaseController
 {
     protected $HomeModel;
     protected $categories;
     protected $session;
     protected $request;
-    public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
-    {
-        parent::initController($request, $response, $logger);
-    }
     public function __construct()
     {
         $this->session = \Config\Services::session();
@@ -27,89 +21,40 @@ class Home extends BaseController
         $this->reviewModel = new NewProductModel();
         $this->CartModel = new CartModel();
         $this->LeaderboardModel = new LeaderboardModel();
+        $this->PlayersModel = new PlayersModel();
+        $this->GameMappingModel = new GameMappingModel();
     }
-    // public function index()
-    // {
-    //     $session = session();
-
-    //     if ($this->request->getGet('login_popup') == 1) {
-    //         $session->setFlashdata('showLoginPopup', true);
-    //     }
-    //     $showLoginPopup = $session->getFlashdata('showLoginPopup');
-
-    //     $userId = $session->get('user_id');
-    //     $cartCount = $this->CartModel->getCartItemCount($userId);
-
-    //     $newProductModel = new NewProductModel();
-    //     $data['newPrdImg'] = $newProductModel->getNewPrdImage();
-    //     $data['bestSeller'] = $newProductModel->getBestSeller();
-
-    //     $today = date('Y-m-d', strtotime('-1 day'));
-
-    //     // Use the model created in constructor
-    //     $leaders = $this->LeaderboardModel
-    //         ->where('TRIM(lb_date)', $today)
-    //         ->orderBy('lb_rank', 'ASC')
-    //         ->findAll();
-    //     $data['leaders'] = $leaders;
-    //     // ----------------------------------------------------
-
-    //     return view('common/header', [
-    //         'cartCount' => $cartCount,
-    //         'showLoginPopup' => $showLoginPopup
-    //     ])
-    //         . view('index', $data)
-    //         . view('common/footer')
-    //         . view('pagescripts/indexjs');
-    // }
-
-
 
     public function index()
     {
         $session = session();
+        $userId = $session->get('user_id');
 
         if ($this->request->getGet('login_popup') == 1) {
             $session->setFlashdata('showLoginPopup', true);
         }
         $showLoginPopup = $session->getFlashdata('showLoginPopup');
 
-        $userId = $session->get('user_id');
+        //get cart count
         $cartCount = $this->CartModel->getCartItemCount($userId);
 
+        //get new product
         $newProductModel = new NewProductModel();
         $data['newPrdImg'] = $newProductModel->getNewPrdImage();
         $data['bestSeller'] = $newProductModel->getBestSeller();
 
+        //leaderboard Count
         $today = date('Y-m-d');
+        $todayLimit = $this->GameMappingModel->getTodayLeaderboardCount($today);
+        $todayLimit = intval($todayLimit);
 
-        // Get leaderboard limit for today from the games_mapping table
-        $gameMappingModel = new \App\Models\Admin\GameMappingModel();
-        $todayLimit = $gameMappingModel->where('gm_date', date('Y-m-d'))
-            ->first()['gm_leaderboard_count'] ?? 10; // Default to 10 if no value is found
-        // Ensure that todayLimit is an integer
-        $todayLimit = intval($todayLimit); // Ensure it's an integer
+        $result = $this->PlayersModel->getTodayPlayers($today, $todayLimit, session()->get('user_id'));
 
-        $playersModel = new \App\Models\Admin\PlayersModel();
-        $players = $playersModel
-            ->select('players.*, customer.cust_Name AS player_name')
-            ->join('customer', 'customer.cust_Id = players.cust_Id', 'left')
-            ->where('DATE(players.player_created_at)', $today)
-            ->orderBy('player_rank', 'ASC')
-            ->limit($todayLimit)
-            ->findAll();
-
-
-
-        // Get the names of the players by fetching data from the customer table
-
-
-        $data['players'] = $players;
-        // print_r($players);exit();
         return view('common/header', [
             'cartCount' => $cartCount,
             'showLoginPopup' => $showLoginPopup,
-            'players'=>  $players
+            'players' => $result['players'],
+            'lastPlayer' => $result['lastPlayer']
         ])
             . view('index', $data)
             . view('common/footer')
