@@ -33,7 +33,7 @@
                                 </div>
                                 <div class="sud__head__list">
                                     <a href="<?= base_url('my_orders'); ?>">
-                                        <p>Orders</p>
+                                        <p>My Orders</p>
                                     </a>
                                     <!-- <p>My Wishlist</p> -->
                                 </div>
@@ -45,7 +45,10 @@
                                 </div>
                                 <div class="sud__head__list">
                                     <a href="<?= base_url('userleaderboard'); ?>">
-                                        <p>Leader Board</p>
+                                        <p>Leaderboard</p>
+                                    </a>
+                                    <a href="<?= base_url('userleaderboard'); ?>">
+                                        <p>My Games</p>
                                     </a>
                                 </div>
                             </div>
@@ -61,7 +64,7 @@
                                     <a href="<?= base_url('mywallet'); ?>">
                                         <p>My Wallet</p>
                                     </a>
-                                    <p>My Address</p>
+                                    <!-- <p>My Address</p> -->
                                     <!-- <p>My Wishlist</p> -->
                                     <p>Delete My Account</p>
                                 </div>
