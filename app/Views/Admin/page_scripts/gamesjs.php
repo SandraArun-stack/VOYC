@@ -18,7 +18,7 @@
                 }
             }
         });
-
+        
         // Submit form using serialize
         $("#gamemapingform").on("submit", function (e) {
             e.preventDefault();

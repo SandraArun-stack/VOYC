@@ -48,14 +48,18 @@
                                             value="<?= isset($game_map_Details['gm_Id']) ? $game_map_Details['gm_Id'] : '' ?>">
                                         <!-- Date -->
                                         <div class="form-group row">
-                                            <label class="col-sm-3 col-form-label">Date <span
-                                                    style="color:red">*</span></label>
+                                            <label class="col-sm-3 col-form-label">
+                                                Date <span style="color:red">*</span>
+                                                <small class="text-muted d-block">(MM/DD/YYYY)</small>
+                                            </label>
                                             <div class="mt-2 col-sm-6">
-                                                <input type="date" name="gm_date" id="gm_date" class="form-control"
-                                                    value="<?= $game_map_Details['gm_date'] ?? '' ?>" required>
+                                                <input type="date" name="gm_date" id="gm_date"
+                                                    class="form-control"
+                                                    min="<?= date('Y-m-d') ?>"
+                                                    value="<?= isset($game_map_Details['gm_date']) ? date('Y-m-d', strtotime($game_map_Details['gm_date'])) : '' ?>"
+                                                    required>
                                             </div>
                                         </div>
-
                                         <!-- Game Name Dropdown -->
                                         <div class="form-group row">
                                             <label class="col-sm-3 col-form-label">Game Name <span

@@ -80,7 +80,6 @@ class Games extends BaseController
     public function saveGameMapping()
     {
         $model = new GameMappingModel();
-
         $game_map_id = $this->request->getPost('gm_Id');
         // print_r($game_map_id);exit();
         $gameId = $this->request->getPost('game_Id');
@@ -110,7 +109,26 @@ class Games extends BaseController
                 'message' => 'Discount Percentage Must be Between 0 and 100'
             ]);
         }
+        $currentDate = date('Y-m-d');
+            if ($gm_date < $currentDate) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'You cannot select an expired date'
+                ]);
+            }
+            if (!$game_map_id) {
+            $existingDate = $model
+                ->where('gm_date', $gm_date)
+                ->first();
 
+            if ($existingDate) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'This date is already mapped. Please choose another date.'
+                ]);
+            }
+        }
+        
         $data = [
             'game_Id' => $gameId,
             'gm_date' => $gm_date,

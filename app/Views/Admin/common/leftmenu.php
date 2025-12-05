@@ -55,7 +55,7 @@
                             <span class="pcoded-mcaret"></span>
                         </a>
                     </li>
-                    <li class="pcoded-hasmenu <?= in_array($segment, ['leaderboard','games','players','subscription','usersubscriptions','wallet']) ? 'active pcoded-trigger' : '' ?>">
+                    <li class="pcoded-hasmenu <?= in_array($segment, ['leaderboard','games','players','subscription','usersubscriptions','wallet','daily_counter']) ? 'active pcoded-trigger' : '' ?>">
                         <a href="javascript:void(0)" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="bi bi-controller"></i></span>
                             <span class="pcoded-mtext">Game Arena</span>
@@ -93,6 +93,11 @@
                             <li class="<?= ($segment == 'wallet') ? 'active' : '' ?>">
                                 <a href="<?= base_url('admin/wallet') ?>">
                                     <span class="pcoded-mtext">User Wallet</span>
+                                </a>
+                            </li>
+                            <li class="<?= ($segment == 'daily_counter') ? 'active' : '' ?>">
+                                <a href="<?= base_url('admin/daily_counter') ?>">
+                                    <span class="pcoded-mtext">Daily Game Counter</span>
                                 </a>
                             </li>
 
