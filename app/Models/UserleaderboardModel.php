@@ -41,7 +41,8 @@ class UserleaderboardModel extends Model
 
         $builder->join('game g', 'g.game_Id = p.game_Id', 'left');
         $builder->where('p.cust_Id', $userId);
-
+        $builder->orderBy('p.player_created_at', 'DESC');
+        
         // Search
         if (!empty($searchValue)) {
             $builder->groupStart();
