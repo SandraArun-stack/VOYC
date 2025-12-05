@@ -158,8 +158,9 @@ $routes->get('mywallet', 'MyWallet::index');
 $routes->post('mywallet/walletListAjax', 'MyWallet::walletListAjax');
 $routes->get('mywallet/getUserTokens', 'MyWallet::getUserTokens');
 
-
-
+//userleaderboard
+$routes->get('userleaderboard', 'Userleaderboard::index');
+ 
 
 
 
@@ -285,6 +286,10 @@ $routes->get('admin/wallet/list', 'Admin\Wallet::list');
 $routes->get('admin/discount', 'Admin\Discount::index');
 $routes->get('admin/discount/list', 'Admin\Discount::list');
 
+// Daily Game Counter
+$routes->get('admin/daily_counter', 'Admin\DailyCounter::index');
+$routes->post('admin/daily_counter/list', 'Admin\DailyCounter::ajaxList');
+
 
 // games
 $routes->get('admin/games', 'Admin\Games::index');
@@ -329,6 +334,9 @@ $routes->post('admin/banner/delete/(:any)', 'Admin\Banner::deleteBanner/$1');
 //admin_updation
 $routes->get('/admin', 'Admin::index');
 $routes->post('admin/save', 'Admin::createnew');
+
+
+// ---------------------------------------------------------Apis--------------------------------------------------- //
 
 //game details api
 
