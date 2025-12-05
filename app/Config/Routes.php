@@ -160,7 +160,7 @@ $routes->get('mywallet/getUserTokens', 'MyWallet::getUserTokens');
 
 //userleaderboard
 $routes->get('userleaderboard', 'Userleaderboard::index');
- 
+$routes->post('userleaderboard/leaderboardListAjax', 'Userleaderboard::leaderboardListAjax');
 
 
 
@@ -266,7 +266,7 @@ $routes->post('admin/leaderboard/list', 'Admin\Leaderboard::ajaxList');
 $routes->get('admin/subscription', 'Admin\Subscription::index');
 $routes->post('admin/subscription/list', 'Admin\Subscription::ajaxList');
 $routes->get('admin/subscription/subscription', 'Admin\Subscription::add');
-$routes->get('admin/subscription/edit/(:num)', 'Admin\Subscription::edit/$1'); 
+$routes->get('admin/subscription/edit/(:num)', 'Admin\Subscription::edit/$1');
 $routes->post('admin/subscription/save', 'Admin\Subscription::save');
 
 // USER SUBSCRIPTIONS
@@ -280,7 +280,7 @@ $routes->post('admin/usersubscriptions/save', 'Admin\UserSubscriptions::save');
 $routes->get('admin/wallet', 'Admin\Wallet::index');
 $routes->post('admin/wallet/ajaxList', 'Admin\Wallet::ajaxList');
 $routes->get('admin/wallet/list', 'Admin\Wallet::list');
- 
+
 
 // DISCOUNT MANAGEMENT
 $routes->get('admin/discount', 'Admin\Discount::index');
