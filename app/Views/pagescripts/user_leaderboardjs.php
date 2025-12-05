@@ -29,7 +29,7 @@ $(document).ready(function () {
             },
             { data: "game_name", defaultContent: "N/A" },
             { 
-                data: "player_date",
+                data: "player_created_at",
                 
             },
             { data: "player_score", defaultContent: "0" },

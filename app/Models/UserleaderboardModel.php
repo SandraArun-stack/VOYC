@@ -32,7 +32,7 @@ class UserleaderboardModel extends Model
 
         $builder->select("
         p.player_Id,
-        p.player_date,
+        p.player_created_at,
         p.player_score,
         p.player_rank,
         p.player_winning_status,
@@ -61,12 +61,12 @@ class UserleaderboardModel extends Model
 
         $result = $builder->get()->getResultArray();
 
-        // ✅ Format player_date → dd-mm-yyyy
+        // ✅ Format player_created_at → dd-mm-yyyy
         foreach ($result as &$row) {
-            if (!empty($row['player_date'])) {
-                $row['player_date'] = date("d-m-Y", strtotime($row['player_date']));
+            if (!empty($row['player_created_at'])) {
+                $row['player_created_at'] = date("d-m-Y", strtotime($row['player_created_at']));
             } else {
-                $row['player_date'] = "N/A";
+                $row['player_created_at'] = "N/A";
             }
         }
 
