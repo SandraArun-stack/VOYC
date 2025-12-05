@@ -42,7 +42,7 @@
                                                             <th>Sl.No.</th>
                                                             <th>Plan Name</th>
                                                             <th>Rate</th>
-                                                            <th>Validity(Days)</th>
+                                                            <th>Validity</th>
                                                             <th>Discount</th>
                                                             <th>Tokens</th>
                                                             <th>Action</th>

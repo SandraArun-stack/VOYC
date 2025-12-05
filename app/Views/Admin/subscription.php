@@ -82,11 +82,12 @@
 
                                         <!-- Validity -->
                                         <div class="form-group row">
-                                            <label class="col-sm-2 col-form-label">Validity (Days) <span style="color: red;">*</span></label>
+                                            <label class="col-sm-2 col-form-label">Validity <span style="color: red;">*</span></label>
                                             <div class="col-sm-6">
-                                                <input type="number" name="validity" id="validity" class="form-control"
-                                                       value="<?= isset($subscription) ? (int)$subscription['sp_validity'] : '' ?>"
-                                                       placeholder="Enter validity in days" required>
+                                                <input type="text" name="validity" id="validity" class="form-control"
+                                                    value="<?= isset($subscription) ? $subscription['sp_validity'] : '' ?>"
+                                                    placeholder="Enter validity" required>
+
                                                 <span class="text-danger error-msg" id="error-validity"></span>
                                             </div>
                                         </div>
