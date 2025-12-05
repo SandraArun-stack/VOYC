@@ -22,39 +22,42 @@ class MyWalletModel extends Model
     ];
     public function getDatatables($userId)
     {
-        $postData = service('request')->getPost();
+        $postData    = service('request')->getPost();
         $searchValue = trim($postData['search']['value'] ?? '');
+        $searchValue = preg_replace('/\s+/', '', $searchValue);
 
         $builder = $this->db->table('user_subscription us');
 
         $builder->select("
-        us.usersub_Id,
-        us.usersub_expiry,
-        us.usersub_status,
+            us.usersub_Id,
+            us.usersub_expiry,
+            us.usersub_status,
 
-        sp.sp_plan_name AS plan_name,
-        sp.sp_validity AS plan_validity,
+            sp.sp_plan_name AS plan_name,
+            sp.sp_validity AS plan_validity,
 
-        COALESCE(uw.uw_subscription_token, 0) AS uw_subscription_token,
-        COALESCE(uw.uw_purchased_token, 0) AS uw_purchased_token,
-        COALESCE(uw.uw_bonus_token, 0) AS uw_bonus_token
-    ");
+            COALESCE(uw.uw_subscription_token, 0) AS uw_subscription_token,
+            COALESCE(uw.uw_purchased_token, 0) AS uw_purchased_token,
+            COALESCE(uw.uw_bonus_token, 0) AS uw_bonus_token
+        ");
 
         $builder->join('subscription_plan sp', 'sp.sp_Id = us.sp_Id', 'left');
         $builder->join('user_wallet uw', 'uw.usersub_Id = us.usersub_Id', 'left');
 
-        // IMPORTANT FIX
         $builder->where('us.cust_Id', $userId);
         $builder->orderBy('us.usersub_created_at', 'DESC');
+
         if (!empty($searchValue)) {
+            $escaped = $this->db->escapeLikeString($searchValue);
+
             $builder->groupStart();
-            $builder->like('sp.sp_plan_name', $searchValue);
-            $builder->orLike('uw.uw_subscription_token', $searchValue);
+            $builder->where("REPLACE(sp.sp_plan_name,' ','') LIKE '%{$escaped}%'", null, false);
+            $builder->orWhere("REPLACE(uw.uw_subscription_token,' ','') LIKE '%{$escaped}%'", null, false);
             $builder->groupEnd();
         }
 
         $length = $postData['length'] ?? 10;
-        $start = $postData['start'] ?? 0;
+        $start  = $postData['start'] ?? 0;
 
         if ($length != -1) {
             $builder->limit($length, $start);
@@ -62,38 +65,37 @@ class MyWalletModel extends Model
 
         return $builder->get()->getResultArray();
     }
-
-
-
-
     public function countAll($userId)
     {
-        return $this->db->table('user_subscription')
+        return $this->db
+            ->table('user_subscription')
             ->where('cust_Id', $userId)
             ->countAllResults();
     }
-
     public function countFiltered($userId)
     {
-        $postData = service('request')->getPost();
+        $postData    = service('request')->getPost();
         $searchValue = trim($postData['search']['value'] ?? '');
+        $searchValue = preg_replace('/\s+/', '', $searchValue);
 
-        $builder = $this->db->table('user_subscription us')
-            ->join('subscription_plan sp', 'sp.sp_Id = us.sp_Id', 'left')
-            ->join('user_wallet uw', 'uw.usersub_Id = us.usersub_Id', 'left');
+        $builder = $this->db->table('user_subscription us');
+
+        $builder->join('subscription_plan sp', 'sp.sp_Id = us.sp_Id', 'left');
+        $builder->join('user_wallet uw', 'uw.usersub_Id = us.usersub_Id', 'left');
 
         $builder->where('us.cust_Id', $userId);
 
         if (!empty($searchValue)) {
+            $escaped = $this->db->escapeLikeString($searchValue);
+
             $builder->groupStart();
-            $builder->like('sp.sp_plan_name', $searchValue);
-            $builder->orLike('uw.uw_subscription_token', $searchValue);
+            $builder->where("REPLACE(sp.sp_plan_name,' ','') LIKE '%{$escaped}%'", null, false);
+            $builder->orWhere("REPLACE(uw.uw_subscription_token,' ','') LIKE '%{$escaped}%'", null, false);
             $builder->groupEnd();
         }
 
         return $builder->countAllResults();
     }
-
     public function getTotalTokens($userId)
     {
         $row = $this->db->table('user_wallet uw')
