@@ -76,7 +76,7 @@ class MyWalletModel extends Model
     public function countFiltered($userId)
     {
         $postData = service('request')->getPost();
-        $searchValue = preg_replace('/\s+/', '', $postData['search']['value'] ?? '');
+        $searchValue = trim($postData['search']['value'] ?? '');
 
         $builder = $this->db->table('user_subscription us')
             ->join('subscription_plan sp', 'sp.sp_Id = us.sp_Id', 'left')
@@ -90,6 +90,7 @@ class MyWalletModel extends Model
             $builder->orLike('uw.uw_subscription_token', $searchValue);
             $builder->groupEnd();
         }
+
         return $builder->countAllResults();
     }
 
