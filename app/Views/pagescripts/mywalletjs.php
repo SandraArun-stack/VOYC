@@ -26,14 +26,23 @@ $(document).ready(function () {
         },
 
         columns: [
-            { data: 'plan_name', defaultContent: 'N/A' },
-            { data: 'validity', defaultContent: 'N/A' },
-            { data: 'uw_subscription_token', defaultContent: 0 },
-            { data: 'uw_purchased_token', defaultContent: 0 },
-            { data: 'uw_bonus_token', defaultContent: 0 },
-            { data: 'usersub_expiry', defaultContent: 'N/A' },
-            { data: 'status', orderable: false, searchable: false }
-        ]
+        {
+            data: null,
+            orderable: false,
+            searchable: false,
+            render: function (data, type, row, meta) {
+                return meta.row + meta.settings._iDisplayStart + 1;
+            }
+        },
+        { data: 'plan_name', defaultContent: 'N/A' },
+        { data: 'validity', defaultContent: 'N/A' },
+        { data: 'uw_subscription_token', defaultContent: 0 },
+        { data: 'uw_purchased_token', defaultContent: 0 },
+        { data: 'uw_bonus_token', defaultContent: 0 },
+        { data: 'usersub_expiry', defaultContent: 'N/A' },
+        { data: 'status', orderable: false, searchable: false }
+    ]
+
     });
 
     $.get(baseUrl + "mywallet/getUserTokens", function (res) {

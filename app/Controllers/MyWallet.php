@@ -63,7 +63,7 @@ class MyWallet extends BaseController
 
             $row['plan_name'] = $row['plan_name'] ?? 'N/A';
             $row['validity'] = !empty($row['plan_validity'])
-                ? $row['plan_validity'] . ' Days'
+                ? $row['plan_validity']
                 : 'N/A';
             $expiryRaw = $row['usersub_expiry'] ?? null;
 

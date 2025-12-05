@@ -29,10 +29,11 @@
             <table id="tokenTable" class="table table-bordered DataTableWebsite">
                 <thead class="off-white">
                     <tr>
+                        <th>SI. No.</th>
                         <th>Plan Name</th>
                         <th>Validity</th>
                         <th>Token</th>
-                        <th>Purchased Token</th>
+                        <th>Paid Token</th>
                         <th>Bonus Token</th>
                         <th>Expiry</th>
                         <th>Status</th>
