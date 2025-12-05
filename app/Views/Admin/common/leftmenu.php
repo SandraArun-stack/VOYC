@@ -70,7 +70,7 @@
                             </li>
                             <li class="<?= ($segment == 'games') ? 'active' : '' ?>">
                                 <a href="<?= base_url('admin/games') ?>">
-                                    <span class="pcoded-mtext">Game </span>
+                                    <span class="pcoded-mtext">Game Mapping</span>
                                 </a>
                             </li>
                             <li class="<?= ($segment == 'players') ? 'active' : '' ?>">
