@@ -41,7 +41,7 @@ class Wallet extends BaseController
         null,
         'customer.cust_Name',
         'uw_expiry',
-        'uw_tokens',
+        'uw_subscription_tokens',
         'uw_bonus_token',       
         'uw_purchased_token',  
         'uw_status'

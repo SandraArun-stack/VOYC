@@ -12,9 +12,10 @@ class WalletModel extends Model
         'cust_Id',
         'usersub_Id',
         'uw_expiry',
-        'uw_tokens',
+        'uw_subscription_token',
         'uw_purchased_token',
         'uw_bonus_token',
+        'uw_total_token',
         'uw_status',
         'uw_created_by',
         'uw_created_at',
@@ -40,7 +41,7 @@ class WalletModel extends Model
 
             $builder->groupStart()
                 ->where("REPLACE(LOWER(customer.cust_Name),' ','') LIKE '%{$escaped}%'", null, false)
-                ->orWhere("REPLACE(user_wallet.uw_tokens,' ','') LIKE '%{$escaped}%'", null, false)
+                ->orWhere("REPLACE(user_wallet.uw_subscription_token,' ','') LIKE '%{$escaped}%'", null, false)
                 ->orWhere("REPLACE(user_wallet.uw_bonus_token,' ','') LIKE '%{$escaped}%'", null, false)
                 ->orWhere("REPLACE(user_wallet.uw_purchased_token,' ','') LIKE '%{$escaped}%'", null, false)
                 ->orWhere("REPLACE(DATE_FORMAT(user_wallet.uw_expiry,'%d%m%Y'),' ','') LIKE '%{$escaped}%'", null, false)
@@ -55,7 +56,7 @@ class WalletModel extends Model
 
             $filteredBuilder->groupStart()
                 ->where("REPLACE(LOWER(customer.cust_Name),' ','') LIKE '%{$escaped}%'", null, false)
-                ->orWhere("REPLACE(user_wallet.uw_tokens,' ','') LIKE '%{$escaped}%'", null, false)
+                ->orWhere("REPLACE(user_wallet.uw_subscription_token,' ','') LIKE '%{$escaped}%'", null, false)
                 ->orWhere("REPLACE(user_wallet.uw_bonus_token,' ','') LIKE '%{$escaped}%'", null, false)
                 ->orWhere("REPLACE(user_wallet.uw_purchased_token,' ','') LIKE '%{$escaped}%'", null, false)
                 ->orWhere("REPLACE(DATE_FORMAT(user_wallet.uw_expiry,'%d%m%Y'),' ','') LIKE '%{$escaped}%'", null, false)
