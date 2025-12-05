@@ -52,7 +52,7 @@
                                                     <th>Game Name</th>
                                                     <th>Tokens</th>
                                                     <th>Leaderboard Count</th>
-                                                    <th>Winning Percentage</th>
+                                                    <th>Win Tee Percentage</th>
                                                     <th>Win Coupen Percentage</th>
                                                     <th>Action</th>
                                                 </tr>
