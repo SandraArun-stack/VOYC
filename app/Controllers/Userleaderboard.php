@@ -17,6 +17,7 @@ class Userleaderboard extends BaseController
         $this->CartModel = new CartModel();
         $this->PlayersModel = new PlayersModel();
         $this->GameMappingModel = new GameMappingModel();
+        $this->UserleaderboardModel = new UserleaderboardModel();
     }
     public function index()
     {
@@ -42,4 +43,23 @@ class Userleaderboard extends BaseController
             . view('common/footer')
             . view('pagescripts/user_leaderboardjs');
     }
+
+    public function leaderboardListAjax()
+    {
+        $userId = session()->get('user_id');
+        $postData = $this->request->getPost();
+        $model = new UserleaderboardModel();
+
+        $data = $model->getUserLeaderboardData($userId, $postData);
+        $total = $model->countAllUserRows($userId);
+        $filtered = $model->countFilteredRows($userId, $postData);
+
+        return $this->response->setJSON([
+            "draw" => intval($postData['draw']),
+            "recordsTotal" => $total,
+            "recordsFiltered" => $filtered,
+            "data" => $data
+        ]);
+    }
+
 }
