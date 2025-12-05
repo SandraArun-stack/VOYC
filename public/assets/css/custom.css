@@ -1689,41 +1689,74 @@ input[type="file"] {
     margin-bottom: 15px !important;
 }
 
-#tokenTable>thead>tr>th {
+.DataTableWebsite>thead>tr>th {
     font-size: 15px;
     font-weight: 600;
 }
 
-#tokenTable {
+.DataTableWebsite {
     margin-bottom: 10px;
 }
 
-#tokenTable_wrapper {
+.dataTables_wrapper {
     border: #aaa3a3 solid 1px;
     padding: 20px;
 }
 
-#tokenTable_info {
+.dataTables_info {
     font-size: 14px;
 }
 
-#tokenTable_paginate {
+.dataTables_paginate {
     font-size: 14px;
 }
 
 /* #tokenTable_next{
     font-size: 14px; 
 } */
-#tokenTable_filter label {
+.dataTables_filter label {
     font-size: 14px;
 }
 
-#tokenTable_length label {
+.dataTables_length label {
     font-size: 14px;
 }
 
-#tokenTable>tbody>tr {
+.DataTableWebsite>tbody>tr {
     font-size: 14px;
+}
+
+.total_token {
+    background: #fffac8;
+    padding: 4px 17px;
+}
+
+.total_token_text {
+    font-size: 17px;
+    font-weight: 600;
+
+}
+
+#userTokens {
+    font-size: 20px;
+}
+
+#topupBtn {
+    padding: 20px 17px;
+    font-size: 16px;
+}
+
+.tokens__top__up {
+    gap: 10px;
+}
+
+.subscription_badge {
+    padding: 7px 5px;
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+    align-items: center;
+    display: flex
 }
 
 @media only screen and (max-width: 991px) {

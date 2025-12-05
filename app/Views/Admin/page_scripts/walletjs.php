@@ -23,7 +23,7 @@ $(document).ready(function () {
             },
             { data: 'cust_Name', defaultContent: '-' },
             { data: 'uw_expiry', defaultContent: '-' },
-            { data: 'uw_tokens', defaultContent: '0' },
+            { data: 'uw_subscription_token', defaultContent: '0' },
             { data: 'uw_bonus_token', defaultContent: '0' },
             { data: 'uw_purchased_token', defaultContent: '0' },
 

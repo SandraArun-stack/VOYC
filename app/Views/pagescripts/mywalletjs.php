@@ -28,7 +28,7 @@ $(document).ready(function () {
         columns: [
             { data: 'plan_name', defaultContent: 'N/A' },
             { data: 'validity', defaultContent: 'N/A' },
-            { data: 'uw_tokens', defaultContent: 0 },
+            { data: 'uw_subscription_token', defaultContent: 0 },
             { data: 'uw_purchased_token', defaultContent: 0 },
             { data: 'uw_bonus_token', defaultContent: 0 },
             { data: 'usersub_expiry', defaultContent: 'N/A' },

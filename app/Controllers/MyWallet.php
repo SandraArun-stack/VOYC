@@ -72,7 +72,7 @@ class MyWallet extends BaseController
                 : 'N/A';
 
 
-            $row['uw_tokens'] = $row['uw_tokens'] ?? 0;
+            $row['uw_subscription_token'] = $row['uw_subscription_token'] ?? 0;
             $row['uw_purchased_token'] = $row['uw_purchased_token'] ?? 0;
             $row['uw_bonus_token'] = $row['uw_bonus_token'] ?? 0;
 
@@ -83,13 +83,13 @@ class MyWallet extends BaseController
             } elseif (isset($row['usersub_status']) && $row['usersub_status'] == 1) {
 
                 if (!empty($expiryRaw) && strtotime($expiryRaw) >= strtotime($currentDate)) {
-                    $row['status'] = '<span class="badge badge-success">Active</span>';
+                    $row['status'] = '<span class="badge badge-success subscription_badge justify-content-center">Active</span>';
                 } else {
-                    $row['status'] = '<span class="badge badge-danger">Expired</span>';
+                    $row['status'] = '<span class="badge badge-danger subscription_badge justify-content-center">Expired</span>';
                 }
 
             } else {
-                $row['status'] = '<span class="badge badge-danger">Expired</span>';
+                $row['status'] = '<span class="badge badge-danger subscription_badge justify-content-center">Expired</span>';
             }
         }
 

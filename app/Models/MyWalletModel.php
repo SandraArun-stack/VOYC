@@ -5,68 +5,70 @@ use CodeIgniter\Model;
 
 class MyWalletModel extends Model
 {
-    protected $table = 'user_wallet';
-    protected $primaryKey = 'uw_Id';
+    protected $table = 'user_subscription';
+    protected $primaryKey = 'usersub_Id';
 
     protected $allowedFields = [
+        'transaction_Id',
         'cust_Id',
-        'usersub_Id',
-        'uw_expiry',
-        'uw_tokens',
-        'uw_purchased_token',
-        'uw_bonus_token',
-        'uw_status',
-        'uw_created_by',
-        'uw_created_at',
-        'uw_updated_by',
-        'uw_updated_at'
+        'sp_Id',
+        'usersub_expiry',
+        'usersub_status',
+        'usersub_discount',
+        'usersub_created_by',
+        'usersub_created_at',
+        'usersub_updated_by',
+        'usersub_updated_at'
     ];
     public function getDatatables($userId)
-{
-    $postData = service('request')->getPost();
-    $searchValue = trim($postData['search']['value'] ?? '');
+    {
+        $postData = service('request')->getPost();
+        $searchValue = trim($postData['search']['value'] ?? '');
 
-    $builder = $this->db->table('user_wallet uw');
+        $builder = $this->db->table('user_subscription us');
 
-    $builder->select("
-        uw.uw_tokens,
-        uw.uw_purchased_token,
-        uw.uw_bonus_token,
-
-        us.usersub_status,
+        $builder->select("
+        us.usersub_Id,
         us.usersub_expiry,
+        us.usersub_status,
 
         sp.sp_plan_name AS plan_name,
-        sp.sp_validity   AS plan_validity
+        sp.sp_validity AS plan_validity,
+
+        COALESCE(uw.uw_subscription_token, 0) AS uw_subscription_token,
+        COALESCE(uw.uw_purchased_token, 0) AS uw_purchased_token,
+        COALESCE(uw.uw_bonus_token, 0) AS uw_bonus_token
     ");
 
-    $builder->join('user_subscription us', 'us.usersub_Id = uw.usersub_Id', 'left');
-    $builder->join('subscription_plan sp', 'sp.sp_Id = us.sp_Id', 'left');
+        $builder->join('subscription_plan sp', 'sp.sp_Id = us.sp_Id', 'left');
+        $builder->join('user_wallet uw', 'uw.usersub_Id = us.usersub_Id', 'left');
 
-    $builder->where('uw.cust_Id', $userId);
+        // IMPORTANT FIX
+        $builder->where('us.cust_Id', $userId);
+        $builder->orderBy('us.usersub_created_at', 'DESC');
+        if (!empty($searchValue)) {
+            $builder->groupStart();
+            $builder->like('sp.sp_plan_name', $searchValue);
+            $builder->orLike('uw.uw_subscription_token', $searchValue);
+            $builder->groupEnd();
+        }
 
-    if (!empty($searchValue)) {
-        $builder->groupStart();
-        $builder->like('sp.sp_plan_name', $searchValue);
-        $builder->orLike('uw.uw_tokens', $searchValue);
-        $builder->groupEnd();
+        $length = $postData['length'] ?? 10;
+        $start = $postData['start'] ?? 0;
+
+        if ($length != -1) {
+            $builder->limit($length, $start);
+        }
+
+        return $builder->get()->getResultArray();
     }
 
-    $length = $postData['length'] ?? 10;
-    $start  = $postData['start'] ?? 0;
-
-    if ($length != -1) {
-        $builder->limit($length, $start);
-    }
-
-    return $builder->get()->getResultArray();
-}
 
 
 
     public function countAll($userId)
     {
-        return $this->db->table('user_wallet')
+        return $this->db->table('user_subscription')
             ->where('cust_Id', $userId)
             ->countAllResults();
     }
@@ -76,28 +78,26 @@ class MyWalletModel extends Model
         $postData = service('request')->getPost();
         $searchValue = trim($postData['search']['value'] ?? '');
 
-        $builder = $this->db->table('user_wallet uw');
-        $builder->join('user_subscription us', 'us.usersub_Id = uw.usersub_Id', 'left');
-        $builder->join('subscription_plan sp', 'sp.sp_Id = us.sp_Id', 'left');
+        $builder = $this->db->table('user_subscription us')
+            ->join('subscription_plan sp', 'sp.sp_Id = us.sp_Id', 'left')
+            ->join('user_wallet uw', 'uw.usersub_Id = us.usersub_Id', 'left');
 
-        $builder->where('uw.cust_Id', $userId);
+        $builder->where('us.cust_Id', $userId);
 
         if (!empty($searchValue)) {
             $builder->groupStart();
             $builder->like('sp.sp_plan_name', $searchValue);
-            $builder->orLike('uw.uw_tokens', $searchValue);
+            $builder->orLike('uw.uw_subscription_token', $searchValue);
             $builder->groupEnd();
         }
 
         return $builder->countAllResults();
     }
+
     public function getTotalTokens($userId)
     {
-        $row = $this->db->table('user_wallet')
-            ->select('
-                COALESCE(SUM(uw_tokens),0) +
-                COALESCE(SUM(uw_purchased_token),0) +
-                COALESCE(SUM(uw_bonus_token),0) AS total_tokens
+        $row = $this->db->table('user_wallet uw')
+            ->select('uw.uw_total_token AS total_tokens
             ')
             ->where('cust_Id', $userId)
             ->get()
