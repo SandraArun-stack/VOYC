@@ -23,7 +23,7 @@ class LeaderboardModel extends Model
     ];
     public function getDatatables()
     {
-        $postData    = service('request')->getPost();
+        $postData = service('request')->getPost();
         $searchValue = trim($postData['search']['value'] ?? '');
         $searchValue = preg_replace('/\s+/', '', $searchValue);
 
@@ -71,7 +71,7 @@ class LeaderboardModel extends Model
     }
     public function countFiltered()
     {
-        $postData    = service('request')->getPost();
+        $postData = service('request')->getPost();
         $searchValue = trim($postData['search']['value'] ?? '');
         $searchValue = preg_replace('/\s+/', '', $searchValue);
 
@@ -94,4 +94,21 @@ class LeaderboardModel extends Model
 
         return $builder->get()->getRow()->total;
     }
+
+    public function insertPlayersToLeaderboard($players, $gameId = 1)
+    {
+        foreach ($players as $p) {
+            $this->insert([
+                'player_Id' => $p['player_Id'],
+                'cust_Id' => $p['cust_Id'],
+                'game_Id' => $gameId,
+                'lb_date' => date('Y-m-d'),
+                'lb_rank' => $p['player_rank'],
+                'lb_score' => $p['player_score'],
+                'lb_status' => 0,
+                'lb_created_at' => date('Y-m-d H:i:s')
+            ]);
+        }
+    }
+
 }

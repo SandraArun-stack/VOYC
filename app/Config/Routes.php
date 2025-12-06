@@ -158,11 +158,13 @@ $routes->get('mywallet', 'MyWallet::index');
 $routes->post('mywallet/walletListAjax', 'MyWallet::walletListAjax');
 $routes->get('mywallet/getUserTokens', 'MyWallet::getUserTokens');
 
-//userleaderboard
-$routes->get('userleaderboard', 'Userleaderboard::index');
-$routes->post('userleaderboard/leaderboardListAjax', 'Userleaderboard::leaderboardListAjax');
+//My Games
+$routes->get('mygames', 'MyGames::index');
+$routes->post('mygames/myGamesListAjax', 'MyGames::myGamesListAjax');
 
-
+//Leaderboard
+$routes->get('userLeaderboard', 'Userleaderboard::index');
+$routes->post('userLeaderboard/userLeaderboardListAjax', 'Userleaderboard::userLeaderboardListAjax');
 
 // --------------------------------ADMIN----------------------------------------//
 
@@ -265,9 +267,9 @@ $routes->post('admin/leaderboard/list', 'Admin\Leaderboard::ajaxList');
 // subscription management
 $routes->get('admin/subscription', 'Admin\Subscription::index');
 $routes->post('admin/subscription/list', 'Admin\Subscription::ajaxList');
-$routes->get('admin/subscription/subscription', 'Admin\Subscription::add');
-$routes->get('admin/subscription/edit/(:num)', 'Admin\Subscription::edit/$1');
-$routes->post('admin/subscription/save', 'Admin\Subscription::save');
+// $routes->get('admin/subscription/subscription', 'Admin\Subscription::add');
+// $routes->get('admin/subscription/edit/(:num)', 'Admin\Subscription::edit/$1');
+// $routes->post('admin/subscription/save', 'Admin\Subscription::save');
 
 // USER SUBSCRIPTIONS
 $routes->get('admin/usersubscriptions', 'Admin\UserSubscriptions::index');
@@ -290,6 +292,10 @@ $routes->get('admin/discount/list', 'Admin\Discount::list');
 $routes->get('admin/daily_counter', 'Admin\DailyCounter::index');
 $routes->post('admin/daily_counter/list', 'Admin\DailyCounter::ajaxList');
 
+// Transactions
+$routes->get('admin/transactions', 'Admin\Transactions::index');
+$routes->post('admin/transactions/list', 'Admin\Transactions::ajaxList');
+$routes->get('admin/transactions/view/(:any)', 'Admin\Transactions::view/$1');
 
 // games
 $routes->get('admin/games', 'Admin\Games::index');
@@ -353,3 +359,7 @@ $routes->get('subscription/getById/(:num)', 'Admin\Subscription::getById/$1');
 $routes->post('usersubscriptions/save', 'Admin\UserSubscriptions::createSubscribe');
 $routes->get('usersubscriptions/getAll', 'Admin\UserSubscriptions::getAll');
 $routes->get('usersubscriptions/getById/(:num)', 'Admin\UserSubscriptions::getById/$1');
+
+
+//cron
+$routes->get('/cron/updateLeaderboard', 'Cron::updateLeaderboard');

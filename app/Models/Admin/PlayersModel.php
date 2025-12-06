@@ -83,15 +83,6 @@ class PlayersModel extends Model
         ];
     }
 
-    // public function getTodayPlayers($today, $limit)
-    // {
-    //     return $this->select('players.*, customer.cust_Name AS player_name')
-    //         ->join('customer', 'customer.cust_Id = players.cust_Id', 'left')
-    //         ->where('DATE(players.player_created_at)', $today)
-    //         ->orderBy('player_score', 'desc')
-    //         ->limit($limit)
-    //         ->findAll();
-    // }
 
     public function getTodayPlayers($today, $limit, $sessionUserId = null)
     {
@@ -126,6 +117,16 @@ class PlayersModel extends Model
             'players' => $players,
             'lastPlayer' => $lastPlayer
         ];
+    }
+
+    public function getTopPlayersForDate($date, $limit = 30)
+    {
+        return $this->db->table('players')
+            ->where('DATE(player_created_at)', $date)
+            ->orderBy('player_rank', 'ASC')
+            ->limit($limit)
+            ->get()
+            ->getResultArray();
     }
 
 }
