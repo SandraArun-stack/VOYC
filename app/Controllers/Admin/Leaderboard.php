@@ -22,22 +22,22 @@ class Leaderboard extends BaseController
         }
         $template = view('Admin/common/header');
 		$template .= view('Admin/common/leftmenu');
-        $template .= view('Admin/leaderboardlist');
+        $template .= view('Admin/transactionslist');
 		$template .= view('Admin/common/footer');
 		$template .= view('Admin/page_scripts/leaderboardjs');
         return $template;
     }
-    public function teeWinners()
-    {
-        if (!$this->session->get('ad_uid')) {
-            return redirect()->to('admin');
-        }
-        $template = view('Admin/common/header');
-		$template .= view('Admin/common/leftmenu');
-        $template .= view('Admin/tee_winners');
-        $template .= view('Admin/common/footer');
-        return $template;
-    }
+    // public function teeWinners()
+    // {
+    //     if (!$this->session->get('ad_uid')) {
+    //         return redirect()->to('admin');
+    //     }
+    //     $template = view('Admin/common/header');
+	// 	$template .= view('Admin/common/leftmenu');
+    //     $template .= view('Admin/tee_winners');
+    //     $template .= view('Admin/common/footer');
+    //     return $template;
+    // }
     public function ajaxList()
     {
         $model = new LeaderboardModel();

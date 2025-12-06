@@ -63,30 +63,30 @@ class Subscription extends BaseController
             'data' => $data
         ]);
     }
-    public function add()
-    {
-        $template = view('Admin/common/header');
-		$template .= view('Admin/common/leftmenu');
-        $template .= view('Admin/subscriptionlist');
-		$template .= view('Admin/common/footer');
-		$template .= view('Admin/page_scripts/subscriptionjs');
-        return $template;
-    }
-    public function edit($id)
-    {
-        $model = new SubscriptionModel();
-        $subscription = $model->find($id);
-        if (!$subscription) {
-            return redirect()->to('admin/subscription')
-                ->with('error', 'Subscription not found.');
-        }
-        $template = view('Admin/common/header');
-		$template .= view('Admin/common/leftmenu');
-        $template .= view('Admin/subscription', ['subscription' => $subscription]);
-		$template .= view('Admin/common/footer');
-		$template .= view('Admin/page_scripts/subscriptionjs');
-        return $template;
-    }
+    // public function add()
+    // {
+    //     $template = view('Admin/common/header');
+	// 	$template .= view('Admin/common/leftmenu');
+    //     $template .= view('Admin/subscriptionlist');
+	// 	$template .= view('Admin/common/footer');
+	// 	$template .= view('Admin/page_scripts/subscriptionjs');
+    //     return $template;
+    // }
+    // public function edit($id)
+    // {
+    //     $model = new SubscriptionModel();
+    //     $subscription = $model->find($id);
+    //     if (!$subscription) {
+    //         return redirect()->to('admin/subscription')
+    //             ->with('error', 'Subscription not found.');
+    //     }
+    //     $template = view('Admin/common/header');
+	// 	$template .= view('Admin/common/leftmenu');
+    //     $template .= view('Admin/subscription', ['subscription' => $subscription]);
+	// 	$template .= view('Admin/common/footer');
+	// 	$template .= view('Admin/page_scripts/subscriptionjs');
+    //     return $template;
+    // }
     public function save()
     {
         $model = new SubscriptionModel();
