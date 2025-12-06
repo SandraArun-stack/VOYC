@@ -1,5 +1,5 @@
 <!-- Breadcrumb Begin -->
-<div class="breadcrumb-option">
+<!-- <div class="breadcrumb-option">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -12,12 +12,12 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <!-- Breadcrumb End -->
 
 
 <!-- Shop Section Begin -->
-<section class="shop spad">
+<section class="usersidebar">
     <div class="container">
         <div class="row">
             <div class="col-lg-3 col-md-3">
@@ -44,10 +44,10 @@
                                     <h5>Game Arena</h5>
                                 </div>
                                 <div class="sud__head__list">
-                                    <a href="<?= base_url('userleaderboard'); ?>">
+                                    <a href="<?= base_url('userLeaderboard'); ?>">
                                         <p>Leaderboard</p>
                                     </a>
-                                    <a href="<?= base_url('userleaderboard'); ?>">
+                                    <a href="<?= base_url('mygames'); ?>">
                                         <p>My Games</p>
                                     </a>
                                 </div>

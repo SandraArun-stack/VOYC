@@ -44,15 +44,14 @@ class Userleaderboard extends BaseController
             . view('pagescripts/user_leaderboardjs');
     }
 
-    public function leaderboardListAjax()
+    public function userLeaderboardListAjax()
     {
-        $userId = session()->get('user_id');
         $postData = $this->request->getPost();
         $model = new UserleaderboardModel();
 
-        $data = $model->getUserLeaderboardData($userId, $postData);
-        $total = $model->countAllUserRows($userId);
-        $filtered = $model->countFilteredRows($userId, $postData);
+        $data = $model->getleaderboard();
+        $total = $model->countAllUserRows();
+        $filtered = $model->countFilteredRows();
 
         return $this->response->setJSON([
             "draw" => intval($postData['draw']),

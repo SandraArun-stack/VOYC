@@ -7,95 +7,101 @@ use CodeIgniter\Model;
 class UserleaderboardModel extends Model
 {
 
-    protected $table = 'players';
-    protected $primaryKey = 'player_Id';
+    protected $table = 'leaderboard';
+    protected $primaryKey = 'lb_Id';
 
     protected $allowedFields = [
-        'game_Id',
+        'player_Id',
         'cust_Id',
-        'player_date',
-        'player_score',
-        'player_rank',
-        'player_winning_status',
-        'player_status',
-        'player_created_at',
-        'player_created_by',
-        'player_updated_at',
-        'player_updated_by'
+        'game_Id',
+        'lb_date',
+        'lb_score',
+        'lb_rank',
+        'lb_discount',
+        'lb_created_at',
+        'lb_updated_by',
+        'lb_updated_at',
+        'lb_coupen_code',
+        'lb_status',
+        'lb_redeemed_status',
+        'lb_created_by'
     ];
 
-    public function getUserLeaderboardData($userId, $postData)
+    public function getleaderboard()
     {
+        // Read POST data directly
+        $postData = service('request')->getPost();
+
+        // Clean search input
         $searchValue = trim(preg_replace('/\s+/', '', $postData['search']['value'] ?? ''));
 
-        $builder = $this->db->table('players p');
+        $builder = $this->db->table('leaderboard lb');
 
         $builder->select("
-            p.player_Id,
-            p.player_created_at,
-            p.player_score,
-            p.player_rank,
-            p.player_winning_status,
-            g.game_name
-        ");
+        lb.lb_Id,
+        lb.player_Id,
+        lb.lb_date,
+        lb.lb_rank,
+        lb.lb_score,
+        lb.lb_status,
+        c.cust_name,
+        g.game_name
+    ");
 
-        $builder->join('game g', 'g.game_Id = p.game_Id', 'left');
-        $builder->where('p.cust_Id', $userId);
-        $builder->orderBy('p.player_created_at', 'DESC');
+        $builder->join('game g', 'g.game_Id = lb.game_Id', 'left');
+        $builder->join('customer c', 'c.cust_Id = lb.cust_Id', 'left');
 
+        // SEARCH
         if (!empty($searchValue)) {
             $escaped = $this->db->escapeLikeString($searchValue);
-
-            $builder->groupStart();
-            $builder->where("REPLACE(REPLACE(g.game_name,' ',''), '\t','') LIKE '%{$escaped}%'", null, false);
-            $builder->orWhere("REPLACE(REPLACE(p.player_score,' ',''), '\t','') LIKE '%{$escaped}%'", null, false);
-            $builder->groupEnd();
+            $builder->groupStart()
+                ->where("REPLACE(g.game_name, ' ', '') LIKE '%{$escaped}%'", null, false)
+                ->orWhere("REPLACE(c.cust_name, ' ', '') LIKE '%{$escaped}%'", null, false)
+                ->groupEnd();
         }
 
+        // PAGINATION
         $length = $postData['length'] ?? 10;
-        $start  = $postData['start'] ?? 0;
+        $start = $postData['start'] ?? 0;
 
         if ($length != -1) {
             $builder->limit($length, $start);
         }
+        $builder->orderBy('lb.lb_date', 'DESC');
+        $builder->orderBy('lb.lb_rank', 'ASC');
 
-        $result = $builder->get()->getResultArray();
-
-        foreach ($result as &$row) {
-            $row['player_created_at'] = !empty($row['player_created_at'])
-                ? date("d-m-Y", strtotime($row['player_created_at']))
-                : "N/A";
-        }
-
-        return $result;
+        return $builder->get()->getResultArray();
     }
-    public function countAllUserRows($userId)
+
+
+    public function countAllUserRows()
     {
-        return $this->db->table('players')
-            ->where('cust_Id', $userId)
+        return $this->db->table('leaderboard')
             ->countAllResults();
     }
 
-    public function countFilteredRows($userId, $postData)
+    public function countFilteredRows()
     {
+        $postData = service('request')->getPost();
+
         $searchValue = trim(preg_replace('/\s+/', '', $postData['search']['value'] ?? ''));
 
-        $builder = $this->db->table('players p')
-            ->join('game g', 'g.game_Id = p.game_Id', 'left');
-
-        $builder->where('p.cust_Id', $userId);
+        $builder = $this->db->table('leaderboard lb');
+        $builder->join('game g', 'g.game_Id = lb.game_Id', 'left');
+        $builder->join('customer c', 'c.cust_Id = lb.cust_Id', 'left');
 
         if (!empty($searchValue)) {
             $escaped = $this->db->escapeLikeString($searchValue);
-
-            $builder->groupStart();
-            $builder->where("REPLACE(REPLACE(g.game_name,' ',''), '\t','') LIKE '%{$escaped}%'", null, false);
-            $builder->orWhere("REPLACE(REPLACE(p.player_score,' ',''), '\t','') LIKE '%{$escaped}%'", null, false);
-            $builder->groupEnd();
+            $builder->groupStart()
+                ->where("REPLACE(g.game_name, ' ', '') LIKE '%{$escaped}%'", null, false)
+                ->orWhere("REPLACE(c.cust_name, ' ', '') LIKE '%{$escaped}%'", null, false)
+                ->groupEnd();
         }
 
         return $builder->countAllResults();
     }
+
+
 
 
 
