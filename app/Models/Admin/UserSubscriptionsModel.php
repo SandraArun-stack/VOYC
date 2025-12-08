@@ -8,11 +8,20 @@ class UserSubscriptionsModel extends Model
     protected $table = 'user_subscription';
     protected $primaryKey = 'usersub_Id';
     protected $allowedFields = [
-        'cust_Id', 'sp_Id', 'usersub_expiry', 'usersub_status', 'usersub_discount', 'usersub_created_at', 'usersub_updated_at'
+        'transaction_Id',
+        'cust_Id',
+        'sp_Id',
+        'usersub_expiry',
+        'usersub_status',
+        'usersub_discount',
+        'usersub_created_by',
+        'usersub_created_at',
+        'usersub_updated_by',
+        'usersub_updated_at'
     ];
 
     protected $returnType = 'array';
-     
+
     public function getDatatables()
     {
         $postData = service('request')->getPost();
@@ -115,7 +124,7 @@ class UserSubscriptionsModel extends Model
 
         return [
             'subscriptions' => $subscriptions,
-            'total'         => $total
+            'total' => $total
         ];
     }
     public function getUserSubscriptionById($id)
