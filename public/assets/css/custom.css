@@ -1643,7 +1643,8 @@ input[type="file"] {
 }
 
 #allcustomisible_Product_view {
-    padding-top: 120px !important;
+    padding-top: 150px !important;
+        padding-bottom: 80px;
 }
 
 .product_name_text {

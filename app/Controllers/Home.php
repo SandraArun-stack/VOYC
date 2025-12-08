@@ -7,6 +7,7 @@ use App\Models\CartModel;
 use App\Models\Admin\LeaderboardModel;
 use App\Models\Admin\PlayersModel;
 use App\Models\Admin\GameMappingModel;
+use App\Models\Admin\UserSubscriptionsModel;
 class Home extends BaseController
 {
     protected $HomeModel;
@@ -23,6 +24,7 @@ class Home extends BaseController
         $this->LeaderboardModel = new LeaderboardModel();
         $this->PlayersModel = new PlayersModel();
         $this->GameMappingModel = new GameMappingModel();
+        $this->UserSubscriptionsModel = new UserSubscriptionsModel();
     }
 
     public function index()
@@ -145,7 +147,33 @@ class Home extends BaseController
                 'user_name' => $result['user']['cust_Name'],
                 'isLoggedIn' => true
             ]);
+
+            $subscription = $this->UserSubscriptionsModel
+                ->select('*')
+                ->where('cust_Id', $result['user']['cust_Id'])
+                ->where('usersub_status =', 1)
+                ->orderBy('usersub_Id', 'DESC')
+                ->get()
+                ->getResultArray();
+
+
+            if ($subscription) {
+                $expiry = strtotime($subscription['usersub_expiry']);
+                $now = time();
+
+                // 1 = active, 2 = inactive
+                $isActive = ($subscription['usersub_status'] == 1 && $expiry >= $now) ? 1 : 2;
+
+                $this->session->set([
+                    'user_subscription' => $isActive,
+                    'subscription_data' => $subscription
+                ]);
+            } else {
+                $this->session->set('user_subscription', 2);
+            }
+
         }
+
 
         return $this->response->setJSON($result);
     }

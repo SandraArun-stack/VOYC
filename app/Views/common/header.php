@@ -109,21 +109,22 @@
                     <div class="header__right">
 
                         <ul class="header__right__widget">
+                             <?php if ($session->get('isLoggedIn')): ?>
                             <li>
-                                <a href="#" class="icon-with-text"><i class="bi bi-wallet2"></i>
+                                 <?php $userId = $session->get('user_id'); 
+                                 $userSubscription = $session->get('user_subscription'); ?>
+                                <a href="<?= base_url('mywallet'); ?>" class="icon-with-text"><i class="bi bi-wallet2"></i>
                                     <div class="tip">2</div>
-                                    <span class="icon-label">Wallet</span>
+                                    <span class="icon-label">Wallet<?= esc($userSubscription) ?></span>
                                 </a>
                             </li>
-                            <?php if ($session->get('isLoggedIn')): ?>
-                                <li>
-                                    <?php $userId = $session->get('user_id'); ?>
-                                    <a href="<?= base_url('cart/' . $userId); ?>" class="icon-with-text">
-                                        <i class="bi bi-cart"></i>
-                                        <span class="icon-label">Cart</span>
-                                        <div class="tip"><?= $cartCount ?? 0 ?></div>
-                                    </a>
-                                </li>
+                            <li>
+                                <a href="<?= base_url('cart/' . $userId); ?>" class="icon-with-text">
+                                    <i class="bi bi-cart"></i>
+                                    <span class="icon-label">Cart</span>
+                                    <div class="tip"><?= $cartCount ?? 0 ?></div>
+                                </a>
+                            </li>
                             <?php endif; ?>
                             <li class="customization_icon_header">
                                 <a href="<?= base_url('allCustomizableProducts'); ?>" class="icon-with-text">
