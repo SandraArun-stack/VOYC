@@ -59,7 +59,8 @@
                                                  <h6><?= esc($item['pr_Name']) ?></h6>
                                                 </a>
                                                 <?php
-                                                $sizeOptions = json_decode($item['size_options'], true) ?? [];
+                                                $sizeOptions = $item['size_options'];
+                                                // $sizeOptions = json_decode($item['size_options'], true) ?? [];
                                                 $currentSize = $item['cart_Size'] ?? '';
                                                 ?>
                                                 <div class="size-cart-drop">
