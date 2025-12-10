@@ -46,6 +46,9 @@ class Userleaderboard extends BaseController
 
     public function userLeaderboardListAjax()
     {
+        $session = session();
+        $loggedUserId  = $session->get('user_id');
+
         $postData = $this->request->getPost();
         $model = new UserleaderboardModel();
 
@@ -57,6 +60,7 @@ class Userleaderboard extends BaseController
             "draw" => intval($postData['draw']),
             "recordsTotal" => $total,
             "recordsFiltered" => $filtered,
+            "loggedUserId" => $loggedUserId,
             "data" => $data
         ]);
     }

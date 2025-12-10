@@ -115,7 +115,7 @@
                                  $userSubscription = $session->get('user_subscription'); ?>
                                 <a href="<?= base_url('mywallet'); ?>" class="icon-with-text"><i class="bi bi-wallet2"></i>
                                     <div class="tip">2</div>
-                                    <span class="icon-label">Wallet<?= esc($userSubscription) ?></span>
+                                    <span class="icon-label">Wallet</span>
                                 </a>
                             </li>
                             <li>
