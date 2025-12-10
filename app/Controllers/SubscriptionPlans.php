@@ -29,6 +29,10 @@ class SubscriptionPlans extends BaseController
     {
         $session = session();
         $userId = $session->get('user_id');
+
+        if (!$userId) {
+            return redirect()->to('/');
+        }
         //get cart count
         $cartCount = $this->CartModel->getCartItemCount($userId);
         //leaderboard Count
@@ -54,38 +58,6 @@ class SubscriptionPlans extends BaseController
             . view('common/footer')
             . view('pagescripts/subscription_plansjs');
     }
-
-    // public function savePayment()
-    // {
-    //     $paymentId = $this->request->getPost('razorpay_payment_id');
-    //     $planId = $this->request->getPost('plan_id');
-    //     $amount = $this->request->getPost('amount');
-    //     $tokens = $this->request->getPost('token');
-    //     $userId = session()->get('user_id');
-
-    //     if (!$paymentId) {
-    //         return $this->response->setJSON(['status' => 'error']);
-    //     }
-
-    //     // Fetch Plan Details
-    //     $plan = $this->UserSubscriptionsModel->where('sp_Id', $planId)->first();
-
-    //     // Subscription expiry (auto calculation)
-    //     $expiry = date('Y-m-d H:i:s', strtotime("+{$plan['sp_validity']}"));
-
-    //     // Save to user subscription table
-    //     $this->UserSubscriptionsModel->insert([
-    //         'cust_Id' => $userId,
-    //         'sp_Id' => $planId,
-    //         'usersub_amount' => $amount,
-    //         'usersub_token' => $tokens,
-    //         'usersub_payment_id' => $paymentId,
-    //         'usersub_status' => 1,
-    //         'usersub_expiry' => $expiry,
-    //     ]);
-
-    //     return $this->response->setJSON(['status' => 'success']);
-    // }
 
 
     public function savePayment()
@@ -120,7 +92,7 @@ class SubscriptionPlans extends BaseController
             'payment_method' => 'Razorpay',
             'gateway_transaction_Id' => $paymentId,
             'transaction_amount' => $amount,
-            'commission_amount' => 0,
+            'commission_amount' => 0.00,
             'net_credited_amount' => $amount,
             'transaction_status' => '1',
             'player_Id' => null,
@@ -137,10 +109,11 @@ class SubscriptionPlans extends BaseController
             'transaction_Id' => $transactionId,
             'cust_Id' => $userId,
             'sp_Id' => $planId,
-            'usersub_amount' => $amount,
+            // 'usersub_amount' => $amount,
             'usersub_token' => $tokens,
             'usersub_payment_id' => $paymentId,
             'usersub_status' => '1',
+             'usersub_discount' => $plan['sp_discount'],
             'usersub_expiry' => $expiry,
             'usersub_created_by' => $userId,
             'usersub_created_at' => date('Y-m-d H:i:s'),
@@ -154,10 +127,11 @@ class SubscriptionPlans extends BaseController
 
     public function createOrder()
     {
-        $amount = (float) $this->request->getPost('amount');
+        $amount = (int) $this->request->getPost('amount');
+        // already in paise, DO NOT multiply again
 
-        $keyId = "rzp_test_xxxxxxxxxxxx";
-        $keySecret = "xxxxxxxxxxxxxxxxxxxx";
+        $keyId = "rzp_test_us_RjrLmYhNbs9W32";
+        $keySecret = "JW1G30WgN6doTtwG8WsliWz5";
 
         $ch = curl_init();
 
@@ -168,8 +142,8 @@ class SubscriptionPlans extends BaseController
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
 
         $payload = json_encode([
-            'amount' => $amount * 100,
-            'currency' => 'INR',
+            'amount' => $amount,  // ✅ correct
+            'currency' => 'USD',
             'payment_capture' => 1
         ]);
 
@@ -179,6 +153,51 @@ class SubscriptionPlans extends BaseController
         curl_close($ch);
 
         return $this->response->setJSON(json_decode($response, true));
+    }
+
+    //delete after razor pay account setup
+    public function saveFailedPayment()
+    {
+        // print_r("hai");exit();
+        $planId = $this->request->getPost('plan_id');
+        $amount = (float) $this->request->getPost('amount');
+        $tokens = $this->request->getPost('token');
+        $userId = session()->get('user_id');
+        $errorCode = $this->request->getPost('error_code');
+        $errorDesc = $this->request->getPost('error_description');
+
+        $plan = $this->SubscriptionModel->where('sp_Id', $planId)->first();
+        $transactionData = [
+            'tt_Id' => 0,
+            'sp_Id' => $planId,
+            'cust_Id' => $userId,
+            'payment_method' => 'Razorpay',
+            'gateway_transaction_Id' => 'FAILED_' . time(),
+            'transaction_amount' => $amount,
+            // 'commission_amount' => 0.00,
+            // 'net_credited_amount' => 0,
+            'transaction_status' => 'failed', // ❌ failed
+            'initiated_at' => date('Y-m-d H:i:s'),
+            'completed_at' => date('Y-m-d H:i:s'),
+        ];
+
+        $transactionId = $this->transactionModel->insert($transactionData);
+        $expiry = date('Y-m-d H:i:s', strtotime("+{$plan['sp_validity']}"));
+        $this->UserSubscriptionsModel->insert([
+            'transaction_Id' => $transactionId,
+            'cust_Id' => $userId,
+            'sp_Id' => $planId,
+            'usersub_amount' => $amount,
+            'usersub_token' => $tokens,
+            'usersub_payment_id' => 000000,
+            'usersub_status' => '1',
+            'usersub_discount' => $plan['sp_discount'],
+            'usersub_expiry' => $expiry,
+            'usersub_created_by' => $userId,
+            'usersub_created_at' => date('Y-m-d H:i:s')
+        ]);
+
+        return $this->response->setJSON(['status' => 'failed_logged']);
     }
 
 

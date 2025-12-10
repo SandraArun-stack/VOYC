@@ -1,5 +1,6 @@
 <script>
     $(document).ready(function () {
+
         var baseUrl = "<?= base_url() ?>";
         var csrfName = "<?= csrf_token() ?>";
         var csrfHash = "<?= csrf_hash() ?>";
@@ -20,6 +21,7 @@
                     d[csrfName] = csrfHash;
                 },
                 dataSrc: function (json) {
+                    loggedUserId = json.loggedUserId;
                     return json.data;
                 }
             },
@@ -45,17 +47,30 @@
                 { data: "lb_score", defaultContent: "0" },
                 { data: "lb_score", defaultContent: "-" },
                 {
-                    data: "player_winning_status",
-                    render: function (status) {
-                        if (status == 1) {
+                    data: null,
+                    render: function (data, type, row) {
+
+                        // 🟡 Show Redeem button ONLY if logged-in user matches row user
+                        if (row.cust_Id == loggedUserId) {
+                            return `
+                        <button class="btn btn-warning btn-sm redeem-btn"
+                                data-id="${row.lb_Id}">
+                            <i class="fa fa-gift"></i> Redeem
+                        </button>`;
+                        }
+
+                        // 🟢 Otherwise show status labels
+                        if (row.player_winning_status == 1) {
                             return `<span class="badge bg-success p-2">Win</span>`;
                         }
-                        if (status == 2) {
+                        if (row.player_winning_status == 2) {
                             return `<span class="badge bg-danger p-2">Lose</span>`;
                         }
+
                         return `<span class="badge bg-secondary p-2">Pending</span>`;
                     }
                 }
+
             ]
         });
     });
