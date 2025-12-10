@@ -168,6 +168,12 @@
                                                     </a>
                                                 </li>
                                                 <li>
+                                                    <a class="dropdown-item drop-profile"
+                                                        href="<?= base_url('subscription_plans'); ?>">
+                                                        Subscription Plans
+                                                    </a>
+                                                </li>
+                                                <li>
                                                     <a class="dropdown-item drop-profile text-danger" href="#"
                                                         id="logoutBtn">
                                                         Logout

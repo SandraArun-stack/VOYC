@@ -171,7 +171,6 @@ class Home extends BaseController
             } else {
                 $this->session->set('user_subscription', 2);
             }
-
         }
 
 
