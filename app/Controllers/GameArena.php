@@ -44,9 +44,9 @@ class GameArena extends Controller
 
 
         return view('common/header', $data)
-            . view('contact')
+            . view('game_arena')
             . view('common/footer')
-            . view('pagescripts/contactjs');
+            . view('pagescripts/game_arenajs');
     }
 
 
