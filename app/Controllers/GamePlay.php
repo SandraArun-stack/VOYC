@@ -4,10 +4,22 @@ namespace App\Controllers;
 
 class GamePlay extends BaseController
 {
+    protected $session;
+    public function __construct()
+    {
+        $this->session = \Config\Services::session();
+        $this->request = \Config\Services::request();
+    }
     public function play()
     {
-        return view('game_play');
+        $session = session();
+        $userId = $session->get('user_id');
+
+        return view('game_play', [
+            'userId' => $userId
+        ]);
     }
+
 }
 // <?php
 
@@ -28,7 +40,7 @@ class GamePlay extends BaseController
 //             return redirect()->to('game_arena');
 //         }
 
-        
+
 //         $todayActive = $mappingModel->where('game_Id', $gameId)
 //                                     ->where('gm_date', date('Y-m-d'))
 //                                     ->where('gm_status', 1)
