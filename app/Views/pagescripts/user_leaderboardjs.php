@@ -1,7 +1,7 @@
 <script>
     $(document).ready(function () {
 
-        var baseUrl = "<?= base_url() ?>";
+        // var baseUrl = "<?= base_url() ?>";
         var csrfName = "<?= csrf_token() ?>";
         var csrfHash = "<?= csrf_hash() ?>";
 
@@ -15,7 +15,7 @@
                 zeroRecords: "No matching records found"
             },
             ajax: {
-                url: baseUrl + "userLeaderboard/userLeaderboardListAjax",
+                url: base_url + "userLeaderboard/userLeaderboardListAjax",
                 type: "POST",
                 data: function (d) {
                     d[csrfName] = csrfHash;
@@ -48,30 +48,57 @@
                 { data: "lb_score", defaultContent: "-" },
                 {
                     data: null,
+                    //  className: "text-center",
                     render: function (data, type, row) {
 
-                        // 🟡 Show Redeem button ONLY if logged-in user matches row user
-                        if (row.cust_Id == loggedUserId) {
+                        if (row.cust_Id == loggedUserId && row.lb_status == '2' && row.lb_redeemed_status == '1') {
+
                             return `
-                        <button class="btn btn-warning btn-sm redeem-btn"
-                                data-id="${row.lb_Id}">
+                        <span class="badge bg-leaderboard-loss">${row.lb_discount}% Off</span>
+                        <button class="btn btn-warning btn-sm redeem-btn-discound-coupen"
+                                data-id="${row.lb_Id}"
+                                data-coupon="${row.lb_coupen_code}">
                             <i class="fa fa-gift"></i> Redeem
                         </button>`;
                         }
 
-                        // 🟢 Otherwise show status labels
-                        if (row.player_winning_status == 1) {
-                            return `<span class="badge bg-success p-2">Win</span>`;
+                        // Default badges
+                        if (row.cust_Id == loggedUserId && row.lb_status == '1' && row.lb_redeemed_status == '1') {
+                            return `<span class="badge bg-leaderboard-win">Win</span>
+                             <button class="btn btn-warning btn-sm redeem-btn-free-tee"
+                                data-id="${row.lb_Id}">
+                                <i class="fa fa-gift"></i> Redeem
+                            </button>`;
                         }
-                        if (row.player_winning_status == 2) {
-                            return `<span class="badge bg-danger p-2">Lose</span>`;
+                        if (row.lb_status == '2') {
+                            return `<span class="badge bg-leaderboard-loss">${row.lb_discount}% Off</span>`;
                         }
-
-                        return `<span class="badge bg-secondary p-2">Pending</span>`;
+                        if (row.lb_status == '1') {
+                            return `<span class="badge bg-leaderboard-win">Win</span>`;
+                        }
+                        return `<span class="badge bg-secondary">${row.lb_status}</span>`;
                     }
                 }
 
             ]
         });
+
+        $(document).on("click", ".redeem-btn-discound-coupen", function () {
+            var coupon = $(this).data("coupon");
+
+            $("#couponText").text(coupon);
+            $("#couponModal").modal("show");
+        });
+
+            let coupon = $("#couponText").text().trim();
+            navigator.clipboard.writeText(coupon);
+
+            $(this).html('<i class="fa fa-check"></i> Copied!');
+            setTimeout(() => {
+                $("#copyCouponBtn").html('<i class="fa fa-copy"></i> Copy');
+            }, 1500);
+        });
+        
+
     });
 </script>

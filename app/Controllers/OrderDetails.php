@@ -282,4 +282,44 @@ class OrderDetails extends Controller
         }
     }
 
+    public function validateCoupon()
+    {
+        // echo "asna";exit();
+        $session = session();
+        $userId = $session->get('user_id');
+
+        $coupon = $this->request->getPost('coupen_code');
+
+        if (!$coupon || !$userId) {
+            return $this->response->setJSON([
+                "status" => "error",
+                "message" => "Invalid request."
+            ]);
+        }
+
+        $db = \Config\Database::connect();
+
+        $builder = $db->table('leaderboard');
+        $builder->where('lb_coupen_code', $coupon);
+        $builder->where('cust_Id', $userId);
+        $builder->where('lb_status', '2');           // status 2 → discount
+        $builder->where('lb_redeemed_status', '1');  // not redeemed yet
+
+        $result = $builder->get()->getRow();
+
+        if (!$result) {
+            return $this->response->setJSON([
+                "status" => "error",
+                "message" => "Coupon is invalid or not mapped to your account."
+            ]);
+        }
+
+        return $this->response->setJSON([
+            "status" => "success",
+            "message" => "Coupon is valid and applied successfully.",
+            "lb_Id" => $result->lb_Id,
+            "discount" => $result->lb_discount ?? 0
+        ]);
+    }
+
 }

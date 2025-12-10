@@ -1,4 +1,8 @@
 <script>
+    var base_url = "<?= base_url(); ?>";
+    var csrfName = "<?= csrf_token(); ?>";
+    var csrfHash = "<?= csrf_hash(); ?>";
+
     $(document).ready(function () {
 
         function showMessage(message, type = 'success') {
@@ -139,6 +143,95 @@
                 }
             });
         });
+
+        $("#pasteCoupon").on("click", async function () {
+            try {
+                let text = await navigator.clipboard.readText();
+                $("#coupen_code").val(text);
+
+                // animate icon feedback
+                $(this).removeClass("fa-paste").addClass("fa-check");
+                setTimeout(() => {
+                    $("#pasteCoupon").removeClass("fa-check").addClass("fa-paste");
+                }, 1200);
+            } catch (err) {
+                alert("Unable to access clipboard. Please paste manually (Ctrl+V).");
+            }
+        });
+
+        $(document).on("click", "#apply_coupen_code", function () {
+            let coupen_code = $("#coupen_code").val().trim();
+            validateCoupon(coupen_code);
+        });
+
+        function validateCoupon(coupen_code) {
+
+            $.ajax({
+                url: base_url + "orderdetails/validateCoupon",
+                type: "POST",
+                data: {
+                    coupen_code: coupen_code,
+                    [csrfName]: csrfHash
+                },
+                dataType: "json",
+
+                success: function (response) {
+                    if (response.status === "success") {
+                        applyDiscount(response.discount);
+                        alert("Coupon Valid!\n" + response.message);
+                    } else {
+                        alert("Invalid Coupon!\n" + response.message);
+                    }
+                },
+
+                error: function () {
+                    alert("Error!\nServer error. Try again later.");
+                }
+            });
+        }
+
+        function applyDiscount(discountPercent) {
+
+            let newSubtotal = 0;
+
+            $(".checkout__order__product ul li").each(function (index, el) {
+                if (index === 0) return; // skip header
+
+                let price = parseFloat($(el).data("price"));
+                let qtyMatch = $(el).text().match(/Qty: (\d+)/);
+                let quantity = qtyMatch ? parseInt(qtyMatch[1]) : 1;
+
+                let originalTotal = price * quantity;
+                let discountedTotal = originalTotal - (originalTotal * discountPercent / 100);
+
+                newSubtotal += discountedTotal;
+
+                // Update UI inside <li>
+                $(el).find("span").last().html(`
+                <span> &nbsp;${discountPercent}% OFF</span>
+            <span style="text-decoration: line-through; color:#999;">
+                ₹${originalTotal.toFixed(2)}
+            </span><br>
+            <span style="color:#28a745; font-weight:bold; font-size:15px;">
+                ₹${discountedTotal.toFixed(2)}
+            </span>
+        `);
+
+                // Update data attribute so final order calculation uses new value
+                $(el).attr("data-price", (discountedTotal / quantity).toFixed(2));
+            });
+
+            // Update totals in summary
+            // $(".checkout__order__total ul li:eq(0) span").text(${discountPercent}"% OFF" &nbsp; "₹ " + newSubtotal.toFixed(2));
+            $(".checkout__order__total ul li:eq(0) span").html(
+                    `${discountPercent}% OFF &nbsp; ₹ ${newSubtotal.toFixed(2)}`
+                );
+            $(".checkout__order__total ul li:eq(1) span").text("₹ " + newSubtotal.toFixed(2));
+
+            // Update hidden input
+            $("#order-total").val(newSubtotal.toFixed(2));
+        }
+
 
     });
 </script>

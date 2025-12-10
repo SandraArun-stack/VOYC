@@ -38,7 +38,7 @@
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="checkout__form__input">
                                 <p>Last Name <span>*</span></p>
-                                <input type="text"  name="add_LastName">
+                                <input type="text" name="add_LastName">
                             </div>
                         </div>
                         <div class="col-lg-12">
@@ -137,34 +137,19 @@
                         <!-- Order Totals -->
                         <div class="checkout__order__total">
                             <ul>
-                                <li>Subtotal <span>₹ <?= number_format($subtotal, 2) ?></span></li>
-                                <li>Total <span>₹ <?= number_format($subtotal, 2) ?></span></li>
+                                <li id="subtotal">Subtotal <span>₹ <?= number_format($subtotal, 2) ?></span></li>
+                                <li id="total_of_all">Total <span>₹ <?= number_format($subtotal, 2) ?></span></li>
                             </ul>
                         </div>
-
-
-                        <!-- <div class="checkout__order__widget">
-                                    <label for="o-acc">
-                                        Create an account?
-                                        <input type="checkbox" id="o-acc">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                    <p>
-                                        Create an account by entering the information below.
-                                        If you are a returning customer, login at the top of the page.
-                                    </p>
-                                    <label for="check-payment">
-                                        Cheque payment
-                                        <input type="checkbox" id="check-payment">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                    <label for="paypal">
-                                        PayPal
-                                        <input type="checkbox" id="paypal">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div> -->
-
+                        <div class="coupon-box">
+                            <input type="text" id="coupen_code" placeholder="Enter Coupon Code">
+                            <i class="fa fa-paste paste-icon" id="pasteCoupon"></i>
+                        </div>
+                        <div class="coupon-box">
+                            <button type="button" id="apply_coupen_code" class="btn apply-coupon-btn">
+                                <i class="fa fa-tag"></i> Apply Coupon Code
+                            </button>
+                        </div>
                         <button type="submit" class="site-btn">Place order</button>
                     </div>
                 </div>

@@ -144,7 +144,7 @@ ol {
 	text-transform: uppercase;
 	display: inline-block;
 	padding: 12px 30px;
-	border-radius: 50px;
+	border-radius: 10px;
 }
 
 /* Preloder */
@@ -1014,7 +1014,7 @@ ol {
 
 .breadcrumb-option {
 	padding-top: 35px;
-	margin-top:125px;
+	margin-top: 125px;
 }
 
 .breadcrumb__links a {
@@ -1051,7 +1051,7 @@ ol {
 
 .categories {
 	overflow: hidden;
-	    margin-top: 114px;
+	margin-top: 114px;
 }
 
 .categories .container-fluid {
@@ -2173,7 +2173,7 @@ ol {
 .shop__cart__table tbody tr .cart__product__item .cart__product__item__title {
 	overflow: hidden;
 	padding-top: 23px;
-	    text-align: left;
+	text-align: left;
 }
 
 .shop__cart__table tbody tr .cart__product__item .cart__product__item__title h6 {
@@ -2505,6 +2505,7 @@ ol {
 
 .checkout__order .site-btn {
 	width: 100%;
+	margin-top: 15px;
 }
 
 .checkout__order__product {
