@@ -1869,6 +1869,59 @@ input[type="file"] {
     height: 24px !important;
 }
 
+/* Main full section */
+.game-arena-full {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Background full image */
+.game-bg-image {
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+/* Dark overlay container */
+.game-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+/* Game buttons */
+.game-btn {
+    padding: 15px 35px;
+    background: #af4dff;
+    color: #fff;
+    font-size: 22px;
+    border-radius: 50px;
+    box-shadow: 0 0 20px rgba(24, 21, 21, 0.8);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Space between buttons */
+.ml-20 {
+    margin-left: 20px;
+}
+
 @media only screen and (max-width: 991px) {
     .main__icon {
         display: flex !important;
