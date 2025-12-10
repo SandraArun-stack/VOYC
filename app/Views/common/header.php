@@ -93,7 +93,7 @@
                             <li class="active"><a href="<?= base_url(' '); ?>" id="home">Home</a></li>
                             <li><a href="<?= base_url('women'); ?>" id="women">Women’s</a></li>
                             <li><a href="<?= base_url('men'); ?>" id="men">Men’s</a></li>
-                            <li><a href="#" id="game_arena">Game Arena</a></li>
+                            <li><a href="<?= base_url('game_arena'); ?>" id="game_arena">Game Arena</a></li>
                             <li><a href="<?= base_url('contact'); ?>" id="contact">Contact</a></li>
                         </ul>
                     </nav>
