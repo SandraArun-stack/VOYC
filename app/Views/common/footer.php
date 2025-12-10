@@ -96,6 +96,7 @@
 <script src="<?= base_url() . ASSET_PATH; ?>assets/js/jquery.dataTables.min.js"></script>
 
 <script src="<?= base_url() . ASSET_PATH; ?>assets/js/bootstrap.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <script src="<?= base_url() . ASSET_PATH; ?>assets/js/jquery.magnific-popup.min.js"></script>
 <script src="<?= base_url() . ASSET_PATH; ?>assets/js/jquery-ui.min.js"></script>
