@@ -1644,7 +1644,7 @@ input[type="file"] {
 
 #allcustomisible_Product_view {
     padding-top: 150px !important;
-        padding-bottom: 80px;
+    padding-bottom: 80px;
 }
 
 .product_name_text {
@@ -1765,6 +1765,103 @@ input[type="file"] {
     padding-top: 150px;
 }
 
+/* .sub-card {
+    background: #000;
+    color: #fff;
+    width: 100%;
+    max-width: 380px;
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    border: 2px solid #fff;
+    transition: 0.3s;
+}
+
+.sub-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.3);
+}
+
+.sub-card .title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.sub-card .price {
+    font-size: 32px;
+    font-weight: bold;
+    color: #f1c40f;
+    margin-bottom: 15px;
+}
+
+.token-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.token-box img {
+    width: 40px;
+    height: 40px;
+}
+
+.validity {
+    margin: 10px 0 20px;
+    font-size: 16px;
+        color: #b8abab !important;
+}
+
+.btn-buy {
+    background: #fff;
+    color: #000;
+    padding: 10px 25px;
+    border: none;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-buy:hover {
+    background: #f1c40f;
+    color: #000;
+} */
+.sub-plan-box {
+    background: #000;
+    color: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0px 0px 10px #333;
+    margin-bottom: 25px;
+    transition: 0.3s;
+}
+.sub-plan-box:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 0px 15px #555;
+}
+
+.sub-amount {
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.sub-validity {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.token-sec img {
+    width: 45px;
+}
+.token-sec span {
+    font-size: 22px;
+    font-weight: bold;
+}
 @media only screen and (max-width: 991px) {
     .main__icon {
         display: flex !important;

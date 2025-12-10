@@ -166,6 +166,8 @@ $routes->post('mygames/myGamesListAjax', 'MyGames::myGamesListAjax');
 $routes->get('userLeaderboard', 'Userleaderboard::index');
 $routes->post('userLeaderboard/userLeaderboardListAjax', 'Userleaderboard::userLeaderboardListAjax');
 
+//subscription plans
+$routes->get('subscription_plans', 'SubscriptionPlans::index');
 // --------------------------------ADMIN----------------------------------------//
 
 
@@ -326,15 +328,6 @@ $routes->post('admin/settings/updateCustomizationCharge', 'Admin\Settings::updat
 
 //logout
 $routes->post('admin/logout', 'Admin\Auth::logout');
-
-//banners
-$routes->get('admin/banner', 'Admin\Banner::index');
-$routes->post('admin/banner/List', 'Admin\Banner::ajaxList');
-$routes->post('admin/banner/status', 'Admin\Banner::updateStatus');
-$routes->get('admin/banner/add', 'Admin\Banner::addbanner'); // Create
-$routes->get('admin/banner/add/(:num)', 'Admin\Banner::addbanner/$1'); // Edit
-$routes->post('admin/banner/save', 'Admin\Banner::createnew');
-$routes->post('admin/banner/delete/(:any)', 'Admin\Banner::deleteBanner/$1');
 
 
 //admin_updation

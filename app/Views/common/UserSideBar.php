@@ -50,6 +50,9 @@
                                     <a href="<?= base_url('mygames'); ?>">
                                         <p>My Games</p>
                                     </a>
+                                    <a href="<?= base_url('subscription_plans'); ?>">
+                                        <p>Subscription Plan</p>
+                                    </a>
                                 </div>
                             </div>
                             <hr />

@@ -9,8 +9,16 @@ class SubscriptionModel extends Model
     protected $primaryKey = 'sp_Id';
 
     protected $allowedFields = [
-        'sp_plan_name','sp_amount','sp_validity','sp_token','sp_coupon_code','sp_status','sp_created_at','sp_created_by',
-        'sp_updated_at','sp_updated_by'	
+        'sp_plan_name',
+        'sp_amount',
+        'sp_validity',
+        'sp_token',
+        'sp_coupon_code',
+        'sp_status',
+        'sp_created_at',
+        'sp_created_by',
+        'sp_updated_at',
+        'sp_updated_by'
     ];
     public function getDatatables()
     {
@@ -87,13 +95,13 @@ class SubscriptionModel extends Model
 
         return [
             'subscriptions' => $subscriptions,
-            'total'         => $total
+            'total' => $total
         ];
     }
     public function getSubscriptionById($id)
     {
         return $this->where('sp_Id', $id)
-                    ->where('sp_status !=', 9)
-                    ->first();
+            ->where('sp_status !=', 9)
+            ->first();
     }
 }
