@@ -168,8 +168,11 @@ $routes->post('userLeaderboard/userLeaderboardListAjax', 'Userleaderboard::userL
 
 //subscription plans
 $routes->get('subscription_plans', 'SubscriptionPlans::index');
+$routes->post('subscription/createOrder', 'SubscriptionPlans::createOrder');
 $routes->post('subscription/savePayment', 'SubscriptionPlans::savePayment');
 
+//Game Arena
+$routes->get('game_arena', 'GameArena::index');
 // --------------------------------ADMIN----------------------------------------//
 
 

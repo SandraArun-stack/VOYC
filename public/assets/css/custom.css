@@ -1839,6 +1839,7 @@ input[type="file"] {
     margin-bottom: 25px;
     transition: 0.3s;
 }
+
 .sub-plan-box:hover {
     transform: scale(1.05);
     box-shadow: 0px 0px 15px #555;
@@ -1858,10 +1859,16 @@ input[type="file"] {
 .token-sec img {
     width: 45px;
 }
+
 .token-sec span {
     font-size: 22px;
     font-weight: bold;
 }
+
+.razorpay-container svg {
+    height: 24px !important;
+}
+
 @media only screen and (max-width: 991px) {
     .main__icon {
         display: flex !important;
