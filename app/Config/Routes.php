@@ -168,6 +168,8 @@ $routes->post('userLeaderboard/userLeaderboardListAjax', 'Userleaderboard::userL
 
 //subscription plans
 $routes->get('subscription_plans', 'SubscriptionPlans::index');
+$routes->post('subscription/savePayment', 'SubscriptionPlans::savePayment');
+
 // --------------------------------ADMIN----------------------------------------//
 
 
