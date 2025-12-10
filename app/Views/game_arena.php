@@ -12,7 +12,7 @@
     <div class="game-overlay">
 
        
-        <a href="<?= base_url('play_game'); ?>" class="game-btn">
+        <a href="<?= base_url('play_game'); ?>" class="game-btn" id="try_now_game_arena">
             <i class="fa fa-play"></i> Try Now
         </a>
 

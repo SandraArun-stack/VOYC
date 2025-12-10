@@ -36,7 +36,7 @@ class GameArena extends Controller
         $todayLimit = intval($todayLimit);
 
         $result = $this->PlayersModel->getTodayPlayers($today, $todayLimit, session()->get('user_id'));
-        $todayGame = $this->GameMappingModel->getTodayActiveGame();
+        // $todayGame = $this->GameMappingModel->getTodayActiveGame();
 
         $data = [
             'cartCount' => $cartCount,
@@ -46,7 +46,7 @@ class GameArena extends Controller
 
 
         return view('common/header', $data)
-            . view('game_arena',  $todayGame)
+            . view('game_arena')
             . view('common/footer')
             . view('pagescripts/game_arenajs');
     }
