@@ -38,12 +38,7 @@ class UserleaderboardModel extends Model
         $builder = $this->db->table('leaderboard lb');
 
         $builder->select("
-        lb.lb_Id,
-        lb.player_Id,
-        lb.lb_date,
-        lb.lb_rank,
-        lb.lb_score,
-        lb.lb_status,
+        lb.*,
         c.cust_name,
         g.game_name
     ");

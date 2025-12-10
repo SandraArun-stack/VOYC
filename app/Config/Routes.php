@@ -151,7 +151,7 @@ $routes->match(['get', 'post'], 'orderdetails', 'OrderDetails::index');
 
 $routes->post('orderdetails/placeOrder', 'OrderDetails::placeOrder');
 $routes->post('orderdetails/saveAddress', 'OrderDetails::saveAddress');
-
+$routes->post('orderdetails/validateCoupon', 'OrderDetails::validateCoupon');
 
 //my wallet
 $routes->get('mywallet', 'MyWallet::index');
@@ -175,6 +175,7 @@ $routes->post('subscription/saveFailedPayment', 'SubscriptionPlans::saveFailedPa
 //Game Arena
 $routes->get('game_arena', 'GameArena::index');
 $routes->get('play_game', 'GamePlay::play');
+$routes->get('participate', 'GamePlay::play');
 // $routes->get('play_game/(:num)', 'GamePlay::play/$1');
 // --------------------------------ADMIN----------------------------------------//
 

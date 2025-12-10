@@ -7,7 +7,7 @@
     $('.login_close').on('click', function (e) {
         authModal.hide();
     });
-    $('#try_now_game_arena').on('click', function (e) {
+    $('#parcipate_in_game_arena').on('click', function (e) {
         e.preventDefault();
 
         // Check if user is logged in
