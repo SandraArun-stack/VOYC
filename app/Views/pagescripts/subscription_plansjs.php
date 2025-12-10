@@ -7,8 +7,8 @@ $(document).on("click", ".razorpay-btn", function () {
     let planToken = $(this).data("plan-token");
 
     let options = {
-        "key": "YOUR_RAZORPAY_KEY",        // Replace with your Razorpay API key
-        "amount": planAmount * 100,         // In paise
+        "key": "YOUR_RAZORPAY_KEY",        
+        "amount": planAmount * 100,         
         "currency": "INR",
         "name": planName,
         "description": "Subscription Payment",
