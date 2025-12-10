@@ -73,5 +73,12 @@ class GameMappingModel extends Model
         $row = $this->where('gm_date', $today)->first();
         return $row['gm_leaderboard_count'] ?? 10; // default
     }
+    public function getTodayActiveGame()
+    {
+        $today = date('Y-m-d');
 
+        return $this->where('gm_date', $today)
+                    ->where('gm_status', 1)
+                    ->first();
+    }
 }

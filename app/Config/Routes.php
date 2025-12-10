@@ -170,9 +170,12 @@ $routes->post('userLeaderboard/userLeaderboardListAjax', 'Userleaderboard::userL
 $routes->get('subscription_plans', 'SubscriptionPlans::index');
 $routes->post('subscription/createOrder', 'SubscriptionPlans::createOrder');
 $routes->post('subscription/savePayment', 'SubscriptionPlans::savePayment');
+$routes->post('subscription/saveFailedPayment', 'SubscriptionPlans::saveFailedPayment');
 
 //Game Arena
 $routes->get('game_arena', 'GameArena::index');
+$routes->get('play_game', 'GamePlay::play');
+// $routes->get('play_game/(:num)', 'GamePlay::play/$1');
 // --------------------------------ADMIN----------------------------------------//
 
 
