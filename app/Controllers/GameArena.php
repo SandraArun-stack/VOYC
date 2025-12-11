@@ -37,69 +37,41 @@ class GameArena extends Controller
 
         $result = $this->PlayersModel->getTodayPlayers($today, $todayLimit, session()->get('user_id'));
         // $todayGame = $this->GameMappingModel->getTodayActiveGame();
+        $todayGame = $this->GameMappingModel->getTodayActiveGame();
 
         $data = [
             'cartCount' => $cartCount,
             'players' => $result['players'],     
-            'lastPlayer' => $result['lastPlayer']
+            'lastPlayer' => $result['lastPlayer'],
+            'todayGame' => $todayGame
         ];
-
-
         return view('common/header', $data)
             . view('game_arena')
             . view('common/footer')
             . view('pagescripts/game_arenajs');
     }
 
+    public function allGames()
+    {
+        $games = $this->GamesModel->whereIn('game_status', [1, 2])->findAll();
+        $todayGames = $this->GameMappingModel
+            ->where('gm_date', date('Y-m-d'))
+            ->where('gm_status', 1)
+            ->findAll();
+        $activeGameIds = [];
+        foreach ($todayGames as $tg) {
+            $activeGameIds[] = $tg['game_Id'];
+        }
+        $lastPlayer = null;
+        return view('common/header', [
+                'lastPlayer' => $lastPlayer
+            ])
+            . view('all_games', [
+                'games' => $games,
+                'activeGameIds' => $activeGameIds  
+            ])
+            . view('common/footer');
+    }
 
 
 }
-// <?php
-// namespace App\Controllers;
-
-// use App\Models\Admin\GamesModel;                 // ✅ MISSING IMPORT (FIX)
-// use App\Models\Admin\GameMappingModel;    // ✅ You are using Admin version
-// use App\Models\CartModel;
-// use App\Models\Admin\PlayersModel;
-// use CodeIgniter\Controller;
-
-// class GameArena extends Controller
-// {
-//     protected $session;
-//     protected $request;
-
-//     public function __construct()
-//     {
-//         $this->session = \Config\Services::session();
-//         $this->request = \Config\Services::request();
-//         $this->CartModel = new CartModel();
-//         $this->PlayersModel = new PlayersModel();
-//         $this->GameMappingModel = new GameMappingModel();
-//     }
-
-//     public function index()
-// {
-//     $gamesModel   = new \App\Models\Admin\GamesModel();
-//     $mappingModel = new \App\Models\Admin\GameMappingModel();
-
-//     $todayGame = $mappingModel->getTodayActiveGame();
-
-//     $activeGame = null;
-
-//     if ($todayGame) {
-//         $activeGame = $gamesModel->find($todayGame['game_Id']);
-//     }
-
-//     // ✅ SAFE DEFAULTS FOR HEADER
-//     $data = [
-//         'activeGame' => $activeGame,
-//         'lastPlayer' => null,   // ✅ FIX
-//         'cartCount'  => 0       // ✅ FIX (also usually used in header)
-//     ];
-
-//     return view('common/header', $data)
-//         . view('game_arena', $data)
-//         . view('common/footer');
-// }
-
-// }

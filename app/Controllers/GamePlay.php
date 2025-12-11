@@ -10,15 +10,17 @@ class GamePlay extends BaseController
         $this->session = \Config\Services::session();
         $this->request = \Config\Services::request();
     }
-    public function play()
+    public function play($folderName = null)
     {
-        $session = session();
-        $userId = $session->get('user_id');
+        if (!$folderName) {
+            return redirect()->to('/game_arena');
+        }
 
         return view('game_play', [
-            'userId' => $userId
+            'folderName' => $folderName
         ]);
     }
+
 
 }
 // <?php
