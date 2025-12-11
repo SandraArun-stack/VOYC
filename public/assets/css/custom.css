@@ -267,7 +267,7 @@ canvas {
     background-repeat: no-repeat;
     background-position: center;
 }
-
+/* all games grid  */
 .games-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));

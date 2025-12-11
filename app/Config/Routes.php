@@ -176,7 +176,7 @@ $routes->post('subscription/saveFailedPayment', 'SubscriptionPlans::saveFailedPa
 $routes->get('game_arena', 'GameArena::allGames');  
 $routes->get('game_arena/(:num)', 'GameArena::index/$1');   
 // $routes->get('play_game', 'GamePlay::play');
-$routes->get('participate', 'GamePlay::play');
+$routes->get('participate/(:num)', 'GameArena::participate/$1');
 $routes->get('play_game/(:segment)', 'GamePlay::play/$1');
 // --------------------------------ADMIN----------------------------------------//
 
