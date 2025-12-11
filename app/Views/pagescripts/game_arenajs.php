@@ -4,26 +4,19 @@
         backdrop: true,
         keyboard: true
     });
-    $('.login_close').on('click', function (e) {
+
+    $('.login_close').on('click', function () {
         authModal.hide();
     });
+
     $('#parcipate_in_game_arena').on('click', function (e) {
         e.preventDefault();
 
-        // Check if user is logged in
         if (loggedUserId === "" || loggedUserId === null) {
-
-            // User not logged in → show login modal
             $('#registerView').hide();
             $('#forgotPassView').hide();
             $('#loginView').show();
             authModal.show();
-
-        } else {
-
-            // User logged in → redirect to play_game route
-            window.location.href = base_url + "play_game";
         }
     });
-
 </script>
