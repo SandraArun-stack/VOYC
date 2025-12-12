@@ -267,6 +267,7 @@ canvas {
     background-repeat: no-repeat;
     background-position: center;
 }
+
 /* all games grid  */
 .games-grid {
     display: grid;
@@ -313,7 +314,7 @@ canvas {
     top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(0,0,0,0.7);
+    background: rgba(0, 0, 0, 0.7);
     padding: 6px 12px;
     color: #fff;
     border-radius: 6px;
@@ -2091,6 +2092,128 @@ input[type="file"] {
 /* Click Effect */
 .apply-coupon-btn:active {
     transform: scale(0.96);
+}
+
+/* Background box */
+.cute-game-box {
+    background: linear-gradient(145deg, #ffeb3b, #ff9800);
+    border-radius: 25px;
+    padding: 25px;
+    width: 45%;
+    margin: 20px auto;
+    text-align: center;
+    box-shadow: 0px 8px 20px rgba(255, 165, 0, 0.4);
+    border: 4px solid #fff5c0;
+    animation: popIn 0.6s ease-out;
+}
+
+/* Fun Title */
+.game-title {
+    font-family: 'Comic Sans MS', 'Fredoka One', cursive;
+    color: #ffffff;
+    font-size: 34px;
+    text-shadow: 3px 3px 0 #ff5722;
+    margin-bottom: 20px;
+}
+
+/* Token box */
+.cute-token-box {
+    background: #ffffffc7;
+    padding: 15px;
+    border-radius: 20px;
+    border: 3px dashed #ffb300;
+    font-size: 18px;
+    color: #444;
+    margin-bottom: 25px;
+}
+
+/* Play button */
+.cute-play-btn {
+    background: #00c853;
+    padding: 15px 30px;
+    font-size: 22px;
+    font-family: 'Comic Sans MS', 'Fredoka One', cursive;
+    border-radius: 50px;
+    color: white;
+    display: inline-block;
+    border: none;
+    text-transform: uppercase;
+    box-shadow: 0px 5px 15px rgba(0, 200, 83, 0.5);
+    transition: 0.3s;
+}
+
+.cute-play-btn:hover {
+    background: #00e676;
+    transform: scale(1.08);
+    box-shadow: 0px 7px 20px rgba(0, 200, 83, 0.7);
+}
+
+/* Warning text */
+.cute-warning {
+    font-size: 20px;
+    background: #ff5252;
+    padding: 10px;
+    border-radius: 15px;
+    color: white;
+    width: fit-content;
+    margin: 0 auto;
+    box-shadow: 0 4px 12px rgba(255, 82, 82, 0.5);
+}
+
+/* Animation */
+@keyframes popIn {
+    0% {
+        transform: scale(0.7);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.token-highlight {
+    background: #fff176;
+    padding: 6px 15px;
+    border-radius: 25px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #d84315;
+    display: inline-block;
+    margin-left: 8px;
+    box-shadow: 0 0 12px rgba(255, 235, 59, 0.8);
+    text-shadow: 1px 1px 0 #fff59d;
+    border: 2px solid #ffeb3b;
+    /* animation: bounceToken 1.2s infinite ease-in-out; */
+}
+
+.high-token {
+    background: #c8ffb0;
+    color: #1b5e20;
+    box-shadow: 0 0 12px rgba(76, 175, 80, 0.8);
+    border: 2px solid #a5d6a7;
+}
+
+.low-token {
+    background: #ffbdbd;
+    color: #b71c1c;
+    box-shadow: 0 0 12px rgba(255, 82, 82, 0.8);
+    border: 2px solid #ff8a80;
+}
+
+@keyframes bounceToken {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.12);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 @media only screen and (max-width: 991px) {
