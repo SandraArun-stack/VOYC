@@ -6,40 +6,34 @@
 <body>
     <?php if (!empty($todayGame)): ?>
     <section class="game-arena-full">
-        <!-- Game Background Image -->
-        <img 
-            src="<?= base_url('uploads/games/' . $todayGame['game_name'] . '.jpeg'); ?>" 
-            alt="Game Image"
-            class="game-bg-image"
-        >
-        <div class="game-overlay">
-            <!-- If user NOT logged in -->
-            <?php if (!session()->get('user_id')): ?>
-                <a 
-                    href="<?= base_url('play_game/' . $todayGame['game_name']); ?>"
-                    class="game-btn"
-                >
-                    <i class="fa fa-play"></i> Try Now
-                </a>
-                <a 
-                    href="#"
-                    class="game-btn ml-20 require-login"
-                    id="parcipate_in_game_arena"
-                >
-                    <i class="fa fa-users"></i> Participate
-                </a>
-            <!-- If user IS logged in -->
-            <?php else: ?>
-                <a 
-                    href="<?= base_url('participate/' . $todayGame['game_Id']); ?>"
-                    class="game-btn ml-20"
-                >
-                    <i class="fa fa-users"></i> Participate
-                </a>
+    <img 
+        src="<?= base_url('uploads/games/' . $todayGame['game_name'] . '.jpeg'); ?>"
+        alt="<?= $todayGame['game_name']; ?>"
+        class="game-bg-image"
+    >
 
-            <?php endif; ?>
-        </div>
-    </section>
+    <div class="game-overlay">
+        <?php if (!session()->get('user_id')): ?>
+            <a href="<?= base_url('play_game/' . $todayGame['game_name']); ?>"
+               class="game-btn">
+                <i class="fa fa-play"></i> Try Now
+            </a>
+            <a href="#"
+               class="game-btn ml-20 require-login" id="parcipate_in_game_arena">
+                <i class="fa fa-users"></i> Participate
+            </a>
+        <?php else: ?>
+
+            <a href="<?= base_url('participate/' . $todayGame['game_Id']); ?>"
+               class="game-btn ml-20">
+                <i class="fa fa-users"></i> Participate
+            </a>
+
+        <?php endif; ?>
+
+    </div>
+</section>
+
     <?php else: ?>
 
     <div class="no-game">
