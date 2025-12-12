@@ -23,7 +23,7 @@
                     <i class="fa fa-play"></i> Play Now
                 </a>
             <?php else: ?>
-                <p class="text-danger mt-20 cute-warning">Not enough tokens to play this game.</p>
+                <p class="not-enough-token-msg">Not enough tokens to play this game.</p>
             <?php endif; ?>
         </div>
     </div>

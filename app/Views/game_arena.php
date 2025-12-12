@@ -23,13 +23,14 @@
                 <i class="fa fa-users"></i> Participate
             </a>
         <?php else: ?>
-
-            <a href="<?= base_url('participate/' . $todayGame['game_Id']); ?>"
-               class="game-btn ml-20">
-                <i class="fa fa-users"></i> Participate
-            </a>
-
+            <div class="participate-wrapper">
+                <p class="token-required-msg">You must have tokens to participate in this game session</p>
+                <a href="<?= base_url('participate/' . $todayGame['game_Id']); ?>" class="game-btn">
+                    <i class="fa fa-users"></i> Participate
+                </a>
+            </div>
         <?php endif; ?>
+
 
     </div>
 </section>
