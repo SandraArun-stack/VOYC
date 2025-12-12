@@ -7,6 +7,8 @@ use CodeIgniter\Router\RouteCollection;
  */
 /* GET METHODS */
 $routes->get('/', 'Home::index');
+$routes->post('setFreeTeeSession', 'Home::setFreeTeeSession');
+
 //forgot password
 $routes->post('forgotPassword', 'ForgotPassword::forgotPassword');
 $routes->get('resetPassword/(:any)', 'ForgotPassword::resetPassword/$1');
@@ -148,8 +150,9 @@ $routes->get('Return_refundpolicy', 'ReturnAndRefundPolicy::index');
 
 //order details
 $routes->match(['get', 'post'], 'orderdetails', 'OrderDetails::index');
-
+$routes->get('orderdetailsforbuyfree', 'OrderDetails::orderdetailsforbuyfree');
 $routes->post('orderdetails/placeOrder', 'OrderDetails::placeOrder');
+$routes->post('orderdetails/placeFreeOrder', 'OrderDetails::placeFreeOrder');
 $routes->post('orderdetails/saveAddress', 'OrderDetails::saveAddress');
 $routes->post('orderdetails/validateCoupon', 'OrderDetails::validateCoupon');
 
@@ -173,11 +176,17 @@ $routes->post('subscription/savePayment', 'SubscriptionPlans::savePayment');
 $routes->post('subscription/saveFailedPayment', 'SubscriptionPlans::saveFailedPayment');
 
 //Game Arena
-$routes->get('game_arena', 'GameArena::allGames');  
-$routes->get('game_arena/(:num)', 'GameArena::index/$1');   
+$routes->get('game_arena', 'GameArena::allGames');
+$routes->get('game_arena/(:num)', 'GameArena::index/$1');
 // $routes->get('play_game', 'GamePlay::play');
 $routes->get('participate/(:num)', 'GameArena::participate/$1');
 $routes->get('play_game/(:segment)', 'GamePlay::play/$1');
+
+//my remption
+$routes->get('myredemption', 'Userleaderboard::myredemption');
+
+
+
 // --------------------------------ADMIN----------------------------------------//
 
 

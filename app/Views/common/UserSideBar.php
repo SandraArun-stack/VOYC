@@ -67,6 +67,9 @@
                                     <a href="<?= base_url('mywallet'); ?>">
                                         <p>My Wallet</p>
                                     </a>
+                                    <a href="<?= base_url('myredemption'); ?>">
+                                        <p>My Redemption</p>
+                                    </a>
                                     <!-- <p>My Address</p> -->
                                     <!-- <p>My Wishlist</p> -->
                                     <p>Delete My Account</p>

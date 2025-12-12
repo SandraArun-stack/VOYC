@@ -77,7 +77,7 @@ class CartModel extends Model
 
         $builder->where('c.cust_Id', $custId);
         $builder->where('c.cart_Status', 1);
-        $builder->groupBy('c.cart_Id'); 
+        $builder->groupBy('c.cart_Id');
         $builder->orderBy('c.cart_Id', 'DESC');
 
         $query = $builder->get();
@@ -93,9 +93,9 @@ class CartModel extends Model
 
                     if (count($parts) === 3) {
                         $sizes[] = [
-                            'prv_Id'    => $parts[0],
-                            'prv_Size'  => $parts[1],
-                            'prv_price'=> $parts[2],
+                            'prv_Id' => $parts[0],
+                            'prv_Size' => $parts[1],
+                            'prv_price' => $parts[2],
                         ];
                     }
                 }
@@ -138,6 +138,13 @@ class CartModel extends Model
         return $this->where('cust_Id', $userId)->where('cart_Status', 1)->countAllResults();
     }
 
+    // public function clearCartwhenFreeTee($userId,$cartId)
+    // {
+    //     return $this->where('cust_Id', $userId)
+    //         ->where('cart_Id', $cartId)
+    //         ->where('cart_Status', 1)
+    //         ->countAllResults();
 
+    // }
 
 }

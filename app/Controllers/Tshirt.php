@@ -90,6 +90,8 @@ class Tshirt extends Controller
             ]);
         }
 
+        $actionType = $this->request->getPost('actionType');
+
 
         $designsJson = $this->request->getPost('designs');
         $designs = json_decode($designsJson, true);
@@ -173,31 +175,58 @@ class Tshirt extends Controller
 
         $designId = $this->tshirtModel->insertDesign($imageDataToSave);
 
-        $cartData = [
-            'cust_Id' => $userId,
-            'pr_Id' => $prId,
-            'pri_Id' => $priId,
-            'design_Id' => $designId,
-            'created_on' => date('Y-m-d H:i:s'),
-            'cart_Size' => $selectedSize,
-            'cart_Quantity' => $quantity ?? 1,
-            'cart_Price' => $quantity > 0 ? ($totalPrice / $quantity) : $totalPrice
-        ];
 
-        $this->CartModel->insert($cartData);
 
-        return $this->response->setJSON([
-            'status' => 'success',
-            'message' => 'Design saved successfully',
-            'file_name' => [
-                'front' => $frontFileName,
-                'back' => $backFileName,
-                'RSleeve_Image' => $RSleeveFileName,
-                'LSleeve_Image' => $LSleeveFileName
-            ],
-            'design_Id' => $designId,
-            'redirect' => base_url('cart/' . $userId)
-        ]);
+        // return $this->response->setJSON([
+        //     'status' => 'success',
+        //     'message' => 'Design saved successfully',
+        //     'file_name' => [
+        //         'front' => $frontFileName,
+        //         'back' => $backFileName,
+        //         'RSleeve_Image' => $RSleeveFileName,
+        //         'LSleeve_Image' => $LSleeveFileName
+        //     ],
+        //     'design_Id' => $designId,
+        //     'redirect' => base_url('cart/' . $userId)
+        // ]);
+        if ($actionType === "buy_free") {
+
+            session()->set("direct_purchase_item", [
+                "pr_Id" => $prId,
+                "pri_Id" => $priId,
+                "design_Id" => $designId,
+                "quantity" => $quantity,
+                "price" => 0,
+                "size" => $selectedSize
+            ]);
+
+            return $this->response->setJSON([
+                "status" => "success",
+                "redirect" => base_url("orderdetailsforbuyfree")
+            ]);
+        } else {
+            $cartData = [
+                'cust_Id' => $userId,
+                'pr_Id' => $prId,
+                'pri_Id' => $priId,
+                'design_Id' => $designId,
+                'created_on' => date('Y-m-d H:i:s'),
+                'cart_Size' => $selectedSize,
+                'cart_Quantity' => $quantity ?? 1,
+                'cart_Price' => $quantity > 0 ? ($totalPrice / $quantity) : $totalPrice
+            ];
+
+            $this->CartModel->insert($cartData);
+
+            // Default: Add to cart
+            return $this->response->setJSON([
+                'status' => 'success',
+                'message' => 'Design saved successfully',
+                'redirect' => base_url('cart/' . $userId)
+            ]);
+
+        }
+
     }
     private function saveBase64Image($imageData, $uploadDir)
     {

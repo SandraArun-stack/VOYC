@@ -24,7 +24,7 @@
         </div>
         <div id="messageBox" class="alert alert-success" style="display: none;"></div>
         <span class="error-msg text-danger"></span>
-        <form action="#" class="checkout__form">
+        <form action="#" class="checkout__form__free_tee">
             <div class="row">
                 <div class="col-lg-8">
                     <h5>Billing detail</h5>
@@ -91,52 +91,37 @@
                                     <span class="top__text">Product</span>
                                     <span class="top__text__right">Total</span>
                                 </li>
-                                <?php
-                                $subtotal = 0;
-                                if (!empty($cartItems)):
-                                    $count = 1;
-                                    foreach ($cartItems as $item):
-                                        $total = $item['cart_Price'] * $item['cart_Quantity'];
-                                        $subtotal += $total;
-                                        ?>
-                                        <input type="hidden" id="order-total" value="<?= $totalAmount ?>">
-                                        <li data-prid="<?= $item['pr_Id'] ?>" data-priid="<?= $item['pri_Id'] ?>"
-                                            data-price="<?= $item['cart_Price'] ?>" data-designid="<?= $item['design_Id'] ?>"
-                                            data-size="<?= $item['cart_Size'] ?>" data-prcode="<?= $item['pr_Code'] ?>"
-                                            data-prname="<?= $item['pr_Name'] ?>">
+
+                                <?php if (!empty($cartItems)): ?>
+                                    <?php $count = 1; ?>
+                                    <?php foreach ($cartItems as $item): ?>
+
+                                        <li>
                                             <?= str_pad($count, 2, '0', STR_PAD_LEFT) ?>.
                                             <?= esc($item['pr_Name']) ?>
-                                            <br /> <small>(Qty: <?= esc($item['cart_Quantity']) ?> ×
-                                                ₹<?= number_format($item['cart_Price'], 2) ?>)</small>
-                                            <span>₹ <?= number_format($total, 2) ?></span>
+                                            <br>
+                                            <small>(Qty: <?= esc($item['cart_Quantity']) ?> × ₹0 )</small>
+
+                                            <span>₹ 0</span>
                                         </li>
 
-                                        <?php
-                                        $count++;
-                                    endforeach;
-                                else:
-                                    ?>
-                                    <li>Your cart is empty.</li>
+                                        <?php $count++; ?>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <li>No product found for free order.</li>
                                 <?php endif; ?>
                             </ul>
                         </div>
 
+
                         <!-- Order Totals -->
                         <div class="checkout__order__total">
                             <ul>
-                                <li id="subtotal">Subtotal <span>₹ <?= number_format($subtotal, 2) ?></span></li>
-                                <li id="total_of_all">Total <span>₹ <?= number_format($subtotal, 2) ?></span></li>
+                                <li>Subtotal <span>₹ 0</span></li>
+                                <li>Total <span>₹ 0</span></li>
                             </ul>
                         </div>
-                        <div class="coupon-box">
-                            <input type="text" id="coupen_code" placeholder="Enter Coupon Code">
-                            <i class="fa fa-paste paste-icon" id="pasteCoupon"></i>
-                        </div>
-                        <div class="coupon-box">
-                            <button type="button" id="apply_coupen_code" class="btn apply-coupon-btn">
-                                <i class="fa fa-tag"></i> Apply Coupon Code
-                            </button>
-                        </div>
+
                         <button type="submit" class="site-btn">Place order</button>
                     </div>
                 </div>
@@ -144,4 +129,3 @@
         </form>
     </div>
 </section>
-<!-- Checkout Section End -->

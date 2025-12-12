@@ -6,6 +6,7 @@ use App\Models\AddressModel;
 use App\Models\CartModel;
 use App\Models\Admin\PlayersModel;
 use App\Models\Admin\GameMappingModel;
+use App\Models\Admin\ProductModel;
 use CodeIgniter\Controller;
 
 class OrderDetails extends Controller
@@ -22,6 +23,7 @@ class OrderDetails extends Controller
         $this->CartModel = new CartModel();
         $this->PlayersModel = new PlayersModel();
         $this->GameMappingModel = new GameMappingModel();
+        $this->ProductModel = new ProductModel();
     }
 
     // Show checkout page
@@ -65,12 +67,7 @@ class OrderDetails extends Controller
         if (empty($userId)) {
             return redirect()->to(base_url('/'));
         }
-
-
-
         $createdBy = $userId;
-
-
         // Decode products JSON
         $productsJson = $this->request->getPost('products');
         $products = json_decode($productsJson, true);
@@ -248,8 +245,6 @@ class OrderDetails extends Controller
         ]);
     }
 
-
-
     public function saveAddress()
     {
         $userId = $this->session->get('user_id'); // Get logged-in user
@@ -319,6 +314,207 @@ class OrderDetails extends Controller
             "message" => "Coupon is valid and applied successfully.",
             "lb_Id" => $result->lb_Id,
             "discount" => $result->lb_discount ?? 0
+        ]);
+    }
+    public function orderdetailsforbuyfree()
+    {
+        $session = session();
+        $userId = $session->get('user_id');
+
+        if (!$userId) {
+            return redirect()->to(base_url('/'));
+        }
+
+        // Get cart count (for header icon)
+        $cartCount = $this->CartModel->getCartItemCount($userId);
+
+        // Leaderboard logic
+        $today = date('Y-m-d');
+        $todayLimit = intval($this->GameMappingModel->getTodayLeaderboardCount($today));
+        $result = $this->PlayersModel->getTodayPlayers($today, $todayLimit, $userId);
+
+        // 🔥 IMPORTANT: Get free tee item details from session
+        $directItem = $session->get("direct_purchase_item");
+
+        if (!$directItem) {
+            return redirect()->to(base_url('/customproducts'));
+        }
+
+        // Build cartItems array in same format as cart
+        $cartItems = [
+            [
+                "pr_Id" => $directItem['pr_Id'],
+                "pri_Id" => $directItem['pri_Id'],
+                "design_Id" => $directItem['design_Id'],
+                "cart_Quantity" => $directItem['quantity'],
+                "cart_Size" => $directItem['size'],
+                "cart_Price" => 0,
+                "pr_Name" => "Free Customized T-Shirt",
+                "pr_Code" => "FREE-T01"
+            ]
+        ];
+
+        return view('common/header', [
+            'cartCount' => $cartCount,
+            'players' => $result['players'],
+            'lastPlayer' => $result['lastPlayer']
+        ])
+            . view('orderdetailsforbuyfree', [
+                'cartItems' => $cartItems,   // <-- 🔥 sending to view
+                'totalAmount' => 0           // <-- free
+            ])
+            . view('common/footer')
+            . view('pagescripts/orderdetailsjs');
+    }
+
+    public function placeFreeOrder()
+    {
+        $session = session();
+        $userId = $session->get('user_id');
+
+        if (!$userId) {
+            return $this->response->setJSON([
+                'status' => 'login_required'
+            ]);
+        }
+
+        // Get FREE PURCHASE item
+        $freeItem = $session->get("direct_purchase_item");
+
+        if (!$freeItem) {
+            return $this->response->setJSON([
+                "status" => "error",
+                "message" => "No free product found"
+            ]);
+        }
+
+        // ===========================
+        // SAVE ADDRESS
+        // ===========================
+        $addressData = [
+            'add_Name' => $this->request->getPost('add_Name'),
+            'add_Landmark' => $this->request->getPost('add_Landmark'),
+            'add_Street' => $this->request->getPost('add_Street'),
+            'add_City' => $this->request->getPost('add_City'),
+            'add_State' => $this->request->getPost('add_State'),
+            'add_Pincode' => $this->request->getPost('add_Pincode'),
+            'add_Phone' => $this->request->getPost('add_Phone'),
+            'add_Email' => $this->request->getPost('add_Email'),
+            'add_CustId' => $userId,
+            'add_Status' => 'Active',
+            'add_createdon' => date('Y-m-d H:i:s'),
+            'add_createdby' => $userId
+        ];
+
+        $addressModel = new \App\Models\AddressModel();
+        $add_Id = $addressModel->insert($addressData);
+
+        $shippingAddress = implode(', ', array_filter($addressData));
+
+        // ===========================
+        // GENERATE ORDER NUMBER
+        // ===========================
+        $orderModel = new OrderDetailsModel();
+        $lastOrder = $orderModel->orderBy('od_Id', 'DESC')->first();
+        $nextNumber = $lastOrder ? ((int) substr($lastOrder['od_number'], -5) + 1) : 10000;
+
+        $orderNumber = 'VOYC-' . date('Ymd') . '-' . $nextNumber;
+
+        $productDetails = $this->productModel->where('pr_Id', $freeItem['pr_Id'])->first();
+        // ===========================
+        // INSERT FREE ORDER ITEM
+        // ===========================
+        $orderItem = [
+            "od_number" => $orderNumber,
+            "cus_Id" => $userId,
+            "add_Id" => $add_Id,
+            "od_Shipping_Address" => $shippingAddress,
+            "pr_Id" => $freeItem['pr_Id'],
+            "pri_Id" => $freeItem['pri_Id'],
+            "design_Id" => $freeItem['design_Id'],
+            "od_Quantity" => 1,
+            "od_Selling_Price" => 0,
+            "od_Original_Price" => 0,
+            "od_DiscountValue" => 100,
+            "od_DiscountType" => "%",
+            "od_Size" => $freeItem['size'],
+            "pr_Code" => $productDetails['pr_Code'],
+            "pr_Name" => $productDetails['pr_Name'],
+            "od_Grand_Total" => 0
+        ];
+
+        $this->orderModel->createOrderItem($orderItem);
+
+        // ===========================
+        // SEND EMAIL (Customer + Admin)
+        // ===========================
+        $email = \Config\Services::email();
+        $logoUrl = base_url() . ASSET_PATH . "assets/img/logo-black.jpg";
+
+        $productTable = "
+    <table style='width:100%;border-collapse:collapse;margin-top:20px;font-size:14px;'>
+        <tr>
+            <th style='padding:8px;border:1px solid #ccc;background:#eee;'>Product</th>
+            <th style='padding:8px;border:1px solid #ccc;background:#eee;'>Qty</th>
+            <th style='padding:8px;border:1px solid #ccc;background:#eee;'>Price</th>
+            <th style='padding:8px;border:1px solid #ccc;background:#eee;'>Total</th>
+        </tr>
+        <tr>
+            <td style='padding:8px;border:1px solid #ccc;'>Free Customized T-Shirt</td>
+            <td style='padding:8px;border:1px solid #ccc;'>{$freeItem['quantity']}</td>
+            <td style='padding:8px;border:1px solid #ccc;'>₹0</td>
+            <td style='padding:8px;border:1px solid #ccc;'>₹0</td>
+        </tr>
+    </table>
+    ";
+
+        $customerMsg = "
+        <div style='text-align:center;'>
+            <img src='{$logoUrl}' style='width:160px;margin-bottom:20px;'>
+        </div>
+        <p>Hello {$addressData['add_Name']},</p>
+        <p>Your FREE T-shirt order is confirmed!</p>
+        <p><b>Order No:</b> {$orderNumber}</p>
+        {$productTable}
+    ";
+
+        // Customer email
+        $email->setFrom('smartloungework@gmail.com', 'Voyc');
+        $email->setTo($addressData['add_Email']);
+        $email->setSubject("Order Confirmation - {$orderNumber}");
+        $email->setMessage($customerMsg);
+        $email->setMailType('html');
+        $email->send();
+
+        // Admin email
+        $email->setTo("smartloungework@gmail.com");
+        $email->setSubject("New FREE T-shirt Order - {$orderNumber}");
+        $email->setMessage($customerMsg);
+        $email->send();
+        // Clear free purchase item session
+        $session->remove("direct_purchase_item");
+
+        // ===============================
+        // CLEAR FREE TEE SESSION + UPDATE LEADERBOARD STATUS
+        // ===============================
+
+        $lbId = $session->get('free_tee_lb_id');
+
+        if ($lbId) {
+            $leaderboardModel = new \App\Models\UserleaderboardModel();
+            $leaderboardModel->update($lbId, [
+                "lb_redeemed_status" => 2  // 2 = Redeemed
+            ]);
+        }
+
+        // Remove eligibility flags
+        $session->remove("eligible_for_free_tee");
+        $session->remove("free_tee_lb_id");
+        $session->remove("direct_purchase_item");
+
+        return $this->response->setJSON([
+            "status" => "success",
+            "message" => "Order Placed Successfully at ₹0"
         ]);
     }
 

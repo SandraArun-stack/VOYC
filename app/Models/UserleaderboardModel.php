@@ -96,6 +96,12 @@ class UserleaderboardModel extends Model
         return $builder->countAllResults();
     }
 
+    public function getUserRedemption($userId)
+    {
+        return $this->where('cust_Id', $userId)
+            ->orderBy('lb_Id', 'DESC')
+            ->findAll();
+    }
 
 
 
