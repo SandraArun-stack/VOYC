@@ -348,11 +348,12 @@ $routes->post('admin/save', 'Admin::createnew');
 // ---------------------------------------------------------Apis--------------------------------------------------- //
 
 //game details api
+$routes->post('game/save_score', 'GamePlay::saveScore');
 
-$routes->post('game/saveGame', 'Admin\GameDetails::saveGame');
-$routes->get('game/getAll', 'Admin\GameDetails::getAllGames');
-$routes->get('game/getById/(:num)', 'Admin\GameDetails::getGameById/$1');
-$routes->delete('game/deleteGame/(:num)', 'Admin\GameDetails::deleteGameById/$1');
+// $routes->post('game/saveGame', 'Admin\GameDetails::saveGame');
+// $routes->get('game/getAll', 'Admin\GameDetails::getAllGames');
+// $routes->get('game/getById/(:num)', 'Admin\GameDetails::getGameById/$1');
+// $routes->delete('game/deleteGame/(:num)', 'Admin\GameDetails::deleteGameById/$1');
 
 // subscription api
 $routes->post('subscription/save', 'Admin\Subscription::save');

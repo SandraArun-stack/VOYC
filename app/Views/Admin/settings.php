@@ -145,6 +145,22 @@
                                                 </div>
                                                 <div class="row mb-3 setting_row">
                                                     <div class="col-md-3">
+                                                        <label for="">Token Price 
+                                                        </label>
+                                                        <small class="settings_charge_text d-block">
+                                                          (Price per Token in ₹)</small>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <input type="text" class="form-control"
+                                                            id="token_price"
+                                                            name="token_price"
+                                                            value="<?= esc($token_price ?? '') ?>"
+                                                            placeholder="Enter the price per token">
+                                                    </div>
+
+                                                </div>
+                                                <div class="row mb-3 setting_row">
+                                                    <div class="col-md-3">
                                                         <a href="<?= base_url('admin/dashboard') ?>"
                                                             class="btn btn-secondary">
                                                             <i class="bi bi-x-circle"></i>Discard</a>

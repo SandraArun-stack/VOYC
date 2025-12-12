@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers;
+use App\Models\Admin\PlayersModel;
 
 class GamePlay extends BaseController
 {
@@ -12,6 +13,7 @@ class GamePlay extends BaseController
         $this->session = \Config\Services::session();
         $this->request = \Config\Services::request();
         $this->db      = \Config\Database::connect();
+        $this->playerModel = new PlayersModel();
     }
 
     public function play($folderName = null)
@@ -19,26 +21,18 @@ class GamePlay extends BaseController
         if (!$folderName) {
             return redirect()->to('/game_arena');
         }
-
-        // Check user login
         $userId = $this->session->get('user_id');
-
-        // DEMO MODE
         if (!$userId) {
             return view('game_play', [
                 'folderName' => $folderName,
                 'mode' => 'demo'
             ]);
         }
-
-        // FULL MODE (token deduction)
         $gameId = $this->request->getGet('game_id');
 
         if (!$gameId) {
             return redirect()->back()->with('error', 'Game ID missing.');
         }
-
-        // Get Game
         $game = $this->db->table('game')
                          ->where('game_Id', $gameId)
                          ->get()
@@ -49,8 +43,6 @@ class GamePlay extends BaseController
         }
 
         $requiredToken = $game['game_token'];
-
-        // Get User Wallet
         $wallet = $this->db->table('user_wallet')
                             ->where('cust_Id', $userId)
                             ->get()
@@ -59,53 +51,67 @@ class GamePlay extends BaseController
         if (!$wallet || $wallet['uw_total_token'] < $requiredToken) {
             return redirect()->back()->with('error', 'Not enough tokens.');
         }
-
-        // Deduct token
         $newBalance = $wallet['uw_total_token'] - $requiredToken;
 
         $this->db->table('user_wallet')
                  ->where('cust_Id', $userId)
                  ->update(['uw_total_token' => $newBalance]);
-
-        // Real game load
         return view('game_play', [
             'folderName' => $folderName,
             'mode' => 'full',
             'remainingToken' => $newBalance
         ]);
     }
+    // -------------------------------Api---------------------------------
+    public function saveScore()
+{
+    $userId = session()->get('user_id');
+
+    if (!$userId) {
+        return $this->response->setJSON([
+            'status' => false,
+            'message' => 'User not logged in'
+        ]);
+    }
+
+    $json = $this->request->getJSON(true);
+
+    $gameId = $json['game_id'] ?? null;
+    $score  = $json['score'] ?? null;
+    $time   = $json['time'] ?? 0;  // <-- store default 0 if missing
+
+    if (!$gameId || !$score) {
+        return $this->response->setJSON([
+            'status' => false,
+            'message' => 'game_id and score are required'
+        ]);
+    }
+
+    $playerModel = new \App\Models\PlayersModel();
+
+    $data = [
+        'game_Id' => $gameId,
+        'cust_Id' => $userId,
+        'player_date' => date('Y-m-d'),
+        'player_score' => $score,
+        'player_time' => $time,  // <-- store time
+        'player_rank' => 0,
+        'player_winning_status' => 0,
+        'player_status' => 1,
+        'player_created_at' => date('Y-m-d H:i:s'),
+        'player_created_by' => $userId
+    ];
+
+    $playerModel->insert($data);
+
+    return $this->response->setJSON([
+        'status' => true,
+        'message' => 'Score saved successfully',
+        'data' => $data
+    ]);
 }
 
-// <?php
-
-// namespace App\Controllers;
-// use App\Models\Admin\GamesModel;
-// use App\Models\Admin\GameMappingModel;
-
-// class GamePlay extends BaseController
-// {
-//     public function play($gameId)
-//     {
-//         $gamesModel = new GamesModel();
-//         $mappingModel = new GameMappingModel();
-
-//         $game = $gamesModel->find($gameId);
-
-//         if (!$game) {
-//             return redirect()->to('game_arena');
-//         }
 
 
-//         $todayActive = $mappingModel->where('game_Id', $gameId)
-//                                     ->where('gm_date', date('Y-m-d'))
-//                                     ->where('gm_status', 1)
-//                                     ->first();
+}
 
-//         if (!$todayActive) {
-//             return redirect()->to('game_arena')
-//                 ->with('error', 'This game is not active right now.');
-//         }
-
-//         return view('game_play', ['game' => $game]);
-//     }
-// }

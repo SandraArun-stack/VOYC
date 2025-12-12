@@ -20,7 +20,8 @@ class SettingsModel extends Model
             'sleeve_Customization_Price',
             'leaderboard_count',
             'winning_percentage',
-            'extra_discount_percentage'
+            'extra_discount_percentage',
+            'token_price'
         ];
 
         $result = $this->whereIn('field', $fields)->findAll();
@@ -31,7 +32,8 @@ class SettingsModel extends Model
             'sleeve_Customization_Price' => '',
             'leaderboard_count' => '',
             'winning_percentage' => '',
-            'extra_discount_percentage' => ''
+            'extra_discount_percentage' => '',
+            'token_price' => ''
         ];
 
         foreach ($result as $row) {
