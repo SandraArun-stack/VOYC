@@ -2154,7 +2154,7 @@ input[type="file"] {
     background: #ff5252;
     padding: 10px;
     border-radius: 15px;
-    color: white;
+    color: white !important;
     width: fit-content;
     margin: 0 auto;
     box-shadow: 0 4px 12px rgba(255, 82, 82, 0.5);
