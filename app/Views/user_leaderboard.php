@@ -17,7 +17,7 @@
                         <th>Player Name</th>
                         <th>Game</th>
                         <th>Score</th>
-                        <th>Rank</th>
+                        <th>Position</th>
                         <th>Status</th>
                     </tr>
                 </thead>
