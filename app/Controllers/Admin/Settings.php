@@ -28,7 +28,8 @@ class Settings extends BaseController
             'sleeve_Customization_Price' => $chargeData['sleeve_Customization_Price'] ?? '',
             'leaderboard_count' => $chargeData['leaderboard_count'] ?? '',
             'winning_percentage' => $chargeData['winning_percentage'] ?? '',
-            'extra_discount_percentage' => $chargeData['extra_discount_percentage'] ?? ''
+            'extra_discount_percentage' => $chargeData['extra_discount_percentage'] ?? '',
+            'token_price' => $chargeData['token_price'] ?? ''
         ];
 
 

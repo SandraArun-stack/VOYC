@@ -269,6 +269,7 @@ canvas {
 }
 
 /* all games grid  */
+
 .games-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -295,7 +296,7 @@ canvas {
     object-fit: cover;
 }
 
-.game-title {
+.game-title-all {
     padding: 10px;
     color: #fff;
     font-size: 14px;
@@ -316,9 +317,41 @@ canvas {
     transform: translate(-50%, -50%);
     background: rgba(0, 0, 0, 0.7);
     padding: 6px 12px;
-    color: #fff;
+    color: #fff !important;
     border-radius: 6px;
     font-size: 13px;
+}
+/* participate page  */
+.not-enough-token-msg {
+    color: white;          
+    background-color: #d9534f; 
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 20px;
+    text-align: center;
+}
+.participate-wrapper {
+    display: flex;
+    flex-direction: column; /* stack text above button */
+    align-items: center;   
+    justify-content: center;
+    text-align: center;
+    gap: 60px; 
+}
+.game-btn-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;              /*  THIS creates space */
+}
+
+.token-required-msg {
+    color: #f3f2e5;
+    font-size: 22px;
+    font-weight: 200;
+    text-shadow: 1px 1px 2px #000;
+    margin: 0; /* remove default margin */
 }
 
 

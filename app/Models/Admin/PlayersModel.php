@@ -14,6 +14,7 @@ class PlayersModel extends Model
         'player_date',
         'player_score',
         'player_rank',
+        'player_time',
         'player_winning_status',
         'player_status',
         'player_created_at',

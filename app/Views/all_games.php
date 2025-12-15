@@ -1,29 +1,34 @@
-<h2 style="text-align:center;margin-top:20px;">All Games</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Game Arena</title>
+</head>
+<body>
+    <div class="page-container" style="padding-top: 120px;">
+        <h2 class="page-title" style="text-align: center;margin-bottom: 25px;font-size: 28px;font-weight: 700;">All Games</h2>
+        <div class="games-grid">
+            <?php foreach ($games as $game): ?>
+                <?php
+                    $thumbnail = base_url('uploads/games/' . $game['game_name'] . '.jpeg');
+                    $isActive = in_array($game['game_Id'], $activeGameIds);
+                ?>
 
-<div class="games-grid">
+                <div class="game-card <?= $isActive ? '' : 'inactive' ?>">
+                    <?php if ($isActive): ?>
+                        <a href="<?= base_url('game_arena/' . $game['game_Id']); ?>">
+                            <img src="<?= $thumbnail ?>" alt="<?= $game['game_name'] ?>">
+                            <div class="game-title-all"><?= $game['game_name'] ?></div>
+                        </a>
+                    <?php else: ?>
+                        <img src="<?= $thumbnail ?>" alt="<?= $game['game_name'] ?>">
+                        <div class="game-title-all"><?= $game['game_name'] ?></div>
+                    <?php endif; ?>
+                </div>
 
-<?php foreach ($games as $game): ?>
-
-    <?php
-        $thumbnail = base_url('uploads/games/' . $game['game_name'] . '.jpeg');
-        $isActive = in_array($game['game_Id'], $activeGameIds); 
-    ?>
-
-    <div class="game-card <?= $isActive ? '' : 'inactive' ?>">
-        
-        <?php if ($isActive): ?>
-            <a href="<?= base_url('game_arena/' . $game['game_Id']); ?>">
-                <img src="<?= $thumbnail ?>" alt="<?= $game['game_name'] ?>">
-                <div class="game-title"><?= $game['game_name'] ?></div>
-            </a>
-        <?php else: ?>
-            <img src="<?= $thumbnail ?>" alt="<?= $game['game_name'] ?>">
-            <div class="game-title"><?= $game['game_name'] ?></div>
-        <?php endif; ?>
+            <?php endforeach; ?>
+        </div>
 
     </div>
 
-<?php endforeach; ?>
-
-
-</div>
+</body>
+</html>

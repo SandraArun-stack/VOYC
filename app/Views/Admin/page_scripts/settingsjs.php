@@ -13,7 +13,8 @@
                 sleeve: $('#sleeve_Customization_Price').val(),
                 leaderboard_count: $('#leaderboard_count').val(),
                 winning_percentage: $('#winning_percentage').val(),
-                extra_discount_percentage: $('#extra_discount_percentage').val()
+                extra_discount_percentage: $('#extra_discount_percentage').val(),
+                token_price: $('#token_price').val()
             };
 
             function checkForChanges() {
@@ -23,6 +24,7 @@
                 const leaderboard_countVal = $('#leaderboard_count').val();
                 const winning_percentageVal = $('#winning_percentage').val();
                 const extra_discount_percentageVal = $('#extra_discount_percentage').val();
+                const token_priceVal = $('#token_price').val();
 
                 if (
                     frontVal !== initialValues.front ||
@@ -30,7 +32,8 @@
                     sleeveVal !== initialValues.sleeve ||
                     leaderboard_countVal !== initialValues.leaderboard_count ||
                     winning_percentageVal !== initialValues.winning_percentage ||
-                    extra_discount_percentageVal !== initialValues.extra_discount_percentage
+                    extra_discount_percentageVal !== initialValues.extra_discount_percentage||
+                    token_priceVal !== initialValues.token_price
 
                 ) {
                     $btnUpdateCharge.prop('disabled', false);

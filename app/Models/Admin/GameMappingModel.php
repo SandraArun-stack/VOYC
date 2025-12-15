@@ -80,8 +80,8 @@ class GameMappingModel extends Model
         return $this->select('games_mapping.*, game.game_name, game.game_folder_name')
             ->join('game', 'game.game_Id = games_mapping.game_Id')
             ->where('games_mapping.gm_date', $today)
-            ->where('games_mapping.gm_status', 1)     // Active
-            ->where('game.game_status', 1)            // Game active
+            ->where('games_mapping.gm_status', 1)     
+            ->where('game.game_status', 1)           
             ->first();
     }
 
