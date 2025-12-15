@@ -24,7 +24,7 @@
         </div>
         <div id="messageBox" class="alert alert-success" style="display: none;"></div>
         <span class="error-msg text-danger"></span>
-        <form action="#" class="checkout__form__free_tee">
+        <form action="#" class="checkout__form checkout__form__free_tee" id="checkout__form__free_tee">
             <div class="row">
                 <div class="col-lg-8">
                     <h5>Billing detail</h5>
@@ -57,7 +57,7 @@
                                 <input type="text" name="add_City" placeholder="City">
                             </div>
                             <div class="checkout__form__input">
-                                <p>Country/State <span>*</span></p>
+                                <p>State <span>*</span></p>
                                 <input type="text" name="add_State" placeholder="State">
                             </div>
                             <div class="checkout__form__input">

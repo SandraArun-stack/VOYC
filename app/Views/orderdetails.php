@@ -24,7 +24,7 @@
         </div>
         <div id="messageBox" class="alert alert-success" style="display: none;"></div>
         <span class="error-msg text-danger"></span>
-        <form action="#" class="checkout__form">
+        <form action="#" class="checkout__form" id="checkout__form">
             <div class="row">
                 <div class="col-lg-8">
                     <h5>Billing detail</h5>
@@ -42,10 +42,7 @@
                             </div>
                         </div>
                         <div class="col-lg-12">
-                            <div class="checkout__form__input">
-                                <p>Country <span>*</span></p>
-                                <input type="text" name="add_Country">
-                            </div>
+                            
                             <div class="checkout__form__input">
                                 <p>Address <span>*</span></p>
                                 <input type="text" name="add_Street" placeholder="Street Address">
@@ -57,8 +54,12 @@
                                 <input type="text" name="add_City" placeholder="City">
                             </div>
                             <div class="checkout__form__input">
-                                <p>Country/State <span>*</span></p>
+                                <p>State <span>*</span></p>
                                 <input type="text" name="add_State" placeholder="State">
+                            </div>
+                            <div class="checkout__form__input">
+                                <p>Country <span>*</span></p>
+                                <input type="text" name="add_Country">
                             </div>
                             <div class="checkout__form__input">
                                 <p>Postcode/Zip <span>*</span></p>

@@ -1,8 +1,8 @@
 <style>
-    .page-wrapper {
+    .page-wrapper-my-redemptions {
         background: #f5f7fa;
         padding: 25px;
-        border-radius: 15px;
+        border-radius: 5px;
     }
 
     .heading-content-my-order h4 {
@@ -18,7 +18,7 @@
 
     #my_redemption {
         background: #ffffff;
-        border-radius: 12px;
+        border-radius: 5px;
         overflow: hidden;
         box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
     }
@@ -64,17 +64,31 @@
         font-size: 15px;
         display: none;
     }
+
+    .redeemFreeTeeBtn {
+        padding: 6px 12px;
+        border-radius: 25px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .viewCouponBtn {
+        padding: 6px 12px;
+        border-radius: 25px;
+        font-size: 13px;
+        font-weight: 600;
+    }
 </style>
 <div class="col-lg-9 col-md-9">
 
-    <div class="page-wrapper">
+    <div class="page-wrapper-my-redemptions">
 
         <div id="messageBox" class="alert alert-success alert-custom"></div>
 
         <div class="d-flex align-items-center justify-content-between mb-4">
             <div class="heading-content-my-order">
-                <h4>Leaderboard</h4>
-                <small class="text-muted">Game Details & Redemption Status</small>
+                <h4>My Redeemptions</h4>
+                <small class="text-muted">Game Details & Redeemption Status</small>
             </div>
         </div>
 
@@ -106,7 +120,7 @@
                             <!-- Won -->
                             <td>
                                 <span class="badge-status badge-success">
-                                    <?= ($row['lb_status'] == 1) ? 'Free0' : (($row['lb_status'] == 2) ? 'Free5' : 'Unknown'); ?>
+                                    <?= ($row['lb_status'] == 1) ? 'Free 0' : (($row['lb_status'] == 2) ? 'Free 5' : 'Unknown'); ?>
                                 </span>
                             </td>
 
@@ -120,12 +134,18 @@
                                 $isNotExpired = $remaining > 0;
                                 $isNew = $row['lb_redeemed_status'] == '1';
                                 $isFree0 = $row['lb_status'] == '1'; // Free0 condition
-                        
+                                $isfree5 = $row['lb_status'] == '2'; // Free5 condition
                                 if ($isNew && $isNotExpired && $isFree0) {
                                     echo '<button class="btn btn-sm btn-success redeemFreeTeeBtn" 
                                             data-coupon="' . $row['lb_coupen_code'] . '" 
                                             data-id="' . $row['lb_Id'] . '">
-                                            New >>
+                                            Use Now
+                                        </button>';
+                                } elseif ($isNew && $isNotExpired && $isfree5) {
+                                    echo '<button class="btn btn-sm btn-success viewCouponBtn" 
+                                            data-coupon="' . $row['lb_coupen_code'] . '" 
+                                            data-id="' . $row['lb_Id'] . '">
+                                            Use Now
                                         </button>';
                                 } elseif ($row['lb_redeemed_status'] == '2') {
                                     echo '<span class="badge-status badge-warning">Redeemed</span>';
@@ -142,11 +162,11 @@
                             <!-- Expiry -->
                             <td>
                                 <?php
-                                $expiryDate = date('Y-m-d', strtotime($row['lb_date'] . ' +7 days'));
+                                $expiryDate = date('Y-m-d', strtotime($row['lb_date'] . ' +7 Days'));
                                 $remaining = (strtotime($expiryDate) - time()) / 86400;
 
                                 if ($remaining > 0) {
-                                    echo '<span class="text-success">' . floor($remaining) . ' days Left</span>';
+                                    echo '<span class="text-success">' . floor($remaining) . ' Days Left</span>';
                                 } else {
                                     echo '<span class="text-danger">Expired</span>';
                                 }

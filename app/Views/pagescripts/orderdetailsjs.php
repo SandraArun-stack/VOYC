@@ -20,7 +20,7 @@
             }, 4000);
         }
 
-        $('.checkout__form').on('submit', function (e) {
+        $('#checkout__form').on('submit', function (e) {
             e.preventDefault();
 
             //  Step 1: Validation before placing order
@@ -86,7 +86,7 @@
             // If validation fails, stop submission
             if (!isValid) {
                 showMessage('' + message, 'error');
-                $('html, body').animate({ scrollTop: $('.checkout__form').offset().top - 300 }, 500);
+                $('html, body').animate({ scrollTop: $('#checkout__form').offset().top - 300 }, 500);
                 return false;
             }
             var finalOrderTotal = $("#order-total").val();
@@ -148,7 +148,7 @@
 
 
 
-        $('.checkout__form__free_tee').on('submit', function (e) {
+        $('#checkout__form__free_tee').on('submit', function (e) {
             e.preventDefault();
 
             // 1️⃣ VALIDATION
@@ -207,12 +207,12 @@
 
             if (!isValid) {
                 showMessage(message, 'error');
-                $('html, body').animate({ scrollTop: $('.checkout__form__free_tee').offset().top - 300 }, 500);
+                $('html, body').animate({ scrollTop: $('#checkout__form__free_tee').offset().top - 300 }, 500);
                 return false;
             }
 
             // 2️⃣ FORM DATA
-            var formData = $('.checkout__form__free_tee').serializeArray();
+            var formData = $('#checkout__form__free_tee').serializeArray();
 
             formData.push({ name: 'pr_Id', value: $("#free_prid").val() });
             formData.push({ name: 'pr_Name', value: $("#free_prname").val() });
