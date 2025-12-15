@@ -337,7 +337,13 @@ canvas {
     align-items: center;   
     justify-content: center;
     text-align: center;
-    gap: 60px; /* space between text and button */
+    gap: 60px; 
+}
+.game-btn-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;              /*  THIS creates space */
 }
 
 .token-required-msg {
