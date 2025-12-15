@@ -249,6 +249,16 @@
             }
         });
 
+        $("#buyAtZero").on("click", function () {
+            $("#actionType").val("buy_free");
+            $("#saveBtn").trigger("click");
+        });
+
+        $("#saveBtn").on("click", function () {
+            if ($("#actionType").val() === "") {
+                $("#actionType").val("add_to_cart");
+            }
+        });
         let uploadedImagesBase64 = [];
 
         $("#resetOverlayBtn").on("click", resetOverlayToBackground);
@@ -358,6 +368,9 @@
 
         updatePreview();
 
+
+
+
         $("#saveBtn").on("click", function () {
 
             const viewMap = {
@@ -436,6 +449,7 @@
                     type: "POST",
                     timeout: 30000, // 30 seconds
                     data: {
+                        actionType: $("#actionType").val(),
                         designs: JSON.stringify(designs),
                         uploadedImages: JSON.stringify(uploadedImagesBase64),
                         prId: $('input[name="prId"]').val(),
@@ -626,9 +640,9 @@
 
             if (newView === currentView) return;
 
-            saveCurrentCanvasState();      
-            currentView = newView;         
-            loadCanvasState(currentView);  
+            saveCurrentCanvasState();
+            currentView = newView;
+            loadCanvasState(currentView);
             addOverlay(src);
             highlightThumb(src);
         });
@@ -757,7 +771,7 @@
             canvas.renderAll();
             updateImageDimensionsUI(img);
         }
-      
+
         $("#uploadImage").on("change", function (e) {
             const files = e.target.files;
             if (!files.length)

@@ -75,7 +75,7 @@
                                             alt="Add Text">
                                         <div>Add Text</div>
                                     </div>
-                                    
+
                                     <div class="option" data-view="product_colors">
                                         <img src="<?= base_url() . ASSET_PATH; ?>assets/img/customize/change.png"
                                             alt="Change Products">
@@ -101,7 +101,7 @@
                                 </div>
                             </div>
 
-                           
+
 
                             <div id="view-spec-upload-image" class="view-section d-none p-2">
                                 <p>Image Properties</p>
@@ -411,17 +411,21 @@
                                         <?php echo $variants[0]['prv_Size']; ?>
                                     </span>
                                 </p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-flex align-items-center">
+                                <?php if (!session('eligible_for_free_tee')): ?>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center">
 
-                                        <p class="mb-2"><strong>Quantity:</strong>
-                                        <div class="quantity-wrapper-custom ">
-                                            <button class="qty-btn-custom minus-custom">−</button>
-                                            <span class="quantity-value-custom">1</span>
-                                            <button class="qty-btn-custom plus-custom">+</button>
+                                            <p class="mb-2"><strong>Quantity:</strong></p>
+                                            <div class="quantity-wrapper-custom">
+                                                <button class="qty-btn-custom minus-custom">−</button>
+                                                <span class="quantity-value-custom">1</span>
+                                                <button class="qty-btn-custom plus-custom">+</button>
+                                            </div>
+
                                         </div>
                                     </div>
-                                </div>
+                                <?php endif; ?>
+
                             </div>
                         </div>
                         <div class="row">
@@ -514,9 +518,17 @@
                                         <b><span class="fw-bold">Total:</span></b>
                                         <b><span class="fw-bold text-primary" id="priceTotal"></span></b>
                                     </div>
+                                    <input type="hidden" id="actionType" value="">
+
+                                    <?php if (session('eligible_for_free_tee')): ?>
+                                        <div class="d-flex justify-content-end pt-3 mt-3 border-top">
+                                            <button class="btn black text-white" id="buyAtZero"><i class="bi bi-bag-fill"></i> Buy at ₹0</button>
+                                        </div>
+                                        <input type="hidden" id="overridePrice" value="">
+                                    <?php endif; ?>
 
                                     <div class="d-flex justify-content-end pt-3 mt-3 border-top">
-                                        <button class="btn btn-dark" id="saveBtn">Add To Cart</button>
+                                        <button class="btn btn-dark" id="saveBtn"><i class="bi bi-cart"></i> Add To Cart</button>
                                     </div>
                                 </div>
                             </div>

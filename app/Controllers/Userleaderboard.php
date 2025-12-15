@@ -47,7 +47,7 @@ class Userleaderboard extends BaseController
     public function userLeaderboardListAjax()
     {
         $session = session();
-        $loggedUserId  = $session->get('user_id');
+        $loggedUserId = $session->get('user_id');
 
         $postData = $this->request->getPost();
         $model = new UserleaderboardModel();
@@ -65,4 +65,32 @@ class Userleaderboard extends BaseController
         ]);
     }
 
+    public function myredemption()
+    {
+        $session = session();
+        $userId = $session->get('user_id');
+
+        $cartCount = $this->CartModel->getCartItemCount($userId);
+
+        //leaderboard Count
+        $today = date('Y-m-d');
+        $todayLimit = $this->GameMappingModel->getTodayLeaderboardCount($today);
+        $todayLimit = intval($todayLimit);
+
+        $result = $this->PlayersModel->getTodayPlayers($today, $todayLimit, session()->get('user_id'));
+
+        $userRedemption = $this->UserleaderboardModel->getUserRedemption($userId);
+
+        return view('common/header', [
+            'cartCount' => $cartCount,
+            'players' => $result['players'],
+            'lastPlayer' => $result['lastPlayer']
+        ])
+            . view('common/UserSideBar')
+            . view('my_redemption', [
+                'redemptions' => $userRedemption
+            ])
+            . view('common/footer')
+            . view('pagescripts/my_redemptionjs');
+    }
 }

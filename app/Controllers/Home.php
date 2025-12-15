@@ -153,6 +153,20 @@ class Home extends BaseController
 
         return $this->response->setJSON($result);
     }
+    public function setFreeTeeSession()
+    {
+        $session = session();
+
+        $coupon = $this->request->getPost('coupon');
+        $lbId = $this->request->getPost('lb_id');
+
+        // Set eligibility
+        $session->set('eligible_for_free_tee', true);
+        // $session->set('free_tee_coupon', $coupon);
+        $session->set('free_tee_lb_id', $lbId);
+
+        return $this->response->setJSON(['status' => 'success']);
+    }
     public function logoutUser()
     {
         // echo "hii";exit();
@@ -161,6 +175,7 @@ class Home extends BaseController
 
         return $this->response->setJSON(['status' => 'success', 'message' => 'Logged out successfully']);
     }
+
 
 
 

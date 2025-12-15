@@ -6,6 +6,10 @@
         <div class="row">
             <div class="col-md-12 ">
                 <div class="row product-list">
+                    <?= session('eligible_for_free_tee'); ?>
+                     <?= session('free_tee_coupon'); ?>
+                      <?= session('free_tee_lb_id'); ?>
+
                     <?php if (!empty($customizable_products)): ?>
                         <?php foreach ($customizable_products as $item): ?>
                             <div class="col-xl-2 col-lg-3 col-sm-4 col-6 mb-4 product__card">
