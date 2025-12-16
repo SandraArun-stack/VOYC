@@ -185,7 +185,8 @@ $routes->get('play_game/(:segment)', 'GamePlay::play/$1');
 //my remption
 $routes->get('myredemption', 'Userleaderboard::myredemption');
 
-
+//payments
+$routes->post('payment/createRazorpayOrder', 'PaymentController::createRazorpayOrder');
 
 // --------------------------------ADMIN----------------------------------------//
 

@@ -10,6 +10,8 @@ use App\Models\Admin\ProductModel;
 use App\Models\UserleaderboardModel;
 use CodeIgniter\Controller;
 
+use Razorpay\Api\Api;
+use Razorpay\Api\Errors\SignatureVerificationError;
 class OrderDetails extends Controller
 {
     protected $session;
@@ -64,12 +66,48 @@ class OrderDetails extends Controller
 
     public function placeOrder()
     {
+
         $userId = $this->session->get('user_id');
         $lbId = $this->request->getPost('lb_Id');
 
         if (empty($userId)) {
             return redirect()->to(base_url('/'));
         }
+
+        // ============================
+        // RAZORPAY PAYMENT VERIFICATION
+        // ============================
+        $razorpayPaymentId = $this->request->getPost('razorpay_payment_id');
+        $razorpayOrderId = $this->request->getPost('razorpay_order_id');
+        $razorpaySignature = $this->request->getPost('razorpay_signature');
+
+        if (!$razorpayPaymentId || !$razorpaySignature || !$razorpayOrderId) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Payment verification failed'
+            ]);
+        }
+
+        $api = new \Razorpay\Api\Api(
+            env('RAZORPAY_KEY_ID'),
+            env('RAZORPAY_KEY_SECRET')
+        );
+
+        try {
+            $api->utility->verifyPaymentSignature([
+                'razorpay_order_id' => $razorpayOrderId,
+                'razorpay_payment_id' => $razorpayPaymentId,
+                'razorpay_signature' => $razorpaySignature
+            ]);
+        } catch (\Razorpay\Api\Errors\SignatureVerificationError $e) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Invalid payment signature'
+            ]);
+        }
+
+
+
         $createdBy = $userId;
 
         // Decode products JSON
