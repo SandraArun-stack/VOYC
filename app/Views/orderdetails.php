@@ -101,7 +101,7 @@
                                         $subtotal += $total;
                                         ?>
                                         <input type="hidden" id="order-total" value="<?= $totalAmount ?>">
-                                        <li data-prid="<?= $item['pr_Id'] ?>" data-priid="<?= $item['pri_Id'] ?>"
+                                        <li data-prid="<?= $item['pr_Id'] ?>" data-priid="<?= $item['pri_Id'] ?>" data-prvid="<?= $item['prv_Id'] ?>"
                                             data-price="<?= $item['cart_Price'] ?>" data-designid="<?= $item['design_Id'] ?>"
                                             data-size="<?= $item['cart_Size'] ?>" data-prcode="<?= $item['pr_Code'] ?>"
                                             data-prname="<?= $item['pr_Name'] ?>">
@@ -129,6 +129,7 @@
                                 <li id="total_of_all">Total <span>₹ <?= number_format($subtotal, 2) ?></span></li>
                             </ul>
                         </div>
+                        <div class="alert d-none small" id="alertPlaceOrder"></div>
                         <div class="coupon-box">
                             <input type="text" id="coupen_code" placeholder="Enter Coupon Code">
                             <i class="fa fa-paste paste-icon" id="pasteCoupon"></i>

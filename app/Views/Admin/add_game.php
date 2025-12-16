@@ -6,7 +6,7 @@
                 <div class="col-md-8">
                     <div class="page-header-title">
                         <h5 class="m-b-10">
-                            <?= isset($game_map_Details) ? 'Update Leaderboard' : 'Add Leaderboard'; ?>
+                            <?= isset($game_map_Details) ? 'Update Game Mapping' : 'Game Mapping'; ?>
                         </h5>
                         <p class="m-b-0">Welcome to VOYC</p>
                     </div>
@@ -18,7 +18,7 @@
                         </li>
                         <li class="breadcrumb-item">
                             <a href="#">
-                                <?= isset($game_map_Details) ? 'Update Leaderboard' : 'Add Leaderboard'; ?>
+                                <?= isset($game_map_Details) ? 'Update Game Mapping' : 'Game Mapping'; ?>
                             </a>
                         </li>
                     </ul>

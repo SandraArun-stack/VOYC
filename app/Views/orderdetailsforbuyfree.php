@@ -42,10 +42,7 @@
                             </div>
                         </div>
                         <div class="col-lg-12">
-                            <div class="checkout__form__input">
-                                <p>Country <span>*</span></p>
-                                <input type="text" name="add_Country">
-                            </div>
+
                             <div class="checkout__form__input">
                                 <p>Address <span>*</span></p>
                                 <input type="text" name="add_Street" placeholder="Street Address">
@@ -59,6 +56,10 @@
                             <div class="checkout__form__input">
                                 <p>State <span>*</span></p>
                                 <input type="text" name="add_State" placeholder="State">
+                            </div>
+                            <div class="checkout__form__input">
+                                <p>Country <span>*</span></p>
+                                <input type="text" name="add_Country">
                             </div>
                             <div class="checkout__form__input">
                                 <p>Postcode/Zip <span>*</span></p>
@@ -77,7 +78,7 @@
                                 <input type="text" name="add_Email" placeholder="abc@gmail.com">
                             </div>
                         </div>
-                       
+
                     </div>
                 </div>
                 <div class="col-lg-4">

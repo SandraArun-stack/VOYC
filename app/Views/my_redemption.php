@@ -113,7 +113,7 @@
                         <tr>
                             <td><?= $i++; ?></td>
                             <td><?= date('d M Y', strtotime($row['lb_date'])); ?></td>
-                            <td><?= esc($row['game_Id']); ?></td>
+                            <td><?= esc($row['game_name']); ?></td>
                             <td><?= esc($row['lb_score']); ?></td>
                             <td><?= esc($row['lb_rank']); ?></td>
 
@@ -162,16 +162,22 @@
                             <!-- Expiry -->
                             <td>
                                 <?php
-                                $expiryDate = date('Y-m-d', strtotime($row['lb_date'] . ' +7 Days'));
-                                $remaining = (strtotime($expiryDate) - time()) / 86400;
-
-                                if ($remaining > 0) {
-                                    echo '<span class="text-success">' . floor($remaining) . ' Days Left</span>';
+                                // If redeemed → show ---
+                                if ($row['lb_redeemed_status'] == '2') {
+                                    echo '<span class="text-muted">---</span>';
                                 } else {
-                                    echo '<span class="text-danger">Expired</span>';
+                                    $expiryDate = date('Y-m-d', strtotime($row['lb_date'] . ' +7 days'));
+                                    $remaining = (strtotime($expiryDate) - time()) / 86400;
+
+                                    if ($remaining > 0) {
+                                        echo '<span class="text-success">' . floor($remaining) . ' Days Left</span>';
+                                    } else {
+                                        echo '<span class="text-danger">Expired</span>';
+                                    }
                                 }
                                 ?>
                             </td>
+
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>

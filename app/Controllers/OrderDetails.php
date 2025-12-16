@@ -7,6 +7,7 @@ use App\Models\CartModel;
 use App\Models\Admin\PlayersModel;
 use App\Models\Admin\GameMappingModel;
 use App\Models\Admin\ProductModel;
+use App\Models\UserleaderboardModel;
 use CodeIgniter\Controller;
 
 class OrderDetails extends Controller
@@ -24,6 +25,7 @@ class OrderDetails extends Controller
         $this->PlayersModel = new PlayersModel();
         $this->GameMappingModel = new GameMappingModel();
         $this->ProductModel = new ProductModel();
+        $this->UserleaderboardModel = new UserleaderboardModel();
     }
 
     // Show checkout page
@@ -63,11 +65,13 @@ class OrderDetails extends Controller
     public function placeOrder()
     {
         $userId = $this->session->get('user_id');
+        $lbId = $this->request->getPost('lb_Id');
 
         if (empty($userId)) {
             return redirect()->to(base_url('/'));
         }
         $createdBy = $userId;
+
         // Decode products JSON
         $productsJson = $this->request->getPost('products');
         $products = json_decode($productsJson, true);
@@ -91,7 +95,6 @@ class OrderDetails extends Controller
             'add_createdon' => date('Y-m-d H:i:s'),
             'add_createdby' => $createdBy
         ];
-        // print_r($addressData['add_Phone']);exit();
 
         $addressModel = new \App\Models\AddressModel();
         $add_Id = $addressModel->insert($addressData);
@@ -105,7 +108,6 @@ class OrderDetails extends Controller
 
         $orderNumber = 'VOYC-' . date('Ymd') . '-' . $nextNumber;
 
-        $totalAmount = 0;
         $productRows = "";
 
         foreach ($products as $item) {
@@ -114,44 +116,88 @@ class OrderDetails extends Controller
             $item['cus_Id'] = $userId;
             $item['add_Id'] = $add_Id;
             $item['od_Shipping_Address'] = $shippingAddress;
+            $item['od_createdby'] = $userId;
 
+            // $this->orderModel->createOrderItem($item);
+
+            // $rowTotal = $item['od_Quantity'] * $item['od_Selling_Price'];
+            // $totalAmount += $rowTotal;
+            $db = \Config\Database::connect();
+            $variant = $db->table('product_variants')
+                ->select('prv_price')
+                ->where('prv_Id', $item['prv_Id'])
+                ->where('pr_Id', $item['pr_Id'])
+                ->where('pri_Id', $item['pri_Id'])
+                ->get()
+                ->getRowArray();
+
+            if (!$variant) {
+                continue; // skip invalid variant safely
+            }
+
+            $item['od_Original_Price'] = (float) $variant['prv_price'];
+
+            // ✅ DISCOUNT VALIDATION
+            $discount = (float) ($item['od_DiscountValue'] ?? 0);
+
+            if ($discount > 0 && $discount <= 100) {
+                $item['od_Selling_Price'] =
+                    $item['od_Original_Price'] -
+                    ($item['od_Original_Price'] * $discount / 100);
+
+                $item['od_DiscountValue'] = $discount;
+                $item['od_DiscountType'] = '%';
+            } else {
+                $item['od_Selling_Price'] = $item['od_Original_Price'];
+                $item['od_DiscountValue'] = 0;
+                $item['od_DiscountType'] = 'NONE';
+            }
+
+            // ✅ YOUR REQUIRED FORMULA
+            $item['od_Grand_Total'] =
+                $item['od_Selling_Price'] * $item['od_Quantity'];
+
+            // Save order item
             $this->orderModel->createOrderItem($item);
 
-            $rowTotal = $item['od_Quantity'] * $item['od_Selling_Price'];
-            $totalAmount += $rowTotal;
+            // Order total
+            $totalAmount = 0;
+
+            $totalAmount += $item['od_Grand_Total'];
+
 
             $productRows .= "
             
-        <tr>
-            <td style='padding:8px;border:1px solid #ccc;'>{$item['pr_Code']}</td>
-            <td style='padding:8px;border:1px solid #ccc;'>{$item['pr_Name']}</td>
-            <td style='padding:8px;border:1px solid #ccc;'>{$item['od_Size']}</td>
-            <td style='padding:8px;border:1px solid #ccc;'>{$item['od_Quantity']}</td>
-            <td style='padding:8px;border:1px solid #ccc;'>₹{$item['od_Selling_Price']}</td>
-            <td style='padding:8px;border:1px solid #ccc;'>₹{$rowTotal}</td>
-        </tr>";
+            <tr>
+                <td style='padding:8px;border:1px solid #ccc;'>{$item['pr_Code']}</td>
+                <td style='padding:8px;border:1px solid #ccc;'>{$item['pr_Name']}</td>
+                <td style='padding:8px;border:1px solid #ccc;'>{$item['od_Size']}</td>
+                <td style='padding:8px;border:1px solid #ccc;'>{$item['od_Quantity']}</td>
+                <td style='padding:8px;border:1px solid #ccc;'>₹{$item['od_Selling_Price']}</td>
+                <td style='padding:8px;border:1px solid #ccc;'>₹{$item['od_Grand_Total']}</td>
+            </tr>";
         }
 
         $productTable = "
-    <table style='width:100%;border-collapse:collapse;margin-top:20px;font-size:14px;'>
-        <thead>
-            <tr>
-                <th style='padding:10px;border:1px solid #ccc;background:#eee;'>Product Code</th>
-                <th style='padding:10px;border:1px solid #ccc;background:#eee;'>Product Name</th>
-                <th style='padding:10px;border:1px solid #ccc;background:#eee;'>Size</th>
-                <th style='padding:10px;border:1px solid #ccc;background:#eee;'>Qty</th>
-                <th style='padding:10px;border:1px solid #ccc;background:#eee;'>Price</th>
-                <th style='padding:10px;border:1px solid #ccc;background:#eee;'>Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            $productRows
-                <tr>
-                    <td colspan='5' style='padding:10px;border:1px solid #ccc;text-align:right;font-weight:bold;'>Grand Total</td>
-                    <td style='padding:10px;border:1px solid #ccc;font-weight:bold;'>₹$totalAmount</td>
-                </tr>
-        </tbody>
-    </table>";
+            <table style='width:100%;border-collapse:collapse;margin-top:20px;font-size:14px;'>
+                <thead>
+                    <tr>
+                        <th style='padding:10px;border:1px solid #ccc;background:#eee;'>Product Code</th>
+                        <th style='padding:10px;border:1px solid #ccc;background:#eee;'>Product Name</th>
+                        <th style='padding:10px;border:1px solid #ccc;background:#eee;'>Size</th>
+                        <th style='padding:10px;border:1px solid #ccc;background:#eee;'>Qty</th>
+                        <th style='padding:10px;border:1px solid #ccc;background:#eee;'>Price</th>
+                        <th style='padding:10px;border:1px solid #ccc;background:#eee;'>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    $productRows
+                        <tr>
+                            <td colspan='5' style='padding:10px;border:1px solid #ccc;text-align:right;font-weight:bold;'>Grand Total</td>
+                            <td style='padding:10px;border:1px solid #ccc;font-weight:bold;'>₹$totalAmount</td>
+                        </tr>
+                </tbody>
+            </table>";
 
         // Clear cart
         (new \App\Models\CartModel())->clearCart($userId);
@@ -160,33 +206,33 @@ class OrderDetails extends Controller
         $logoUrl = base_url() . ASSET_PATH . "assets/img/logo-black.jpg";
 
         $emailHeader = "
-        <div style='text-align:center;'>
-            <img src='{$logoUrl}' style='width:160px;margin-bottom:20px;'>
-        </div>
-    ";
+            <div style='text-align:center;'>
+                <img src='{$logoUrl}' style='width:160px;margin-bottom:20px;'>
+            </div>
+        ";
         $formattedShippingAddress = "
-    <div style='line-height:0.2'>
-        <p class='m-0'><strong>Name:</strong></p>
-        <p class='m-0'>{$addressData['add_Name']}</p>
+            <div style='line-height:0.2'>
+                <p class='m-0'><strong>Name:</strong></p>
+                <p class='m-0'>{$addressData['add_Name']}</p>
 
-        <br>
+                <br>
 
-        <p class='m-0'><strong>Address:</strong></p>
-        <p class='m-0'>{$addressData['add_Street']}</p>
-        <p class='m-0'>{$addressData['add_Landmark']}</p>
-        <p class='m-0'>{$addressData['add_City']}, {$addressData['add_State']}, India – {$addressData['add_Pincode']}</p>
+                <p class='m-0'><strong>Address:</strong></p>
+                <p class='m-0'>{$addressData['add_Street']}</p>
+                <p class='m-0'>{$addressData['add_Landmark']}</p>
+                <p class='m-0'>{$addressData['add_City']}, {$addressData['add_State']}, India – {$addressData['add_Pincode']}</p>
 
-        <br>
+                <br>
 
-        <p class='m-0'><strong>Phone:</strong></p>
-        <p class='m-0'>+91 {$addressData['add_Phone']}</p>
+                <p class='m-0'><strong>Phone:</strong></p>
+                <p class='m-0'>+91 {$addressData['add_Phone']}</p>
 
-        <br>
+                <br>
 
-        <p class='m-0'><strong>Email:</strong></p>
-        <p class='m-0'>{$addressData['add_Email']}</p>
-    </div>
-";
+                <p class='m-0'><strong>Email:</strong></p>
+                <p class='m-0'>{$addressData['add_Email']}</p>
+            </div>
+        ";
 
 
 
@@ -238,6 +284,27 @@ class OrderDetails extends Controller
         $email->setSubject("New Order Received - {$orderNumber}");
         $email->setMessage($adminMessage);
         $email->send();
+        // print_r($userId);exit();
+        if (!empty($lbId)) {
+            // print_r("Updating leaderboard ID: " . $lbId);exit();
+            // $this->UserleaderboardModel
+            //     ->where('lb_Id', $lbId)
+            //     ->where('cust_Id', $userId)
+            //     ->update([
+            //         'lb_redeemed_status' => '2',
+            //         'lb_updated_at' => date('Y-m-d H:i:s'),
+            //         'lb_updated_by' => $userId
+            //     ]);
+            $this->UserleaderboardModel
+                ->where('lb_Id', $lbId)
+                ->where('cust_Id', $userId)
+                ->set([
+                    'lb_redeemed_status' => '2',
+                    'lb_updated_at' => date('Y-m-d H:i:s'),
+                    'lb_updated_by' => $userId
+                ])
+                ->update();
+        }
 
         return $this->response->setJSON([
             'status' => 'success',
@@ -305,13 +372,13 @@ class OrderDetails extends Controller
         if (!$result) {
             return $this->response->setJSON([
                 "status" => "error",
-                "message" => "Coupon is invalid or not mapped to your account."
+                "message" => "Invalid Coupon Code or Already Used."
             ]);
         }
 
         return $this->response->setJSON([
             "status" => "success",
-            "message" => "Coupon is valid and applied successfully.",
+            "message" => "Coupon Applied Successfully.",
             "lb_Id" => $result->lb_Id,
             "discount" => $result->lb_discount ?? 0
         ]);
@@ -340,6 +407,12 @@ class OrderDetails extends Controller
             return redirect()->to(base_url('/customproducts'));
         }
 
+        $productDetails = $this->ProductModel
+            ->asArray()
+            ->where('pr_Id', (int) $directItem['pr_Id'])
+            ->get()
+            ->getRowArray();
+
         // Build cartItems array in same format as cart
         $cartItems = [
             [
@@ -349,8 +422,8 @@ class OrderDetails extends Controller
                 "cart_Quantity" => $directItem['quantity'],
                 "cart_Size" => $directItem['size'],
                 "cart_Price" => 0,
-                "pr_Name" => "Free Customized T-Shirt",
-                "pr_Code" => "FREE-T01"
+                "pr_Name" => $productDetails['pr_Name'],
+                "pr_Code" => $productDetails['pr_Code']
             ]
         ];
 
@@ -371,6 +444,8 @@ class OrderDetails extends Controller
     {
         $session = session();
         $userId = $session->get('user_id');
+        $free_tee_lb_id = $session->get('free_tee_lb_id');
+        // print_r($free_tee_lb_id);exit();
 
         if (!$userId) {
             return $this->response->setJSON([
@@ -380,7 +455,7 @@ class OrderDetails extends Controller
 
         // Get FREE PURCHASE item
         $freeItem = $session->get("direct_purchase_item");
-
+        // print_r($freeItem); exit();
         if (!$freeItem) {
             return $this->response->setJSON([
                 "status" => "error",
@@ -391,6 +466,7 @@ class OrderDetails extends Controller
         // ===========================
         // SAVE ADDRESS
         // ===========================
+
         $addressData = [
             'add_Name' => $this->request->getPost('add_Name'),
             'add_Landmark' => $this->request->getPost('add_Landmark'),
@@ -405,7 +481,7 @@ class OrderDetails extends Controller
             'add_createdon' => date('Y-m-d H:i:s'),
             'add_createdby' => $userId
         ];
-
+        // print_r($addressData); exit();
         $addressModel = new \App\Models\AddressModel();
         $add_Id = $addressModel->insert($addressData);
 
@@ -420,10 +496,21 @@ class OrderDetails extends Controller
 
         $orderNumber = 'VOYC-' . date('Ymd') . '-' . $nextNumber;
 
-        $productDetails = $this->productModel->where('pr_Id', $freeItem['pr_Id'])->first();
+        // $productDetails = $this->productModel->where('pr_Id', $freeItem['pr_Id'])->first();
+        $productDetails = $this->ProductModel
+            ->asArray()
+            ->where('pr_Id', (int) $freeItem['pr_Id'])
+            ->get()
+            ->getRowArray();
+
+        // print_r($productDetails);
+
+        // exit();
+
         // ===========================
         // INSERT FREE ORDER ITEM
         // ===========================
+
         $orderItem = [
             "od_number" => $orderNumber,
             "cus_Id" => $userId,
@@ -442,7 +529,7 @@ class OrderDetails extends Controller
             "pr_Name" => $productDetails['pr_Name'],
             "od_Grand_Total" => 0
         ];
-
+        // print_r($orderItem); exit();
         $this->orderModel->createOrderItem($orderItem);
 
         // ===========================
@@ -498,14 +585,20 @@ class OrderDetails extends Controller
         // CLEAR FREE TEE SESSION + UPDATE LEADERBOARD STATUS
         // ===============================
 
-        $lbId = $session->get('free_tee_lb_id');
+        // $lbId = $session->get('free_tee_lb_id');
 
-        if ($lbId) {
-            $leaderboardModel = new \App\Models\UserleaderboardModel();
-            $leaderboardModel->update($lbId, [
-                "lb_redeemed_status" => 2  // 2 = Redeemed
-            ]);
+        if (!empty($free_tee_lb_id)) {
+            // print ("Updating leaderboard ID: " . $free_tee_lb_id);
+            // exit();
+            $this->UserleaderboardModel
+                ->where('lb_Id', $free_tee_lb_id)
+                ->where('cust_Id', $userId)
+                ->set([
+                    'lb_redeemed_status' => 2
+                ])
+                ->update();
         }
+
 
         // Remove eligibility flags
         $session->remove("eligible_for_free_tee");
