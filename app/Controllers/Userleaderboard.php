@@ -6,6 +6,7 @@ use App\Models\UserleaderboardModel;
 use App\Models\CartModel;
 use App\Models\Admin\PlayersModel;
 use App\Models\Admin\GameMappingModel;
+use App\Models\Admin\GamesModel;
 class Userleaderboard extends BaseController
 {
     protected $session;
@@ -18,6 +19,7 @@ class Userleaderboard extends BaseController
         $this->PlayersModel = new PlayersModel();
         $this->GameMappingModel = new GameMappingModel();
         $this->UserleaderboardModel = new UserleaderboardModel();
+         $this->GamesModel = new GamesModel();
     }
     public function index()
     {

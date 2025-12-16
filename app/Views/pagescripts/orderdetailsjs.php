@@ -99,23 +99,35 @@
                 var qtyMatch = $(el).text().match(/Qty: (\d+)/);
                 var quantity = qtyMatch ? parseInt(qtyMatch[1]) : 1;
 
+                let originalPrice = parseFloat($(el).data("original-price")) || parseFloat($(el).data("price"));
+                let sellingPrice = parseFloat($(el).data("selling-price")) || originalPrice;
+
                 cartItems.push({
                     design_Id: $(el).data('designid') || null,
                     pr_Id: $(el).data('prid') || null,
                     pri_Id: $(el).data('priid') || null,
+                    prv_Id: $(el).data('prvid') || null,
                     od_Quantity: quantity,
-                    od_Original_Price: $(el).data('price') || 0,
-                    od_Selling_Price: $(el).data('price') || 0,
+
+                    od_Original_Price: originalPrice,
+                    od_Selling_Price: sellingPrice,
+
+                    od_DiscountValue: appliedDiscountPercent,
+                    od_DiscountType: appliedDiscountPercent > 0 ? '%' : null,
+
                     od_Size: $(el).data('size') || null,
                     pr_Code: $(el).data('prcode') || null,
                     pr_Name: $(el).data('prname') || null,
-                    od_Grand_Total: finalOrderTotal
+
+                    od_Grand_Total: finalGrandTotal
                 });
+
             });
 
             //  Step 3: Collect all form data
             var formData = $(this).serializeArray();
             formData.push({ name: 'products', value: JSON.stringify(cartItems) });
+            formData.push({ name: 'lb_Id', value: applied_lb_Id });
 
             //  Step 4: Send AJAX request
             $.ajax({
@@ -276,60 +288,155 @@
                 success: function (response) {
                     if (response.status === "success") {
                         applyDiscount(response.discount);
-                        alert("Coupon Valid!\n" + response.message);
+                        applied_lb_Id = response.lb_Id;
+                        showAlert(response.message, 'success');
                     } else {
-                        alert("Invalid Coupon!\n" + response.message);
+                        showAlert(response.message, 'error');
                     }
                 },
 
                 error: function () {
-                    alert("Error!\nServer error. Try again later.");
+                    showAlert("Server error. Try again later.", 'error');
                 }
             });
         }
 
+        function showAlert(message, type = 'success') {
+            const alertDiv = $('#alertPlaceOrder');
+            alertDiv.removeClass('d-none alert-success alert-danger alert-warning')
+                .addClass(type === 'success' ? 'alert-success' :
+                    type === 'error' ? 'alert-danger' : 'alert-warning')
+                .html(message);
+            // Optionally auto-hide after 3 seconds
+            setTimeout(() => {
+                alertDiv.addClass('d-none').html('');
+            }, 3000);
+        }
+       
+        // function applyDiscount(discountPercent) {
+
+        //     let newSubtotal = 0;
+
+        //     $(".checkout__order__product ul li").each(function (index, el) {
+        //         if (index === 0) return; // skip header
+
+        //         let price = parseFloat($(el).data("price"));
+        //         let qtyMatch = $(el).text().match(/Qty: (\d+)/);
+        //         let quantity = qtyMatch ? parseInt(qtyMatch[1]) : 1;
+
+        //         let originalTotal = price * quantity;
+        //         let discountedTotal = originalTotal - (originalTotal * discountPercent / 100);
+
+        //         newSubtotal += discountedTotal;
+
+        //         // Update UI inside <li>
+        //         $(el).find("span").last().html(`
+        //         <span> &nbsp;${discountPercent}% OFF</span>
+        //     <span style="text-decoration: line-through; color:#999;">
+        //         ₹${originalTotal.toFixed(2)}
+        //     </span><br>
+        //     <span style="color:#28a745; font-weight:bold; font-size:15px;">
+        //         ₹${discountedTotal.toFixed(2)}
+        //     </span>
+        // `);
+
+        //         // Update data attribute so final order calculation uses new value
+        //         $(el).attr("data-price", (discountedTotal / quantity).toFixed(2));
+        //     });
+
+        //     // Update totals in summary
+        //     // $(".checkout__order__total ul li:eq(0) span").text(${discountPercent}"% OFF" &nbsp; "₹ " + newSubtotal.toFixed(2));
+        //     $(".checkout__order__total ul li:eq(0) span").html(
+        //         `${discountPercent}% OFF &nbsp; ₹ ${newSubtotal.toFixed(2)}`
+        //     );
+        //     $(".checkout__order__total ul li:eq(1) span").text("₹ " + newSubtotal.toFixed(2));
+
+        //     // Update hidden input
+        //     $("#order-total").val(newSubtotal.toFixed(2));
+        // }
+
+
+        let appliedDiscountPercent = 0;   // default: no discount
+        let finalGrandTotal = 0;
+
+       
         function applyDiscount(discountPercent) {
 
+            appliedDiscountPercent = parseFloat(discountPercent) || 0;
             let newSubtotal = 0;
+            let originalSubtotal = 0;
 
             $(".checkout__order__product ul li").each(function (index, el) {
-                if (index === 0) return; // skip header
 
-                let price = parseFloat($(el).data("price"));
-                let qtyMatch = $(el).text().match(/Qty: (\d+)/);
-                let quantity = qtyMatch ? parseInt(qtyMatch[1]) : 1;
+                if (index === 0) return;
 
-                let originalTotal = price * quantity;
-                let discountedTotal = originalTotal - (originalTotal * discountPercent / 100);
+                let $el = $(el);
 
+                let originalPrice = parseFloat($el.data("price"));
+                let quantity = parseInt(
+                    $el.find("small").text().match(/Qty:\s*(\d+)/)?.[1] || 1
+                );
+
+                let originalTotal = originalPrice * quantity;
+                let discountAmount = (originalTotal * appliedDiscountPercent) / 100;
+                let discountedTotal = originalTotal - discountAmount;
+
+                originalSubtotal += originalTotal;
                 newSubtotal += discountedTotal;
 
-                // Update UI inside <li>
-                $(el).find("span").last().html(`
-                <span> &nbsp;${discountPercent}% OFF</span>
-            <span style="text-decoration: line-through; color:#999;">
-                ₹${originalTotal.toFixed(2)}
-            </span><br>
-            <span style="color:#28a745; font-weight:bold; font-size:15px;">
-                ₹${discountedTotal.toFixed(2)}
-            </span>
-        `);
+                // Product row UI
+                if (appliedDiscountPercent > 0) {
+                    $el.find("span").html(`
+                     <div style="font-size:11px;color: #ee2020;text-align:right;">
+                        ${appliedDiscountPercent}% OFF
+                    </div>
+                <span style="white-space:nowrap;">
+                    <del style="color:#999;font-size:12px;">
+                        ₹ ${originalTotal.toFixed(2)}
+                    </del>
+                    &nbsp;
+                    <strong>₹ ${discountedTotal.toFixed(2)}</strong>
+                </span>
+               
+            `);
+                }
 
-                // Update data attribute so final order calculation uses new value
-                $(el).attr("data-price", (discountedTotal / quantity).toFixed(2));
+                $el.data("selling-price", (discountedTotal / quantity).toFixed(2));
+                $el.data("discount", appliedDiscountPercent);
             });
 
-            // Update totals in summary
-            // $(".checkout__order__total ul li:eq(0) span").text(${discountPercent}"% OFF" &nbsp; "₹ " + newSubtotal.toFixed(2));
-            $(".checkout__order__total ul li:eq(0) span").html(
-                `${discountPercent}% OFF &nbsp; ₹ ${newSubtotal.toFixed(2)}`
-            );
-            $(".checkout__order__total ul li:eq(1) span").text("₹ " + newSubtotal.toFixed(2));
+            // 🔥 SUBTOTAL UI (with discount)
+            if (appliedDiscountPercent > 0) {
+                $("#subtotal span").html(`
+               
+            <span style="white-space:nowrap;">
+                <del style="color:#999;font-size:12px;">
+                    ₹ ${originalSubtotal.toFixed(2)}
+                </del>
+                &nbsp;
+                <strong>₹ ${newSubtotal.toFixed(2)}</strong>
+            </span>
+             <p style="font-size: 17px;
+                        font-weight: 600;
+                        color: #ee2020;
+                        padding:0;
+                        text-align:right;
+                        margin:0;">
+                    ${appliedDiscountPercent}% OFF
+                </p>
+            
+        `);
+            } else {
+                $("#subtotal span").text("₹ " + newSubtotal.toFixed(2));
+            }
 
-            // Update hidden input
+            // ❌ TOTAL stays unchanged
+            $("#total_of_all span").text("₹ " + newSubtotal.toFixed(2));
+
+            // Backend value
             $("#order-total").val(newSubtotal.toFixed(2));
+            finalGrandTotal = newSubtotal;
         }
-
 
     });
 </script>

@@ -8,6 +8,7 @@ class ProductModel extends Model
 
     protected $table = 'product';
     protected $primaryKey = 'pr_Id';
+    protected $returnType = 'array';
 
     // Adjust to your table
 

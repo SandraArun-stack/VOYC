@@ -96,14 +96,22 @@ class UserleaderboardModel extends Model
         return $builder->countAllResults();
     }
 
+    // public function getUserRedemption($userId)
+    // {
+    //     return $this->where('cust_Id', $userId)
+    //         ->orderBy('lb_Id', 'DESC')
+    //         ->findAll();
+    // }
     public function getUserRedemption($userId)
     {
-        return $this->where('cust_Id', $userId)
-            ->orderBy('lb_Id', 'DESC')
-            ->findAll();
+        return $this->db->table('leaderboard l')
+            ->select('l.*, g.game_name')
+            ->join('game g', 'g.game_Id = l.game_Id', 'left')
+            ->where('l.cust_Id', $userId)
+            ->orderBy('l.lb_Id', 'DESC')
+            ->get()
+            ->getResultArray();
     }
-
-
 
 
 }

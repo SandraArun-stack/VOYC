@@ -12,6 +12,7 @@ class OrderDetailsModel extends Model
         'od_number',
         'pr_Id',
         'pri_Id',
+        'prv_Id',
         'od_Quantity',
         'od_Size',
         'od_Color',
