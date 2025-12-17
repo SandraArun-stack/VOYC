@@ -325,9 +325,9 @@
                 success: function (response) {
                     if (response.status == 1) {
                         showMessage('Item added to cart successfully!', 'success');
-                        // setTimeout(() => {
-                        //     window.location.href = "<?= base_url('cart') ?>/" + userId;
-                        // }, 1500);
+                        if (response.cartCount !== undefined) {
+                            $('#cartCount').text(response.cartCount);
+                        }
                     } else {
                         showMessage(response.message || 'Failed to add to cart.', 'danger');
                     }

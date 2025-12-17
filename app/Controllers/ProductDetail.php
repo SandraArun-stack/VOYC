@@ -128,6 +128,7 @@ class ProductDetail extends Controller
     public function addToCart()
     {
         $custId = $this->request->getPost('cust_Id');
+
         $prId = $this->request->getPost('pr_Id');
         $priId = $this->request->getPost('pri_Id');
         $prvId = $this->request->getPost('prv_Id');
@@ -158,7 +159,12 @@ class ProductDetail extends Controller
         $result = $this->ProductDetailModel->saveToCart($data);
 
         if ($result === 'inserted' || $result === 'updated') {
-            return $this->response->setJSON(['status' => 1, 'message' => 'Added to cart successfully']);
+            $cartCount = $this->CartModel->getCartItemCount($custId);
+            return $this->response->setJSON([
+                'status' => 1,
+                'message' => 'Added to cart successfully',
+                'cartCount' => $cartCount
+            ]);
         }
 
         return $this->response->setJSON(['status' => 0, 'message' => 'Error adding to cart']);

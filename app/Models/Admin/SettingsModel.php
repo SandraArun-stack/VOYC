@@ -18,10 +18,10 @@ class SettingsModel extends Model
             'front_Customization_Price',
             'back_Customization_Price',
             'sleeve_Customization_Price',
-            'leaderboard_count',
-            'winning_percentage',
-            'extra_discount_percentage',
-            'token_price'
+            'shipping_charge',
+            'minimum_amount_for_shipping_charge',
+            'token_price_for_per_piece',
+            // 'token_price'
         ];
 
         $result = $this->whereIn('field', $fields)->findAll();
@@ -30,10 +30,10 @@ class SettingsModel extends Model
             'front_Customization_Price' => '',
             'back_Customization_Price' => '',
             'sleeve_Customization_Price' => '',
-            'leaderboard_count' => '',
-            'winning_percentage' => '',
-            'extra_discount_percentage' => '',
-            'token_price' => ''
+            'shipping_charge' => '',
+            'minimum_amount_for_shipping_charge' => '',
+            'token_price_for_per_piece' => '',
+            // 'token_price' => ''
         ];
 
         foreach ($result as $row) {

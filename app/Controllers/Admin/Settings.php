@@ -26,10 +26,10 @@ class Settings extends BaseController
             'front_Customization_Price' => $chargeData['front_Customization_Price'] ?? '',
             'back_Customization_Price' => $chargeData['back_Customization_Price'] ?? '',
             'sleeve_Customization_Price' => $chargeData['sleeve_Customization_Price'] ?? '',
-            'leaderboard_count' => $chargeData['leaderboard_count'] ?? '',
-            'winning_percentage' => $chargeData['winning_percentage'] ?? '',
-            'extra_discount_percentage' => $chargeData['extra_discount_percentage'] ?? '',
-            'token_price' => $chargeData['token_price'] ?? ''
+            'shipping_charge' => $chargeData['shipping_charge'] ?? '',
+            'minimum_amount_for_shipping_charge' => $chargeData['minimum_amount_for_shipping_charge'] ?? '',
+            'token_price_for_per_piece' => $chargeData['token_price_for_per_piece'] ?? ''
+            // 'token_price' => $chargeData['token_price'] ?? ''
         ];
 
 
@@ -50,9 +50,9 @@ class Settings extends BaseController
         $frontCharge = $this->request->getPost('front_Customization_Price');
         $backCharge = $this->request->getPost('back_Customization_Price');
         $sleeveCharge = $this->request->getPost('sleeve_Customization_Price');
-        $leaderboard_count = $this->request->getPost('leaderboard_count');
-        $winning_percentage = $this->request->getPost('winning_percentage');
-        $extra_discount_percentage = $this->request->getPost('extra_discount_percentage');
+        $shipping_charge = $this->request->getPost('shipping_charge');
+        $minimum_amount_for_shipping_charge = $this->request->getPost('minimum_amount_for_shipping_charge');
+        $token_price_for_per_piece = $this->request->getPost('token_price_for_per_piece');
 
         if (is_null($frontCharge) || $frontCharge === '' || !is_numeric($frontCharge)) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Front Customization Price Must be a Numeric Value.']);
@@ -65,30 +65,33 @@ class Settings extends BaseController
         if (is_null($sleeveCharge) || $sleeveCharge === '' || !is_numeric($sleeveCharge)) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Sleeve Customization Price Must be a Numeric Value.']);
         }
-        if (is_null($leaderboard_count) || $leaderboard_count === '' || !is_numeric($leaderboard_count)) {
+
+        if (is_null($shipping_charge) || $shipping_charge === '' || !is_numeric($shipping_charge)) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Leaderboard Count Must be a Numeric Value.']);
         }
 
-        if ($winning_percentage === '' || !is_numeric($winning_percentage) || $winning_percentage < 0 || $winning_percentage > 100) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Winning Percentage Must be a Numeric Value Between 0 and 100.']);
+        if ($minimum_amount_for_shipping_charge === '' || !is_numeric($minimum_amount_for_shipping_charge) || $minimum_amount_for_shipping_charge < 0 ) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Amount for Free Shipping Must be a Non-Negative Numeric Value.']);
         }
 
-        if ($extra_discount_percentage === '' || !is_numeric($extra_discount_percentage) || $extra_discount_percentage < 0 || $extra_discount_percentage > 100) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Extra Discount Percentage Must be a Numeric Value Between 0 and 100.']);
+        if ($token_price_for_per_piece === '' || !is_numeric($token_price_for_per_piece) || $token_price_for_per_piece < 0) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Token Price per Piece Must be a Numeric Value between 0 and 100.']);
         }
 
         $settingsModel = new \App\Models\Admin\SettingsModel();
         $updatedFront = $settingsModel->updateCustomizationCharge('front_Customization_Price', $frontCharge);
         $updatedBack = $settingsModel->updateCustomizationCharge('back_Customization_Price', $backCharge);
         $updatedSleeve = $settingsModel->updateCustomizationCharge('sleeve_Customization_Price', $sleeveCharge);
-        $leaderboard_count = $settingsModel->updateCustomizationCharge('leaderboard_count', $leaderboard_count);
-        $winning_percentage = $settingsModel->updateCustomizationCharge('winning_percentage', $winning_percentage);
-        $extra_discount_percentage = $settingsModel->updateCustomizationCharge('extra_discount_percentage', $extra_discount_percentage);
+        $shipping_charge = $settingsModel->updateCustomizationCharge('shipping_charge', $shipping_charge);
+        $minimum_amount_for_shipping_charge = $settingsModel->updateCustomizationCharge('minimum_amount_for_shipping_charge', $minimum_amount_for_shipping_charge);
+        $token_price_for_per_piece = $settingsModel->updateCustomizationCharge('token_price_for_per_piece', $token_price_for_per_piece);
+
         if ($updatedFront && $updatedBack && $updatedSleeve) {
             return $this->response->setJSON(['status' => 'success', 'message' => 'Customization Charges Updated Successfully']);
         } else {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to Update Customization Charges']);
         }
+
     }
 
 
