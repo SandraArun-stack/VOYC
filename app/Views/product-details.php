@@ -181,10 +181,10 @@ $userId = session()->get('user_id');
                                 </div>
                             </li>
 
-                            <li>
+                            <!-- <li>
                                 <span>Promotions:</span>
                                 <p>Free shipping</p>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
                 </div>

@@ -122,7 +122,7 @@
                                 <a href="<?= base_url('cart/' . $userId); ?>" class="icon-with-text">
                                     <i class="bi bi-cart"></i>
                                     <span class="icon-label">Cart</span>
-                                    <div class="tip"><?= $cartCount ?? 0 ?></div>
+                                    <div class="tip" id="cartCount"><?= $cartCount ?? 0 ?></div>
                                 </a>
                             </li>
                             <?php endif; ?>

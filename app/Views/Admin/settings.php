@@ -55,7 +55,7 @@
                                                 <div class="row mb-3 setting_row">
                                                     <div class="col-md-3">
                                                         <label for="front_Customization_Price">Front
-                                                            Customization(₹)</label>
+                                                            Customization (₹)</label>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <input type="text" class="form-control"
@@ -68,7 +68,7 @@
                                                 <div class="row mb-3 setting_row">
                                                     <div class="col-md-3">
                                                         <label for="back_Customization_Price">Back
-                                                            Customization(₹)</label>
+                                                            Customization (₹)</label>
 
                                                     </div>
                                                     <div class="col-md-6">
@@ -97,53 +97,54 @@
                                                 </div>
                                                 <div class="row mb-3 setting_row">
                                                     <div class="col-md-3">
-                                                        <label for="">Leaderboard Count
+                                                        <label for="">Shipping Charge (₹)
                                                         </label>
                                                         <small class="settings_charge_text d-block">
-                                                           (Number of Players With Premium Access)</small>
+                                                           (Customer Shipping Fee)</small>
+                                                       
                                                     </div>
                                                     <div class="col-md-6">
                                                         <input type="text" class="form-control"
-                                                            id="leaderboard_count"
-                                                            name="leaderboard_count"
-                                                            value="<?= esc($leaderboard_count ?? '') ?>"
-                                                            placeholder="Enter the Leaderboard Winner Count">
+                                                            id="shipping_charge"
+                                                            name="shipping_charge"
+                                                            value="<?= esc($shipping_charge ?? '') ?>"
+                                                            placeholder="Enter Customer Shipping Fee">
                                                     </div>
 
                                                 </div>
                                                 <div class="row mb-3 setting_row">
                                                     <div class="col-md-3">
-                                                        <label for="">Winning Percentage
+                                                        <label for="">Minimum Amount for Free Shipping (₹)
                                                         </label>
                                                         <small class="settings_charge_text d-block">
-                                                           (Specify What Percentage of Winners Get a Free Customized Tee)</small>
+                                                           (Please Enter the Amount up to Which Shipping Charge Applies)</small>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <input type="text" class="form-control"
-                                                            id="winning_percentage"
-                                                            name="winning_percentage"
-                                                            value="<?= esc($winning_percentage ?? '') ?>"
+                                                            id="minimum_amount_for_shipping_charge"
+                                                            name="minimum_amount_for_shipping_charge"
+                                                            value="<?= esc($minimum_amount_for_shipping_charge ?? '') ?>"
                                                             placeholder="Enter the Percent of Winners Receiving Free Tee">
                                                     </div>
 
                                                 </div>
                                                 <div class="row mb-3 setting_row">
                                                     <div class="col-md-3">
-                                                        <label for="">Extra Discount Percentage
+                                                        <label for="">Token Price (₹)
                                                         </label>
                                                         <small class="settings_charge_text d-block">
-                                                          (Discount Percentage for Players Outside the Top Winners)</small>
+                                                          (Price per Token in)</small>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <input type="text" class="form-control"
-                                                            id="extra_discount_percentage"
-                                                            name="extra_discount_percentage"
-                                                            value="<?= esc($extra_discount_percentage ?? '') ?>"
+                                                            id="token_price_for_per_piece"
+                                                            name="token_price_for_per_piece"
+                                                            value="<?= esc($token_price_for_per_piece ?? '') ?>"
                                                             placeholder="Enter the Discount Percentage">
                                                     </div>
 
                                                 </div>
-                                                <div class="row mb-3 setting_row">
+                                                <!-- <div class="row mb-3 setting_row">
                                                     <div class="col-md-3">
                                                         <label for="">Token Price 
                                                         </label>
@@ -158,7 +159,8 @@
                                                             placeholder="Enter the price per token">
                                                     </div>
 
-                                                </div>
+                                                </div> -->
+                                               
                                                 <div class="row mb-3 setting_row">
                                                     <div class="col-md-3">
                                                         <a href="<?= base_url('admin/dashboard') ?>"
