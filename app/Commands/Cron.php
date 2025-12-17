@@ -56,8 +56,10 @@ class Cron extends BaseCommand
                 'player_Id'      => $p['player_Id'],
                 'lb_rank'        => $p['player_rank'],
                 'lb_score'       => $p['player_score'],
-                'lb_date'        => $lbDate,
+                'cust_Id'        => $p['cust_Id'],
+                'lb_date'        => $p['player_created_at'],
                 'lb_status'      => 1,
+                'lb_discount'    => $mapping['gm_extra_discount'],
                 'lb_created_by'  => 0,
                 'lb_created_at'  => date('Y-m-d H:i:s')
             ]);
