@@ -74,66 +74,44 @@ class GameArena extends Controller
             ])
             . view('common/footer');
     }
-// public function participate($gameId)
-// {
-    
-//     if (!session()->get('user_id')) {
-//         return redirect()->to(base_url());
-//     }
-
-//     $userId = session()->get('user_id');
-//     $game = $this->GamesModel->where('game_Id', $gameId)
-//         ->whereIn('game_status', [1, 2])
-//         ->first();
-
-//     if (!$game) {
-//         return redirect()->back()->with('error', 'Game not found.');
-//     }
-//     $wallet = $this->db->table('user_wallet')
-//         ->where('cust_Id', $userId)
-//         ->get()
-//         ->getRowArray();
-
-//     $userToken = $wallet['uw_total_token'] ?? 0;
-
-//     $data = [
-//         'game' => $game,
-//         'userToken' => $userToken
-//     ];
-
-//     return view('game_participate', $data);
-// }
     public function participate($gameId)
-    {
-        if (!session()->get('user_id')) {
-            return redirect()->to(base_url());
-        }
-
-        $userId = session()->get('user_id');
-        $game = $this->GamesModel->where('game_Id', $gameId)
-            ->whereIn('game_status', [1, 2])
-            ->first();
-
-        if (!$game) {
-            return redirect()->back()->with('error', 'Game not found.');
-        }
-        $wallet = $this->db->table('user_wallet')
-            ->where('cust_Id', $userId)
-            ->get()
-            ->getRowArray();
-
-        $userToken = $wallet['uw_total_token'] ?? 0;
-        $lastPlayer = null;
-
-        $data = [
-            'game' => $game,
-            'userToken' => $userToken,
-            'lastPlayer' => $lastPlayer
-        ];
-        return view('common/header', $data)
-            . view('game_participate', $data)
-            . view('common/footer');
+{
+    if (!session()->get('user_id')) {
+        return redirect()->to(base_url());
     }
+
+    $userId = session()->get('user_id');
+
+    // Set participate mode
+    session()->set([
+        'game_mode' => 'participate',
+        'game_id'   => $gameId
+    ]);
+
+    $game = $this->GamesModel
+        ->where('game_Id', $gameId)
+        ->whereIn('game_status', [1, 2])
+        ->first();
+
+    if (!$game) {
+        return redirect()->back()->with('error', 'Game not found.');
+    }
+
+    $wallet = $this->db->table('user_wallet')
+        ->where('cust_Id', $userId)
+        ->get()
+        ->getRowArray();
+
+    $data = [
+        'game'       => $game,
+        'userToken'  => $wallet['uw_total_token'] ?? 0,
+        'lastPlayer' => null   
+    ];
+
+    return view('common/header', $data)
+        . view('game_participate', $data)
+        . view('common/footer');
+}
 
 
 }

@@ -22,12 +22,14 @@ class GamePlay extends BaseController
             return redirect()->to('/game_arena');
         }
 
-        $userId = $this->session->get('user_id');
+        $userId = session()->get('user_id');
         $gameId = $this->request->getGet('game_id');
-        if (!$userId || !$gameId) {
+        if (!$userId || !$gameId || session()->get('game_mode') !== 'participate') {
+            session()->set('game_mode', 'demo');
+
             return view('game_play', [
                 'folderName' => $folderName,
-                'mode'       => 'demo'
+                'mode' => 'demo'
             ]);
         }
         $game = $this->db->table('game')
@@ -39,71 +41,80 @@ class GamePlay extends BaseController
             return redirect()->back()->with('error', 'Game not found.');
         }
 
-        $requiredToken = $game['game_token'];
-
         $wallet = $this->db->table('user_wallet')
             ->where('cust_Id', $userId)
             ->get()
             ->getRowArray();
 
-        if (!$wallet || $wallet['uw_total_token'] < $requiredToken) {
+        if (!$wallet || $wallet['uw_total_token'] < $game['game_token']) {
             return redirect()->back()->with('error', 'Not enough tokens.');
         }
-
-        $newBalance = $wallet['uw_total_token'] - $requiredToken;
-
         $this->db->table('user_wallet')
             ->where('cust_Id', $userId)
-            ->update(['uw_total_token' => $newBalance]);
+            ->update([
+                'uw_total_token' => $wallet['uw_total_token'] - $game['game_token']
+            ]);
 
         return view('game_play', [
-            'folderName'     => $folderName,
-            'mode'           => 'full',
-            'remainingToken' => $newBalance
+            'folderName' => $folderName,
+            'mode' => 'full'
         ]);
     }
+
 
     // -------------------------------Api---------------------------------
     public function saveScore()
     {
-        $userId = session()->get('user_id');
+        $userId   = session()->get('user_id');
+        $gameMode = session()->get('game_mode');
+        $gameId   = session()->get('game_id');
 
-        if (!$userId) {
+        if ($gameMode !== 'participate') {
             return $this->response->setJSON([
                 'status' => false,
-                'message' => 'User not logged in'
+                'message' => 'Demo mode score not saved'
             ]);
         }
-        $json = $this->request->getJSON(true);
-        $gameId = $json['game_id'] ?? null;
-        $score  = $json['score'] ?? null;
-        $time   = $json['time'] ?? 0;  
-        if (!$gameId || !$score ||!$time) {
+
+        if (!$userId || !$gameId) {
             return $this->response->setJSON([
                 'status' => false,
-                'message' => 'Game id ,score and time are required'
+                'message' => 'Invalid session'
             ]);
         }
+
+        $json  = $this->request->getJSON(true);
+        $score = $json['score'] ?? null;
+        $time  = $json['time'] ?? null;
+
+        if ($score === null || $time === null) {
+            return $this->response->setJSON([
+                'status' => false,
+                'message' => 'Score and time required'
+            ]);
+        }
+
         $playerModel = new \App\Models\PlayersModel();
-        $data = [
+
+        $playerModel->insert([
             'game_Id' => $gameId,
             'cust_Id' => $userId,
             'player_date' => date('Y-m-d'),
             'player_score' => $score,
-            'player_time' => $time,  
+            'player_time' => $time,
             'player_rank' => 0,
             'player_winning_status' => 0,
             'player_status' => 1,
             'player_created_at' => date('Y-m-d H:i:s'),
             'player_created_by' => $userId
-        ];
-        $playerModel->insert($data);
+        ]);
+
         return $this->response->setJSON([
             'status' => true,
-            'message' => 'Score saved successfully',
-            'data' => $data
+            'message' => 'Participate score saved'
         ]);
     }
+
 
 
 
