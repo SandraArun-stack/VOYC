@@ -65,7 +65,7 @@
                                         <p>My Profile</p>
                                     </a>
                                     <a href="<?= base_url('mywallet'); ?>">
-                                        <p>My Wallet</p>
+                                        <p>My Subscriptions</p>
                                     </a>
                                     <a href="<?= base_url('myredemption'); ?>">
                                         <p>My Redemption</p>

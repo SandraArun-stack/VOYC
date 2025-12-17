@@ -4,8 +4,8 @@
             <div id="messageBox" class="alert alert-success" style="display: none;"></div>
             <div class="d-flex align-items-center justify-content-between mb-4">
                 <div class="heading-content-my-order">
-                    <h4>My Wallet</h4>
-                    <small class="text-muted">Manage Wallet Details</small>
+                    <h4>My Subscriptions</h4>
+                    <small class="text-muted">Manage Subscriptions Details</small>
                 </div>
             </div>
             <div class="row mb-3 align-items-center">
