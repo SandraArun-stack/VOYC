@@ -124,34 +124,91 @@
 
             });
 
+            let applied_lb_Id = null;
             //  Step 3: Collect all form data
             var formData = $(this).serializeArray();
             formData.push({ name: 'products', value: JSON.stringify(cartItems) });
             formData.push({ name: 'lb_Id', value: applied_lb_Id });
 
             //  Step 4: Send AJAX request
-            $.ajax({
-                url: "<?= base_url('orderdetails/placeOrder') ?>",
-                method: "POST",
-                data: formData,
-                dataType: "json",
-                beforeSend: function () {
-                    $('html, body').animate({ scrollTop: 0 }, 'fast');
-                    showMessage('⏳ Placing your order...', 'warning');
+            // $.ajax({
+            //     url: "<?= base_url('orderdetails/placeOrder') ?>",
+            //     method: "POST",
+            //     data: formData,
+            //     dataType: "json",
+            //     beforeSend: function () {
+            //         $('html, body').animate({ scrollTop: 0 }, 'fast');
+            //         showMessage('⏳ Placing your order...', 'warning');
 
+            //     },
+            //     success: function (response) {
+            //         if (response.status === 'success') {
+            //             showMessage('' + response.message, 'success');
+            //             setTimeout(function () {
+            //                 window.location.href = "<?= base_url('') ?>";
+            //             }, 2000);
+            //         } else {
+            //             showMessage(' ' + response.message, 'error');
+            //         }
+            //     },
+            //     error: function () {
+            //         showMessage('Something went wrong while placing your order!', 'error');
+            //     }
+            // });
+            // Step 4: Create Razorpay order first
+           
+            $.ajax({
+                url: "<?= base_url('payment/createRazorpayOrder') ?>",
+                method: "POST",
+                data: {
+                    amount: finalOrderTotal, // in rupees
+                    <?= csrf_token() ?>: "<?= csrf_hash() ?>"
                 },
-                success: function (response) {
-                    if (response.status === 'success') {
-                        showMessage('' + response.message, 'success');
-                        setTimeout(function () {
-                            window.location.href = "<?= base_url('') ?>";
-                        }, 2000);
-                    } else {
-                        showMessage(' ' + response.message, 'error');
+                dataType: "json",
+                success: function (res) {
+
+                    if (res.status !== 'success') {
+                        showMessage(res.message, 'error');
+                        return;
                     }
-                },
-                error: function () {
-                    showMessage('Something went wrong while placing your order!', 'error');
+
+                    var options = {
+                        key: res.key,
+                        amount: res.amount,
+                        currency: "INR",
+                        name: "Voyc",
+                        description: "Order Payment",
+                        order_id: res.order_id,
+
+                        handler: function (response) {
+
+                            // ✅ Payment success → now place order
+                            formData.push({ name: 'razorpay_payment_id', value: response.razorpay_payment_id });
+                            formData.push({ name: 'razorpay_order_id', value: response.razorpay_order_id });
+                            formData.push({ name: 'razorpay_signature', value: response.razorpay_signature });
+
+                            // 🔥 CALL YOUR EXISTING placeOrder()
+                            $.ajax({
+                                url: "<?= base_url('orderdetails/placeOrder') ?>",
+                                method: "POST",
+                                data: formData,
+                                dataType: "json",
+                                success: function (response) {
+                                    if (response.status === 'success') {
+                                        showMessage(response.message, 'success');
+                                        setTimeout(() => {
+                                            window.location.href = "<?= base_url('') ?>";
+                                        }, 2000);
+                                    } else {
+                                        showMessage(response.message, 'error');
+                                    }
+                                }
+                            });
+                        }
+                    };
+
+                    var rzp = new Razorpay(options);
+                    rzp.open();
                 }
             });
 
@@ -312,54 +369,14 @@
                 alertDiv.addClass('d-none').html('');
             }, 3000);
         }
-       
-        // function applyDiscount(discountPercent) {
 
-        //     let newSubtotal = 0;
-
-        //     $(".checkout__order__product ul li").each(function (index, el) {
-        //         if (index === 0) return; // skip header
-
-        //         let price = parseFloat($(el).data("price"));
-        //         let qtyMatch = $(el).text().match(/Qty: (\d+)/);
-        //         let quantity = qtyMatch ? parseInt(qtyMatch[1]) : 1;
-
-        //         let originalTotal = price * quantity;
-        //         let discountedTotal = originalTotal - (originalTotal * discountPercent / 100);
-
-        //         newSubtotal += discountedTotal;
-
-        //         // Update UI inside <li>
-        //         $(el).find("span").last().html(`
-        //         <span> &nbsp;${discountPercent}% OFF</span>
-        //     <span style="text-decoration: line-through; color:#999;">
-        //         ₹${originalTotal.toFixed(2)}
-        //     </span><br>
-        //     <span style="color:#28a745; font-weight:bold; font-size:15px;">
-        //         ₹${discountedTotal.toFixed(2)}
-        //     </span>
-        // `);
-
-        //         // Update data attribute so final order calculation uses new value
-        //         $(el).attr("data-price", (discountedTotal / quantity).toFixed(2));
-        //     });
-
-        //     // Update totals in summary
-        //     // $(".checkout__order__total ul li:eq(0) span").text(${discountPercent}"% OFF" &nbsp; "₹ " + newSubtotal.toFixed(2));
-        //     $(".checkout__order__total ul li:eq(0) span").html(
-        //         `${discountPercent}% OFF &nbsp; ₹ ${newSubtotal.toFixed(2)}`
-        //     );
-        //     $(".checkout__order__total ul li:eq(1) span").text("₹ " + newSubtotal.toFixed(2));
-
-        //     // Update hidden input
-        //     $("#order-total").val(newSubtotal.toFixed(2));
-        // }
+        
 
 
         let appliedDiscountPercent = 0;   // default: no discount
         let finalGrandTotal = 0;
 
-       
+
         function applyDiscount(discountPercent) {
 
             appliedDiscountPercent = parseFloat(discountPercent) || 0;
@@ -378,7 +395,9 @@
                 );
 
                 let originalTotal = originalPrice * quantity;
+                // alert(originalTotal);
                 let discountAmount = (originalTotal * appliedDiscountPercent) / 100;
+                alert(discountAmount);
                 let discountedTotal = originalTotal - discountAmount;
 
                 originalSubtotal += originalTotal;
@@ -409,23 +428,23 @@
             if (appliedDiscountPercent > 0) {
                 $("#subtotal span").html(`
                
-            <span style="white-space:nowrap;">
-                <del style="color:#999;font-size:12px;">
-                    ₹ ${originalSubtotal.toFixed(2)}
-                </del>
-                &nbsp;
-                <strong>₹ ${newSubtotal.toFixed(2)}</strong>
-            </span>
-             <p style="font-size: 17px;
-                        font-weight: 600;
-                        color: #ee2020;
-                        padding:0;
-                        text-align:right;
-                        margin:0;">
-                    ${appliedDiscountPercent}% OFF
-                </p>
-            
-        `);
+                <span style="white-space:nowrap;">
+                    <del style="color:#999;font-size:12px;">
+                        ₹ ${originalSubtotal.toFixed(2)}
+                    </del>
+                    &nbsp;
+                    <strong>₹ ${newSubtotal.toFixed(2)}</strong>
+                </span>
+                <p style="font-size: 17px;
+                            font-weight: 600;
+                            color: #ee2020;
+                            padding:0;
+                            text-align:right;
+                            margin:0;">
+                        ${appliedDiscountPercent}% OFF
+                    </p>
+                
+            `);
             } else {
                 $("#subtotal span").text("₹ " + newSubtotal.toFixed(2));
             }
