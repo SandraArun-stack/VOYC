@@ -115,13 +115,17 @@
                                         <?php
                                         $count++;
                                     endforeach;
+                                    
                                 else:
                                     ?>
                                     <li>Your cart is empty.</li>
                                 <?php endif; ?>
-                            </ul>
-                        </div>
+                                <li id="shipping_charge_order_detail">Shipping Charge <span>₹ 0.00</span></li>
 
+                            </ul>
+                            
+                        </div>
+                        
                         <!-- Order Totals -->
                         <div class="checkout__order__total">
                             <ul>

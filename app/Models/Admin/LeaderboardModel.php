@@ -14,6 +14,7 @@ class LeaderboardModel extends Model
         'lb_score',
         'lb_rank',
         'lb_discount',
+        'lb_coupen_code',
         'lb_status',
         'player_Id',
         'lb_created_by',

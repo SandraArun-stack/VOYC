@@ -14,12 +14,14 @@ use Razorpay\Api\Api;
 use Razorpay\Api\Errors\SignatureVerificationError;
 class OrderDetails extends Controller
 {
+        protected $db;
     protected $session;
     protected $request;
     protected $orderModel;
 
     public function __construct()
     {
+        $this->db = \Config\Database::connect();
         $this->session = \Config\Services::session();
         $this->request = \Config\Services::request();
         $this->orderModel = new OrderDetailsModel();
@@ -647,6 +649,45 @@ class OrderDetails extends Controller
             "status" => "success",
             "message" => "Order Placed Successfully at ₹0"
         ]);
+    }
+
+    // public function getShippingCharge()
+    // {
+
+    //     $rows = $db->table('common_table')
+    //         ->whereIn('field', [
+    //             'minimum_amount_for_shipping_charge',
+    //             'shipping_charge'
+    //         ])
+    //         ->get()
+    //         ->getResultArray();
+
+    //     $data = [];
+    //     foreach ($rows as $row) {
+    //         $data[$row['field']] = (float) $row['value'];
+    //     }
+
+    //     return $this->response->setJSON([
+    //         'status' => 'success',
+    //         'data' => $data
+    //     ]);
+    // }
+
+    public function getShippingCharge()
+    {
+        // $db = \Config\Database::connect();
+
+        $shippingData = $this->db->table('common_table')
+            ->whereIn('field', ['minimum_amount_for_shipping_charge', 'shipping_charge'])
+            ->get()
+            ->getResultArray();
+
+        $shipping = [];
+        foreach ($shippingData as $row) {
+            $shipping[$row['field']] = $row['value'];
+        }
+
+        return json_encode($shipping);
     }
 
 }

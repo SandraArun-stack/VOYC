@@ -89,6 +89,8 @@
                 $('html, body').animate({ scrollTop: $('#checkout__form').offset().top - 300 }, 500);
                 return false;
             }
+
+            
             var finalOrderTotal = $("#order-total").val();
 
             // Step 2: Collect cart items
@@ -156,7 +158,7 @@
             //     }
             // });
             // Step 4: Create Razorpay order first
-           
+
             $.ajax({
                 url: "<?= base_url('payment/createRazorpayOrder') ?>",
                 method: "POST",
@@ -370,7 +372,7 @@
             }, 3000);
         }
 
-        
+
 
 
         let appliedDiscountPercent = 0;   // default: no discount
@@ -457,5 +459,16 @@
             finalGrandTotal = newSubtotal;
         }
 
+        function fetchShippingData() {
+            return $.ajax({
+                url: base_url + 'orderdetails/getShippingCharge', // Adjust the URL accordingly
+                method: 'GET',
+                dataType: 'json',
+            });
+        }
+
+
     });
+
+
 </script>
