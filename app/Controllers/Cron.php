@@ -1,21 +1,23 @@
 <?php
 
-namespace App\Commands;
+namespace App\Controllers;
 
-use CodeIgniter\CLI\BaseCommand;
-use CodeIgniter\CLI\CLI;
 use App\Models\Admin\GameMappingModel;
 use App\Models\Admin\PlayersModel;
 use App\Models\Admin\LeaderboardModel;
+use CodeIgniter\Controller;
 
-class Cron extends BaseCommand
+class Cron extends Controller
 {
-    protected $group       = 'cron';
-    protected $name        = 'cron:updateLeaderboard';
-    protected $description = 'Update leaderboard for the last 24 hours';
-
-    public function run(array $params)
+    public function updateLeaderboard()
     {
+        $key = $this->request->getGet('key');
+        $secret = getenv('CRON_SECRET_KEY');
+
+        if ($key !== $secret) {
+            return $this->response->setStatusCode(403)->setBody('Unauthorized');
+        }
+
         $gameMapping = new GameMappingModel();
         $playersModel = new PlayersModel();
         $leaderboardModel = new LeaderboardModel();
@@ -24,16 +26,13 @@ class Cron extends BaseCommand
         $last24Hours = date('Y-m-d H:i:s', strtotime('-24 hours'));
         $lbDate = date('Y-m-d');
 
-        // Prevent duplicate run
         if ($leaderboardModel->where('lb_date', $lbDate)->countAllResults() > 0) {
-            CLI::write('Leaderboard already updated today', 'yellow');
-            return;
+            return 'Leaderboard already updated';
         }
 
         $mapping = $gameMapping->orderBy('gm_date', 'DESC')->first();
         if (!$mapping) {
-            CLI::error('No mapping found');
-            return;
+            return 'No mapping found';
         }
 
         $limit = (int) $mapping['gm_leaderboard_count'];
@@ -47,23 +46,55 @@ class Cron extends BaseCommand
             ->findAll();
 
         if (empty($players)) {
-            CLI::write('No players found in last 24 hours', 'yellow');
-            return;
+            return 'No players in last 24 hours';
+        }
+        if ($leaderboardModel->where('lb_date', date('Y-m-d'))->countAllResults() > 0) {
+            return 'Already executed today';
         }
 
+        $today = date('Y-m-d');
+        $todayCount = $leaderboardModel
+            ->where('DATE(lb_created_at)', $today)
+            ->countAllResults();
+
+        $freeTeeCount = round(
+            ($mapping['gm_leaderboard_count'] * $mapping['gm_free_tee_percentage']) / 100
+        );
+// print_r($freeTeeCount); exit;
+        $rankCounter = 0;
+
         foreach ($players as $p) {
+
+            $rankCounter++;
+
+            // Decide status
+            $lbStatus = ($rankCounter <= $freeTeeCount) ? '1' : '2';
+
+            $todayCount++;
+            $dailyNumber = str_pad($todayCount, 4, '0', STR_PAD_LEFT);
+
             $leaderboardModel->insert([
-                'player_Id'      => $p['player_Id'],
-                'lb_rank'        => $p['player_rank'],
-                'lb_score'       => $p['player_score'],
-                'lb_date'        => $lbDate,
-                'lb_status'      => 1,
-                'lb_created_by'  => 0,
-                'lb_created_at'  => date('Y-m-d H:i:s')
+                'player_Id' => $p['player_Id'],
+                'cust_Id' => $p['cust_Id'],
+                'game_Id' => $p['game_Id'],
+
+                'lb_coupen_code' => 'VOYC-' . date('Ymd') . '-' . $dailyNumber,
+                'lb_discount' => $mapping['gm_extra_discount'],
+                'lb_redeemed_status' => 1,
+
+                'lb_rank' => $p['player_rank'],
+                'lb_score' => $p['player_score'],
+
+                'lb_status' => $lbStatus, // ✅ IMPORTANT
+                'lb_date' => date('Y-m-d'),
+
+                'lb_created_by' => 1,
+                'lb_created_at' => date('Y-m-d H:i:s')
             ]);
         }
 
-        CLI::write('Leaderboard updated successfully for the last 24 hours', 'green');
+        return 'Leaderboard updated for last 24 hours';
     }
-}
 
+
+}

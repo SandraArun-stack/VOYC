@@ -155,6 +155,7 @@ $routes->post('orderdetails/placeOrder', 'OrderDetails::placeOrder');
 $routes->post('orderdetails/placeFreeOrder', 'OrderDetails::placeFreeOrder');
 $routes->post('orderdetails/saveAddress', 'OrderDetails::saveAddress');
 $routes->post('orderdetails/validateCoupon', 'OrderDetails::validateCoupon');
+$routes->get('orderdetails/getShippingCharge', 'OrderDetails::getShippingCharge');
 
 //my wallet
 $routes->get('mywallet', 'MyWallet::index');
