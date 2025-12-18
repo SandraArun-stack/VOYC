@@ -20,7 +20,7 @@ class SettingsModel extends Model
             'sleeve_Customization_Price',
             'shipping_charge',
             'minimum_amount_for_shipping_charge',
-            'token_price_for_per_piece',
+            'token_price_for_per_piece'
             // 'token_price'
         ];
 
@@ -32,7 +32,7 @@ class SettingsModel extends Model
             'sleeve_Customization_Price' => '',
             'shipping_charge' => '',
             'minimum_amount_for_shipping_charge' => '',
-            'token_price_for_per_piece' => '',
+            'token_price_for_per_piece' => ''
             // 'token_price' => ''
         ];
 
