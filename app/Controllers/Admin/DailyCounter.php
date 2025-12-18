@@ -1,11 +1,11 @@
 <?php
 namespace App\Controllers\Admin;
- 
+
 use App\Controllers\BaseController;
 use App\Models\Admin\DailyCounterModel;
 use App\Models\Admin\GamesModel;
 use App\Models\Admin\CustomerModel;
- 
+
 class DailyCounter extends BaseController
 {
     public function __construct()
@@ -13,7 +13,7 @@ class DailyCounter extends BaseController
         $this->session = session();
         $this->model = new DailyCounterModel();
         $this->gameModel = new GamesModel();
-        $this->customerModel = new CustomerModel(); 
+        $this->customerModel = new CustomerModel();
     }
     public function index()
     {
@@ -21,10 +21,10 @@ class DailyCounter extends BaseController
             return redirect()->to('admin');
         }
         $template = view('Admin/common/header');
-		$template .= view('Admin/common/leftmenu');
+        $template .= view('Admin/common/leftmenu');
         $template .= view('Admin/dailycounterlist');
-		$template .= view('Admin/common/footer');
-	    $template .= view('Admin/page_scripts/dailycounterjs');
+        $template .= view('Admin/common/footer');
+        $template .= view('Admin/page_scripts/dailycounterjs');
         return $template;
     }
     public function ajaxList()
@@ -45,8 +45,9 @@ class DailyCounter extends BaseController
             $row['dgc_player_count'] = $row['dgc_player_count'] ?? '0';
             $row['dgc_winner_count'] = $row['dgc_winner_count'] ?? '0';
             $row['dgc_winning_percentage'] = isset($row['dgc_winning_percentage'])
-            ?(int) $row['dgc_winning_percentage'] . '%'
-            : '0%';
+                ? $row['dgc_winning_percentage'] . '%'
+                : '0%';
+
         }
 
         return $this->response->setJSON([
