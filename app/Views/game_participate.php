@@ -18,13 +18,15 @@
             </div>
 
             <?php if ($userToken >= $game['game_token']): ?>
-                <a href="<?= base_url('play_game/' . $game['game_name'] . '?game_id=' . $game['game_Id']); ?>" 
-                    class="game-btn ml-20" id="start_game_btn">
+                <a href="<?= base_url(
+                    'play_game/' . $game['game_name'] . '?game_id=' . $game['game_Id']
+                ); ?>" class="game-btn ml-20">
                     <i class="fa fa-play"></i> Play Now
                 </a>
             <?php else: ?>
                 <p class="not-enough-token-msg">Not enough tokens to play this game.</p>
             <?php endif; ?>
+
         </div>
     </div>
 

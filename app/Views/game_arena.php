@@ -29,10 +29,10 @@
                 </p>
 
                 <div class="game-btn-row">
-                    <a href="<?= base_url('play_game/' . $todayGame['game_name']); ?>"
+                    <!-- <a href="<?= base_url('play_game/' . $todayGame['game_name']); ?>"
                         class="game-btn">
                         <i class="fa fa-play"></i> Try Now
-                    </a>
+                    </a> -->
 
                     <a href="<?= base_url('participate/' . $todayGame['game_Id']); ?>" class="game-btn">
                         <i class="fa fa-users"></i> Participate

@@ -9,7 +9,7 @@ class GamesModel extends Model
     protected $primaryKey = 'game_Id';
     protected $allowedFields = [
         'game_name',
-        'game_folder_name',
+        'game_demo_name',
         'game_details',
         'game_status',
         'game_created_by',
