@@ -13,7 +13,7 @@ class MyGamesModel extends Model
     protected $allowedFields = [
         'game_Id',
         'cust_Id',
-        'player_date',
+        // 'player_date',
         'player_score',
         'player_rank',
         'player_winning_status',
