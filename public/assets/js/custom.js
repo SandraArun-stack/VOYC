@@ -8,24 +8,24 @@ window.onload = function () {
 };
 
 $(document).ready(function () {
-    // AOS.refreshHard();
 
-    var currentUrl = window.location.href.toLowerCase();
+    var path = window.location.pathname.toLowerCase().replace(/\/+$/, "");
 
-    if (currentUrl.includes("women")) {
-        $(".header__menu ul li").removeClass("active");
+    $(".header__menu ul li").removeClass("active");
+
+    if (path.includes("women")) {
         $("#women").parent().addClass("active");
-    } else if (currentUrl.includes("men")) {
-        $(".header__menu ul li").removeClass("active");
+    } 
+    else if (path.includes("men")) {
         $("#men").parent().addClass("active");
-    } else if (currentUrl.includes("game_arena")) {
-        $(".header__menu ul li").removeClass("active");
+    } 
+    else if (path.includes("game_arena")) {
         $("#game_arena").parent().addClass("active");
-    } else if (currentUrl.includes("contact")) {
-        $(".header__menu ul li").removeClass("active");
+    } 
+    else if (path.includes("contact")) {
         $("#contact").parent().addClass("active");
-    } else {
-        $(".header__menu ul li").removeClass("active");
+    } 
+    else if (path === "" || path === "/home") {
         $("#home").parent().addClass("active");
     }
 
@@ -33,6 +33,7 @@ $(document).ready(function () {
         $(".header__menu ul li").removeClass("active");
         $(this).parent().addClass("active");
     });
+
 
     $("#leader_board").on("click", function (e) {
         e.preventDefault();
@@ -240,7 +241,7 @@ $(document).ready(function () {
             $alertBox
                 .removeClass('d-none alert-success')
                 .addClass('alert alert-danger')
-                .text('All mandatory fields are required.')
+                .text('All Required Fields Must Be Completed.')
                 .fadeIn();
 
             setTimeout(() => {
