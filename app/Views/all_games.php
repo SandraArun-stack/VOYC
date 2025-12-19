@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Game Arena</title>
-</head>
-<body>
+
     <div class="page-container" style="padding-top: 120px;">
         <h2 class="page-title" style="text-align: center; margin-bottom: 25px; font-size: 28px; font-weight: 700;">All Games</h2>
 
@@ -31,5 +26,3 @@
             <?php endif; ?>
         </div>
     </div>
-</body>
-</html>
