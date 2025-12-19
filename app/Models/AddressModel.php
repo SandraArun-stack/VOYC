@@ -7,7 +7,7 @@ class AddressModel extends Model
 	protected $table = 'address';
     protected $primaryKey = 'add_Id';
     protected $allowedFields = [
-        'add_Name', 'add_Email', 'add_Phone', 'add_BuldingNo', 'add_Street',
+        'add_Name', 'add_Email', 'add_Phone', 'add_BuildingNo', 'add_Street',
         'add_Landmark', 'add_City', 'add_State', 'add_Pincode',
         'add_CustId', 'add_Default','add_Status','add_createdon','add_createdby',
 		'add_modifyon','add_modifyby','add_phcode'

@@ -172,7 +172,7 @@
                     $('#delivery-details').html(`
                     <p><strong>Name:</strong> ${address.add_Name}</p>
                     <p>
-                        ${address.add_BuldingNo || ''} ${address.add_Street || ''},<br>
+                        ${address.add_BuildingNo || ''} ${address.add_Street || ''},<br>
                         ${address.add_Landmark || ''},<br>
                         ${address.add_City || ''}, ${address.add_State || ''},<br>
                         ${address.add_Pincode || ''}

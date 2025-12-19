@@ -73,7 +73,7 @@
                                             <label class="col-sm-2 col-form-label">House name / Building No. <span style="color: red;">*</span></label>
                                             <div class="col-sm-6">
                                                 <input type="text" class="form-control" name="hname" id="hname" maxlength="30" autocomplete="off"
-                                                  value="<?= isset($address) ? ($address['add_BuldingNo']) : '' ?>"   placeholder="Enter housename/building No."  required>
+                                                  value="<?= isset($address) ? ($address['add_BuildingNo']) : '' ?>"   placeholder="Enter housename/building No."  required>
                                             <span class="text-danger error-msg" id="error-mobile"></span>
 											</div>
                                         </div>

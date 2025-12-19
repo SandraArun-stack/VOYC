@@ -80,7 +80,7 @@
 									</div>
 									<div class="card-block">
 										<p><?= esc($rows['add_Name']); ?> <br>
-											<?= esc($rows['add_BuldingNo']); ?> , <?= esc($rows['add_Landmark']); ?><br>
+											<?= esc($rows['add_BuildingNo']); ?> , <?= esc($rows['add_Landmark']); ?><br>
 											<?= esc($rows['add_Street']); ?> , <?= esc($rows['add_City']); ?><br>
 											<?= esc($rows['add_State']); ?> , <?= esc($rows['add_Pincode']); ?><br>
 											<?= esc($rows['add_Phone']); ?>
