@@ -108,15 +108,15 @@
                                             </span>
                                         </td>
                                     </tr>
-
                                 <?php endforeach; ?>
-
                             </tbody>
-                        <?php else: ?>
-                            <p class="empty-cart-block">Your cart is empty.</p>
                         <?php endif; ?>
                     </table>
+                    
                 </div>
+                <p class="empty-cart-block text-center"style="<?= empty($cartItems) ? 'display:block;' : 'display:none;' ?>">
+                    Your cart is empty.
+                </p>
             </div>
         </div>
         <div class="row">

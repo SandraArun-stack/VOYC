@@ -102,7 +102,8 @@
             $.ajax({
                 url: "<?= base_url('cart/remove') ?>",
                 method: "POST",
-               data: { cart_Id: cartId },
+                data: { cart_Id: cartId },
+                dataType: "json",
                 success: function (response) {
                     if (response.status === 'success') {
                         row.remove();
@@ -111,11 +112,12 @@
 
                         let cartCount = response.cartCount ?? 0;
 
-                        $("#headerCartCount").text(cartCount);
+                        $("#cartCount").text(cartCount);
 
                         if (cartCount == 0) {
 
                             $('.cart__total__procced').closest('.col-lg-4').hide();
+                            $('.shop__cart__table table').remove();
 
                             $('.empty-cart-block').show();
                         }

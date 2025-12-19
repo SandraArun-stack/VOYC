@@ -88,7 +88,7 @@
                 <div class="col-xl-7 col-lg-7 d-flex align-items-center justify-content-center text-center">
                     <nav class="header__menu">
                         <ul>
-                            <li class=" "><a href="<?= base_url(' '); ?>" id="home">Home</a></li>
+                            <li class=" "><a href="<?= base_url(); ?>" id="home">Home</a></li>
                             <li><a href="<?= base_url('women'); ?>" id="women">Women’s</a></li>
                             <li><a href="<?= base_url('men'); ?>" id="men">Men’s</a></li>
                             <!-- <li><a href="<?= base_url('game_arena'); ?>" id="game_arena">Game Arena</a></li> -->
@@ -215,7 +215,7 @@
                     <div class="modal-header border-0 position-relative p-2">
                         <button type="button" class="btn border-0 bg-transparent position-absolute login_close"
                             data-bs-dismiss="modal" aria-label="Close">
-                            <i class="bi bi-x-square text-dark"></i>
+                            <i class="bi bi-x-lg text-dark"></i></i>
                         </button>
 
                         <div class="d-flex flex-column justify-content-center align-items-center w-100 pt-3 pb-0">
@@ -264,7 +264,7 @@
                     <div class="modal-header border-0 position-relative p-2">
                         <button type="button" class="btn border-0 bg-transparent position-absolute login_close"
                             data-bs-dismiss="modal" aria-label="Close">
-                            <i class="bi bi-x-square text-dark"></i>
+                            <i class="bi bi-x-lg text-dark"></i>
                         </button>
 
                         <div class="d-flex flex-column justify-content-center align-items-center w-100 pt-3 pb-0">
@@ -319,7 +319,7 @@
                     <div class="modal-header border-0 position-relative p-2">
                         <button type="button" class="btn border-0 bg-transparent position-absolute login_close"
                             data-bs-dismiss="modal" aria-label="Close">
-                            <i class="bi bi-x-square text-dark"></i>
+                            <i class="bi bi-x-lg text-dark"></i>
                         </button>
 
                         <div class="d-flex flex-column justify-content-center align-items-center w-100 pt-3 pb-0">
