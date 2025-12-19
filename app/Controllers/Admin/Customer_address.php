@@ -117,7 +117,7 @@ class Customer_address extends BaseController
 					if (empty($add_id) && !empty($cust_id)){
 						$data = [
 						'add_Name'          	=> $custname,
-						'add_BuldingNo'         => $hname,
+						'add_BuildingNo'         => $hname,
 						'add_Landmark'	    	=> $landmark,
 						'add_Street'     		=> $street,
 						'add_City'				=> $city,
@@ -144,7 +144,7 @@ class Customer_address extends BaseController
 						'add_Id'				=> $add_id,
 						'add_CustId'			=> $cust_id,
 						'add_Name'          	=> $custname,
-						'add_BuldingNo'         => $hname,
+						'add_BuildingNo'         => $hname,
 						'add_Landmark'	    	=> $landmark,
 						'add_Street'     		=> $street,
 						'add_City'				=> $city,
