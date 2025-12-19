@@ -7,7 +7,7 @@
                     <div class="d-flex align-items-center justify-content-between mb-2">
                         <div class="heading-content-my-order justify-items-end">
                             <h4>All Orders</h4>
-                            <small>From any time</small>
+                            <small>From All Time</small>
                         </div>
 
                         <div class="search-box position-relative">
