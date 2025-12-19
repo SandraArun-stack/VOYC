@@ -26,114 +26,105 @@ class GameArena extends Controller
         $this->db = \Config\Database::connect();
     }
 
-    public function index()
-    {
-        $session = session();
-        $userId = $session->get('user_id');
-        $cartCount = $this->CartModel->getCartItemCount($userId);
+    public function index($gameId)
+{
+    $session = session();
+    $userId = $session->get('user_id');
 
-        //leaderboard Count
-        $today = date('Y-m-d');
-        $todayLimit = $this->GameMappingModel->getTodayLeaderboardCount($today);
-        $todayLimit = intval($todayLimit);
+    // Fetch today active mapped game ONLY
+    $todayGame = $this->GameMappingModel
+        ->getTodayActiveGameByGameId($gameId);
 
-        $result = $this->PlayersModel->getTodayPlayers($today, $todayLimit, session()->get('user_id'));
-        // $todayGame = $this->GameMappingModel->getTodayActiveGame();
-        $todayGame = $this->GameMappingModel->getTodayActiveGame();
-
-        $data = [
-            'cartCount' => $cartCount,
-            'players' => $result['players'],     
-            'lastPlayer' => $result['lastPlayer'],
-            'todayGame' => $todayGame
-        ];
-        return view('common/header', $data)
-            . view('game_arena')
-            . view('common/footer')
-            . view('pagescripts/game_arenajs');
+    if (!$todayGame) {
+        return redirect()->to(base_url('game_arena'))
+            ->with('error', 'Game not available today');
     }
 
-    public function allGames()
-    {
-        $games = $this->GamesModel->whereIn('game_status', [1, 2])->findAll();
-        $todayGames = $this->GameMappingModel
-            ->where('gm_date', date('Y-m-d'))
-            ->where('gm_status', 1)
-            ->findAll();
-        $activeGameIds = [];
-        foreach ($todayGames as $tg) {
-            $activeGameIds[] = $tg['game_Id'];
-        }
-        $lastPlayer = null;
-        return view('common/header', [
-                'lastPlayer' => $lastPlayer
-            ])
-            . view('all_games', [
-                'games' => $games,
-                'activeGameIds' => $activeGameIds  
-            ])
-            . view('common/footer');
-    }
-// public function participate($gameId)
-// {
-    
-//     if (!session()->get('user_id')) {
-//         return redirect()->to(base_url());
-//     }
+    $cartCount = $this->CartModel->getCartItemCount($userId);
 
-//     $userId = session()->get('user_id');
-//     $game = $this->GamesModel->where('game_Id', $gameId)
-//         ->whereIn('game_status', [1, 2])
-//         ->first();
+    // Leaderboard count
+    $today = date('Y-m-d');
+    $todayLimit = (int) $this->GameMappingModel
+        ->getTodayLeaderboardCount($today);
 
-//     if (!$game) {
-//         return redirect()->back()->with('error', 'Game not found.');
-//     }
-//     $wallet = $this->db->table('user_wallet')
-//         ->where('cust_Id', $userId)
-//         ->get()
-//         ->getRowArray();
+    $result = $this->PlayersModel
+        ->getTodayPlayers($today, $todayLimit, $userId);
 
-//     $userToken = $wallet['uw_total_token'] ?? 0;
+    $data = [
+        'cartCount' => $cartCount,
+        'players'   => $result['players'],
+        'lastPlayer'=> $result['lastPlayer'],
+        'todayGame' => $todayGame
+    ];
 
-//     $data = [
-//         'game' => $game,
-//         'userToken' => $userToken
-//     ];
+    return view('common/header', $data)
+        . view('game_arena')
+        . view('common/footer')
+        . view('pagescripts/game_arenajs');
+}
 
-//     return view('game_participate', $data);
-// }
+
+  public function allGames()
+{
+    $games = $this->GamesModel
+        ->whereIn('game_status', [1, 2])
+        ->findAll();
+
+    $todayGames = $this->GameMappingModel
+        ->select('game_Id')
+        ->where('gm_date', date('Y-m-d'))
+        ->where('gm_status', 1)
+        ->findAll();
+
+    $activeGameIds = array_column($todayGames, 'game_Id');
+
+    return view('common/header', ['lastPlayer' => null])
+        . view('all_games', [
+            'games' => $games,
+            'activeGameIds' => $activeGameIds
+        ])
+        . view('common/footer');
+}
+
+
+
     public function participate($gameId)
-    {
-        if (!session()->get('user_id')) {
-            return redirect()->to(base_url());
-        }
-
-        $userId = session()->get('user_id');
-        $game = $this->GamesModel->where('game_Id', $gameId)
-            ->whereIn('game_status', [1, 2])
-            ->first();
-
-        if (!$game) {
-            return redirect()->back()->with('error', 'Game not found.');
-        }
-        $wallet = $this->db->table('user_wallet')
-            ->where('cust_Id', $userId)
-            ->get()
-            ->getRowArray();
-
-        $userToken = $wallet['uw_total_token'] ?? 0;
-        $lastPlayer = null;
-
-        $data = [
-            'game' => $game,
-            'userToken' => $userToken,
-            'lastPlayer' => $lastPlayer
-        ];
-        return view('common/header', $data)
-            . view('game_participate', $data)
-            . view('common/footer');
+{
+    if (!session()->get('user_id')) {
+        return redirect()->to(base_url());
     }
 
+    $userId = session()->get('user_id');
+
+    // Validate today's active game mapping
+    $todayGame = $this->GameMappingModel
+        ->getTodayActiveGameByGameId($gameId);
+
+    if (!$todayGame) {
+        return redirect()->back()
+            ->with('error', 'Game is not active today');
+    }
+
+    // Set participate mode
+    session()->set([
+        'game_mode' => 'participate',
+        'game_id'   => $gameId
+    ]);
+
+    $wallet = $this->db->table('user_wallet')
+        ->where('cust_Id', $userId)
+        ->get()
+        ->getRowArray();
+
+    $data = [
+        'game'       => $todayGame, // IMPORTANT
+        'userToken'  => $wallet['uw_total_token'] ?? 0,
+        'lastPlayer' => null
+    ];
+
+    return view('common/header', $data)
+        . view('game_participate', $data)
+        . view('common/footer');
+}
 
 }

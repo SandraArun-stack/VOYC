@@ -11,6 +11,7 @@ class WalletModel extends Model
     protected $allowedFields = [
         'cust_Id',
         'usersub_Id',
+        'sp_Id',
         'uw_expiry',
         'uw_subscription_token',
         'uw_purchased_token',

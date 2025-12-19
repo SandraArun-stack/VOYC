@@ -378,3 +378,5 @@ $routes->get('usersubscriptions/getById/(:num)', 'Admin\UserSubscriptions::getBy
 
 //cron
 $routes->get('cron/updateLeaderboard', 'Cron::updateLeaderboard');
+$routes->get('cron/cronPerHour', 'Cron::cronPerHour');
+$routes->get('cron/updateGameMapping', 'Cron::updateGameMapping');
