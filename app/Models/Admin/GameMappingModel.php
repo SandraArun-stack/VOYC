@@ -74,16 +74,22 @@ class GameMappingModel extends Model
         return $row['gm_leaderboard_count'] ?? 10; // default
     }
     public function getTodayActiveGameByGameId($gameId)
-    {
-        $today = date('Y-m-d');
+{
+    return $this->select('
+            games_mapping.gm_tokens AS game_token,
+            games_mapping.*,
+            game.game_Id,
+            game.game_name,
+            game.game_demo_name
+        ')
+        ->join('game', 'game.game_Id = games_mapping.game_Id')
+        ->where('games_mapping.game_Id', $gameId)
+        ->where('games_mapping.gm_date', date('Y-m-d'))
+        ->where('games_mapping.gm_status', 1)
+        ->where('game.game_status', 1)
+        ->first();
+}
 
-        return $this->select('games_mapping.*, game.game_name, game.game_demo_name')
-            ->join('game', 'game.game_Id = games_mapping.game_Id')
-            ->where('games_mapping.game_Id', $gameId)
-            ->where('games_mapping.gm_date', $today)
-            ->where('games_mapping.gm_status', 1)
-            ->where('game.game_status', 1)
-            ->first();
-    }
+
 
 }

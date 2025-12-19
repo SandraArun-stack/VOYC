@@ -15,53 +15,59 @@ class GamePlay extends BaseController
         $this->db      = \Config\Database::connect();
         $this->playerModel = new PlayersModel();
     }
-
     public function play($folderName = null)
     {
         if (!$folderName) {
-            return redirect()->to('/game_arena');
+            return redirect()->to(base_url('game_arena'));
         }
 
-        $userId = session()->get('user_id');
-        $gameId = $this->request->getGet('game_id');
-        if (!$userId || !$gameId || session()->get('game_mode') !== 'participate') {
-            session()->set('game_mode', 'demo');
+        $session = session();
+        $userId  = $session->get('user_id');
+        $gameId  = $this->request->getGet('game_id');
+        if (!$userId || !$gameId || $session->get('game_mode') !== 'participate') {
+            $session->set('game_mode', 'demo');
 
             return view('game_play', [
                 'folderName' => $folderName,
-                'mode' => 'demo'
+                'mode'       => 'demo'
             ]);
         }
-        $game = $this->db->table('game')
+        $todayGame = $this->db->table('games_mapping')
             ->where('game_Id', $gameId)
+            ->where('gm_date', date('Y-m-d'))
+            ->where('gm_status', 1)
             ->get()
             ->getRowArray();
 
-        if (!$game) {
-            return redirect()->back()->with('error', 'Game not found.');
+        if (!$todayGame) {
+            return redirect()->to(base_url('game_arena'))
+                ->with('error', 'Game is not active today.');
         }
 
+        // Get user wallet
         $wallet = $this->db->table('user_wallet')
             ->where('cust_Id', $userId)
             ->get()
             ->getRowArray();
 
-        if (!$wallet || $wallet['uw_total_token'] < $game['game_token']) {
-            return redirect()->back()->with('error', 'Not enough tokens.');
+        if (!$wallet || $wallet['uw_total_token'] < $todayGame['gm_tokens']) {
+            return redirect()->back()
+                ->with('error', 'Not enough tokens.');
         }
+
+        // Deduct tokens
         $this->db->table('user_wallet')
             ->where('cust_Id', $userId)
             ->update([
-                'uw_total_token' => $wallet['uw_total_token'] - $game['game_token']
+                'uw_total_token' => $wallet['uw_total_token'] - $todayGame['gm_tokens']
             ]);
+        $session->remove('game_mode');
 
         return view('game_play', [
             'folderName' => $folderName,
-            'mode' => 'full'
+            'mode'       => 'full'
         ]);
     }
-
-
     // -------------------------------Api---------------------------------
     public function saveScore()
     {
