@@ -70,8 +70,6 @@
             <a>Login/</a>
             <a>Register</a>
         </div>
-
-
     </div>
 
     <header class="header show-after">
@@ -84,16 +82,16 @@
 
                 </div>
                 <div class="col-8 mt-4 main__icon">
-                    <a href="#"><i class="bi bi-controller"></i></a>
+                    <!-- <a href="#"><i class="bi bi-controller"></i></a> -->
                     <a href="<?= base_url('tshirt_Customisation'); ?>" class="design_icon"></a>
                 </div>
                 <div class="col-xl-7 col-lg-7 d-flex align-items-center justify-content-center text-center">
                     <nav class="header__menu">
                         <ul>
-                            <li class="active"><a href="<?= base_url(' '); ?>" id="home">Home</a></li>
+                            <li class=" "><a href="<?= base_url(' '); ?>" id="home">Home</a></li>
                             <li><a href="<?= base_url('women'); ?>" id="women">Women’s</a></li>
                             <li><a href="<?= base_url('men'); ?>" id="men">Men’s</a></li>
-                            <li><a href="<?= base_url('game_arena'); ?>" id="game_arena">Game Arena</a></li>
+                            <!-- <li><a href="<?= base_url('game_arena'); ?>" id="game_arena">Game Arena</a></li> -->
                             <li><a href="<?= base_url('contact'); ?>" id="contact">Contact</a></li>
                         </ul>
                     </nav>
@@ -110,14 +108,14 @@
 
                         <ul class="header__right__widget">
                              <?php if ($session->get('isLoggedIn')): ?>
-                            <li>
+                            <!-- <li>
                                  <?php $userId = $session->get('user_id'); 
                                  $userSubscription = $session->get('user_subscription'); ?>
                                 <a href="<?= base_url('mywallet'); ?>" class="icon-with-text"><i class="bi bi-wallet2"></i>
                                     <div class="tip">2</div>
                                     <span class="icon-label">Wallet</span>
                                 </a>
-                            </li>
+                            </li> -->
                             <li>
                                 <a href="<?= base_url('cart/' . $userId); ?>" class="icon-with-text">
                                     <i class="bi bi-cart"></i>

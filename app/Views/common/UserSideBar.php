@@ -39,7 +39,7 @@
                                 </div>
                             </div>
                             <hr />
-                            <div class="main_dashboard_items">
+                            <!-- <div class="main_dashboard_items">
                                 <div class="head__list">
                                     <h5>Game Arena</h5>
                                 </div>
@@ -55,7 +55,7 @@
                                     </a>
                                 </div>
                             </div>
-                            <hr />
+                            <hr /> -->
                             <div class="main_dashboard_items">
                                 <div class="head__list">
                                     <h5>Accounts</h5>
@@ -64,18 +64,31 @@
                                     <a href="<?= base_url('myprofile'); ?>">
                                         <p>My Profile</p>
                                     </a>
-                                    <a href="<?= base_url('mywallet'); ?>">
+                                    <!-- <a href="<?= base_url('mywallet'); ?>">
                                         <p>My Subscriptions</p>
-                                    </a>
-                                    <a href="<?= base_url('myredemption'); ?>">
+                                    </a> -->
+
+                                    <!-- <a href="<?= base_url('myredemption'); ?>">
                                         <p>My Redemption</p>
-                                    </a>
+                                    </a> -->
                                     <!-- <p>My Address</p> -->
                                     <!-- <p>My Wishlist</p> -->
                                     <p>Delete My Account</p>
                                 </div>
                             </div>
                             <hr />
+                            <div class="main_dashboard_items">
+                                <div class="head__list">
+                                    <h5>Subscriptions</h5>
+                                </div>
+                                <div class="sud__head__list">
+                                    <a href="<?= base_url('subscription_plans'); ?>">
+                                        <p>Subscription Plans</p>
+                                    </a>
+                                </div>
+                            </div>
+                            <hr />
+
 
                             <div class="main_dashboard_items">
                                 <div class="head__list">
