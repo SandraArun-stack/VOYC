@@ -105,7 +105,7 @@ class GamePlay extends BaseController
         $playerModel->insert([
             'game_Id' => $gameId,
             'cust_Id' => $userId,
-            'player_date' => date('Y-m-d'),
+            'player_created_at' => date('Y-m-d'),
             'player_score' => $score,
             'player_time' => $time,
             'player_rank' => 0,

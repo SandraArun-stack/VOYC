@@ -21,7 +21,7 @@
                     orderable: false,
                     searchable: false
                 },
-                { data: 'player_date' },
+                { data: 'player_created_at' },
                 { data: 'customer_name' },
                 {
                     data: 'game_name',

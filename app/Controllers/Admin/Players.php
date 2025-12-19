@@ -41,7 +41,7 @@ class Players extends BaseController
 
         $columns = [
             null,
-            'player_date',
+            'player_created_at',
             'customer.cust_name',
             'game.game_name',
             'player_score',

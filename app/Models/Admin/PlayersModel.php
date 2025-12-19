@@ -11,9 +11,10 @@ class PlayersModel extends Model
     protected $allowedFields = [
         'game_Id',
         'cust_Id',
-        'player_date',
+        // 'player_date',
         'player_score',
         'player_rank',
+        'player_token_balance',
         'player_time',
         'player_winning_status',
         'player_status',
@@ -31,7 +32,7 @@ class PlayersModel extends Model
         $builder = $this->db->table($this->table)
             ->select("
                 players.*,
-                DATE_FORMAT(players.player_date, '%d-%m-%Y') AS player_date,
+                DATE_FORMAT(players.player_created_at, '%d-%m-%Y') AS player_created_at,
                 CONCAT(
                     UPPER(LEFT(customer.cust_name, 1)),
                     LOWER(SUBSTRING(customer.cust_name, 2))

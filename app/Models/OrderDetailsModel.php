@@ -8,7 +8,7 @@ class OrderDetailsModel extends Model
     protected $table = 'order_detail';
     protected $primaryKey = 'od_Id';
     protected $allowedFields = [
-        'or_Id',
+        // 'or_Id',
         'od_number',
         'pr_Id',
         'pri_Id',
