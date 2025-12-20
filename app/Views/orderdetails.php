@@ -192,7 +192,7 @@
                                     ?>
                                     <li>Your cart is empty.</li>
                                 <?php endif; ?>
-                                <li id="shipping_charge_order_detail">Shipping Charge <span>₹ <?= number_format($shipping_charge, 2) ?></span></li>
+                                <li id="shipping_charge_order_detail">Shipping Charge <span id="shipping_charge_text">₹ <?= number_format($shipping_charge, 2) ?></span></li>
                                     <input type="hidden" id="shipping_charge_value" value="<?= $shipping_charge ?>">
                                     <input type="hidden" id="minimum_amount_for_shipping_charge" value="<?= $minimum_amount_for_shipping_charge ?>">
                             </ul>

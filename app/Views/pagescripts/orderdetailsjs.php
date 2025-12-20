@@ -5,6 +5,35 @@
 
     $(document).ready(function () {
 
+        var finalOrderTotal = $("#order-total").val();
+
+        let shippingCharge = parseFloat($('#shipping_charge_value').val());
+        let minAmount = parseFloat($('#minimum_amount_for_shipping_charge').val());
+
+        let finalShippingCharge = shippingCharge;
+        let shippingText = $('#shipping_charge_text');
+        if (finalOrderTotal >= minAmount) {
+            shippingText.html(
+                `<del class="small">₹ ${shippingCharge.toFixed(2)}</del> &nbsp;<span class="text-success">₹ 0.00</span>`
+            );
+            finalShippingCharge = 0;
+        } else if (finalOrderTotal < minAmount) {
+
+            shippingText.html(`₹ ${shippingCharge.toFixed(2)}`);
+
+        }
+
+
+        finalOrderTotal = parseFloat(finalOrderTotal);
+        finalShippingCharge = parseFloat(finalShippingCharge);
+
+        let grandTotal = finalOrderTotal + finalShippingCharge;
+
+        $('#subtotal span').html(`₹ ${grandTotal.toFixed(2)}`);
+        $('#total_of_all span').html(`₹ ${grandTotal.toFixed(2)}`);
+
+        const isSameAsShipping = $('#same_as_shipping').is(':checked');
+
         function showMessage(message, type = 'success') {
             var box = $('#messageBox');
             box
@@ -90,6 +119,33 @@
                 return false;
             }
 
+            if (!isSameAsShipping) {
+
+                const shippingRequiredFields = [
+                    { name: 'shipping_add_Name', label: 'Shipping First Name' },
+                    { name: 'shipping_add_LastName', label: 'Shipping Last Name' },
+                    { name: 'shipping_add_Street', label: 'Shipping Address' },
+                    { name: 'shipping_add_City', label: 'Shipping City' },
+                    { name: 'shipping_add_State', label: 'Shipping State' },
+                    { name: 'shipping_add_Pincode', label: 'Shipping Pincode' },
+                    { name: 'shipping_add_Phone', label: 'Shipping Phone' },
+                    { name: 'shipping_add_Email', label: 'Shipping Email' }
+                ];
+
+                shippingRequiredFields.forEach(field => {
+                    const input = $('[name="' + field.name + '"]');
+                    if ($.trim(input.val()) === '') {
+                        isValid = false;
+                        input.css('border', '1px solid red');
+                        if (!message) message = field.label + ' is required.';
+                    }
+                });
+
+                if (!isValid) {
+                    showMessage(message, 'error');
+                    return false;
+                }
+            }
 
             var finalOrderTotal = $("#order-total").val();
 
@@ -369,9 +425,8 @@
             }, 3000);
         }
 
-        let appliedDiscountPercent = 0;   // default: no discount
+        let appliedDiscountPercent = 0;
         let finalGrandTotal = 0;
-
 
         function applyDiscount(discountPercent) {
 
@@ -461,14 +516,6 @@
             });
         }
 
-
-
-        // $("#add_shipping_address_btn").on("click", function () {
-
-        //     $("#same_as_shipping").prop("checked", false);
-
-        //     $("#shipping_address_section").removeClass("d-none");
-        // });
         $("#same_as_shipping").on("change", function () {
             if ($(this).is(":checked")) {
                 $("#shipping_address_section").addClass("d-none");

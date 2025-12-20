@@ -15,8 +15,7 @@
                         data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/categories/category-1.jpg">
                         <div class="categories__text">
                             <h1>Men’s fashion</h1>
-                            <p>Sitamet, consectetur adipiscing elit, sed do eiusmod tempor incidid-unt labore
-                                edolore magna aliquapendisse ultrices gravida.</p>
+                            <p>Win the game. Customize your tee. Wear your victory.</p>
                             <a href="<?= base_url('men'); ?>" id="men">Shop now</a>
                         </div>
                     </div>
@@ -28,7 +27,7 @@
                                 data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/categories/category-2.jpg">
                                 <div class="categories__text">
                                     <h4>Men’s fashion</h4>
-                                    <p>358 items</p>
+                                    <p></p>
                                     <a href="<?= base_url('men'); ?>" id="men">Shop now</a>
                                 </div>
                             </div>
@@ -37,8 +36,8 @@
                             <div class="categories__item set-bg"
                                 data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/categories/category-3.jpg">
                                 <div class="categories__text">
-                                    <h4>Kid’s fashion</h4>
-                                    <p>273 items</p>
+                                    <h4>Your Custom Style</h4>
+                                    <p></p>
                                     <a href="<?= base_url('men'); ?>" id="men">Shop now</a>
                                 </div>
                             </div>
@@ -47,8 +46,8 @@
                             <div class="categories__item set-bg"
                                 data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/categories/category-4.jpg">
                                 <div class="categories__text">
-                                    <h4>Kid’s fashion</h4>
-                                    <p>159 items</p>
+                                    <h4>Play • Win • Wear</h4>
+                                    <p></p>
                                     <a href="<?= base_url('men'); ?>" id="men">Shop now</a>
                                 </div>
                             </div>
@@ -58,7 +57,7 @@
                                 data-setbg="<?= base_url() . ASSET_PATH; ?>assets/img/categories/category-5.jpg">
                                 <div class="categories__text">
                                     <h4>Easy Wear</h4>
-                                    <p>792 items</p>
+                                    <p></p>
                                     <a href="<?= base_url('men'); ?>" id="men">Shop now</a>
                                 </div>
                             </div>
@@ -156,21 +155,21 @@
                             <div class="banner__text">
                                 <span>The Chloe Collection</span>
                                 <h1>The Project Jacket</h1>
-                                <a href="#">Shop now</a>
+                                <a href="<?= base_url('men'); ?>">Shop now</a>
                             </div>
                         </div>
                         <div class="banner__item">
                             <div class="banner__text">
                                 <span>The Chloe Collection</span>
                                 <h1>The Project Jacket</h1>
-                                <a href="#">Shop now</a>
+                                <a href="<?= base_url('men'); ?>">Shop now</a>
                             </div>
                         </div>
                         <div class="banner__item">
                             <div class="banner__text">
                                 <span>The Chloe Collection</span>
                                 <h1>The Project Jacket</h1>
-                                <a href="#">Shop now</a>
+                                <a href="<?= base_url('men'); ?>">Shop now</a>
                             </div>
                         </div>
                     </div>
@@ -250,7 +249,8 @@
     <!-- Trend Section End -->
 
     <!-- Discount Section Begin -->
-    <section class="discount">
+
+    <section class="discount d-none">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 p-0">
@@ -283,12 +283,13 @@
                                 <p>Sec</p>
                             </div>
                         </div>
-                        <a href="#">Shop now</a>
+                        <a href="<?= base_url('men'); ?>">Shop now</a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
     <!-- Discount Section End -->
 
     <!-- Services Section Begin -->
