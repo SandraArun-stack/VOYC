@@ -13,11 +13,15 @@
         slide: function (event, ui) {
             minamount.val('₹' + ui.values[0]);
             maxamount.val('₹' + ui.values[1]);
+        },
+        change: function (event, ui) {
+            filterProducts(ui.values[0], ui.values[1]);
         }
     });
+
     minamount.val('₹' + rangeSlider.slider("values", 0));
     maxamount.val('₹' + rangeSlider.slider("values", 1));
-
+    const mainCategory = "<?= esc($category) ?>";
     function generateStars(avgRating) {
         let html = '';
         const avg = parseFloat(avgRating);
@@ -31,6 +35,73 @@
             }
         }
         return html;
+    }
+
+    // filter by price-range
+    function filterProducts(minPriceValue, maxPriceValue) {
+
+        var selectedSubcategories = [];
+
+        $('.subcategory-filter:checked').each(function () {
+            selectedSubcategories.push($(this).val());
+        });
+
+        // If no subcategory selected, send all
+        if (selectedSubcategories.length === 0) {
+            $('.subcategory-filter').each(function () {
+                selectedSubcategories.push($(this).val());
+            });
+        }
+
+        $.ajax({
+            url: "<?= base_url('fetchProductsBySubcategory'); ?>",
+            method: 'POST',
+            data: {
+                min_price: minPriceValue,
+                max_price: maxPriceValue,
+                subcategory_id: selectedSubcategories,
+                main_category: mainCategory
+            },
+            success: function (response) {
+
+                if (response.status === 'success') {
+                    let html = '';
+
+                    response.filtered_products.forEach(item => {
+                        html += `
+                            <div class="col-lg-3 col-md-6 mb-4 product__card">
+                                <div class="product__item" data-url="<?= base_url('productdetails'); ?>/${item.pr_Id}/${item.pri_Id}">
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="<?= base_url('uploads/productmedia/'); ?>/${item.pri_Thumbnail}">
+                                    </div>
+                                    <div class="product__item__text">
+                                        <h6 class="product_name_text">${item.pr_Name}</h6>
+                                        <div class="rating">${generateStars(item.average_rating)}</div>
+                                        <div class="product__price">₹ ${item.prv_price}</div>
+                                    </div>
+                                </div>
+                            </div>`;
+                    });
+
+                    $('.product-list').html(html);
+
+                    // Apply background images
+                    $('.set-bg').each(function () {
+                        $(this).css('background-image', 'url(' + $(this).data('setbg') + ')');
+                    });
+
+                } else {
+                    $('.product-list').html(
+                        '<div class="col-12 text-center"><p>No products found.</p></div>'
+                    );
+                }
+            },
+            error: function () {
+                $('.product-list').html(
+                    '<div class="col-12 text-center text-danger"><p>Server error occurred.</p></div>'
+                );
+            }
+        });
     }
 
 
@@ -175,78 +246,75 @@
 
         }, 1000);
 
-        // filter by price-range
-        function getProduct() {
 
-        }
 
-        $("#filterPriceBtn").on("click", function () {
-            var minPriceValue = parseFloat(minamount.val().replace('₹', '').trim());
-            var maxPriceValue = parseFloat(maxamount.val().replace('₹', '').trim());
+        // $("#filterPriceBtn").on("click", function () {
+        //     var minPriceValue = parseFloat(minamount.val().replace('₹', '').trim());
+        //     var maxPriceValue = parseFloat(maxamount.val().replace('₹', '').trim());
 
-            var selectedSubcategories = [];
-            $('.subcategory-filter:checked').each(function () {
-                selectedSubcategories.push($(this).val());
-            });
+        //     var selectedSubcategories = [];
+        //     $('.subcategory-filter:checked').each(function () {
+        //         selectedSubcategories.push($(this).val());
+        //     });
 
-            if (selectedSubcategories.length === 0) {
-                $('.subcategory-filter').each(function () {
-                    selectedSubcategories.push($(this).val());
-                });
-            }
+        //     if (selectedSubcategories.length === 0) {
+        //         $('.subcategory-filter').each(function () {
+        //             selectedSubcategories.push($(this).val());
+        //         });
+        //     }
 
-            $.ajax({
-                url: "<?= base_url('fetchProductsBySubcategory'); ?>",
-                method: 'POST',
-                data: {
-                    min_price: minPriceValue,
-                    max_price: maxPriceValue,
-                    subcategory_id: selectedSubcategories,
-                    main_category: mainCategory
-                },
-                success: function (response) {
-                    if (response.status === 'success') {
-                        let html = '';
+        //     $.ajax({
+        //         url: "<?= base_url('fetchProductsBySubcategory'); ?>",
+        //         method: 'POST',
+        //         data: {
+        //             min_price: minPriceValue,
+        //             max_price: maxPriceValue,
+        //             subcategory_id: selectedSubcategories,
+        //             main_category: mainCategory
+        //         },
+        //         success: function (response) {
+        //             if (response.status === 'success') {
+        //                 let html = '';
 
-                        response.filtered_products.forEach(item => {
-                            html += `
-                                    <div class="col-lg-3 col-md-6 mb-4 product__card" style="opacity:1;">
-                                        <div class="product__item" data-url="<?= base_url('productdetails'); ?>/${item.pr_Id}/${item.pri_Id}">
-                                            <div class="product__item__pic set-bg"
-                                                data-setbg="<?= base_url('uploads/productmedia/'); ?>/${item.pri_Thumbnail}">
-                                               
-                                                
-                                            </div>
-                                            <div class="product__item__text">
-                                                <h6 class="product_name_text"><a href="#">${item.pr_Name}</a></h6>
-                                                <div class="rating">
-                                                    ${generateStars(item.average_rating)}
-                                                </div>
-                                                <div class="product__price">₹ ${item.prv_price}</div>
-                                            </div>
-                                        </div>
-                                    </div>`;
-                        });
+        //                 response.filtered_products.forEach(item => {
+        //                     html += `
+        //                             <div class="col-lg-3 col-md-6 mb-4 product__card" style="opacity:1;">
+        //                                 <div class="product__item" data-url="<?= base_url('productdetails'); ?>/${item.pr_Id}/${item.pri_Id}">
+        //                                     <div class="product__item__pic set-bg"
+        //                                         data-setbg="<?= base_url('uploads/productmedia/'); ?>/${item.pri_Thumbnail}">
 
-                        $('.product-list').html(html);
 
-                        // Reapply background images
-                        $('.set-bg').each(function () {
-                            const bg = $(this).data('setbg');
-                            $(this).css('background-image', 'url(' + bg + ')');
-                        });
+        //                                     </div>
+        //                                     <div class="product__item__text">
+        //                                         <h6 class="product_name_text"><a href="#">${item.pr_Name}</a></h6>
+        //                                         <div class="rating">
+        //                                             ${generateStars(item.average_rating)}
+        //                                         </div>
+        //                                         <div class="product__price">₹ ${item.prv_price}</div>
+        //                                     </div>
+        //                                 </div>
+        //                             </div>`;
+        //                 });
 
-                    } else if (response.status === 'empty') {
-                        $('.product-list').html('<div class="col-12 text-center"><p>No products found.</p></div>');
-                    } else {
-                        $('.product-list').html('<div class="col-12 text-center text-danger"><p>Error loading products.</p></div>');
-                    }
-                },
-                error: function () {
-                    $('.product-list').html('<div class="col-12 text-center text-danger"><p>Server error occurred.</p></div>');
-                }
-            });
-        });
-   
-   });
+        //                 $('.product-list').html(html);
+
+        //                 // Reapply background images
+        //                 $('.set-bg').each(function () {
+        //                     const bg = $(this).data('setbg');
+        //                     $(this).css('background-image', 'url(' + bg + ')');
+        //                 });
+
+        //             } else if (response.status === 'empty') {
+        //                 $('.product-list').html('<div class="col-12 text-center"><p>No products found.</p></div>');
+        //             } else {
+        //                 $('.product-list').html('<div class="col-12 text-center text-danger"><p>Error loading products.</p></div>');
+        //             }
+        //         },
+        //         error: function () {
+        //             $('.product-list').html('<div class="col-12 text-center text-danger"><p>Server error occurred.</p></div>');
+        //         }
+        //     });
+        // });
+
+    });
 </script>
