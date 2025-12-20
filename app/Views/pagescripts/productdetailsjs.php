@@ -41,6 +41,9 @@
             backdrop: true,
             keyboard: true
         });
+        $('.login_close').on('click', function (e) {
+            authModal.hide();
+        });
         const selectedSizesByColor = {};
         // When a color is selected
         $('input[name="color__radio"]').on('change', function () {
@@ -282,6 +285,7 @@
 
             if (!userId) {
                 $('#registerView').hide();
+                $("#forgotPassView").addClass("d-none");
                 $('#loginView').show();
                 authModal.show();
                 return;

@@ -10,23 +10,23 @@ window.onload = function () {
 $(document).ready(function () {
 
     var path = window.location.pathname
-                .toLowerCase()
-                // .replace(/\/+$/, "");
+        .toLowerCase()
+    // .replace(/\/+$/, "");
 
     // $(".header__menu ul li").removeClass("active");
 
     if (path.includes("women")) {
         $("#women").parent().addClass("active");
-    } 
+    }
     else if (path.includes("men")) {
         $("#men").parent().addClass("active");
-    } 
+    }
     else if (path.includes("game_arena")) {
         $("#game_arena").parent().addClass("active");
-    } 
+    }
     else if (path.includes("contact")) {
         $("#contact").parent().addClass("active");
-    } 
+    }
     else if (path === "/voyc" || path === "" || path === "/voyc/") {
         $("#home").parent().addClass("active");
     }
@@ -370,7 +370,7 @@ $(document).ready(function () {
 
         });
     }
-        
+
     $("#search-toggle").click(function () {
         $("#search-bar").toggleClass("active");
         if ($("#search-bar").hasClass("active")) {
@@ -520,7 +520,14 @@ $(document).ready(function () {
         }, 200); // give modal time to render
     }
 
-
+    $(function () {
+        $("#dob").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "1950:2025",
+            dateFormat: "yy-mm-dd"
+        });
+    });
 
 
 

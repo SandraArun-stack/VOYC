@@ -210,16 +210,15 @@ $userId = session()->get('user_id');
                         </div>
                         <div class="tab-pane" id="tabs-2" role="tabpanel">
                             <h6>Specification</h6>
-                            <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed
-                                quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt loret.
-                                Neque porro lorem quisquam est, qui dolorem ipsum quia dolor si. Nemo enim ipsam
-                                voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed quia ipsu
-                                consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Nulla
-                                consequat massa quis enim.</p>
-                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
-                                dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
-                                nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium
-                                quis, sem.</p>
+                            <p>Stiching Type:
+                                <?= !empty($product['pr_Stitch_Type']) ? esc($product['pr_Stitch_Type']) : '&nbsp;' ?>
+                            </p>
+                            <p>Sleeve:
+                                <?= !empty($product['pr_Sleeve_Style']) ? esc($product['pr_Sleeve_Style']) : '&nbsp;' ?>
+                            </p>
+                            <p>Fabric: <?= !empty($product['pr_Fabric']) ? esc($product['pr_Fabric']) : '&nbsp;' ?></p>
+
+
                         </div>
                         <div class="tab-pane" id="tabs-3" role="tabpanel">
                             <h6>Reviews (<?= esc($product['review_count']) ?>)</h6>
@@ -326,7 +325,7 @@ $userId = session()->get('user_id');
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
-        
+
 
 
 
