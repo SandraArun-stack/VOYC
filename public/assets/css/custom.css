@@ -834,7 +834,7 @@ input[type="file"] {
 
 #to-login,
 #to-register {
-    color: #000 !important;
+    color: #276aed !important;
 }
 
 .form-control:focus {
@@ -1696,7 +1696,7 @@ input[type="file"] {
 }
 
 #to-forgot-password {
-    color: black !important;
+    color: #276aed !important
 }
 
 #to-login-from-forgot {
