@@ -88,7 +88,7 @@
                 <div class="col-xl-7 col-lg-7 d-flex align-items-center justify-content-center text-center">
                     <nav class="header__menu">
                         <ul>
-                            <li class=" "><a href="<?= base_url(); ?>" id="home">Home</a></li>
+                            <li class="active"><a href="<?= base_url(); ?>" id="home">Home</a></li>
                             <li><a href="<?= base_url('women'); ?>" id="women">Women’s</a></li>
                             <li><a href="<?= base_url('men'); ?>" id="men">Men’s</a></li>
                             <!-- <li><a href="<?= base_url('game_arena'); ?>" id="game_arena">Game Arena</a></li> -->
@@ -140,64 +140,53 @@
 
                         <div class="header__right__auth">
 
+                            <?php $session = session(); ?>
+ 
                             <div class="dropdown" id="userDropDown">
-                                <a class=" text-decoration-none icon-with-text" href="#" role="button" id="userDropdown"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-person-square profile-person"></i>
-                                    <span class="icon-label">Profile</span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end profile-small-container"
-                                    style="display:none;" aria-labelledby="userDropdown" style="display:none;">
-                                    <?php if ($session->get('isLoggedIn')): ?>
+                                <?php if ($session->get('isLoggedIn')): ?>
+
+                                    <!-- Logged In → Show Profile Dropdown -->
+                                    <a class="text-decoration-none icon-with-text" href="#" role="button"
+                                    id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-person-square profile-person"></i>
+                                        <span class="icon-label">My Account</span>
+                                    </a>
+
+                                    <ul class="dropdown-menu dropdown-menu-end profile-small-container" aria-labelledby="userDropdown">
                                         <ul class="profile__container">
                                             <li class="py-1 px-4"><b>Hello, <?= esc($session->get('user_name')) ?></b></li>
                                             <ul class="profile__container__listing">
                                                 <li>
-                                                    <a class="dropdown-item drop-profile"
-                                                        href="<?= base_url('myprofile'); ?>">
-                                                        Profile
-                                                    </a>
-                                                </li>
-
-                                                <li>
-                                                    <a class="dropdown-item drop-profile"
-                                                        href="<?= base_url('my_orders'); ?>">
-                                                        My Orders
-                                                    </a>
+                                                    <a class="dropdown-item drop-profile" href="<?= base_url('myprofile'); ?>">Profile</a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item drop-profile"
-                                                        href="<?= base_url('subscription_plans'); ?>">
-                                                        Subscription Plans
-                                                    </a>
+                                                    <a class="dropdown-item drop-profile" href="<?= base_url('my_orders'); ?>">My Orders</a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item drop-profile text-danger" href="#"
-                                                        id="logoutBtn">
-                                                        Logout
-                                                    </a>
+                                                    <a class="dropdown-item drop-profile" href="<?= base_url('subscription_plans'); ?>">Subscription Plans</a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item drop-profile text-danger" href="#" id="logoutBtn">Logout</a>
                                                 </li>
                                             </ul>
                                         </ul>
+                                    </ul>
 
-                                    <?php else: ?>
-                                        <p class="dropdown-item drop-profile hideActive" href="#"><b>Welcome</b></p>
-                                        <p class="dropdown-item drop-profile welcome hideActive" href="#">
-                                            To access account and manage orders</p>
-                                        <div class="login-reg">
-                                            <button class="login-sign-up-button" id="login-link" href="#"
-                                                data-bs-toggle="modal" data-bs-target="#authModal">
-                                                Login/Sign Up
-                                            </button>
-                                        </div>
-                                    <?php endif; ?>
-                                </ul>
+                                <?php else: ?>
+
+                                    <!--  Login/Register -->
+                                    <a class="text-decoration-none icon-with-text" href="javascript:void(0)" id="login-link" role="button">
+                                        <i class="bi bi-person-square profile-person"></i>
+                                        <span class="icon-label">Login / Register</span>
+                                    </a>
+
+                                <?php endif; ?>
                             </div>
+
 
                             <!-- <a id="login-link" href="#" data-bs-toggle="modal" data-bs-target="#authModal">Login</a>
                                 <a id="register-link" href="#" data-bs-toggle="modal"
                                     data-bs-target="#authModal">Register</a> -->
-
                         </div>
                     </div>
                 </div>
