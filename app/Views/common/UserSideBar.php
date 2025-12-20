@@ -73,7 +73,9 @@
                                     </a> -->
                                     <!-- <p>My Address</p> -->
                                     <!-- <p>My Wishlist</p> -->
-                                    <p>Delete My Account</p>
+                                    <!-- <a href="<?= base_url('deleteaccount'); ?>"> -->
+                                        <p>Delete My Account</p>
+                                    <!-- </a> -->
                                 </div>
                             </div>
                             <hr />

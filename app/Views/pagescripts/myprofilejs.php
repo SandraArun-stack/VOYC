@@ -1,5 +1,5 @@
 <script>
-    $(document).ready(function () {
+$(document).ready(function () {
 
         //  Reusable show message function
         function showMessage(type, text) {
@@ -196,5 +196,45 @@
                 }
             });
         });
-    });
+    // delete account ajax
+    //     $("#confirmDeleteBtn").click(function () {
+
+    //         $.ajax({
+    //             url: "<?= base_url('deleteaccount/deleteAccount') ?>",
+    //             type: "POST",
+    //             dataType: "json",
+    //             success: function (res) {
+
+    //                 let box = $("#deleteMessage");
+    //                 box.removeClass("d-none alert-danger alert-success");
+
+    //                 if (res.status) {
+    //                     box.addClass("alert-success").text(res.message).fadeIn();
+                        
+    //                     setTimeout(() => {
+    //                         window.location.href = "<?= base_url('/') ?>";
+    //                     }, 3000);
+
+    //                 } else {
+    //                     box.addClass("alert-danger").text(res.message).fadeIn();
+    //                 }
+    //             },
+    //             error: function () {
+    //                 let box = $("#deleteMessage");
+    //                 box.removeClass("d-none").addClass("alert-danger")
+    //                     .text("Something went wrong, try again!");
+    //             }
+    //         });
+
+    //     });
+});
+
+//     $("#cancelDeleteAccount").on("click", function () {
+//     // Redirect back or reload previous profile view
+//     window.location.reload();
+// });
+
+
+
+
 </script>

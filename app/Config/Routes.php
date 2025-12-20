@@ -60,6 +60,9 @@ $routes->get('myprofile', 'MyProfile::index');
 $routes->post('myprofile/updateProfile', 'MyProfile::updateProfile');
 $routes->post('myprofile/changePassword', 'MyProfile::changePassword');
 
+// delete account in website
+// $routes->get('deleteaccount', 'DeleteAccount::index');
+// $routes->post('deleteaccount/deleteAccount', 'DeleteAccount::deleteAccount');
 
 // $routes->get('ordernow/product/(:any)', 'OrderNow::orderproduct/$1');
 
