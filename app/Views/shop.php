@@ -81,7 +81,7 @@
                         </div>
                         <div class="filter__price">
                             <!-- <a href= "#">Filter</a> -->
-                            <button type="button" id="filterPriceBtn">Filter</button>
+                            <!-- <button type="button" id="filterPriceBtn">Filter</button> -->
                         </div>
                     </div>
                     <!-- <div class="sidebar__sizes">

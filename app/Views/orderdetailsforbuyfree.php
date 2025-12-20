@@ -69,13 +69,13 @@
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="checkout__form__input">
                                 <p>Phone <span>*</span></p>
-                                <input type="text" name="add_Phone" placeholder="Phone">
+                                <input type="text" name="add_Phone" value="<?= esc($cust_Phone  ?? '') ?>" placeholder="Phone">
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="checkout__form__input">
                                 <p>Email <span>*</span></p>
-                                <input type="text" name="add_Email" placeholder="abc@gmail.com">
+                                <input type="text" name="add_Email" value="<?= esc($cust_Email ?? '') ?>" placeholder="abc@gmail.com">
                             </div>
                         </div>
 

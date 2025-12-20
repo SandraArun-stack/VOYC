@@ -106,6 +106,7 @@ class OrderDetails extends Controller
     public function placeOrder()
     {
 
+        $isSameAsShipping = $this->request->getPost('same_as_shipping');
         $userId = $this->session->get('user_id');
         $lbId = $this->request->getPost('lb_Id');
 
@@ -158,7 +159,7 @@ class OrderDetails extends Controller
         }
 
         // ============= SAVE ADDRESS =============
-        $addressData = [
+        $billingAddress = [
             'add_Name' => $this->request->getPost('add_Name'),
             'add_Landmark' => $this->request->getPost('add_Landmark'),
             'add_Street' => $this->request->getPost('add_Street'),
@@ -174,9 +175,30 @@ class OrderDetails extends Controller
         ];
 
         $addressModel = new \App\Models\AddressModel();
-        $add_Id = $addressModel->insert($addressData);
+        $add_Id = $addressModel->insert($billingAddress);
 
-        $shippingAddress = implode(', ', array_filter($addressData));
+        $shippingAddress = implode(', ', array_filter($billingAddress));
+
+        if ($isSameAsShipping) {
+
+            // ✅ Same address
+            $shippingAddress = $billingAddress;
+
+        } else {
+
+            // ✅ Separate shipping address
+            $shippingAddress = implode(', ', array_filter([
+                $this->request->getPost('shipping_add_Name'),
+                $this->request->getPost('shipping_add_Street'),
+                $this->request->getPost('shipping_add_Landmark'),
+                $this->request->getPost('shipping_add_City'),
+                $this->request->getPost('shipping_add_State'),
+                $this->request->getPost('shipping_add_Pincode'),
+                $this->request->getPost('shipping_add_Country'),
+                $this->request->getPost('shipping_add_Phone'),
+                $this->request->getPost('shipping_add_Email')
+            ]));
+        }
 
         // ============= GENERATE ORDER NUMBER =============
         $orderModel = new OrderDetailsModel();
@@ -192,14 +214,10 @@ class OrderDetails extends Controller
             $item['od_number'] = $orderNumber;
             $item['cus_Id'] = $userId;
             $item['add_Id'] = $add_Id;
-            $item['od_Billing_Address'] = $shippingAddress;
-            // $item['od_Shipping_Address'] = $shippingAddress;
+            $item['od_Billing_Address'] = $billingAddress;
+            $item['od_Shipping_Address'] = $shippingAddress;
             $item['od_createdby'] = $userId;
 
-            // $this->orderModel->createOrderItem($item);
-
-            // $rowTotal = $item['od_Quantity'] * $item['od_Selling_Price'];
-            // $totalAmount += $rowTotal;
             $db = \Config\Database::connect();
             $variant = $db->table('product_variants')
                 ->select('prv_price')
@@ -288,27 +306,28 @@ class OrderDetails extends Controller
                 <img src='{$logoUrl}' style='width:160px;margin-bottom:20px;'>
             </div>
         ";
-        $formattedShippingAddress = "
+
+        $formattedBillingAddress = "
             <div style='line-height:0.2'>
                 <p class='m-0'><strong>Name:</strong></p>
-                <p class='m-0'>{$addressData['add_Name']}</p>
+                <p class='m-0'>{$billingAddress['add_Name']}</p>
 
                 <br>
 
                 <p class='m-0'><strong>Address:</strong></p>
-                <p class='m-0'>{$addressData['add_Street']}</p>
-                <p class='m-0'>{$addressData['add_Landmark']}</p>
-                <p class='m-0'>{$addressData['add_City']}, {$addressData['add_State']}, India – {$addressData['add_Pincode']}</p>
+                <p class='m-0'>{$billingAddress['add_Street']}</p>
+                <p class='m-0'>{$billingAddress['add_Landmark']}</p>
+                <p class='m-0'>{$billingAddress['add_City']}, {$billingAddress['add_State']}, India – {$billingAddress['add_Pincode']}</p>
 
                 <br>
 
                 <p class='m-0'><strong>Phone:</strong></p>
-                <p class='m-0'>+91 {$addressData['add_Phone']}</p>
+                <p class='m-0'>+91 {$billingAddress['add_Phone']}</p>
 
                 <br>
 
                 <p class='m-0'><strong>Email:</strong></p>
-                <p class='m-0'>{$addressData['add_Email']}</p>
+                <p class='m-0'>{$billingAddress['add_Email']}</p>
             </div>
         ";
 
@@ -319,20 +338,20 @@ class OrderDetails extends Controller
         // ============================
         $customerMessage = "
         {$emailHeader}
-        <p class='my-0'>Hello {$addressData['add_Name']},</p>
+        <p class='my-0'>Hello {$billingAddress['add_Name']},</p>
         <p class='my-0'>Thank you for your order! Your order number is <b>{$orderNumber}</b>.</p>
 
         <h3>Order Summary:</h3>
         {$productTable}
 
         <h3 >Shipping Address:</h3>
-        <p class='my-0'>{$formattedShippingAddress}</p>
+        <p class='my-0'>{$formattedBillingAddress}</p>
         <br/>
         <p class='my-0' style='font-size:14px;'>Best Regards,<br><b>Voyc Team</b></p>
     ";
 
         $email->setFrom('smartloungework@gmail.com', 'Voyc');
-        $email->setTo($addressData['add_Email']);
+        $email->setTo($billingAddress['add_Email']);
         $email->setSubject("Order Confirmation - {$orderNumber}");
         $email->setMessage($customerMessage);
         $email->setMailType('html');
@@ -345,14 +364,14 @@ class OrderDetails extends Controller
         {$emailHeader}
         <p><b>New Order Received</b></p>
         <p><b>Order Number:</b> {$orderNumber}</p>
-        <p><b>Customer Name:</b> {$addressData['add_Name']}</p>
-        <p><b>Email:</b> {$addressData['add_Email']}</p>
+        <p><b>Customer Name:</b> {$billingAddress['add_Name']}</p>
+        <p><b>Email:</b> {$billingAddress['add_Email']}</p>
 
         <h3>Products:</h3>
         {$productTable}
 
-        <h3>Shipping Address:</h3>
-       <p class='my-0'>{$formattedShippingAddress}</p>
+        <h3>Billing Address:</h3>
+       <p class='my-0'>{$formattedBillingAddress}</p>
         <br/>
 
         <p>Order Time: " . date('d M Y, h:i A') . "</p>
@@ -469,6 +488,12 @@ class OrderDetails extends Controller
         if (!$userId) {
             return redirect()->to(base_url('/'));
         }
+        $user = $this->CustomerModel->getdetailsbyCustomerid($userId);
+
+        $data = [
+            'cust_Email' => $user['cust_Email'] ?? '',
+            'cust_Phone' => $user['cust_Phone'] ?? '',
+        ];
 
         // Get cart count (for header icon)
         $cartCount = $this->CartModel->getCartItemCount($userId);
@@ -512,7 +537,9 @@ class OrderDetails extends Controller
         ])
             . view('orderdetailsforbuyfree', [
                 'cartItems' => $cartItems,   // <-- 🔥 sending to view
-                'totalAmount' => 0           // <-- free
+                'totalAmount' => 0,
+                'cust_Email' => $data['cust_Email'],
+                'cust_Phone' => $data['cust_Phone']           // <-- free
             ])
             . view('common/footer')
             . view('pagescripts/orderdetailsjs');

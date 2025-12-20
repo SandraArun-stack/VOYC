@@ -9,9 +9,11 @@ window.onload = function () {
 
 $(document).ready(function () {
 
-    var path = window.location.pathname.toLowerCase().replace(/\/+$/, "");
+    var path = window.location.pathname
+                .toLowerCase()
+                // .replace(/\/+$/, "");
 
-    $(".header__menu ul li").removeClass("active");
+    // $(".header__menu ul li").removeClass("active");
 
     if (path.includes("women")) {
         $("#women").parent().addClass("active");
@@ -25,7 +27,7 @@ $(document).ready(function () {
     else if (path.includes("contact")) {
         $("#contact").parent().addClass("active");
     } 
-    else if (path === "" || path === "/home") {
+    else if (path === "/voyc" || path === "" || path === "/voyc/") {
         $("#home").parent().addClass("active");
     }
 
