@@ -33,6 +33,7 @@
     <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/aos.css" type="text/css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
     <link rel="icon" href="<?= base_url() . ASSET_PATH; ?>assets/img/favicon.ico" type="image/x-icon">
     <script>var base_url = "<?= base_url() ?>";</script>
@@ -107,22 +108,22 @@
                     <div class="header__right">
 
                         <ul class="header__right__widget">
-                             <?php if ($session->get('isLoggedIn')): ?>
-                            <!-- <li>
-                                 <?php $userId = $session->get('user_id'); 
+                            <?php if ($session->get('isLoggedIn')): ?>
+                                <!-- <li>
+                                 <?php $userId = $session->get('user_id');
                                  $userSubscription = $session->get('user_subscription'); ?>
                                 <a href="<?= base_url('mywallet'); ?>" class="icon-with-text"><i class="bi bi-wallet2"></i>
                                     <div class="tip">2</div>
                                     <span class="icon-label">Wallet</span>
                                 </a>
                             </li> -->
-                            <li>
-                                <a href="<?= base_url('cart/' . $userId); ?>" class="icon-with-text">
-                                    <i class="bi bi-cart"></i>
-                                    <span class="icon-label">Cart</span>
-                                    <div class="tip" id="cartCount"><?= $cartCount ?? 0 ?></div>
-                                </a>
-                            </li>
+                                <li>
+                                    <a href="<?= base_url('cart/' . $userId); ?>" class="icon-with-text">
+                                        <i class="bi bi-cart"></i>
+                                        <span class="icon-label">Cart</span>
+                                        <div class="tip" id="cartCount"><?= $cartCount ?? 0 ?></div>
+                                    </a>
+                                </li>
                             <?php endif; ?>
                             <li class="customization_icon_header">
                                 <a href="<?= base_url('allCustomizableProducts'); ?>" class="icon-with-text">
@@ -141,32 +142,37 @@
                         <div class="header__right__auth">
 
                             <?php $session = session(); ?>
- 
+
                             <div class="dropdown" id="userDropDown">
                                 <?php if ($session->get('isLoggedIn')): ?>
 
                                     <!-- Logged In → Show Profile Dropdown -->
-                                    <a class="text-decoration-none icon-with-text" href="#" role="button"
-                                    id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <a class="text-decoration-none icon-with-text" href="#" role="button" id="userDropdown"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="bi bi-person-square profile-person"></i>
                                         <span class="icon-label">My Account</span>
                                     </a>
 
-                                    <ul class="dropdown-menu dropdown-menu-end profile-small-container" aria-labelledby="userDropdown">
+                                    <ul class="dropdown-menu dropdown-menu-end profile-small-container"
+                                        aria-labelledby="userDropdown">
                                         <ul class="profile__container">
                                             <li class="py-1 px-4"><b>Hello, <?= esc($session->get('user_name')) ?></b></li>
                                             <ul class="profile__container__listing">
                                                 <li>
-                                                    <a class="dropdown-item drop-profile" href="<?= base_url('myprofile'); ?>">Profile</a>
+                                                    <a class="dropdown-item drop-profile"
+                                                        href="<?= base_url('myprofile'); ?>">Profile</a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item drop-profile" href="<?= base_url('my_orders'); ?>">My Orders</a>
+                                                    <a class="dropdown-item drop-profile"
+                                                        href="<?= base_url('my_orders'); ?>">My Orders</a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item drop-profile" href="<?= base_url('subscription_plans'); ?>">Subscription Plans</a>
+                                                    <a class="dropdown-item drop-profile"
+                                                        href="<?= base_url('subscription_plans'); ?>">Subscription Plans</a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item drop-profile text-danger" href="#" id="logoutBtn">Logout</a>
+                                                    <a class="dropdown-item drop-profile text-danger" href="#"
+                                                        id="logoutBtn">Logout</a>
                                                 </li>
                                             </ul>
                                         </ul>
@@ -175,7 +181,8 @@
                                 <?php else: ?>
 
                                     <!--  Login/Register -->
-                                    <a class="text-decoration-none icon-with-text" href="javascript:void(0)" id="login-link" role="button">
+                                    <a class="text-decoration-none icon-with-text" href="javascript:void(0)" id="login-link"
+                                        role="button">
                                         <i class="bi bi-person-square profile-person"></i>
                                         <span class="icon-label">Login / Register</span>
                                     </a>
@@ -268,6 +275,9 @@
                         <form id="registerForm">
                             <label>Name</label><span>&nbsp;*</span>
                             <input type="text" name="fullname" class="form-control mb-3"
+                                placeholder="Enter Your Full Name" required>
+                            <label>Date Of Birth</label>
+                            <input type="date" name="dob_cust" class="form-control mb-3"
                                 placeholder="Enter Your Full Name" required>
                             <label>Email</label><span>&nbsp;*</span>
                             <input type="email" name="email" class="form-control mb-3" placeholder="Enter the Email"

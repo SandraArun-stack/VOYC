@@ -6,7 +6,7 @@ class PrdDetailModel extends Model
 {
     protected $table = 'products';
     protected $primaryKey = 'pr_Id';
-    protected $allowedFields = ['pr_Name', 'pr_Selling_Price', 'prd_first_image', 'description', 'pr_Status', 'cat_Id'];
+    protected $allowedFields = ['pr_Name', 'pr_Selling_Price', 'prd_first_image', 'description', 'pr_Sleeve_Style', 'pr_Fabric','pr_Stitch_Type', 'pr_Status', 'cat_Id'];
 
     public function get_prd_Details($id)
     {
@@ -40,7 +40,7 @@ class PrdDetailModel extends Model
                 if (strtoupper(trim($variant['prv_Size'])) === $size) {
                     $selectedPrice = $variant['prv_price'];
                     $selectedSize = $variant['prv_Size'];
-                    break 2; 
+                    break 2;
                 }
             }
         }
