@@ -31,6 +31,7 @@ class OrderDetailsModel extends Model
         'pr_Code',
         'od_Grand_Total',
         'od_Shipping_Address',
+        'od_Billing_Address',
         'design_Id'
     ];
 

@@ -73,7 +73,7 @@
     margin: 0px 15px 20px auto;
     padding: 20px 30px;
     box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
-    border-radius: 0;
+    border-radius: 5px;
     position: absolute;
     top: 116px;
     overflow: visible;
@@ -133,7 +133,7 @@
     display: flex;
     align-items: center;
     padding: 10px 0;
-    border-radius: 10px;
+    border-radius: 5px;
     margin-bottom: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s, box-shadow 0.2s;
@@ -2320,7 +2320,10 @@ input[type="file"] {
     font-size: 13px;
     font-weight: 600;
 }
-
+.plus_shipping_text{
+        font-size: 14px;
+    font-weight: 600;
+}
 @keyframes bounceToken {
     0% {
         transform: scale(1);

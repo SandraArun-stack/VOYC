@@ -155,7 +155,8 @@ class OrderDetails extends Controller
             $item['od_number'] = $orderNumber;
             $item['cus_Id'] = $userId;
             $item['add_Id'] = $add_Id;
-            $item['od_Shipping_Address'] = $shippingAddress;
+             $item['od_Billing_Address'] = $shippingAddress;
+            // $item['od_Shipping_Address'] = $shippingAddress;
             $item['od_createdby'] = $userId;
 
             // $this->orderModel->createOrderItem($item);
