@@ -90,7 +90,7 @@
                 return false;
             }
 
-            
+
             var finalOrderTotal = $("#order-total").val();
 
             // Step 2: Collect cart items
@@ -372,9 +372,6 @@
             }, 3000);
         }
 
-
-
-
         let appliedDiscountPercent = 0;   // default: no discount
         let finalGrandTotal = 0;
 
@@ -467,6 +464,26 @@
             });
         }
 
+
+
+        // $("#add_shipping_address_btn").on("click", function () {
+
+        //     $("#same_as_shipping").prop("checked", false);
+
+        //     $("#shipping_address_section").removeClass("d-none");
+        // });
+        $("#same_as_shipping").on("change", function () {
+            if ($(this).is(":checked")) {
+                $("#shipping_address_section").addClass("d-none");
+            } else {
+                $("#shipping_address_section").removeClass("d-none");
+            }
+        });
+
+        // Add Shipping Address button
+        $("#add_shipping_address_btn").on("click", function () {
+            $("#same_as_shipping").prop("checked", false).trigger("change");
+        });
 
     });
 

@@ -27,58 +27,130 @@
         <form action="#" class="checkout__form" id="checkout__form">
             <div class="row">
                 <div class="col-lg-8">
-                    <h5>Billing detail</h5>
                     <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                            <div class="checkout__form__input">
-                                <p>First Name <span>*</span></p>
-                                <input type="text" name="add_Name" placeholder="Full Name">
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                            <div class="checkout__form__input">
-                                <p>Last Name <span>*</span></p>
-                                <input type="text" name="add_LastName">
-                            </div>
-                        </div>
                         <div class="col-lg-12">
+                             <h5>Billing detail</h5>
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <div class="checkout__form__input">
+                                        <p>First Name <span>*</span></p>
+                                        <input type="text" name="add_Name" placeholder="Full Name">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <div class="checkout__form__input">
+                                        <p>Last Name <span>*</span></p>
+                                        <input type="text" name="add_LastName">
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    
+                                    <div class="checkout__form__input">
+                                        <p>Address <span>*</span></p>
+                                        <input type="text" name="add_Street" placeholder="Street Address">
+                                        <input type="text" name="add_Landmark"
+                                            placeholder="Apartment, Suite, Unit, etc. (optional)">
+                                    </div>
+                                    <div class="checkout__form__input">
+                                        <p>Town/City <span>*</span></p>
+                                        <input type="text" name="add_City" placeholder="City">
+                                    </div>
+                                    <div class="checkout__form__input">
+                                        <p>State <span>*</span></p>
+                                        <input type="text" name="add_State" placeholder="State">
+                                    </div>
+                                    <div class="checkout__form__input">
+                                        <p>Country <span>*</span></p>
+                                        <input type="text" name="add_Country">
+                                    </div>
+                                    <div class="checkout__form__input">
+                                        <p>Postcode/Zip <span>*</span></p>
+                                        <input type="text" name="add_Pincode" placeholder="Zipcode">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <div class="checkout__form__input">
+                                        <p>Phone <span>*</span></p>
+                                        <input type="text" name="add_Phone" placeholder="Phone">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <div class="checkout__form__input">
+                                        <p>Email <span>*</span></p>
+                                        <input type="text" name="add_Email" placeholder="abc@gmail.com">
+                                    </div>
+                                </div>
                             
-                            <div class="checkout__form__input">
-                                <p>Address <span>*</span></p>
-                                <input type="text" name="add_Street" placeholder="Street Address">
-                                <input type="text" name="add_Landmark"
-                                    placeholder="Apartment, Suite, Unit, etc. (optional)">
                             </div>
-                            <div class="checkout__form__input">
-                                <p>Town/City <span>*</span></p>
-                                <input type="text" name="add_City" placeholder="City">
-                            </div>
-                            <div class="checkout__form__input">
-                                <p>State <span>*</span></p>
-                                <input type="text" name="add_State" placeholder="State">
-                            </div>
-                            <div class="checkout__form__input">
-                                <p>Country <span>*</span></p>
-                                <input type="text" name="add_Country">
-                            </div>
-                            <div class="checkout__form__input">
-                                <p>Postcode/Zip <span>*</span></p>
-                                <input type="text" name="add_Pincode" placeholder="Zipcode">
+                            <div class="row">
+                                <div class="col-lg-12 d-flex  justify-content-between">
+                                    <div class="d-flex w-100">
+                                        <input type="checkbox" id="same_as_shipping" name="same_as_shipping" checked> &nbsp;
+                                        <span class="text-center align-items-center justify-content-center d-flex">Billing address is same as shipping address?</span>
+                                    </div>
+                                    <div class="add_shipping_address">
+                                            <button type="button" class="text-white black btn-sm" id="add_shipping_address_btn">
+                                                <span class="plus_shipping_text">Add Shipping Address</span>
+                                    </div>
+                                    
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                            <div class="checkout__form__input">
-                                <p>Phone <span>*</span></p>
-                                <input type="text" name="add_Phone" placeholder="Phone">
+                        <div class="col-lg-12 d-none" id="shipping_address_section" >
+                            <h5>Shipping detail</h5>
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <div class="checkout__form__input">
+                                        <p>First Name <span>*</span></p>
+                                        <input type="text" name="add_Name" placeholder="Full Name">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <div class="checkout__form__input">
+                                        <p>Last Name <span>*</span></p>
+                                        <input type="text" name="add_LastName">
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    
+                                    <div class="checkout__form__input">
+                                        <p>Address <span>*</span></p>
+                                        <input type="text" name="add_Street" placeholder="Street Address">
+                                        <input type="text" name="add_Landmark"
+                                            placeholder="Apartment, Suite, Unit, etc. (optional)">
+                                    </div>
+                                    <div class="checkout__form__input">
+                                        <p>Town/City <span>*</span></p>
+                                        <input type="text" name="add_City" placeholder="City">
+                                    </div>
+                                    <div class="checkout__form__input">
+                                        <p>State <span>*</span></p>
+                                        <input type="text" name="add_State" placeholder="State">
+                                    </div>
+                                    <div class="checkout__form__input">
+                                        <p>Country <span>*</span></p>
+                                        <input type="text" name="add_Country">
+                                    </div>
+                                    <div class="checkout__form__input">
+                                        <p>Postcode/Zip <span>*</span></p>
+                                        <input type="text" name="add_Pincode" placeholder="Zipcode">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <div class="checkout__form__input">
+                                        <p>Phone <span>*</span></p>
+                                        <input type="text" name="add_Phone" placeholder="Phone">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <div class="checkout__form__input">
+                                        <p>Email <span>*</span></p>
+                                        <input type="text" name="add_Email" placeholder="abc@gmail.com">
+                                    </div>
+                                </div>
+                            
                             </div>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                            <div class="checkout__form__input">
-                                <p>Email <span>*</span></p>
-                                <input type="text" name="add_Email" placeholder="abc@gmail.com">
-                            </div>
-                        </div>
-                       
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -148,6 +220,8 @@
                 </div>
             </div>
         </form>
+
+       
     </div>
 </section>
 <!-- Checkout Section End -->
