@@ -145,6 +145,16 @@
             $("#showChangePassword").removeClass("d-none");
         });
 
+        // Show alert box change password
+        function showPasswordAlert(type, text) {
+            const box = $('#passwordAlertBox');
+            box.removeClass('alert-success alert-danger alert-warning alert-info d-none')
+                .addClass('alert-' + type)
+                .text(text)
+                .fadeIn();
+
+            setTimeout(() => box.fadeOut(), 3000);
+        }
         // AJAX Submit
         $("#changePasswordForm").on("submit", function (e) {
             e.preventDefault();
@@ -156,16 +166,17 @@
                 dataType: 'json',
                 success: function (response) {
                     if (response.success) {
-                        showMessage('success', response.message);
+                        showPasswordAlert('success', response.message);
+
                         $("#passwordFormContainer").addClass("d-none");
                         $("#showChangePassword").removeClass("d-none");
                         $("#changePasswordForm")[0].reset();
                     } else {
-                        showMessage('danger', response.message);
+                        showPasswordAlert('danger', response.message);
                     }
                 },
                 error: function () {
-                    showMessage('danger', 'Something went wrong!');
+                    showPasswordAlert('danger', 'Something went wrong!');
                 }
             });
         });
