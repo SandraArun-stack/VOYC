@@ -7,6 +7,7 @@ class CustomerModel extends Model
 {
     protected $table = 'customer';
     protected $primaryKey = 'cust_Id';
+    protected $returnType = 'array';
     protected $allowedFields = [
         'cust_Name',
         'cust_Email',
@@ -133,6 +134,17 @@ class CustomerModel extends Model
         }
 
         return $this->db->query($sql)->getRow()->total;
+    }
+    public function getdetailsbyCustomerid($custId)
+    {
+        if (empty($custId)) {
+            return null;
+        }
+
+        return $this->asArray() // 🔒 forces array result
+            ->select('cust_Email, cust_Phone')
+            ->where('cust_Id', $custId)
+            ->first();
     }
 
 }

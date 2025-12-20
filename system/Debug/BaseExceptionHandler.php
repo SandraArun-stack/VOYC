@@ -246,9 +246,9 @@ abstract class BaseExceptionHandler
     protected function render(Throwable $exception, int $statusCode, $viewFile = null): void
     {
         if ($viewFile === null) {
-            // echo 'The error view file was not specified. Cannot display error view.';
-            echo $exception;
-            exit(1);
+            echo 'The error view file was not specified. Cannot display error view.';
+            // echo $exception;
+            // exit(1);
         }
 
         if (! is_file($viewFile)) {

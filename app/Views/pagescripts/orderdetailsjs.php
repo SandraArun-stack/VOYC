@@ -217,8 +217,6 @@
 
         });
 
-
-
         $('#checkout__form__free_tee').on('submit', function (e) {
             e.preventDefault();
 
@@ -311,7 +309,6 @@
                 }
             });
         });
-
 
         $("#pasteCoupon").on("click", async function () {
             try {

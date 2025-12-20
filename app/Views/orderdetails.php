@@ -71,13 +71,13 @@
                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                     <div class="checkout__form__input">
                                         <p>Phone <span>*</span></p>
-                                        <input type="text" name="add_Phone" placeholder="Phone">
+                                        <input type="text" name="add_Phone" placeholder="Phone" value="<?= esc($cust_Phone  ?? '') ?>">
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                     <div class="checkout__form__input">
                                         <p>Email <span>*</span></p>
-                                        <input type="text" name="add_Email" placeholder="abc@gmail.com">
+                                        <input type="text" name="add_Email" placeholder="abc@gmail.com" value="<?= esc($cust_Email ?? '') ?>">
                                     </div>
                                 </div>
                             
@@ -102,50 +102,50 @@
                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                     <div class="checkout__form__input">
                                         <p>First Name <span>*</span></p>
-                                        <input type="text" name="add_Name" placeholder="Full Name">
+                                        <input type="text" name="shipping_add_Name" placeholder="Full Name">
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                     <div class="checkout__form__input">
                                         <p>Last Name <span>*</span></p>
-                                        <input type="text" name="add_LastName">
+                                        <input type="text" name="shipping_add_LastName">
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     
                                     <div class="checkout__form__input">
                                         <p>Address <span>*</span></p>
-                                        <input type="text" name="add_Street" placeholder="Street Address">
-                                        <input type="text" name="add_Landmark"
+                                        <input type="text" name="shipping_add_Street" placeholder="Street Address">
+                                        <input type="text" name="shipping_add_Landmark"
                                             placeholder="Apartment, Suite, Unit, etc. (optional)">
                                     </div>
                                     <div class="checkout__form__input">
                                         <p>Town/City <span>*</span></p>
-                                        <input type="text" name="add_City" placeholder="City">
+                                        <input type="text" name="shipping_add_City" placeholder="City">
                                     </div>
                                     <div class="checkout__form__input">
                                         <p>State <span>*</span></p>
-                                        <input type="text" name="add_State" placeholder="State">
+                                        <input type="text" name="shipping_add_State" placeholder="State">
                                     </div>
                                     <div class="checkout__form__input">
                                         <p>Country <span>*</span></p>
-                                        <input type="text" name="add_Country">
+                                        <input type="text" name="shipping_add_Country">
                                     </div>
                                     <div class="checkout__form__input">
                                         <p>Postcode/Zip <span>*</span></p>
-                                        <input type="text" name="add_Pincode" placeholder="Zipcode">
+                                        <input type="text" name="shipping_add_Pincode" placeholder="Zipcode">
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                     <div class="checkout__form__input">
                                         <p>Phone <span>*</span></p>
-                                        <input type="text" name="add_Phone" placeholder="Phone">
+                                        <input type="text" name="shipping_add_Phone" placeholder="Phone">
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                     <div class="checkout__form__input">
                                         <p>Email <span>*</span></p>
-                                        <input type="text" name="add_Email" placeholder="abc@gmail.com">
+                                        <input type="text" name="shipping_add_Email" placeholder="abc@gmail.com">
                                     </div>
                                 </div>
                             
@@ -192,8 +192,9 @@
                                     ?>
                                     <li>Your cart is empty.</li>
                                 <?php endif; ?>
-                                <li id="shipping_charge_order_detail">Shipping Charge <span>₹ 0.00</span></li>
-
+                                <li id="shipping_charge_order_detail">Shipping Charge <span>₹ <?= number_format($shipping_charge, 2) ?></span></li>
+                                    <input type="hidden" id="shipping_charge_value" value="<?= $shipping_charge ?>">
+                                    <input type="hidden" id="minimum_amount_for_shipping_charge" value="<?= $minimum_amount_for_shipping_charge ?>">
                             </ul>
                             
                         </div>
@@ -206,6 +207,10 @@
                             </ul>
                         </div>
                         <div class="alert d-none small" id="alertPlaceOrder"></div>
+                        <div class="text_coupen">
+                        <span class="small"> Already have a coupon? Enter your coupon code below to apply the discount to your order.</span>
+
+                        </div>
                         <div class="coupon-box">
                             <input type="text" id="coupen_code" placeholder="Enter Coupon Code">
                             <i class="fa fa-paste paste-icon" id="pasteCoupon"></i>

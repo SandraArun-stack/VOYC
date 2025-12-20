@@ -2199,6 +2199,13 @@ input[type="file"] {
     box-shadow: 0 4px 12px rgba(255, 82, 82, 0.5);
 }
 
+.text_coupen {
+    padding: 0px 6px;
+    line-height: 1;
+}
+
+
+
 /* Animation */
 @keyframes popIn {
     0% {
@@ -2320,10 +2327,12 @@ input[type="file"] {
     font-size: 13px;
     font-weight: 600;
 }
-.plus_shipping_text{
-        font-size: 14px;
+
+.plus_shipping_text {
+    font-size: 14px;
     font-weight: 600;
 }
+
 @keyframes bounceToken {
     0% {
         transform: scale(1);
