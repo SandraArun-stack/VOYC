@@ -1,5 +1,6 @@
 <?php
 namespace App\Controllers;
+use CodeIgniter\Controller;
 
 use App\Models\OrderDetailsModel;
 use App\Models\AddressModel;
@@ -8,13 +9,13 @@ use App\Models\Admin\PlayersModel;
 use App\Models\Admin\GameMappingModel;
 use App\Models\Admin\ProductModel;
 use App\Models\UserleaderboardModel;
-use CodeIgniter\Controller;
+use App\Models\Admin\CustomerModel;
 
 use Razorpay\Api\Api;
 use Razorpay\Api\Errors\SignatureVerificationError;
 class OrderDetails extends Controller
 {
-        protected $db;
+    protected $db;
     protected $session;
     protected $request;
     protected $orderModel;
@@ -29,7 +30,8 @@ class OrderDetails extends Controller
         $this->PlayersModel = new PlayersModel();
         $this->GameMappingModel = new GameMappingModel();
         $this->ProductModel = new ProductModel();
-        $this->UserleaderboardModel = new UserleaderboardModel();
+        $this->CustomerModel = new CustomerModel();
+
     }
 
     // Show checkout page
@@ -37,6 +39,16 @@ class OrderDetails extends Controller
     {
         $session = session();
         $userId = $session->get('user_id');
+
+
+        $user = $this->CustomerModel->getdetailsbyCustomerid($userId);
+
+        $data = [
+            'cust_Email' => $user['cust_Email'] ?? '',
+            'cust_Phone' => $user['cust_Phone'] ?? '',
+        ];
+
+
         $cartCount = $this->CartModel->getCartItemCount($userId);
 
         //leaderboard Count
@@ -56,12 +68,37 @@ class OrderDetails extends Controller
 
         $cartModel = new CartModel();
         $cartItems = $cartModel->getCartItems($userId);
+
+        $shippingData = $this->db->table('common_table')
+            ->whereIn('field', [
+                'minimum_amount_for_shipping_charge',
+                'shipping_charge'
+            ])
+            ->get()
+            ->getResultArray();
+
+        $shipping = [
+            'minimum_amount_for_shipping_charge' => 0,
+            'shipping_charge' => 0
+        ];
+
+        foreach ($shippingData as $row) {
+            $shipping[$row['field']] = $row['value'];
+        }
+
         return view('common/header', [
             'cartCount' => $cartCount,
             'players' => $result['players'],
             'lastPlayer' => $result['lastPlayer']
         ])
-            . view('orderdetails', ['cartItems' => $cartItems, 'totalAmount' => $totalAmount])
+            . view('orderdetails', [
+                'cartItems' => $cartItems,
+                'totalAmount' => $totalAmount,
+                'cust_Email' => $data['cust_Email'],
+                'cust_Phone' => $data['cust_Phone'],
+                'minimum_amount_for_shipping_charge' => $shipping['minimum_amount_for_shipping_charge'],
+                'shipping_charge' => $shipping['shipping_charge'],
+            ])
             . view('common/footer')
             . view('pagescripts/orderdetailsjs');
     }
@@ -155,7 +192,7 @@ class OrderDetails extends Controller
             $item['od_number'] = $orderNumber;
             $item['cus_Id'] = $userId;
             $item['add_Id'] = $add_Id;
-             $item['od_Billing_Address'] = $shippingAddress;
+            $item['od_Billing_Address'] = $shippingAddress;
             // $item['od_Shipping_Address'] = $shippingAddress;
             $item['od_createdby'] = $userId;
 
@@ -674,21 +711,21 @@ class OrderDetails extends Controller
     //     ]);
     // }
 
-    public function getShippingCharge()
-    {
-        // $db = \Config\Database::connect();
+    // public function getShippingCharge()
+    // {
+    //     // $db = \Config\Database::connect();
 
-        $shippingData = $this->db->table('common_table')
-            ->whereIn('field', ['minimum_amount_for_shipping_charge', 'shipping_charge'])
-            ->get()
-            ->getResultArray();
+    //     $shippingData = $this->db->table('common_table')
+    //         ->whereIn('field', ['minimum_amount_for_shipping_charge', 'shipping_charge'])
+    //         ->get()
+    //         ->getResultArray();
 
-        $shipping = [];
-        foreach ($shippingData as $row) {
-            $shipping[$row['field']] = $row['value'];
-        }
+    //     $shipping = [];
+    //     foreach ($shippingData as $row) {
+    //         $shipping[$row['field']] = $row['value'];
+    //     }
 
-        return json_encode($shipping);
-    }
+    //     return json_encode($shipping);
+    // }
 
 }
