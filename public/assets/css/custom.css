@@ -2348,6 +2348,15 @@ input[type="file"] {
     font-size: 14px;
     font-weight: 600;
 }
+/* nav>ul>.navigation {
+    justify-content: center !important;
+
+} */
+
+.page-navigation ul {
+    display: flex;
+    justify-content: center;
+}
 
 @keyframes bounceToken {
     0% {

@@ -21,26 +21,31 @@ class AllCustProduct extends Controller
     }
 
     public function index($userId = null)
-    {
-        //leaderboard Count
-        $today = date('Y-m-d');
-        $todayLimit = $this->GameMappingModel->getTodayLeaderboardCount($today);
-        $todayLimit = intval($todayLimit);
+{
+    $today = date('Y-m-d');
+    $todayLimit = intval($this->GameMappingModel->getTodayLeaderboardCount($today));
+    $result = $this->PlayersModel->getTodayPlayers($today, $todayLimit, session()->get('user_id'));
 
-        $result = $this->PlayersModel->getTodayPlayers($today, $todayLimit, session()->get('user_id'));
+    $perPage = 6;
 
-        //get customisible products
+    $customProducts = $this->AllCustProductModel->getAllCustomProducts($perPage);
+    $pager = $this->AllCustProductModel->pager;
 
-        $data['customizable_products'] = $this->AllCustProductModel->getAllCustomProducts();
+    $data = [
+        'customizable_products' => $customProducts,
+        'pager' => $pager
+    ];
 
-        return view('common/header', [
-            'players' => $result['players'],
-            'lastPlayer' => $result['lastPlayer']
-        ])
-            . view('all_cust_products', $data)
-            . view('common/footer')
-            . view('pagescripts/all_cust_productsjs');
-    }
+    return view('common/header', [
+        'players' => $result['players'],
+        'lastPlayer' => $result['lastPlayer']
+    ])
+        . view('all_cust_products', $data)
+        . view('common/footer')
+        . view('pagescripts/all_cust_productsjs');
+}
+
+
 
 
 }

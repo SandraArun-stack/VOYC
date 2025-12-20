@@ -4,16 +4,16 @@
 <section class="shop spad" id="allcustomisible_Product_view">
     <div class="container">
         <div class="row mb-4">
-            <div class="col-md-12 text-center">
-                <h2 class="shop-heading">
-                    Explore Our Customizable Collection
-                </h2>
-                <p class="shop-subheading">
-                    Choose your style and make it truly yours
-                </p>
-                <hr class="shop-divider">
-            </div>
+        <div class="col-md-12 text-center">
+            <h2 class="shop-heading">
+                Explore Our Customizable Collection
+            </h2>
+            <p class="shop-subheading">
+                Choose your style and make it truly yours
+            </p>
+            <hr class="shop-divider">
         </div>
+    </div>
         <div class="row">
             <div class="col-md-12 ">
                 <div class="row product-list">
@@ -74,7 +74,11 @@
 
                     <div class="col-lg-12 text-center">
                         <div class="pagination__option">
-
+                            <!-- <a href="#">1</a>
+                            <a href="#">2</a>
+                            <a href="#">3</a>
+                            <a href="#"><i class="fa fa-angle-right"></i></a> -->
+                            <?= $pager->links() ?>
                         </div>
                     </div>
                 </div>
