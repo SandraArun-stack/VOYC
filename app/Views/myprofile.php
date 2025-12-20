@@ -62,12 +62,12 @@
                 </div>
             </div>
 
-
+            <div id="passwordAlertBox" class="alert d-none mt-2"></div>
             <div class="card mb-4 shadow-sm" data-aos="fade-up" data-aos-duration="600">
                 <div class="card-header bg-dark text-white">
                     <strong>Security</strong>
                 </div>
-
+                <div id="messageBox" class="alert alert-success" style="display: none;"></div>
                 <div class="card-body">
                     <p><strong>Password:</strong> ********</p>
 
@@ -76,7 +76,7 @@
 
                     <!-- Inline Password Form (Hidden by Default) -->
                     <div id="passwordFormContainer" class="mt-3 d-none">
-
+                        <div id="passwordMessage" class="alert d-none"></div>
                         <form id="changePasswordForm">
                             <div class="mb-2 position-relative">
                                 <strong>Current Password <span style="color:red">*</span></strong>

@@ -125,7 +125,7 @@
         <h1>404</h1>
         <p>Oops! The page you’re looking for is lost in our game world.</p>
         <p class="game-hint">Explore Voyc’s fun games while you’re here!</p>
-        <a href="<?= base_url('admin/'); ?>" class="home-btn">Return Home</a>
+        <a href="<?= base_url('/'); ?>" class="home-btn">Return Home</a>
     </div>
 
 </body>

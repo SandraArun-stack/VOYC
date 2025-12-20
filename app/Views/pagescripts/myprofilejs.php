@@ -1,5 +1,5 @@
 <script>
-    $(document).ready(function () {
+$(document).ready(function () {
 
         //  Reusable show message function
         function showMessage(type, text) {
@@ -145,6 +145,16 @@
             $("#showChangePassword").removeClass("d-none");
         });
 
+        // Show alert box change password
+        function showPasswordAlert(type, text) {
+            const box = $('#passwordAlertBox');
+            box.removeClass('alert-success alert-danger alert-warning alert-info d-none')
+                .addClass('alert-' + type)
+                .text(text)
+                .fadeIn();
+
+            setTimeout(() => box.fadeOut(), 3000);
+        }
         // AJAX Submit
         $("#changePasswordForm").on("submit", function (e) {
             e.preventDefault();
@@ -156,16 +166,17 @@
                 dataType: 'json',
                 success: function (response) {
                     if (response.success) {
-                        showMessage('success', response.message);
+                        showPasswordAlert('success', response.message);
+
                         $("#passwordFormContainer").addClass("d-none");
                         $("#showChangePassword").removeClass("d-none");
                         $("#changePasswordForm")[0].reset();
                     } else {
-                        showMessage('danger', response.message);
+                        showPasswordAlert('danger', response.message);
                     }
                 },
                 error: function () {
-                    showMessage('danger', 'Something went wrong!');
+                    showPasswordAlert('danger', 'Something went wrong!');
                 }
             });
         });
@@ -185,5 +196,45 @@
                 }
             });
         });
-    });
+    // delete account ajax
+    //     $("#confirmDeleteBtn").click(function () {
+
+    //         $.ajax({
+    //             url: "<?= base_url('deleteaccount/deleteAccount') ?>",
+    //             type: "POST",
+    //             dataType: "json",
+    //             success: function (res) {
+
+    //                 let box = $("#deleteMessage");
+    //                 box.removeClass("d-none alert-danger alert-success");
+
+    //                 if (res.status) {
+    //                     box.addClass("alert-success").text(res.message).fadeIn();
+                        
+    //                     setTimeout(() => {
+    //                         window.location.href = "<?= base_url('/') ?>";
+    //                     }, 3000);
+
+    //                 } else {
+    //                     box.addClass("alert-danger").text(res.message).fadeIn();
+    //                 }
+    //             },
+    //             error: function () {
+    //                 let box = $("#deleteMessage");
+    //                 box.removeClass("d-none").addClass("alert-danger")
+    //                     .text("Something went wrong, try again!");
+    //             }
+    //         });
+
+    //     });
+});
+
+//     $("#cancelDeleteAccount").on("click", function () {
+//     // Redirect back or reload previous profile view
+//     window.location.reload();
+// });
+
+
+
+
 </script>

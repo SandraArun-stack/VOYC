@@ -9,6 +9,10 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::index');
 $routes->post('setFreeTeeSession', 'Home::setFreeTeeSession');
 
+// 404  page
+$routes->set404Override('\App\Controllers\ErrorWeb::show404');
+$routes->get('404', 'ErrorWeb::show404');
+
 //forgot password
 $routes->post('forgotPassword', 'ForgotPassword::forgotPassword');
 $routes->get('resetPassword/(:any)', 'ForgotPassword::resetPassword/$1');
@@ -60,6 +64,9 @@ $routes->get('myprofile', 'MyProfile::index');
 $routes->post('myprofile/updateProfile', 'MyProfile::updateProfile');
 $routes->post('myprofile/changePassword', 'MyProfile::changePassword');
 
+// delete account in website
+// $routes->get('deleteaccount', 'DeleteAccount::index');
+// $routes->post('deleteaccount/deleteAccount', 'DeleteAccount::deleteAccount');
 
 // $routes->get('ordernow/product/(:any)', 'OrderNow::orderproduct/$1');
 
@@ -188,7 +195,9 @@ $routes->get('myredemption', 'Userleaderboard::myredemption');
 
 //payments
 $routes->post('payment/createRazorpayOrder', 'PaymentController::createRazorpayOrder');
-
+//errior handling
+$routes->get('404', 'ErrorWeb::show404');
+//
 // --------------------------------ADMIN----------------------------------------//
 
 
