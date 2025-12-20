@@ -122,7 +122,7 @@
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="cart__btn">
-                    <a href="#" id="continue_shopping">Continue Shopping</a>
+                    <a href="<?= base_url(); ?>" id="continue_shopping">Continue Shopping</a>
                 </div>
             </div>
             <?php if (!empty($cartCount) && $cartCount > 0): ?>
