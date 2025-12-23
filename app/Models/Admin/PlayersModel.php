@@ -11,7 +11,6 @@ class PlayersModel extends Model
     protected $allowedFields = [
         'game_Id',
         'cust_Id',
-        // 'player_date',
         'player_score',
         'player_rank',
         'player_token_balance',

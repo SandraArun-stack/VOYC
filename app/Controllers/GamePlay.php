@@ -12,24 +12,29 @@ class GamePlay extends BaseController
     {
         $this->session = \Config\Services::session();
         $this->request = \Config\Services::request();
-        $this->db      = \Config\Database::connect();
+        $this->db = \Config\Database::connect();
         $this->playerModel = new PlayersModel();
     }
     public function play($folderName = null)
     {
+
         if (!$folderName) {
             return redirect()->to(base_url('game_arena'));
         }
 
         $session = session();
-        $userId  = $session->get('user_id');
-        $gameId  = $this->request->getGet('game_id');
+        $userId = $session->get('user_id');
+        $gameId = $this->request->getGet('game_id');
+
+        // echo session()->get('game_mode');
+        // exit;
+
         if (!$userId || !$gameId || $session->get('game_mode') !== 'participate') {
             $session->set('game_mode', 'demo');
 
             return view('game_play', [
                 'folderName' => $folderName,
-                'mode'       => 'demo'
+                'mode' => 'demo'
             ]);
         }
         $todayGame = $this->db->table('games_mapping')
@@ -61,19 +66,20 @@ class GamePlay extends BaseController
             ->update([
                 'uw_total_token' => $wallet['uw_total_token'] - $todayGame['gm_tokens']
             ]);
-        $session->remove('game_mode');
+
+        // $session->remove('game_mode');
 
         return view('game_play', [
             'folderName' => $folderName,
-            'mode'       => 'full'
+            'mode' => 'full'
         ]);
     }
     // -------------------------------Api---------------------------------
     public function saveScore()
     {
-        $userId   = session()->get('user_id');
+        $userId = session()->get('user_id');
         $gameMode = session()->get('game_mode');
-        $gameId   = session()->get('game_id');
+        $gameId = session()->get('game_id');
 
         if ($gameMode !== 'participate') {
             return $this->response->setJSON([
@@ -89,9 +95,9 @@ class GamePlay extends BaseController
             ]);
         }
 
-        $json  = $this->request->getJSON(true);
+        $json = $this->request->getJSON(true);
         $score = $json['score'] ?? null;
-        $time  = $json['time'] ?? null;
+        $time = $json['time'] ?? null;
 
         if ($score === null || $time === null) {
             return $this->response->setJSON([
@@ -100,24 +106,74 @@ class GamePlay extends BaseController
             ]);
         }
 
-        $playerModel = new \App\Models\PlayersModel();
+        // $playerModel = new \App\Models\Admin\PlayersModel();
 
-        $playerModel->insert([
+        // $playerModel->insert([
+        //     'game_Id' => $gameId,
+        //     'cust_Id' => $userId,
+        //     'player_created_at' => date('Y-m-d'),
+        //     'player_score' => $score,
+        //     'player_time' => $time,
+        //     'player_rank' => 0,
+        //     'player_winning_status' => 0,
+        //     'player_status' => 1,
+        //     'player_created_at' => date('Y-m-d H:i:s'),
+        //     'player_created_by' => $userId
+        // ]);
+
+        // return $this->response->setJSON([
+        //     'status' => true,
+        //     'message' => 'Participate score saved'
+        // ]);
+
+        $playerModel = new \App\Models\Admin\PlayersModel();
+
+        /** 🔍 Check if player already played today */
+        $existingPlayer = $playerModel
+            ->where('cust_Id', $userId)
+            ->where('game_Id', $gameId)
+            ->where('DATE(player_created_at)', date('Y-m-d'))
+            ->first();
+
+        if ($existingPlayer) {
+            /** ✅ UPDATE existing row */
+            if ($score >= $existingPlayer['player_score']) {
+                $playerModel->update($existingPlayer['player_Id'], [
+                    'player_score' => $score,
+                    'player_time' => $time,
+                    'player_updated_at' => date('Y-m-d H:i:s'),
+                    'player_updated_by' => $userId
+                ]);
+            }
+
+            $playerId = $existingPlayer['player_Id'];
+        } else {
+            /** ✅ INSERT new row */
+            $playerId = $playerModel->insert([
+                'game_Id' => $gameId,
+                'cust_Id' => $userId,
+                'player_score' => $score,
+                'player_time' => $time,
+                'player_rank' => 0,
+                'player_winning_status' => 0,
+                'player_status' => 1,
+                'player_created_at' => date('Y-m-d H:i:s'),
+                'player_created_by' => $userId
+            ], true); // true = return insert ID
+        }
+
+        /** 🧾 INSERT into score_board (ALWAYS) */
+        $this->db->table('score_board')->insert([
+            'player_Id' => $playerId,
+            'score' => $score,
             'game_Id' => $gameId,
-            'cust_Id' => $userId,
-            'player_created_at' => date('Y-m-d'),
-            'player_score' => $score,
-            'player_time' => $time,
-            'player_rank' => 0,
-            'player_winning_status' => 0,
-            'player_status' => 1,
-            'player_created_at' => date('Y-m-d H:i:s'),
-            'player_created_by' => $userId
+            'score_created_at' => date('Y-m-d H:i:s'),
+            'score_created_by' => $userId
         ]);
 
         return $this->response->setJSON([
             'status' => true,
-            'message' => 'Participate score saved'
+            'message' => 'Score saved successfully'
         ]);
     }
 
