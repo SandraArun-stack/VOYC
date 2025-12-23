@@ -27,11 +27,6 @@
                 </p>
 
                 <div class="game-btn-row">
-                    <!-- TRY NOW → DEMO GAME -->
-                    <!-- <a href="<?= base_url('play_game/' . $todayGame['game_demo_name']); ?>"
-                       class="game-btn">
-                        <i class="fa fa-play"></i> Try Now
-                    </a> -->
 
                     <!-- PARTICIPATE → REAL GAME -->
                     <a href="<?= base_url('participate/' . $todayGame['game_Id']); ?>" 
