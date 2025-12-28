@@ -184,6 +184,7 @@
             keyboard: true
         });
 
+        
         $('.login_close').on('click', function (e) {
             authModal.hide();
         });
@@ -1039,6 +1040,22 @@
             active.set("flipY", !active.flipY);
             canvas.renderAll();
         });
+
+        $(document).on('click', '.size-box-customisation', function () {
+            $('.size-box-customisation').removeClass('active');
+            $(this).addClass('active');
+
+            const price = $(this).data('price');
+            const prvId = $(this).data('prv-id');
+
+            // Update displayed price
+            $('#priceProduct').text('₹' + price);
+            updatePreview();
+            console.log('Selected prv_Id:', prvId);
+            console.log('Selected price:', price);
+        });
+
+
 
     });
 

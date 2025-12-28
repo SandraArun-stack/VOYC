@@ -265,12 +265,14 @@ canvas {
     background-repeat: no-repeat;
     background-position: center;
 }
+
 .shop-heading {
     font-weight: 700;
     font-size: 2.5rem;
     color: #222;
     margin-bottom: 0.5rem;
 }
+
 .shop-subheading {
     font-size: 1.1rem;
     color: #666;
@@ -2348,6 +2350,7 @@ input[type="file"] {
     font-size: 14px;
     font-weight: 600;
 }
+
 /* nav>ul>.navigation {
     justify-content: center !important;
 
@@ -2370,6 +2373,33 @@ input[type="file"] {
     100% {
         transform: scale(1);
     }
+}
+
+.size-row-customisation {
+    display: inline-flex;
+    gap: 8px;
+}
+
+.size-box-customisation {
+    padding: 5px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    /* ✅ requested */
+    font-size: 13px;
+    cursor: pointer;
+    background: #fff;
+    min-width: 32px;
+    text-align: center;
+}
+
+/* Optional selected state */
+.size-box-customisation.active {
+    background-color: #000;
+    color: #fff;
+    border-color: #000;
+}
+.gap__custom{
+gap: 12px;
 }
 
 @media only screen and (max-width: 991px) {

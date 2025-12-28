@@ -24,6 +24,9 @@ class Tshirt extends Controller
 
     public function index($prId = null, $priId = null)
     {
+        $selectedPrvId = $this->request->getGet('prvId');
+        $variantPrice = $selectedPrvId ? $this->tshirtModel->getPrvPrice($selectedPrvId) : null;
+
         $session = session();
         $userId = $session->get('user_id');
         $cartCount = $this->CartModel->getCartItemCount($userId);
@@ -37,6 +40,9 @@ class Tshirt extends Controller
 
 
         if (!empty($prId) && !empty($priId)) {
+            $productDetails = $this->tshirtModel->getProductBasicDetails($prId);
+            $variantIds = $this->tshirtModel->getVariantIdsByProductAndImage($prId, $priId);
+            // print_r($variantIds);exit;
             $cust_image = $this->tshirtModel->get_Image($prId, $priId);
             $allData = $this->tshirtModel->get_Data_For_Pr_Id($prId);
             $customisationPrice = $this->tshirtModel->get_customisation_price();
@@ -49,7 +55,11 @@ class Tshirt extends Controller
                     'priId' => $priId,
                     'cust_image' => $cust_image,
                     'allData' => $allData,
-                    'customisationPrice' => $customisationPrice
+                    'customisationPrice' => $customisationPrice,
+                    'productDetails' => $productDetails,
+                    'variantIds' => $variantIds,
+                    'selectedPrvId' => $selectedPrvId,
+                    'variantPrice' => $variantPrice
                 ];
                 return view('common/header', [
                     'cartCount' => $cartCount,
