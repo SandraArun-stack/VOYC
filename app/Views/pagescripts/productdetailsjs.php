@@ -296,8 +296,15 @@
 
 
 
-            const prvId = selectedSize.closest('.size-option').data('size-id');
-            const price = selectedSize.closest('.size-option').data('price');
+            // const prvId = selectedSize.closest('.size-option').data('size-id');
+            // const price = selectedSize.closest('.size-option').data('price');
+
+            const sizeOption = selectedSize.closest('.size-option');
+
+            const prvId = sizeOption.data('size-id');
+            const price = sizeOption.data('price');
+            const sizeValue = sizeOption.data('size');
+
             // alert(price);
             const prId = "<?= $product['pr_Id'] ?>";
             const priId = $('input[name="color__radio"]:checked').data('pri-id');
@@ -305,7 +312,7 @@
 
             //  Get the quantity selected by user
             const quantity = parseInt($('#quantity').val()) || 1;
-            const sizeValue = selectedSize.val();
+            // const sizeValue = selectedSize.val();
 
             $.ajax({
                 url: "<?= base_url('addToCart') ?>",

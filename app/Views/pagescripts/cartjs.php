@@ -14,11 +14,11 @@
             let qty = parseInt($(this).data('quantity')) || 0;
             let total = price * qty;
 
-            $(this).text('₹ ' + total.toFixed(2));
+            $(this).text('₹ ' + total);
             grandTotal += total;
         });
 
-        $('#grandTotal').text('₹ ' + grandTotal.toFixed(2));
+        $('#grandTotal').text('₹ ' + grandTotal);
     }
 
 
