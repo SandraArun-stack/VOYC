@@ -48,7 +48,6 @@ class OrderDetails extends Controller
             'cust_Phone' => $user['cust_Phone'] ?? '',
         ];
 
-
         $cartCount = $this->CartModel->getCartItemCount($userId);
 
         //leaderboard Count
@@ -85,6 +84,8 @@ class OrderDetails extends Controller
         foreach ($shippingData as $row) {
             $shipping[$row['field']] = $row['value'];
         }
+
+        // $existingAddress = $this->address->getTodayLeaderboardCount($today);
 
         return view('common/header', [
             'cartCount' => $cartCount,

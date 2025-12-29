@@ -79,7 +79,7 @@
                                 </div>
                             </div>
                             <hr />
-                            <div class="main_dashboard_items">
+                            <!-- <div class="main_dashboard_items">
                                 <div class="head__list">
                                     <h5>Subscriptions</h5>
                                 </div>
@@ -89,7 +89,7 @@
                                     </a>
                                 </div>
                             </div>
-                            <hr />
+                            <hr /> -->
 
 
                             <div class="main_dashboard_items">
