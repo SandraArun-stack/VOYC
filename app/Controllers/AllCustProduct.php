@@ -5,6 +5,7 @@ use App\Models\AllCustProductModel;
 use CodeIgniter\Controller;
 use App\Models\Admin\PlayersModel;
 use App\Models\Admin\GameMappingModel;
+use App\Models\CartModel;
 class AllCustProduct extends Controller
 {
     protected $session;
@@ -18,32 +19,42 @@ class AllCustProduct extends Controller
         $this->AllCustProductModel = new AllCustProductModel();
         $this->PlayersModel = new PlayersModel();
         $this->GameMappingModel = new GameMappingModel();
+         $this->CartModel = new CartModel();
     }
 
     public function index($userId = null)
-{
-    $today = date('Y-m-d');
-    $todayLimit = intval($this->GameMappingModel->getTodayLeaderboardCount($today));
-    $result = $this->PlayersModel->getTodayPlayers($today, $todayLimit, session()->get('user_id'));
+    {
+        $session = session();
+        $userId = $session->get('user_id');
+        $cartCount = $this->CartModel->getCartItemCount($userId);
 
-    $perPage = 6;
+        //leaderboard Count
+        $today = date('Y-m-d');
+        $todayLimit = $this->GameMappingModel->getTodayLeaderboardCount($today);
+        $todayLimit = intval($todayLimit);
 
-    $customProducts = $this->AllCustProductModel->getAllCustomProducts($perPage);
-    $pager = $this->AllCustProductModel->pager;
+        $result = $this->PlayersModel->getTodayPlayers($today, $todayLimit, session()->get('user_id'));
 
-    $data = [
-        'customizable_products' => $customProducts,
-        'pager' => $pager
-    ];
 
-    return view('common/header', [
-        'players' => $result['players'],
-        'lastPlayer' => $result['lastPlayer']
-    ])
-        . view('all_cust_products', $data)
-        . view('common/footer')
-        . view('pagescripts/all_cust_productsjs');
-}
+        $perPage = 6;
+
+        $customProducts = $this->AllCustProductModel->getAllCustomProducts($perPage);
+        $pager = $this->AllCustProductModel->pager;
+
+        $data = [
+            'customizable_products' => $customProducts,
+            'pager' => $pager
+        ];
+
+        return view('common/header', [
+            'cartCount' => $cartCount,
+            'players' => $result['players'],
+            'lastPlayer' => $result['lastPlayer']
+        ])
+            . view('all_cust_products', $data)
+            . view('common/footer')
+            . view('pagescripts/all_cust_productsjs');
+    }
 
 
 

@@ -398,31 +398,32 @@ $selectedPrvId = $_GET['prvId'] ?? null;
                                     <div class="d-flex justify-content-between py-2">
                                         <span>Product Rate:</span>
 
-                                        <span class="fw-semibold text-success" id="priceProduct">
-                                            ₹<?= esc($variantPrice ?? $variantIds[0]['prv_price'] ?? 0) ?></span>
+                                        <span class="fw-semibold" id="priceProduct">
+                                            ₹<?= esc($variantPrice ?? $variantIds[0]['prv_price'] ?? 0) ?>
+                                        </span>
                                     </div>
                                     <div class="price-section" id="front">
                                         <div class="d-flex justify-content-between py-2">
                                             <span>Front Design</span>
-                                            <span class="fw-semibold text-success" id="priceFront"> </span>
+                                            <span class="fw-semibold" id="priceFront"> </span>
                                         </div>
                                     </div>
                                     <div class="price-section" id="back">
                                         <div class="d-flex justify-content-between py-2">
                                             <span>Back Design</span>
-                                            <span class="fw-semibold text-success" id="priceBack"> </span>
+                                            <span class="fw-semibold" id="priceBack"> </span>
                                         </div>
                                     </div>
                                     <div class="price-section" id="right">
                                         <div class="d-flex justify-content-between py-2">
                                             <span>Right Sleeve</span>
-                                            <span class="fw-semibold text-success" id="priceRightSleeve"> </span>
+                                            <span class="fw-semibold" id="priceRightSleeve"> </span>
                                         </div>
                                     </div>
                                     <div class="price-section" id="left">
                                         <div class="d-flex justify-content-between py-2">
                                             <span>Left Sleeve</span>
-                                            <span class="fw-semibold text-success" id="priceLeftSleeve"> </span>
+                                            <span class="fw-semibold" id="priceLeftSleeve"> </span>
                                         </div>
                                     </div>
 
@@ -433,7 +434,7 @@ $selectedPrvId = $_GET['prvId'] ?? null;
                                     </div>
                                     <div class="d-flex justify-content-between pt-1 mt-1">
                                         <b><span class="fw-bold">Total:</span></b>
-                                        <b><span class="fw-bold text-primary" id="priceTotal"></span></b>
+                                        <b><span class="fw-bold" id="priceTotal"></span></b>
                                     </div>
                                     <input type="hidden" id="actionType" value="">
 

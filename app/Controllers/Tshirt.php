@@ -122,6 +122,8 @@ class Tshirt extends Controller
         $quantity = $this->request->getPost('quantity');
         $totalPrice = $this->request->getPost('totalPrice');
         $selectedSize = $this->request->getPost('selectedSize');
+        $prvId = $this->request->getPost('prvId');
+
         $uploadedImagesJson = $this->request->getPost('uploadedImages');
 
 
@@ -219,6 +221,7 @@ class Tshirt extends Controller
                 'cust_Id' => $userId,
                 'pr_Id' => $prId,
                 'pri_Id' => $priId,
+                'prv_Id'        => $prvId,
                 'design_Id' => $designId,
                 'created_on' => date('Y-m-d H:i:s'),
                 'cart_Size' => $selectedSize,
