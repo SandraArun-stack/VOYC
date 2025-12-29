@@ -32,8 +32,28 @@
                 <div class="col-lg-8">
                     <div class="row">
                         <div class="col-lg-12">
-                            <h5>Select a Existing Address</h5>
+                            <h5>Select an Existing Address</h5>
+
+                            <?php if (!empty($existingAddress) && is_array($existingAddress)): ?>
+                                <?php foreach ($existingAddress as $address): ?>
+                                    <div class="border p-2 mb-2 rounded existingAddress">
+                                        <p><strong><?= esc($address['add_Name']) ?></strong></p>
+                                        <p>
+                                            <?= esc($address['add_BuildingNo']) ?>,
+                                            <?= esc($address['add_Street']) ?>,
+                                            <?= esc($address['add_City']) ?>,
+                                            <?= esc($address['add_State']) ?> - 
+                                            <?= esc($address['add_Pincode']) ?>
+                                        </p>
+                                        <p>Phone: <?= esc($address['add_Phone']) ?></p>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <p>No address found</p>
+                            <?php endif; ?>
                         </div>
+
+
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
