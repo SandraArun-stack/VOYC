@@ -12,6 +12,7 @@ class HomeModel extends Model
         'cust_Email',
         'cust_Password',
         'cust_Phone',
+        'cust_Dob',
         'cust_Status',
         'cust_createdon',
         'cust_createdby',
@@ -25,7 +26,7 @@ class HomeModel extends Model
     public function registerUser($data)
     {
         if ($this->where('cust_Email', $data['email'])->first()) {
-            return ['status' => 'error', 'message' => 'Email Already Registered.'];
+            return ['status' => 'error', 'message' => 'You Already Have an Account With this Email.'];
         }
 
         $insertData = [
@@ -33,18 +34,38 @@ class HomeModel extends Model
             'cust_Email' => $data['email'],
             'cust_Password' => $data['password'],
             'cust_Phone' => $data['phone_number'],
+            'cust_Dob' => $data['dob'],
             'cust_Status' => 1,
-            'cust_createdon' => date('Y-m-d H:i:s'),
-            'cust_createdby' => 0,
+            'cust_createdon' => date('Y-m-d H:i:s')
+            // 'cust_createdby' => 0,
         ];
 
-        $inserted = $this->insert($insertData);
+        //     $inserted = $this->insert($insertData);
 
-        if ($inserted) {
-            return ['status' => 'success', 'message' => 'Registration successful.', 'user_id' => $inserted];
-        } else {
-            return ['status' => 'error', 'message' => 'Database error, please try again.'];
+        //     if ($inserted) {
+        //         return ['status' => 'success', 'message' => 'Registration successful.', 'user_id' => $inserted];
+        //     } else {
+        //         return ['status' => 'error', 'message' => 'Database error, please try again.'];
+        //     }
+        // }
+        $this->insert($insertData);
+        $userId = $this->getInsertID();
+
+        if ($userId) {
+            // Update cust_createdby with its own primary key
+            $this->update($userId, ['cust_createdby' => $userId]);
+
+            return [
+                'status' => 'success',
+                'message' => 'Registration successful.',
+                'user_id' => $userId
+            ];
         }
+
+        return [
+            'status' => 'error',
+            'message' => 'Database error. Please try again.'
+        ];
     }
     public function loginUser_Model($data)
     {

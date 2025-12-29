@@ -69,9 +69,10 @@ class Home extends BaseController
     {
         $fullName = ucwords(strtolower(trim($this->request->getPost('fullname'))));
         $email = $this->request->getPost('email');
-        $password = md5($this->request->getPost('reg_password'));
-        $confirm = md5($this->request->getPost('reg_confirm_password'));
+        $password = $this->request->getPost('reg_password');
+        $confirm = $this->request->getPost('reg_confirm_password');
         $phone_number = $this->request->getPost('phone_number');
+        $dob = $this->request->getPost('dob_cust');
 
         if (empty($fullName) || empty($email) || empty($password) || empty($confirm) || empty($phone_number)) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Please Fill in All Required Fields.']);
@@ -86,6 +87,7 @@ class Home extends BaseController
         }
 
         $phone_number = preg_replace('/[\s\-]/', '', $phone_number); // remove spaces/dashes
+
         if (strlen($phone_number) === 11 && str_starts_with($phone_number, '0')) {
             $phone_number = substr($phone_number, 1); // remove leading zero
         }
@@ -94,18 +96,42 @@ class Home extends BaseController
             return $this->response->setJSON(['status' => 'error', 'message' => 'Please Enter a Valid Phone Number.']);
         }
 
+
         if ($password !== $confirm) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Passwords do not Match.']);
         }
 
-        if (strlen($password) < 8) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Password must be at least 8 Characters Long.']);
+        if (
+            strlen($password) < 8 ||
+            !preg_match('/[A-Z]/', $password) ||
+            !preg_match('/[a-z]/', $password) ||
+            !preg_match('/\d/', $password) ||
+            !preg_match('/[@$!%*#?&]/', $password)
+        ) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Password Must be at Least 8 Characters and Include an Uppercase Letter, a Lowercase Letter, a Number, and a Special Character.'
+            ]);
+        }
+        $password = md5($password);
+
+        if (!empty($dob)) {
+            $dobDate = strtotime($dob);
+            $today = strtotime(date('Y-m-d'));
+
+            if ($dobDate === false || $dobDate > $today) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'Please Enter a Valid Date of Birth.'
+                ]);
+            }
         }
         $data = [
             'full_name' => $fullName,
             'email' => $email,
             'password' => $password,
-            'phone_number' => $phone_number
+            'phone_number' => $phone_number,
+            'dob' => $dob
         ];
 
         $homeModel = new HomeModel();
