@@ -195,7 +195,9 @@
                              data-size-id="${s.prv_Id}" 
                              data-size="${s.prv_Size}" 
                              data-price="${s.prv_price}">
-                            <input type="radio" name="product_size" id="size_${s.prv_Size}" value="${s.prv_Size}" hidden>
+
+                            <input type="radio" name="product_size" id="size_${s.prv_Size}" value="${s.prv_Id}" hidden>
+
                             <label for="size_${s.prv_Size}" class="size-label">${s.prv_Size}</label>
                         </div>`;
                             sizeGroup.append(sizeHtml);
@@ -236,15 +238,6 @@
                         });
 
 
-                        // Re-bind click for new size buttons
-                        // $(".size__btn label").off('click').on('click', function () {
-                        //     $(".size__btn label").removeClass('active');
-                        //     $(this).addClass('active');
-                        //     $(this).find("input[type='radio']").prop("checked", true);
-                        //     updatePrice();
-                        // });
-
-
                     } else {
                         sizeGroup.html('<p>No sizes available for this color.</p>');
                         $('.product__details__price').html('₹ 0');
@@ -257,22 +250,24 @@
                     console.log('Error fetching sizes for this color.');
                 }
             });
+
             $('#customizeTshirtBtn').on('click', function (e) {
                 const prId = "<?= $product['pr_Id'] ?>";
                 const priId = $('input[name="color__radio"]:checked').data('pri-id');
-                const sizeSelected = $('input[name="product_size"]:checked').length > 0;
+                const $selectedSize = $('input[name="product_size"]:checked');
+                const prvId = $selectedSize.val();
 
                 if (!priId) {
                     showClickPopup('Select a color', e);
                     return;
                 }
 
-                if (!sizeSelected) {
-                    showClickPopup('Select a Size', e);
-                    return;
-                }
+                // if (!sizeSelected) {
+                //     showClickPopup('Select a Size', e);
+                //     return;
+                // }
 
-                const customizeUrl = "<?= base_url('tshirt_Customisation') ?>/" + prId + "/" + priId;
+                const customizeUrl = "<?= base_url('tshirt_Customisation') ?>/" + prId + "/" + priId + "?prvId=" + prvId;
                 window.location.href = customizeUrl;
             });
 

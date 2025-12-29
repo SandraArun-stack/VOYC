@@ -184,6 +184,7 @@
             keyboard: true
         });
 
+
         $('.login_close').on('click', function (e) {
             authModal.hide();
         });
@@ -291,6 +292,13 @@
             let totalText = $('#priceProduct').text();
             return parseFloat(totalText.replace(/[^\d\.]/g, '')) || 0;
         }
+        setTimeout(function () {
+            const priceText = $('#priceProduct').text().trim();
+            // alert(priceText);
+
+            basePrice = parseFloat(priceText.replace(/[^\d\.]/g, '')) || 0;
+            updatePreview();
+        }, 50); // 50ms is enough
 
         let basePrice = getBasePrice();
 
@@ -362,6 +370,36 @@
             }
         });
 
+        $(document).on('click', '.size-box-customisation', function () {
+            $('.size-box-customisation').removeClass('active');
+            $(this).addClass('active');
+
+            const price = $(this).data('price');
+            const prvId = $(this).data('prv-id');
+
+            selectedPrvId = $(this).data('prv-id');
+            selectedSize = $(this).text().trim();
+
+            // 🔹 Reset quantity
+            quantity = 1;
+            $('.quantity-value-custom').text(1);
+
+            // 🔹 Update base price
+            basePrice = parseFloat(price) || 0;
+
+            // 🔹 Update displayed prices
+            $('#priceProduct').text('₹' + price);
+            $("#priceSubtotal").text(`₹${price} × ${quantity}`);
+            // $('#priceSubtotal').text('₹' + price);
+            $('#priceTotal').text('₹' + price);
+
+            // 🔹 Recalculate subtotal & total
+            updatePreview();
+
+            console.log('Selected prv_Id:', prvId);
+            console.log('Selected price:', price);
+        });
+
         $(".design-check").on("change", function () {
             updatePreview();
         });
@@ -390,8 +428,7 @@
 
             saveCurrentCanvasState();
 
-            let $btn = $(this);
-            $btn.prop("disabled", true).text("Processing...");
+
 
             let designs = {};
             let selectedViews = $(".design-check:checked").map(function () {
@@ -456,10 +493,19 @@
                         priId: $('input[name="priId"]').val(),
                         quantity: quantity,
                         totalPrice: parseFloat($("#priceTotal").text().replace(/[^\d\.]/g, "")),
-                        selectedSize: $("#summarySize").text().trim(),
+                        selectedSize: selectedSize,
+                        prvId: selectedPrvId
                     },
                     success: function (res) {
-                        if (res.status === "success") {
+                        if (res.status === 'login_required') {
+                            authModal.show();
+                            $('#loginView').show();
+                            $('#registerView').hide();
+                            $('#forgotPassView').hide();
+                            return;
+                        } else if (res.status === "success") {
+                            let $btn = $(this);
+                            $btn.prop("disabled", true).text("Processing...");
                             window.location.href = res.redirect;
                         }
                     },
@@ -1039,6 +1085,27 @@
             active.set("flipY", !active.flipY);
             canvas.renderAll();
         });
+
+        // $(document).on('click', '.size-box-customisation', function () {
+        //     $('.size-box-customisation').removeClass('active');
+        //     $(this).addClass('active');
+
+        //     const price = $(this).data('price');
+        //     const prvId = $(this).data('prv-id');
+
+        //     // Update displayed price
+        //     $('#priceProduct').text('₹' + price);
+        //     $('#priceSubtotal').text('₹' + price);
+        //     $('#priceTotal').text('₹' + price);
+
+        //     updatePreview();
+        //     console.log('Selected prv_Id:', prvId);
+        //     console.log('Selected price:', price);
+        // });
+
+
+
+
 
     });
 

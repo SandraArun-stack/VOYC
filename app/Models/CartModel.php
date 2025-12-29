@@ -63,6 +63,9 @@ class CartModel extends Model
         ", false);
 
         $builder->select('pv.prv_price, pv.prv_Size');
+
+        $builder->select("IFNULL(ROUND(AVG(r.rating),1), 0) AS average_rating", false);
+
         $builder->select("
             GROUP_CONCAT(
                 CONCAT(pv2.prv_Id, '::', pv2.prv_Size, '::', pv2.prv_price)
@@ -75,6 +78,8 @@ class CartModel extends Model
         $builder->join('product_variants pv', 'c.prv_Id = pv.prv_Id', 'left');
         $builder->join('product_variants pv2', 'pv2.pri_Id = c.pri_Id', 'left');
 
+        $builder->join('reviews r', 'r.pr_Id = p.pr_Id AND r.pr_Status = 1', 'left');
+        
         $builder->where('c.cust_Id', $custId);
         $builder->where('c.cart_Status', 1);
         $builder->groupBy('c.cart_Id');

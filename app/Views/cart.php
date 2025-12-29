@@ -55,8 +55,9 @@
                                             <?php endif; ?>
 
                                             <div class="cart__product__item__title">
-                                               <a href="<?= base_url('productdetails/' . $item['pr_Id'] . '/' . $item['pri_Id']); ?>">
-                                                 <h6><?= esc($item['pr_Name']) ?></h6>
+                                                <a
+                                                    href="<?= base_url('productdetails/' . $item['pr_Id'] . '/' . $item['pri_Id']); ?>">
+                                                    <h6><?= esc($item['pr_Name']) ?></h6>
                                                 </a>
                                                 <?php
                                                 $sizeOptions = $item['size_options'];
@@ -79,12 +80,26 @@
                                                     </select>
                                                 </div>
 
+                                                <!-- <div class="rating">
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                </div> -->
                                                 <div class="rating">
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
+                                                    <?php
+                                                    $avg = (float) $item['average_rating'];
+                                                    for ($i = 1; $i <= 5; $i++) {
+                                                        if ($i <= floor($avg)) {
+                                                            echo '<i class="fa fa-star text-warning mr-0"></i>';
+                                                        } elseif ($i == ceil($avg) && $avg - floor($avg) >= 0.5) {
+                                                            echo '<i class="fa fa-star-half-o text-warning mr-0"></i>';
+                                                        } else {
+                                                            echo '<i class="fa fa-star-o text-muted mr-0"></i>';
+                                                        }
+                                                    }
+                                                    ?>
                                                 </div>
                                             </div>
                                         </td>
@@ -101,7 +116,7 @@
                                             data-quantity="<?= esc($item['cart_Quantity']) ?>">₹0.00</td>
 
                                         <td class="cart__close">
-                                           
+
                                             <span class="cart-remove" data-cart-id="<?= esc($item['cart_Id']) ?>">
                                                 <i class="bi bi-trash3-fill"></i>
 
@@ -112,9 +127,10 @@
                             </tbody>
                         <?php endif; ?>
                     </table>
-                    
+
                 </div>
-                <p class="empty-cart-block text-center"style="<?= empty($cartItems) ? 'display:block;' : 'display:none;' ?>">
+                <p class="empty-cart-block text-center"
+                    style="<?= empty($cartItems) ? 'display:block;' : 'display:none;' ?>">
                     Your cart is empty.
                 </p>
             </div>

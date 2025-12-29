@@ -174,7 +174,7 @@ $userId = session()->get('user_id');
                                             <input type="radio" name="product_size" id="size_<?= $variant['prv_Size']; ?>"
                                                 value="<?= $variant['prv_Id']; ?>" hidden>
                                             <label for="size_<?= $variant['prv_Size']; ?>" class="size-label">
-                                                <?= $variant['prv_Size']; ?>
+                                                <?= $variant['prv_Size'];?>
                                             </label>
                                         </div>
                                     <?php endforeach; ?>

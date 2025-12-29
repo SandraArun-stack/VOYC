@@ -106,29 +106,8 @@ class GamePlay extends BaseController
             ]);
         }
 
-        // $playerModel = new \App\Models\Admin\PlayersModel();
-
-        // $playerModel->insert([
-        //     'game_Id' => $gameId,
-        //     'cust_Id' => $userId,
-        //     'player_created_at' => date('Y-m-d'),
-        //     'player_score' => $score,
-        //     'player_time' => $time,
-        //     'player_rank' => 0,
-        //     'player_winning_status' => 0,
-        //     'player_status' => 1,
-        //     'player_created_at' => date('Y-m-d H:i:s'),
-        //     'player_created_by' => $userId
-        // ]);
-
-        // return $this->response->setJSON([
-        //     'status' => true,
-        //     'message' => 'Participate score saved'
-        // ]);
-
         $playerModel = new \App\Models\Admin\PlayersModel();
 
-        /** 🔍 Check if player already played today */
         $existingPlayer = $playerModel
             ->where('cust_Id', $userId)
             ->where('game_Id', $gameId)
@@ -136,7 +115,6 @@ class GamePlay extends BaseController
             ->first();
 
         if ($existingPlayer) {
-            /** ✅ UPDATE existing row */
             if ($score >= $existingPlayer['player_score']) {
                 $playerModel->update($existingPlayer['player_Id'], [
                     'player_score' => $score,
@@ -148,7 +126,6 @@ class GamePlay extends BaseController
 
             $playerId = $existingPlayer['player_Id'];
         } else {
-            /** ✅ INSERT new row */
             $playerId = $playerModel->insert([
                 'game_Id' => $gameId,
                 'cust_Id' => $userId,
@@ -162,7 +139,6 @@ class GamePlay extends BaseController
             ], true); // true = return insert ID
         }
 
-        /** 🧾 INSERT into score_board (ALWAYS) */
         $this->db->table('score_board')->insert([
             'player_Id' => $playerId,
             'score' => $score,
@@ -171,10 +147,14 @@ class GamePlay extends BaseController
             'score_created_by' => $userId
         ]);
 
+        session()->remove(['game_mode', 'game_id']);
+
         return $this->response->setJSON([
             'status' => true,
-            'message' => 'Score saved successfully'
+            'message' => 'Score saved successfully',
+            'redirect' => base_url('participate/' . $gameId)
         ]);
+
     }
 
 

@@ -68,9 +68,9 @@
                                         <p>My Subscriptions</p>
                                     </a> -->
 
-                                    <!-- <a href="<?= base_url('myredemption'); ?>">
+                                    <a href="<?= base_url('myredemption'); ?>">
                                         <p>My Redemption</p>
-                                    </a> -->
+                                    </a>
                                     <!-- <p>My Address</p> -->
                                     <!-- <p>My Wishlist</p> -->
                                     <!-- <a href="<?= base_url('deleteaccount'); ?>"> -->

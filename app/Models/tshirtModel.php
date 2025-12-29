@@ -63,16 +63,16 @@ class tshirtModel extends Model
 
         $variants = $this->db->table('product_variants pv')
             ->select('
-        pv.prv_Id,
-        pv.pr_Id AS variant_pr_Id,
-        pv.pri_id,
-        pv.prv_Size,
-        pv.prv_price,
-        pv.stock,
-        p.pr_Id AS product_pr_Id,
-        p.pr_Name,
-        p.pr_Code
-    ')
+                        pv.prv_Id,
+                        pv.pr_Id,
+                        pv.pri_id as pri_Id,
+                        pv.prv_Size,
+                        pv.prv_price,
+                        pv.stock,
+                        p.pr_Id,
+                        p.pr_Name,
+                        p.pr_Code
+                    ')
             ->join('product p', 'pv.pr_Id = p.pr_Id', 'inner')
             ->where('pv.pr_Id', $prId)
             ->get()
@@ -80,12 +80,22 @@ class tshirtModel extends Model
 
         foreach ($images as &$img) {
             $img['variants'] = array_values(array_filter($variants, function ($v) use ($img) {
-                return $v['pri_id'] == $img['pri_Id'];
+                return $v['pri_Id'] == $img['pri_Id'];
             }));
         }
 
         return $images;
     }
+
+    public function getProductBasicDetails($prId)
+    {
+        return $this->db->table('product')
+            ->select('pr_Id, pr_Name, pr_Code')
+            ->where('pr_Id', $prId)
+            ->get()
+            ->getRowArray();
+    }
+
     public function get_customisation_price()
     {
         $query = $this->db->table('common_table')
@@ -105,5 +115,24 @@ class tshirtModel extends Model
         return $result;
     }
 
+    public function getVariantIdsByProductAndImage($prId, $priId)
+    {
+        return $this->db->table('product_variants')
+            ->select('prv_Id,prv_Size,prv_Price')
+            ->where('prv_Status', 1)
+            ->where('pr_Id', $prId)
+            ->where('pri_id', $priId)
+            ->get()
+            ->getResultArray(); // returns multiple prv_Id
+    }
+
+    public function getPrvPrice($prvId)
+    {
+        return $this->db->table('product_variants')
+            ->select('prv_price')
+            ->where('prv_Id', $prvId)
+            ->get()
+            ->getRow('prv_price');
+    }
 
 }

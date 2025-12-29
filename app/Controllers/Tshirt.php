@@ -24,6 +24,9 @@ class Tshirt extends Controller
 
     public function index($prId = null, $priId = null)
     {
+        $selectedPrvId = $this->request->getGet('prvId');
+        $variantPrice = $selectedPrvId ? $this->tshirtModel->getPrvPrice($selectedPrvId) : null;
+
         $session = session();
         $userId = $session->get('user_id');
         $cartCount = $this->CartModel->getCartItemCount($userId);
@@ -37,6 +40,9 @@ class Tshirt extends Controller
 
 
         if (!empty($prId) && !empty($priId)) {
+            $productDetails = $this->tshirtModel->getProductBasicDetails($prId);
+            $variantIds = $this->tshirtModel->getVariantIdsByProductAndImage($prId, $priId);
+            // print_r($variantIds);exit;
             $cust_image = $this->tshirtModel->get_Image($prId, $priId);
             $allData = $this->tshirtModel->get_Data_For_Pr_Id($prId);
             $customisationPrice = $this->tshirtModel->get_customisation_price();
@@ -49,7 +55,11 @@ class Tshirt extends Controller
                     'priId' => $priId,
                     'cust_image' => $cust_image,
                     'allData' => $allData,
-                    'customisationPrice' => $customisationPrice
+                    'customisationPrice' => $customisationPrice,
+                    'productDetails' => $productDetails,
+                    'variantIds' => $variantIds,
+                    'selectedPrvId' => $selectedPrvId,
+                    'variantPrice' => $variantPrice
                 ];
                 return view('common/header', [
                     'cartCount' => $cartCount,
@@ -112,6 +122,8 @@ class Tshirt extends Controller
         $quantity = $this->request->getPost('quantity');
         $totalPrice = $this->request->getPost('totalPrice');
         $selectedSize = $this->request->getPost('selectedSize');
+        $prvId = $this->request->getPost('prvId');
+
         $uploadedImagesJson = $this->request->getPost('uploadedImages');
 
 
@@ -209,6 +221,7 @@ class Tshirt extends Controller
                 'cust_Id' => $userId,
                 'pr_Id' => $prId,
                 'pri_Id' => $priId,
+                'prv_Id'        => $prvId,
                 'design_Id' => $designId,
                 'created_on' => date('Y-m-d H:i:s'),
                 'cart_Size' => $selectedSize,
