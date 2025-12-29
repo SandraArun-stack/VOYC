@@ -114,6 +114,18 @@ class Home extends BaseController
             ]);
         }
         $password = md5($password);
+
+        if (!empty($dob)) {
+            $dobDate = strtotime($dob);
+            $today = strtotime(date('Y-m-d'));
+
+            if ($dobDate === false || $dobDate > $today) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'Please Enter a Valid Date of Birth.'
+                ]);
+            }
+        }
         $data = [
             'full_name' => $fullName,
             'email' => $email,
