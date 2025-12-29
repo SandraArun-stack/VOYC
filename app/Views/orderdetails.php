@@ -6,8 +6,8 @@
                 <div class="breadcrumb__links">
                     <a href="<?= base_url(' '); ?>"><i class="fa fa-home"></i>Home</a>
                     <a href="<?= base_url('cart'); ?>">
-                Cart
-            </a>
+                        Cart
+                    </a>
                     <span>Checkout</span>
                 </div>
             </div>
