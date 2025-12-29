@@ -16,7 +16,7 @@
     </div>
         <div class="row">
             <div class="col-md-12 ">
-                <div class="row product-list">
+                <div class="row product-list text-center">
                     <?= session('eligible_for_free_tee'); ?>
                      <?= session('free_tee_coupon'); ?>
                       <?= session('free_tee_lb_id'); ?>

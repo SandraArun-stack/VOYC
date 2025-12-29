@@ -862,7 +862,10 @@ input[type="file"] {
 .text-center {
     text-align: center !important;
 }
-
+.pagination {
+    display: flex;
+    justify-content: center;
+}
 .modal-dialog-centered {
     transform: translateY(-50px) !important;
 }
