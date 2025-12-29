@@ -104,6 +104,7 @@ class ProductDetailModel extends Model
         $variants = $this->db->table('product_variants pv')
             ->select('pv.prv_Id, pv.prv_Size, pv.prv_price, pv.prv_Color, pv.prv_Fabric, pv.stock, pv.reset_stock')
             ->where('pv.pr_Id', $prId)
+            ->where('pv.pri_id', $priId)
             ->where('pv.prv_Status', 1)
             ->get()
             ->getResultArray();
