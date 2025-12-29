@@ -32,6 +32,11 @@
                 <div class="col-lg-8">
                     <div class="row">
                         <div class="col-lg-12">
+                            <h5>Select a Existing Address</h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
                              <h5>Billing detail</h5>
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-6">
