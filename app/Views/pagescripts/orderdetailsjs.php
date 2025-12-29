@@ -529,6 +529,20 @@
             $("#same_as_shipping").prop("checked", false).trigger("change");
         });
 
+        document.querySelectorAll('[data-bs-toggle="collapse"]').forEach(toggle => {
+            const target = document.querySelector(toggle.getAttribute('data-bs-target'));
+            const icon = toggle.querySelector('.toggle-icon');
+
+            if (!target || !icon) return;
+
+            target.addEventListener('shown.bs.collapse', () => {
+                icon.classList.add('rotate');
+            });
+
+            target.addEventListener('hidden.bs.collapse', () => {
+                icon.classList.remove('rotate');
+            });
+        });
     });
 
 

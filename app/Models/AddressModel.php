@@ -9,6 +9,7 @@ class AddressModel extends Model
     protected $primaryKey = 'add_Id';
     protected $allowedFields = [
         'add_Name',
+        'add_LastName',
         'add_Email',
         'add_Phone',
         'add_BuildingNo',

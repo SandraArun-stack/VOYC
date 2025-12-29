@@ -2398,8 +2398,25 @@ input[type="file"] {
     color: #fff;
     border-color: #000;
 }
-.gap__custom{
-gap: 12px;
+
+.gap__custom {
+    gap: 12px;
+}
+
+.existingAddress p {
+    margin-bottom: 2px !important;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.toggle-icon {
+    transition: transform 0.3s ease;
+}
+
+.toggle-icon.rotate {
+    transform: rotate(180deg);
 }
 
 @media only screen and (max-width: 991px) {

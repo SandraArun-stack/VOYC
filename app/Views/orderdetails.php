@@ -31,85 +31,103 @@
             <div class="row">
                 <div class="col-lg-8">
                     <div class="row">
-                        <div class="col-lg-12">
-                            <h5>Select an Existing Address</h5>
 
-                            <?php if (!empty($existingAddress) && is_array($existingAddress)): ?>
-                                <?php foreach ($existingAddress as $address): ?>
-                                    <div class="border p-2 mb-2 rounded existingAddress">
-                                        <p><strong><?= esc($address['add_Name']) ?></strong></p>
-                                        <p>
-                                            <?= esc($address['add_BuildingNo']) ?>,
-                                            <?= esc($address['add_Street']) ?>,
-                                            <?= esc($address['add_City']) ?>,
-                                            <?= esc($address['add_State']) ?> - 
-                                            <?= esc($address['add_Pincode']) ?>
-                                        </p>
-                                        <p>Phone: <?= esc($address['add_Phone']) ?></p>
-                                    </div>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <p>No address found</p>
-                            <?php endif; ?>
-                        </div>
+                        <?php if (!empty($existingAddress) && is_array($existingAddress)): ?>
+                            <div class="col-lg-12 mb-2">
+                                <h5 class="d-flex justify-content-between align-items-center cursor-pointer"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#existingAddressSection"
+                                    aria-expanded="true">
+                                    Select an Existing Address
+                                    <i class="bi bi-chevron-down toggle-icon"></i>
+                                </h5>
 
+                                <div id="existingAddressSection" class="collapse show">
+                                    <?php foreach ($existingAddress as $address): ?>
+                                        <div class="border p-2 mb-2 rounded existingAddress">
+                                            <p> <strong> <?= esc(ucwords(strtolower($address['add_Name'] ?? ''))) ?> 
+                                            <?= !empty($address['add_LastName']) ? ' ' . esc(ucwords(strtolower($address['add_LastName']))) : '' ?> </strong> </p> 
+                                            <p> <?= esc(ucwords(strtolower($address['add_BuildingNo'] ?? ''))) ?>,
+                                                <?= esc(ucwords(strtolower($address['add_Landmark'] ?? ''))) ?>, 
+                                                <?= esc(ucwords(strtolower($address['add_Street'] ?? ''))) ?>,
+                                                <?= esc(ucwords(strtolower($address['add_City'] ?? ''))) ?>,
+                                                <?= esc(ucwords(strtolower($address['add_State'] ?? ''))) ?> - 
+                                                <?= esc($address['add_Pincode'] ?? '') ?>, 
+                                                <?= esc(ucwords(strtolower($address['add_Country'] ?? ''))) ?>
+                                            </p> 
+                                            <p>Email: <?= esc(strtolower($address['add_Email'] ?? '')) ?></p> 
+                                            <p>Phone: <?= esc($address['add_Phone'] ?? '') ?></p>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        <?php endif; ?>
 
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
-                             <h5>Billing detail</h5>
-                            <div class="row">
-                                <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <div class="checkout__form__input">
-                                        <p>First Name <span>*</span></p>
-                                        <input type="text" name="add_Name" placeholder="Full Name">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <div class="checkout__form__input">
-                                        <p>Last Name <span>*</span></p>
-                                        <input type="text" name="add_LastName">
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
+                             <!-- <h5>Add New Billing detail</h5> -->
+                              <h5 class="d-flex justify-content-between align-items-center cursor-pointer"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#billingDetailsSection"
+                                    aria-expanded="false">
+                                    Add New Billing detail
+                                    <i class="bi bi-chevron-down toggle-icon"></i>
+                                </h5>
+                                <div id="billingDetailsSection" class="collapse">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <div class="checkout__form__input">
+                                                <p>First Name <span>*</span></p>
+                                                <input type="text" name="add_Name" placeholder="Full Name">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <div class="checkout__form__input">
+                                                <p>Last Name <span>*</span></p>
+                                                <input type="text" name="add_LastName">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            
+                                            <div class="checkout__form__input">
+                                                <p>Address <span>*</span></p>
+                                                <input type="text" name="add_Street" placeholder="Street Address">
+                                                <input type="text" name="add_Landmark"
+                                                    placeholder="Apartment, Suite, Unit, etc. (optional)">
+                                            </div>
+                                            <div class="checkout__form__input">
+                                                <p>Town/City <span>*</span></p>
+                                                <input type="text" name="add_City" placeholder="City">
+                                            </div>
+                                            <div class="checkout__form__input">
+                                                <p>State <span>*</span></p>
+                                                <input type="text" name="add_State" placeholder="State">
+                                            </div>
+                                            <div class="checkout__form__input">
+                                                <p>Country <span>*</span></p>
+                                                <input type="text" name="add_Country">
+                                            </div>
+                                            <div class="checkout__form__input">
+                                                <p>Postcode/Zip <span>*</span></p>
+                                                <input type="text" name="add_Pincode" placeholder="Zipcode">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <div class="checkout__form__input">
+                                                <p>Phone <span>*</span></p>
+                                                <input type="text" name="add_Phone" placeholder="Phone" value="<?= esc($cust_Phone  ?? '') ?>">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <div class="checkout__form__input">
+                                                <p>Email <span>*</span></p>
+                                                <input type="text" name="add_Email" placeholder="abc@gmail.com" value="<?= esc($cust_Email ?? '') ?>">
+                                            </div>
+                                        </div>
                                     
-                                    <div class="checkout__form__input">
-                                        <p>Address <span>*</span></p>
-                                        <input type="text" name="add_Street" placeholder="Street Address">
-                                        <input type="text" name="add_Landmark"
-                                            placeholder="Apartment, Suite, Unit, etc. (optional)">
-                                    </div>
-                                    <div class="checkout__form__input">
-                                        <p>Town/City <span>*</span></p>
-                                        <input type="text" name="add_City" placeholder="City">
-                                    </div>
-                                    <div class="checkout__form__input">
-                                        <p>State <span>*</span></p>
-                                        <input type="text" name="add_State" placeholder="State">
-                                    </div>
-                                    <div class="checkout__form__input">
-                                        <p>Country <span>*</span></p>
-                                        <input type="text" name="add_Country">
-                                    </div>
-                                    <div class="checkout__form__input">
-                                        <p>Postcode/Zip <span>*</span></p>
-                                        <input type="text" name="add_Pincode" placeholder="Zipcode">
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <div class="checkout__form__input">
-                                        <p>Phone <span>*</span></p>
-                                        <input type="text" name="add_Phone" placeholder="Phone" value="<?= esc($cust_Phone  ?? '') ?>">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <div class="checkout__form__input">
-                                        <p>Email <span>*</span></p>
-                                        <input type="text" name="add_Email" placeholder="abc@gmail.com" value="<?= esc($cust_Email ?? '') ?>">
-                                    </div>
-                                </div>
-                            
-                            </div>
                             <div class="row">
                                 <div class="col-lg-12 d-flex  justify-content-between">
                                     <div class="d-flex w-100">

@@ -104,7 +104,7 @@
                                             </div>
                                         </td>
                                         <td class="cart__price">₹
-                                            <?= !empty($item['cart_Price']) ? esc($item['cart_Price']) : '0' ?>
+                                            <?= !empty($item['prv_price']) ? esc($item['prv_price']) : '0' ?>
                                         </td>
 
                                         <td class="cart__quantity">
@@ -112,7 +112,7 @@
                                                 <input type="text" value="<?= esc($item['cart_Quantity']) ?>">
                                             </div>
                                         </td>
-                                        <td class="cart__total" data-price="<?= esc($item['cart_Price']) ?>"
+                                        <td class="cart__total" data-price="<?= esc($item['prv_price']) ?>"
                                             data-quantity="<?= esc($item['cart_Quantity']) ?>">₹0.00</td>
 
                                         <td class="cart__close">
