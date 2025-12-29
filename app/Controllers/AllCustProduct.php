@@ -36,7 +36,7 @@ class AllCustProduct extends Controller
         $result = $this->PlayersModel->getTodayPlayers($today, $todayLimit, session()->get('user_id'));
 
 
-        $perPage = 6;
+        $perPage = 18;
 
         $customProducts = $this->AllCustProductModel->getAllCustomProducts($perPage);
         $pager = $this->AllCustProductModel->pager;
