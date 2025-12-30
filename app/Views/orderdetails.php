@@ -8,7 +8,7 @@
                     <a href="<?= base_url('cart'); ?>">
                         Cart
                     </a>
-                    <span>Checkout</span>
+                    <a href="<?= base_url(' '); ?>">Checkout</a>
                 </div>
             </div>
         </div>
