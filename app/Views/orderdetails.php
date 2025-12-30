@@ -32,49 +32,73 @@
                 <div class="col-lg-8">
                     <div class="row">
 
-                        <?php if (!empty($existingAddress) && is_array($existingAddress)): ?>
+                       <?php $hasAddress = !empty($existingAddress); ?>
+
+                            <?php if ($hasAddress): ?>
                             <div class="col-lg-12 mb-2">
-                                <h5 class="d-flex justify-content-between align-items-center cursor-pointer"
+                                <h5 class="section-toggle d-flex justify-content-between align-items-center cursor-pointer active"
+                                    id="existingAddressToggle"
                                     data-bs-toggle="collapse"
-                                    data-bs-target="#existingAddressSection"
+                                    data-bs-target="#existingShippingAddressSection"
                                     aria-expanded="true">
-                                    Select an Existing Address
-                                    <i class="bi bi-chevron-down toggle-icon"></i>
+                                    Select an Existing Billing Address
+                                    <i class="bi bi-chevron-down toggle-icon rotate"></i>
                                 </h5>
 
                                 <div id="existingAddressSection" class="collapse show">
                                     <?php foreach ($existingAddress as $address): ?>
-                                        <div class="border p-2 mb-2 rounded existingAddress">
-                                            <p> <strong> <?= esc(ucwords(strtolower($address['add_Name'] ?? ''))) ?> 
-                                            <?= !empty($address['add_LastName']) ? ' ' . esc(ucwords(strtolower($address['add_LastName']))) : '' ?> </strong> </p> 
-                                            <p> <?= esc(ucwords(strtolower($address['add_BuildingNo'] ?? ''))) ?>,
-                                                <?= esc(ucwords(strtolower($address['add_Landmark'] ?? ''))) ?>, 
-                                                <?= esc(ucwords(strtolower($address['add_Street'] ?? ''))) ?>,
-                                                <?= esc(ucwords(strtolower($address['add_City'] ?? ''))) ?>,
-                                                <?= esc(ucwords(strtolower($address['add_State'] ?? ''))) ?> - 
-                                                <?= esc($address['add_Pincode'] ?? '') ?>, 
-                                                <?= esc(ucwords(strtolower($address['add_Country'] ?? ''))) ?>
-                                            </p> 
-                                            <p>Email: <?= esc(strtolower($address['add_Email'] ?? '')) ?></p> 
-                                            <p>Phone: <?= esc($address['add_Phone'] ?? '') ?></p>
+                                        <div class="border p-3 mb-2 rounded existingAddress address-box d-flex justify-content-between">
+
+                                            <div class="address-content w-100 pe-2">
+                                                <p>
+                                                    <strong>
+                                                        <?= esc(ucwords(strtolower($address['add_Name'] ?? ''))) ?>
+                                                        <?= esc(ucwords(strtolower($address['add_LastName'] ?? ''))) ?>
+                                                    </strong>
+                                                </p>
+                                                <p>
+                                                    <?= esc(ucwords(strtolower($address['add_BuildingNo'] ?? ''))) ?>
+                                                    <?= esc(ucwords(strtolower($address['add_Landmark'] ?? ''))) ?>
+                                                    <?= esc(ucwords(strtolower($address['add_Street'] ?? ''))) ?>,
+                                                    <?= esc(ucwords(strtolower($address['add_City'] ?? ''))) ?>,
+                                                    <?= esc(ucwords(strtolower($address['add_State'] ?? ''))) ?> -
+                                                    <?= esc($address['add_Pincode'] ?? '') ?>
+                                                    <?= esc($address['add_Country'] ?? '') ?>
+                                                </p>
+                                                <p>Email: <?= esc($address['add_Email'] ?? '') ?></p>
+                                                <p>Phone: <?= esc($address['add_Phone'] ?? '') ?></p>
+                                            </div>
+
+                                            <div class="address-radio">
+                                                <input
+                                                    type="radio"
+                                                    name="selected_address"
+                                                    class="form-check-input select-address-radio "
+                                                    value="<?= esc($address['add_Id']) ?>">
+                                            </div>
+
                                         </div>
                                     <?php endforeach; ?>
                                 </div>
+
+
                             </div>
-                        <?php endif; ?>
+                            <?php endif; ?>
+
 
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
                              <!-- <h5>Add New Billing detail</h5> -->
-                              <h5 class="d-flex justify-content-between align-items-center cursor-pointer"
+                              <h5 class="section-toggle d-flex justify-content-between align-items-center cursor-pointer"
+                                    id="billingToggle"
                                     data-bs-toggle="collapse"
                                     data-bs-target="#billingDetailsSection"
-                                    aria-expanded="false">
-                                    Add New Billing detail
-                                    <i class="bi bi-chevron-down toggle-icon"></i>
+                                    aria-expanded="<?= $hasAddress ? 'false' : 'true' ?>">
+                                     + Add New Billing detail
+                                    <i class="bi bi-chevron-down toggle-icon <?= !$hasAddress ? 'rotate' : '' ?>"></i>
                                 </h5>
-                                <div id="billingDetailsSection" class="collapse">
+                               <div id="billingDetailsSection" class="collapse <?= !$hasAddress ? 'show' : '' ?>">
                                     <div class="row">
                                         <div class="col-lg-6 col-md-6 col-sm-6">
                                             <div class="checkout__form__input">
@@ -129,9 +153,9 @@
                                     </div>
                                 </div>
                             <div class="row">
-                                <div class="col-lg-12 d-flex  justify-content-between">
+                                <div class="col-lg-12 d-flex  justify-content-between  mb-3">
                                     <div class="d-flex w-100">
-                                        <input type="checkbox" id="same_as_shipping" name="same_as_shipping" checked> &nbsp;
+                                        <input type="checkbox" id="same_as_shipping" name="same_as_shipping " class="same-shipping-checkbox" checked> &nbsp;
                                         <span class="text-center align-items-center justify-content-center d-flex">Billing address is same as shipping address?</span>
                                     </div>
                                     <div class="add_shipping_address">
@@ -142,60 +166,126 @@
                                 </div>
                             </div>
                         </div>
+                        
                         <div class="col-lg-12 d-none" id="shipping_address_section" >
-                            <h5>Shipping detail</h5>
                             <div class="row">
-                                <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <div class="checkout__form__input">
-                                        <p>First Name <span>*</span></p>
-                                        <input type="text" name="shipping_add_Name" placeholder="Full Name">
+
+                                <?php $hasAddress = !empty($existingshippingAddress); ?>
+
+                                <?php if ($hasAddress): ?>
+                                <div class="col-lg-12 mb-2">
+                                    <h5 class="section-toggle d-flex justify-content-between align-items-center cursor-pointer active"
+                                        id="existingShippingAddressToggle"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#existingAddressSection"
+                                        aria-expanded="true">
+                                        Select A Shipping Address
+                                        <i class="bi bi-chevron-down toggle-icon rotate"></i>
+                                    </h5>
+
+                                    <div id="existingShippingAddressSection" class="shipping-section collapse show">
+                                        <?php foreach ($existingshippingAddress as $address): ?>
+                                            <div class="border p-3 mb-2 rounded existingShippingAddress address-box d-flex justify-content-between">
+
+                                                <div class="address-content w-100 pe-2">
+                                                    <p>
+                                                        <strong>
+                                                            <?= esc(ucwords(strtolower($address['shipping_add_Name'] ?? ''))) ?>
+                                                            <?= esc(ucwords(strtolower($address['shipping_add_LastName'] ?? ''))) ?>
+                                                        </strong>
+                                                    </p>
+                                                    <p>
+                                                        <?= esc(ucwords(strtolower($address['shipping_add_BuildingNo'] ?? ''))) ?>
+                                                        <?= esc(ucwords(strtolower($address['shipping_add_Landmark'] ?? ''))) ?>
+                                                        <?= esc(ucwords(strtolower($address['shipping_add_Street'] ?? ''))) ?>,
+                                                        <?= esc(ucwords(strtolower($address['shipping_add_City'] ?? ''))) ?>,
+                                                        <?= esc(ucwords(strtolower($address['shipping_add_State'] ?? ''))) ?> -
+                                                        <?= esc($address['shipping_add_Pincode'] ?? '') ?>
+                                                        <?= esc($address['shipping_add_Country'] ?? '') ?>
+                                                    </p>
+                                                    <p>Email: <?= esc($address['shipping_add_Email'] ?? '') ?></p>
+                                                    <p>Phone: <?= esc($address['shipping_add_Phone'] ?? '') ?></p>
+                                                </div>
+
+                                                <div class="address-radio">
+                                                    <input
+                                                        type="radio"
+                                                        name="selected_address"
+                                                        class="form-check-input select-address-radio "
+                                                        value="<?= esc($address['shipping_add_Id']) ?>">
+                                                </div>
+
+                                            </div>
+                                        <?php endforeach; ?>
                                     </div>
+
+
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <div class="checkout__form__input">
-                                        <p>Last Name <span>*</span></p>
-                                        <input type="text" name="shipping_add_LastName">
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    
-                                    <div class="checkout__form__input">
-                                        <p>Address <span>*</span></p>
-                                        <input type="text" name="shipping_add_Street" placeholder="Street Address">
-                                        <input type="text" name="shipping_add_Landmark"
-                                            placeholder="Apartment, Suite, Unit, etc. (optional)">
-                                    </div>
-                                    <div class="checkout__form__input">
-                                        <p>Town/City <span>*</span></p>
-                                        <input type="text" name="shipping_add_City" placeholder="City">
-                                    </div>
-                                    <div class="checkout__form__input">
-                                        <p>State <span>*</span></p>
-                                        <input type="text" name="shipping_add_State" placeholder="State">
-                                    </div>
-                                    <div class="checkout__form__input">
-                                        <p>Country <span>*</span></p>
-                                        <input type="text" name="shipping_add_Country">
-                                    </div>
-                                    <div class="checkout__form__input">
-                                        <p>Postcode/Zip <span>*</span></p>
-                                        <input type="text" name="shipping_add_Pincode" placeholder="Zipcode">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <div class="checkout__form__input">
-                                        <p>Phone <span>*</span></p>
-                                        <input type="text" name="shipping_add_Phone" placeholder="Phone">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <div class="checkout__form__input">
-                                        <p>Email <span>*</span></p>
-                                        <input type="text" name="shipping_add_Email" placeholder="abc@gmail.com">
-                                    </div>
-                                </div>
-                            
+                                <?php endif; ?>
                             </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <h5 class="section-toggle d-flex justify-content-between align-items-center cursor-pointer"
+                                        id="addShippingToggle">
+                                        + Add New Shipping detail
+                                        <i class="bi bi-chevron-down toggle-icon"></i>
+                                    </h5>
+
+                                    <div class="row shipping-section d-none" id="newShippingAddressSection">
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <div class="checkout__form__input">
+                                                <p>First Name <span>*</span></p>
+                                                <input type="text" name="shipping_add_Name" placeholder="Full Name">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <div class="checkout__form__input">
+                                                <p>Last Name <span>*</span></p>
+                                                <input type="text" name="shipping_add_LastName">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            
+                                            <div class="checkout__form__input">
+                                                <p>Address <span>*</span></p>
+                                                <input type="text" name="shipping_add_Street" placeholder="Street Address">
+                                                <input type="text" name="shipping_add_Landmark"
+                                                    placeholder="Apartment, Suite, Unit, etc. (optional)">
+                                            </div>
+                                            <div class="checkout__form__input">
+                                                <p>Town/City <span>*</span></p>
+                                                <input type="text" name="shipping_add_City" placeholder="City">
+                                            </div>
+                                            <div class="checkout__form__input">
+                                                <p>State <span>*</span></p>
+                                                <input type="text" name="shipping_add_State" placeholder="State">
+                                            </div>
+                                            <div class="checkout__form__input">
+                                                <p>Country <span>*</span></p>
+                                                <input type="text" name="shipping_add_Country">
+                                            </div>
+                                            <div class="checkout__form__input">
+                                                <p>Postcode/Zip <span>*</span></p>
+                                                <input type="text" name="shipping_add_Pincode" placeholder="Zipcode">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <div class="checkout__form__input">
+                                                <p>Phone <span>*</span></p>
+                                                <input type="text" name="shipping_add_Phone" placeholder="Phone">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6">
+                                            <div class="checkout__form__input">
+                                                <p>Email <span>*</span></p>
+                                                <input type="text" name="shipping_add_Email" placeholder="abc@gmail.com">
+                                            </div>
+                                        </div>
+                                    
+                                    </div>
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>

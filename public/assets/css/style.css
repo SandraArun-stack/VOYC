@@ -1041,7 +1041,8 @@ ol {
 .breadcrumb__links span {
 	font-size: 15px;
 	font-weight: 500;
-	color: #888888;
+	/* color: #888888; */
+	color:#000;
 	display: inline-block;
 }
 
@@ -2385,11 +2386,11 @@ ol {
 
 .checkout__form h5 {
 	color: #111111;
-	font-weight: 600;
+	font-weight: 300;
 	text-transform: uppercase;
 	border-bottom: 1px solid #e1e1e1;
-	padding-bottom: 20px;
-	margin-bottom: 25px;
+	padding-bottom: 15px;
+	margin-bottom: 15px;
 }
 
 .checkout__form .checkout__form__input p {

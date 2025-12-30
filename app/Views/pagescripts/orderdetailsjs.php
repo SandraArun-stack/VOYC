@@ -529,20 +529,109 @@
             $("#same_as_shipping").prop("checked", false).trigger("change");
         });
 
-        document.querySelectorAll('[data-bs-toggle="collapse"]').forEach(toggle => {
-            const target = document.querySelector(toggle.getAttribute('data-bs-target'));
-            const icon = toggle.querySelector('.toggle-icon');
+        const $billingSection = $('#billingDetailsSection');
+        const $existingSection = $('#existingAddressSection');
 
-            if (!target || !icon) return;
+        const $billingToggle = $('#billingToggle');
+        const $existingToggle = $('#existingAddressToggle');
 
-            target.addEventListener('shown.bs.collapse', () => {
-                icon.classList.add('rotate');
+        const billingCollapse = $billingSection.length ? new bootstrap.Collapse($billingSection[0], { toggle: false }) : null;
+        const existingCollapse = $existingSection.length ? new bootstrap.Collapse($existingSection[0], { toggle: false }) : null;
+
+        // Click: Add New Billing Detail
+        $billingToggle.on('click', function () {
+            billingCollapse?.show();
+            existingCollapse?.hide();
+        });
+
+        // Click: Select Existing Address
+        $existingToggle.on('click', function () {
+            existingCollapse?.show();
+            billingCollapse?.hide();
+        });
+
+        // Arrow rotation sync
+        $('[data-bs-toggle="collapse"]').each(function () {
+            const $toggle = $(this);
+            const targetSelector = $toggle.attr('data-bs-target');
+            const $target = $(targetSelector);
+            const $icon = $toggle.find('.toggle-icon');
+
+            if (!$target.length || !$icon.length) return;
+
+            $target.on('shown.bs.collapse', function () {
+                $icon.addClass('rotate');
             });
 
-            target.addEventListener('hidden.bs.collapse', () => {
-                icon.classList.remove('rotate');
+            $target.on('hidden.bs.collapse', function () {
+                $icon.removeClass('rotate');
             });
         });
+
+
+
+        $('#existingAddressToggle').on('click', function () {
+            $('#existingAddressToggle').addClass('active');
+            $('#billingToggle').removeClass('active');
+        });
+
+        $('.address-box').on('click', function (e) {
+            if (!$(e.target).is('input[type="radio"]')) {
+                $(this).find('.select-address-radio')
+                    .prop('checked', true)
+                    .trigger('change');
+            }
+        });
+
+        $('.select-address-radio').on('change', function () {
+            $('.address-box').removeClass('active');
+            $(this).closest('.address-box').addClass('active');
+        });
+
+        // Clear selection when Add New Billing clicked
+        $('#billingToggle').on('click', function () {
+            $('.select-address-radio').prop('checked', false);
+            $('.address-box').removeClass('active');
+        });
+
+        const shippingExistingCollapse = new bootstrap.Collapse(
+            document.getElementById('existingShippingAddressSection'),
+            { toggle: false }
+        );
+
+        const shippingNewCollapse = new bootstrap.Collapse(
+            document.getElementById('newShippingAddressSection'),
+            { toggle: false }
+        );
+
+        // Add New Shipping
+        $('#addShippingToggle').on('click', function () {
+            shippingNewCollapse.show();
+            shippingExistingCollapse.hide();
+
+            $('#addShippingToggle').addClass('active');
+            $('#existingShippingToggle').removeClass('active');
+
+            $('#addShippingToggle .toggle-icon').addClass('rotate');
+            $('#existingShippingToggle .toggle-icon').removeClass('rotate');
+
+            $('.select-address-radio').prop('checked', false);
+            $('.address-box').removeClass('active');
+        });
+
+        // Select Existing Shipping
+        $('#existingShippingToggle').on('click', function () {
+            shippingExistingCollapse.show();
+            shippingNewCollapse.hide();
+
+            $('#existingShippingToggle').addClass('active');
+            $('#addShippingToggle').removeClass('active');
+
+            $('#existingShippingToggle .toggle-icon').addClass('rotate');
+            $('#addShippingToggle .toggle-icon').removeClass('rotate');
+        });
+
+
     });
 
 
