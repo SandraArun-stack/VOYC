@@ -27,6 +27,7 @@ class OrderDetailsModel extends Model
         'od_modifyon',
         'cus_Id',
         'add_Id',
+        'shipping_add_Id',
         'tracker_Link',
         'pr_Code',
         'od_Grand_Total',

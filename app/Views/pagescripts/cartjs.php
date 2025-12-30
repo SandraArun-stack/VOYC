@@ -189,7 +189,7 @@
             var $row = $button.closest('tr');
             var price = parseFloat($row.find('.cart__price').text().replace(/[^\d.]/g, ''));
             var rowTotal = price * newVal;
-            $row.find('.cart__total').text('₹ ' + rowTotal.toFixed(2));
+            $row.find('.cart__total').text('₹ ' + rowTotal);
 
             recalcCartTotal();
 

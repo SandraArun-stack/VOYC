@@ -32,9 +32,7 @@
         $('#subtotal span').html(`₹ ${grandTotal.toFixed(2)}`);
         $('#total_of_all span').html(`₹ ${grandTotal.toFixed(2)}`);
 
-
-
-        // const isSameAsShipping = $('#same_as_shipping').is(':checked');
+        const isSameAsShipping = $('#same_as_shipping').is(':checked');
 
         function showMessage(message, type = 'success') {
             var box = $('#messageBox');
@@ -53,77 +51,67 @@
 
         $('#checkout__form').on('submit', function (e) {
             e.preventDefault();
-            const hasExistingBillingSelected =
-                $('input[name="billing_address_id"]:checked').length > 0;
-            const hasExistingShippingSelected =
-                $('input[name="shipping_address_id"]:checked').length > 0;
-
-            const isSameAsShipping =
-                $('#same_as_shipping').is(':checked');
 
             //  Step 1: Validation before placing order
             let isValid = true;
             let message = '';
-            
-            if (!hasExistingBillingSelected) {
-                const requiredFields = [
-                    { name: 'add_Name', label: 'First Name' },
-                    { name: 'add_LastName', label: 'Last Name' },
-                    { name: 'add_Country', label: 'Country' },
-                    { name: 'add_Street', label: 'Street Address' },
-                    { name: 'add_City', label: 'City' },
-                    { name: 'add_State', label: 'State' },
-                    { name: 'add_Pincode', label: 'Pincode' },
-                    { name: 'add_Phone', label: 'Phone' },
-                    { name: 'add_Email', label: 'Email' }
-                ];
 
-                // Reset previous borders
-                $('input').css('border', '1px solid #e5e5e5');
+            const requiredFields = [
+                { name: 'add_Name', label: 'First Name' },
+                { name: 'add_LastName', label: 'Last Name' },
+                { name: 'add_Country', label: 'Country' },
+                { name: 'add_Street', label: 'Street Address' },
+                { name: 'add_City', label: 'City' },
+                { name: 'add_State', label: 'State' },
+                { name: 'add_Pincode', label: 'Pincode' },
+                { name: 'add_Phone', label: 'Phone' },
+                { name: 'add_Email', label: 'Email' }
+            ];
 
-                // Empty field validation
-                requiredFields.forEach(field => {
-                    const input = $('[name="' + field.name + '"]');
-                    if ($.trim(input.val()) === '') {
-                        isValid = false;
-                        input.css('border', '1px solid red');
-                        if (!message) message = field.label + ' is required.';
-                    }
-                });
+            // Reset previous borders
+            $('input').css('border', '1px solid #e5e5e5');
 
-                // Email format validation
-                const email = $('[name="add_Email"]').val();
-                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (email && !emailPattern.test(email)) {
+            // Empty field validation
+            requiredFields.forEach(field => {
+                const input = $('[name="' + field.name + '"]');
+                if ($.trim(input.val()) === '') {
                     isValid = false;
-                    $('[name="add_Email"]').css('border', '1px solid red');
-                    message = 'Please enter a valid email address.';
+                    input.css('border', '1px solid red');
+                    if (!message) message = field.label + ' is required.';
                 }
+            });
 
-                const phoneInput = $('[name="add_Phone"]');
-                let phone = phoneInput.val().trim();
-
-                phone = phone.replace(/[\s\-()]/g, '');
-                phone = phone.replace(/^\+?91/, '');
-                phone = phone.replace(/^0/, '');
-                phone = phone.slice(-10);
-
-
-                // if (phone.length === 11 && phone.startsWith('0')) {
-                //     phone = phone.substring(1);
-                // }
-
-                const indianPhoneRegex = /^[6-9]\d{9}$/;
-
-                if (!indianPhoneRegex.test(phone)) {
-                    isValid = false;
-                    phoneInput.css('border', '1px solid red');
-                    message = 'Please enter a valid Indian phone number.';
-                }
-
-                phoneInput.val(phone);
+            // Email format validation
+            const email = $('[name="add_Email"]').val();
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email && !emailPattern.test(email)) {
+                isValid = false;
+                $('[name="add_Email"]').css('border', '1px solid red');
+                message = 'Please enter a valid email address.';
             }
 
+            const phoneInput = $('[name="add_Phone"]');
+            let phone = phoneInput.val().trim();
+
+            phone = phone.replace(/[\s\-()]/g, '');
+            phone = phone.replace(/^\+?91/, '');
+            phone = phone.replace(/^0/, '');
+            phone = phone.slice(-10);
+
+
+            // if (phone.length === 11 && phone.startsWith('0')) {
+            //     phone = phone.substring(1);
+            // }
+
+            const indianPhoneRegex = /^[6-9]\d{9}$/;
+
+            if (!indianPhoneRegex.test(phone)) {
+                isValid = false;
+                phoneInput.css('border', '1px solid red');
+                message = 'Please enter a valid Indian phone number.';
+            }
+
+            phoneInput.val(phone);
             // If validation fails, stop submission
             if (!isValid) {
                 showMessage('' + message, 'error');
@@ -131,8 +119,7 @@
                 return false;
             }
 
-            // ✅ Shipping validation ONLY if needed
-            if (!isSameAsShipping && !hasExistingShippingSelected) {
+            if (!isSameAsShipping) {
 
                 const shippingRequiredFields = [
                     { name: 'shipping_add_Name', label: 'Shipping First Name' },
@@ -156,7 +143,6 @@
 
                 if (!isValid) {
                     showMessage(message, 'error');
-                    $('html, body').animate({ scrollTop: $('#checkout__form').offset().top - 300 }, 500);
                     return false;
                 }
             }
@@ -201,94 +187,93 @@
             var formData = $(this).serializeArray();
             formData.push({ name: 'products', value: JSON.stringify(cartItems) });
             formData.push({ name: 'lb_Id', value: applied_lb_Id });
-            //<----------------------------------------------no razor payment---------------------------------------------------------------------------------------->
-            //  Step 4: Send AJAX request
-            $.ajax({
-                url: "<?= base_url('orderdetails/placeOrder') ?>",
-                method: "POST",
-                data: formData,
-                dataType: "json",
-                beforeSend: function () {
-                    $('html, body').animate({ scrollTop: 0 }, 'fast');
-                    showMessage('⏳ Placing your order...', 'warning');
 
-                },
-                success: function (response) {
-                    if (response.status === 'success') {
-                        showMessage('' + response.message, 'success');
-                        setTimeout(function () {
-                            window.location.href = "<?= base_url('') ?>";
-                        }, 2000);
-                    } else {
-                        showMessage(' ' + response.message, 'error');
-                    }
-                },
-                error: function () {
-                    showMessage('Something went wrong while placing your order!', 'error');
-                }
-            });
-            //<----------------------------------------------no razor payment---------------------------------------------------------------------------------------->
+            //  Step 4: Send AJAX request
+            // $.ajax({
+            //     url: "<?= base_url('orderdetails/placeOrder') ?>",
+            //     method: "POST",
+            //     data: formData,
+            //     dataType: "json",
+            //     beforeSend: function () {
+            //         $('html, body').animate({ scrollTop: 0 }, 'fast');
+            //         showMessage('⏳ Placing your order...', 'warning');
+
+            //     },
+            //     success: function (response) {
+            //         if (response.status === 'success') {
+            //             showMessage('' + response.message, 'success');
+            //             setTimeout(function () {
+            //                 window.location.href = "<?= base_url('') ?>";
+            //             }, 2000);
+            //         } else {
+            //             showMessage(' ' + response.message, 'error');
+            //         }
+            //     },
+            //     error: function () {
+            //         showMessage('Something went wrong while placing your order!', 'error');
+            //     }
+            // });
             // Step 4: Create Razorpay order first
 
             //<----------------------------------------------razor payment---------------------------------------------------------------------------------------->
+            
+            $.ajax({
+                url: "<?= base_url('payment/createRazorpayOrder') ?>",
+                method: "POST",
+                data: {
+                    amount: finalOrderTotal, // in rupees
+                    <?= csrf_token() ?>: "<?= csrf_hash() ?>"
+                },
+                dataType: "json",
+                success: function (res) {
 
-            // $.ajax({
-            //     url: "<?= base_url('payment/createRazorpayOrder') ?>",
-            //     method: "POST",
-            //     data: {
-            //         amount: finalOrderTotal, // in rupees
-            //         <?= csrf_token() ?>: "<?= csrf_hash() ?>"
-            //     },
-            //     dataType: "json",
-            //     success: function (res) {
+                    if (res.status !== 'success') {
+                        showMessage(res.message, 'error');
+                        return;
+                    }
 
-            //         if (res.status !== 'success') {
-            //             showMessage(res.message, 'error');
-            //             return;
-            //         }
+                    var options = {
+                        key: res.key,
+                        amount: res.amount,
+                        currency: "INR",
+                        name: "Voyc",
+                        description: "Order Payment",
+                        order_id: res.order_id,
 
-            //         var options = {
-            //             key: res.key,
-            //             amount: res.amount,
-            //             currency: "INR",
-            //             name: "Voyc",
-            //             description: "Order Payment",
-            //             order_id: res.order_id,
+                        handler: function (response) {
 
-            //             handler: function (response) {
+                            // ✅ Payment success → now place order
+                            formData.push({ name: 'razorpay_payment_id', value: response.razorpay_payment_id });
+                            formData.push({ name: 'razorpay_order_id', value: response.razorpay_order_id });
+                            formData.push({ name: 'razorpay_signature', value: response.razorpay_signature });
 
-            //                 // ✅ Payment success → now place order
-            //                 formData.push({ name: 'razorpay_payment_id', value: response.razorpay_payment_id });
-            //                 formData.push({ name: 'razorpay_order_id', value: response.razorpay_order_id });
-            //                 formData.push({ name: 'razorpay_signature', value: response.razorpay_signature });
+                            // 🔥 CALL YOUR EXISTING placeOrder()
+                            $.ajax({
+                                url: "<?= base_url('orderdetails/placeOrder') ?>",
+                                method: "POST",
+                                data: formData,
+                                dataType: "json",
+                                success: function (response) {
+                                    if (response.status === 'success') {
+                                        showMessage(response.message, 'success');
+                                        setTimeout(() => {
+                                            window.location.href = "<?= base_url('') ?>";
+                                        }, 2000);
+                                    } else {
+                                        showMessage(response.message, 'error');
+                                    }
+                                }
+                            });
+                        }
+                    };
 
-            //                 // 🔥 CALL YOUR EXISTING placeOrder()
-            //                 $.ajax({
-            //                     url: "<?= base_url('orderdetails/placeOrder') ?>",
-            //                     method: "POST",
-            //                     data: formData,
-            //                     dataType: "json",
-            //                     success: function (response) {
-            //                         if (response.status === 'success') {
-            //                             showMessage(response.message, 'success');
-            //                             setTimeout(() => {
-            //                                 window.location.href = "<?= base_url('') ?>";
-            //                             }, 2000);
-            //                         } else {
-            //                             showMessage(response.message, 'error');
-            //                         }
-            //                     }
-            //                 });
-            //             }
-            //         };
-
-            //         var rzp = new Razorpay(options);
-            //         rzp.open();
-            //     }
-            // });
+                    var rzp = new Razorpay(options);
+                    rzp.open();
+                }
+            });
 
             //<----------------------------------------------razor payment---------------------------------------------------------------------------------------->
-
+  
         });
 
         $('#checkout__form__free_tee').on('submit', function (e) {
@@ -533,8 +518,6 @@
                 dataType: 'json',
             });
         }
-
-
 
         $("#same_as_shipping").on("change", function () {
             if ($(this).is(":checked")) {

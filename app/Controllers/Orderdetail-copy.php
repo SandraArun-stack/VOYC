@@ -10,7 +10,7 @@ use App\Models\Admin\GameMappingModel;
 use App\Models\Admin\ProductModel;
 use App\Models\UserleaderboardModel;
 use App\Models\Admin\CustomerModel;
-use App\Models\ShipingAddressModel;
+
 
 use Razorpay\Api\Api;
 use Razorpay\Api\Errors\SignatureVerificationError;
@@ -33,7 +33,6 @@ class OrderDetails extends Controller
         $this->ProductModel = new ProductModel();
         $this->CustomerModel = new CustomerModel();
         $this->addressModel = new AddressModel();
-        $this->ShipingAddressModel = new ShipingAddressModel();
 
     }
 
@@ -113,12 +112,9 @@ class OrderDetails extends Controller
     public function placeOrder()
     {
 
-        $isSameAsShipping   = $this->request->getPost('same_as_shipping');
-        $userId             = $this->session->get('user_id');
-        $lbId               = $this->request->getPost('lb_Id');
-        $billingAddId       = $this->request->getPost('billing_address_id');
-        $shippingAddId      = $this->request->getPost('shipping_address_id') ?? '';
-        // print_r($shippingAddId );exit();
+        $isSameAsShipping = $this->request->getPost('same_as_shipping');
+        $userId = $this->session->get('user_id');
+        $lbId = $this->request->getPost('lb_Id');
 
         if (empty($userId)) {
             return redirect()->to(base_url('/'));
@@ -127,37 +123,35 @@ class OrderDetails extends Controller
         // ============================
         // RAZORPAY PAYMENT VERIFICATION
         // ============================
-        // $razorpayPaymentId = $this->request->getPost('razorpay_payment_id');
-        // $razorpayOrderId = $this->request->getPost('razorpay_order_id');
-        // $razorpaySignature = $this->request->getPost('razorpay_signature');
+        $razorpayPaymentId = $this->request->getPost('razorpay_payment_id');
+        $razorpayOrderId = $this->request->getPost('razorpay_order_id');
+        $razorpaySignature = $this->request->getPost('razorpay_signature');
 
-        // if (!$razorpayPaymentId || !$razorpaySignature || !$razorpayOrderId) {
-        //     return $this->response->setJSON([
-        //         'status' => 'error',
-        //         'message' => 'Payment verification failed'
-        //     ]);
-        // }
+        if (!$razorpayPaymentId || !$razorpaySignature || !$razorpayOrderId) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Payment verification failed'
+            ]);
+        }
 
-        // $api = new \Razorpay\Api\Api(
-        //     env('RAZORPAY_KEY_ID'),
-        //     env('RAZORPAY_KEY_SECRET')
-        // );
+        $api = new \Razorpay\Api\Api(
+            env('RAZORPAY_KEY_ID'),
+            env('RAZORPAY_KEY_SECRET')
+        );
 
-        // try {
-        //     $api->utility->verifyPaymentSignature([
-        //         'razorpay_order_id' => $razorpayOrderId,
-        //         'razorpay_payment_id' => $razorpayPaymentId,
-        //         'razorpay_signature' => $razorpaySignature
-        //     ]);
-        // } catch (\Razorpay\Api\Errors\SignatureVerificationError $e) {
-        //     return $this->response->setJSON([
-        //         'status' => 'error',
-        //         'message' => 'Invalid payment signature'
-        //     ]);
-        // }
-        // ============================
-        // RAZORPAY PAYMENT VERIFICATION
-        // ============================
+        try {
+            $api->utility->verifyPaymentSignature([
+                'razorpay_order_id' => $razorpayOrderId,
+                'razorpay_payment_id' => $razorpayPaymentId,
+                'razorpay_signature' => $razorpaySignature
+            ]);
+        } catch (\Razorpay\Api\Errors\SignatureVerificationError $e) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Invalid payment signature'
+            ]);
+        }
+
 
 
         $createdBy = $userId;
@@ -171,124 +165,44 @@ class OrderDetails extends Controller
         }
 
         // ============= SAVE ADDRESS =============
-        // ================= BILLING ADDRESS =================
-        if (!empty($billingAddId)) {
+        $billingAddress = [
+            'add_Name' => $this->request->getPost('add_Name'),
+            'add_Landmark' => $this->request->getPost('add_Landmark'),
+            'add_Street' => $this->request->getPost('add_Street'),
+            'add_City' => $this->request->getPost('add_City'),
+            'add_State' => $this->request->getPost('add_State'),
+            'add_Pincode' => $this->request->getPost('add_Pincode'),
+            'add_Phone' => $this->request->getPost('add_Phone'),
+            'add_Email' => $this->request->getPost('add_Email'),
+            'add_CustId' => $userId,
+            'add_Status' => 'Active',
+            'add_createdon' => date('Y-m-d H:i:s'),
+            'add_createdby' => $createdBy
+        ];
 
-            // ✅ Existing billing address
-            $add_Id = $billingAddId;
+        $addressModel = new \App\Models\AddressModel();
+        $add_Id = $addressModel->insert($billingAddress);
 
-            $billingAddress = $this->addressModel
-                ->where('add_Id', $add_Id)
-                ->first();
+        $shippingAddress = implode(', ', array_filter($billingAddress));
 
-        } else {
+        if ($isSameAsShipping) {
 
-            // ✅ New billing address
-            $billingAddress = [
-                'add_Name' => $this->request->getPost('add_Name'),
-                'add_LastName' => $this->request->getPost('add_LastName'),
-                'add_Landmark' => $this->request->getPost('add_Landmark'),
-                'add_Street' => $this->request->getPost('add_Street'),
-                'add_City' => $this->request->getPost('add_City'),
-                'add_State' => $this->request->getPost('add_State'),
-                'add_Country' => $this->request->getPost('add_Country'),
-                'add_Pincode' => $this->request->getPost('add_Pincode'),
-                'add_Phone' => $this->request->getPost('add_Phone'),
-                'add_Email' => $this->request->getPost('add_Email'),
-                'add_CustId' => $userId,
-                'add_Status' => 1,
-                'add_createdon' => date('Y-m-d H:i:s'),
-                'add_createdby' => $userId
-            ];
-
-            $add_Id = $this->addressModel->insert($billingAddress);
-        }
-        // ================= SHIPPING ADDRESS =================
-        $finalShippingAddId = 0;
-
-        if (!empty($shippingAddId)) {
-
-            // ✅ Existing shipping address selected
-            $finalShippingAddId = $shippingAddId;
-
-            $shippingAddress = $this->ShipingAddressModel
-                ->where('shipping_add_Id', $finalShippingAddId)
-                ->first();
-
-        } elseif (!$isSameAsShipping) {
-
-            // ✅ New shipping address entered → INSERT
-            $shippingAddress = array_filter([
-                'shipping_add_Name' => $this->request->getPost('shipping_add_Name'),
-                'shipping_add_LastName' => $this->request->getPost('shipping_add_LastName'),
-                'shipping_add_BuildingNo' => $this->request->getPost('shipping_add_BuildingNo'),
-                'shipping_add_Landmark' => $this->request->getPost('shipping_add_Landmark'),
-                'shipping_add_Street' => $this->request->getPost('shipping_add_Street'),
-                'shipping_add_City' => $this->request->getPost('shipping_add_City'),
-                'shipping_add_State' => $this->request->getPost('shipping_add_State'),
-                'shipping_add_Pincode' => $this->request->getPost('shipping_add_Pincode'),
-                'shipping_add_Country' => $this->request->getPost('shipping_add_Country'),
-                'shipping_add_Phone' => $this->request->getPost('shipping_add_Phone'),
-                'shipping_add_Email' => $this->request->getPost('shipping_add_Email'),
-                'shipping_add_CustId' => $userId,
-                'shipping_add_Status' => 1,
-                'shipping_add_createdon' => date('Y-m-d H:i:s'),
-                'shipping_add_createdby' => $userId
-            ], fn($v) => $v !== null && $v !== '');
-
-            $finalShippingAddId = $this->ShipingAddressModel->insert($shippingAddress);
-        }
-
-
-        $billingAddressString = implode(', ', array_filter([
-            $billingAddress['add_Name'] ?? '',
-            $billingAddress['add_LastName'] ?? '',
-            $billingAddress['add_Street'] ?? '',
-            $billingAddress['add_Landmark'] ?? '',
-            $billingAddress['add_City'] ?? '',
-            $billingAddress['add_State'] ?? '',
-            $billingAddress['add_Pincode'] ?? '',
-            $billingAddress['add_Country'] ?? '',
-            $billingAddress['add_Phone'] ?? '',
-            $billingAddress['add_Email'] ?? ''
-        ]));
-        if (!empty($shippingAddId)) {
-
-            // Existing shipping address text
-            $shippingAddressString = implode(', ', array_filter([
-                $shippingAddress['shipping_add_Name'] ?? '',
-                $shippingAddress['shipping_add_LastName'] ?? '',
-                // $shippingAddress['shipping_add_BuildingNo'] ?? '',
-                $shippingAddress['shipping_add_Street'] ?? '',
-                $shippingAddress['shipping_add_Landmark'] ?? '',
-                $shippingAddress['shipping_add_City'] ?? '',
-                $shippingAddress['shipping_add_State'] ?? '',
-                $shippingAddress['shipping_add_Pincode'] ?? '',
-                $shippingAddress['shipping_add_Country'] ?? '',
-                $shippingAddress['shipping_add_Phone'] ?? '',
-                $shippingAddress['shipping_add_Email'] ?? ''
-            ]));
-
-        } elseif ($isSameAsShipping) {
-
-            // ✅ Same as billing → COPY billing text
-            $shippingAddressString = $billingAddressString;
+            // ✅ Same address
+            $shippingAddress = $billingAddress;
 
         } else {
 
-            // New shipping address text
-            $shippingAddressString = implode(', ', array_filter([
-                $shippingAddress['shipping_add_Name'] ?? '',
-                $shippingAddress['shipping_add_LastName'] ?? '',
-                // $shippingAddress['shipping_add_BuildingNo'] ?? '',
-                $shippingAddress['shipping_add_Street'] ?? '',
-                $shippingAddress['shipping_add_Landmark'] ?? '',
-                $shippingAddress['shipping_add_City'] ?? '',
-                $shippingAddress['shipping_add_State'] ?? '',
-                $shippingAddress['shipping_add_Pincode'] ?? '',
-                $shippingAddress['shipping_add_Country'] ?? '',
-                $shippingAddress['shipping_add_Phone'] ?? '',
-                $shippingAddress['shipping_add_Email'] ?? ''
+            // ✅ Separate shipping address
+            $shippingAddress = implode(', ', array_filter([
+                $this->request->getPost('shipping_add_Name'),
+                $this->request->getPost('shipping_add_Street'),
+                $this->request->getPost('shipping_add_Landmark'),
+                $this->request->getPost('shipping_add_City'),
+                $this->request->getPost('shipping_add_State'),
+                $this->request->getPost('shipping_add_Pincode'),
+                $this->request->getPost('shipping_add_Country'),
+                $this->request->getPost('shipping_add_Phone'),
+                $this->request->getPost('shipping_add_Email')
             ]));
         }
 
@@ -300,17 +214,14 @@ class OrderDetails extends Controller
         $orderNumber = 'VOYC-' . date('Ymd') . '-' . $nextNumber;
 
         $productRows = "";
-            $totalAmount = 0;
 
         foreach ($products as $item) {
 
             $item['od_number'] = $orderNumber;
             $item['cus_Id'] = $userId;
             $item['add_Id'] = $add_Id;
-            $item['shipping_add_Id'] = $finalShippingAddId;
-            $item['od_Billing_Address'] = $billingAddressString;
-            $item['od_Shipping_Address'] = $shippingAddressString;
-
+            $item['od_Billing_Address'] = $billingAddress;
+            $item['od_Shipping_Address'] = $shippingAddress;
             $item['od_createdby'] = $userId;
 
             $db = \Config\Database::connect();
@@ -352,7 +263,7 @@ class OrderDetails extends Controller
             $this->orderModel->createOrderItem($item);
 
             // Order total
-            // $totalAmount = 0;
+            $totalAmount = 0;
 
             $totalAmount += $item['od_Grand_Total'];
 
