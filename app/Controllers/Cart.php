@@ -23,6 +23,7 @@ class Cart extends Controller
 
     public function index($userId = null)
     {
+        $userId = $userId ?? session()->get('user_id');
 
         if (!$userId) {
             return redirect()->to(base_url('/'));
