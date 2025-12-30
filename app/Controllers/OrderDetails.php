@@ -32,7 +32,7 @@ class OrderDetails extends Controller
         $this->GameMappingModel = new GameMappingModel();
         $this->ProductModel = new ProductModel();
         $this->CustomerModel = new CustomerModel();
-         $this->addressModel = new AddressModel();
+        $this->addressModel = new AddressModel();
 
     }
 
@@ -88,7 +88,8 @@ class OrderDetails extends Controller
         }
 
         $existingAddress = $this->addressModel->getExistingAddressofUser($userId);
-// print_r($existingAddress);exit();
+        $existingshippingAddress = $this->addressModel->getExistingShippingAddressofUser($userId);
+        // print_r($existingshippingAddress);exit();
         return view('common/header', [
             'cartCount' => $cartCount,
             'players' => $result['players'],
@@ -101,7 +102,8 @@ class OrderDetails extends Controller
                 'cust_Phone' => $data['cust_Phone'],
                 'minimum_amount_for_shipping_charge' => $shipping['minimum_amount_for_shipping_charge'],
                 'shipping_charge' => $shipping['shipping_charge'],
-                 'existingAddress' => $existingAddress
+                'existingAddress' => $existingAddress,
+                'existingshippingAddress' => $existingshippingAddress
             ])
             . view('common/footer')
             . view('pagescripts/orderdetailsjs');

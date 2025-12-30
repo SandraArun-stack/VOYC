@@ -69,5 +69,15 @@ class AddressModel extends Model
             ->findAll();
     }
 
+    public function getExistingShippingAddressofUser($custId)
+    {
+        return $this->db->table('shipping_address')
+            ->where('shipping_add_CustId', $custId)
+            ->where('shipping_add_Status', 1)
+            ->get()
+            ->getResultArray();
+    }
+
+
 }
 
