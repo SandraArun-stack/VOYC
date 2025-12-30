@@ -11,6 +11,7 @@ use App\Models\Admin\ProductModel;
 use App\Models\UserleaderboardModel;
 use App\Models\Admin\CustomerModel;
 
+
 use Razorpay\Api\Api;
 use Razorpay\Api\Errors\SignatureVerificationError;
 class OrderDetails extends Controller
@@ -31,6 +32,7 @@ class OrderDetails extends Controller
         $this->GameMappingModel = new GameMappingModel();
         $this->ProductModel = new ProductModel();
         $this->CustomerModel = new CustomerModel();
+         $this->addressModel = new AddressModel();
 
     }
 
@@ -47,7 +49,6 @@ class OrderDetails extends Controller
             'cust_Email' => $user['cust_Email'] ?? '',
             'cust_Phone' => $user['cust_Phone'] ?? '',
         ];
-
 
         $cartCount = $this->CartModel->getCartItemCount($userId);
 
@@ -86,6 +87,8 @@ class OrderDetails extends Controller
             $shipping[$row['field']] = $row['value'];
         }
 
+        $existingAddress = $this->addressModel->getExistingAddressofUser($userId);
+// print_r($existingAddress);exit();
         return view('common/header', [
             'cartCount' => $cartCount,
             'players' => $result['players'],
@@ -98,6 +101,7 @@ class OrderDetails extends Controller
                 'cust_Phone' => $data['cust_Phone'],
                 'minimum_amount_for_shipping_charge' => $shipping['minimum_amount_for_shipping_charge'],
                 'shipping_charge' => $shipping['shipping_charge'],
+                 'existingAddress' => $existingAddress
             ])
             . view('common/footer')
             . view('pagescripts/orderdetailsjs');
