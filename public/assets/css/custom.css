@@ -1878,7 +1878,9 @@ input[type="file"] {
     padding-bottom: 80px;
     padding-top: 150px;
 }
-
+.product-title{
+    text-align: justify;
+}
 /* .sub-card {
     background: #000;
     color: #fff;

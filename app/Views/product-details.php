@@ -87,7 +87,7 @@ $userId = session()->get('user_id');
 
             <div class="col-lg-6">
                 <div class="product__details__text">
-                    <h3>
+                    <h3 class="product-title">
                         <?= nl2br(wordwrap(esc($product['pr_Name']), 30, "\n", true)) ?>
                     </h3>
                     <div class="rating">
