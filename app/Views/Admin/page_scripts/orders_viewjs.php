@@ -148,7 +148,7 @@
                     // -------- Add Grand Total Row --------
                     productTable += `
                         <tr style="font-weight:bold; background:#f7f7f7;">
-                            <td colspan="5" class="text-end">Grand Total:</td>
+                            <td colspan="6" class="text-end">Grand Total:</td>
                            <td>${Math.round(grandTotal)}</td>
                         </tr>
                     </tbody>
