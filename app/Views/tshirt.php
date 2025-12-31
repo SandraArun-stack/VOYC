@@ -78,7 +78,7 @@ $selectedPrvId = $_GET['prvId'] ?? null;
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="row" id="image-details">
-                                                <div class="col-md-6">
+                                                <!-- <div class="col-md-6">
                                                     <div class="d-flex flex-column">
                                                         <p class="upload__image mb-0">
                                                             <b>Upload Size</b>
@@ -113,7 +113,7 @@ $selectedPrvId = $_GET['prvId'] ?? null;
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                             </div>
                                             <div class="row mt-2">
                                                 <div class="col-md-12">

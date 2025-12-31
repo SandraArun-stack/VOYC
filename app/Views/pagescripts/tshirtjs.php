@@ -308,6 +308,7 @@
             let perItemDesignPrice = 0;
 
             $(".design-check:checked").each(function () {
+                saveCurrentCanvasState();
                 const type = $(this).closest(".design-option").data("type");
                 const data = designData[type];
 
@@ -369,7 +370,14 @@
                 updatePreview(); // recalc total
             }
         });
+        let selectedPrvId = null;
 
+        // Check if any size is already active
+        const $activeSize = $('.size-box-customisation.active');
+        if ($activeSize.length) {
+            selectedPrvId = $activeSize.data('prv-id');
+        }
+        
         $(document).on('click', '.size-box-customisation', function () {
             $('.size-box-customisation').removeClass('active');
             $(this).addClass('active');
@@ -420,7 +428,7 @@
                 $("#alertAddtocart")
                     .removeClass()
                     .addClass("alert alert-danger")
-                    .text("Please Select Where You Want Your Design Applied.")
+                    .text("Please Select at Least One Design Zone to Proceed.")
                     .fadeIn();
                 setTimeout(() => $("#alertAddtocart").fadeOut(), 2500);
                 return;

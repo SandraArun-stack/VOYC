@@ -228,7 +228,7 @@
                                         + Add New Shipping detail
                                         <i class="bi bi-chevron-down toggle-icon"></i>
                                     </h5>
-                                    <div class="shipping-section d-none"  id="newShippingAddressSection">
+                                    <div class="shipping-section collapse"  id="newShippingAddressSection">
                                         <div class="row ">
                                             <div class="col-lg-6 col-md-6 col-sm-6">
                                                 <div class="checkout__form__input">
@@ -365,4 +365,5 @@
        
     </div>
 </section>
+
 <!-- Checkout Section End -->

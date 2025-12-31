@@ -121,6 +121,7 @@ class Tshirt extends Controller
 
         $quantity = $this->request->getPost('quantity');
         $totalPrice = $this->request->getPost('totalPrice');
+        // print_r($totalPrice);exit();
         $selectedSize = $this->request->getPost('selectedSize');
         $prvId = $this->request->getPost('prvId');
 

@@ -95,8 +95,9 @@
                             <tr>
                                 <th>Product Code</th>
                                 <th>Product Name</th>
+                                <th>Size</th>
                                 <th>Quantity</th>
-                                 <th>Price Per Piece</th>
+                                <th>Price Per Piece</th>
                                 <th>Customized</th>
                                
                                 <th>Total Price</th>
@@ -115,6 +116,7 @@
                         <tr>
                             <td>${o.pr_Code}</td>
                             <td>${o.pr_Name}</td>
+                            <td>${o.od_Size}</td>
                             <td>${o.od_Quantity}</td>
                            
                             <td>${Math.round(o.od_Selling_Price)}</td>
