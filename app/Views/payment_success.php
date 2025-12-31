@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Payment Successful</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/bootstrap.min.css" type="text/css">
 
+    <link rel="icon" href="<?= base_url() . ASSET_PATH; ?>assets/img/favicon.ico" type="image/x-icon">
     <style>
         body {
             margin: 0;
@@ -18,7 +21,7 @@
             background: #fff;
             border-radius: 12px;
             padding: 24px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
         }
 
         .icon {
@@ -78,28 +81,36 @@
         }
     </style>
 </head>
+
 <body>
 
-<div class="container">
-    <div class="icon">✔️</div>
-    <h1>Payment Successful</h1>
-    <p style="text-align:center;color:#666;">Thank you for your purchase!</p>
+    <script>
+        const data = JSON.parse(sessionStorage.getItem('paymentData'));
+    </script>
 
-    <div class="order-info">
-        <p>Order ID <span>#DRS10245</span></p>
-        <p>Dress Name <span>Floral Summer Dress</span></p>
-        <p>Size <span>M</span></p>
-        <p>Color <span>Blue</span></p>
-        <p>Quantity <span>1</span></p>
+    <div class="container">
+        <div class="icon">✔️</div>
+        <h1>Payment Successful</h1>
+        <p>Thank you for your purchase!</p>
 
-        <div class="divider"></div>
+        <div class="order-info">
+            <p>Order ID <span id="orderId"></span></p>
+            <p>Total Paid <span id="amount"></span></p>
+            <p>Payment Method <span id="method"></span></p>
+        </div>
 
-        <p>Total Paid <span>₹2,499</span></p>
-        <p>Payment Method <span>UPI</span></p>
+        <a href="<?= base_url('/') ?>" class="btn">Continue Shopping</a>
     </div>
 
-    <a href="index.html" class="btn">Continue Shopping</a>
-</div>
+    <script>
+        if (data) {
+            document.getElementById('orderId').innerText = data.order_number;
+            document.getElementById('amount').innerText = '₹' + data.amount;
+            document.getElementById('method').innerText = data.payment_method;
+        }
+    </script>
+
 
 </body>
+
 </html>

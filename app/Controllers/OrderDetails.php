@@ -152,7 +152,12 @@ class OrderDetails extends Controller
         // } catch (\Razorpay\Api\Errors\SignatureVerificationError $e) {
         //     return $this->response->setJSON([
         //         'status' => 'error',
-        //         'message' => 'Invalid payment signature'
+        //         'message' => 'Invalid payment signature',
+        //         'redirect' => base_url('payment/failure'),
+        //         'data' => [
+        //             'order_id' => $razorpayOrderId,
+        //             'amount' => 0
+        //         ]
         //     ]);
         // }
         // ============================
@@ -369,7 +374,7 @@ class OrderDetails extends Controller
             </tr>";
         }
 
-        
+
         $productTable = "
             <table style='width:100%;border-collapse:collapse;margin-top:20px;font-size:14px;'>
                 <thead>
@@ -413,8 +418,8 @@ class OrderDetails extends Controller
                 <p class='m-0'><strong>Address:</strong></p>
                 <p class='m-0'>{$billingAddress['add_Street']}</p>
                 <p class='m-0'>{$billingAddress['add_Landmark']}</p>
-                <p class='m-0'>{$billingAddress['add_City']}, {$billingAddress['add_State']}, India – {$billingAddress['add_Pincode']}</p>
-
+                <p class='m-0'>{$billingAddress['add_City']}, {$billingAddress['add_State']}</p>
+                <p class='m-0'>{$billingAddress['add_Country']}, {$billingAddress['add_Pincode']}</p>
                 <br>
 
                 <p class='m-0'><strong>Phone:</strong></p>
@@ -438,12 +443,14 @@ class OrderDetails extends Controller
                 <p class='m-0'>" . ($shippingAddress['shipping_add_Street'] ?? $billingAddress['add_Street']) . "</p>
                 <p class='m-0'>" . ($shippingAddress['shipping_add_Landmark'] ?? $billingAddress['add_Landmark']) . "</p>
                 <p class='m-0'>" .
-                    ($shippingAddress['shipping_add_City'] ?? $billingAddress['add_City']) . ", " .
-                    ($shippingAddress['shipping_add_State'] ?? $billingAddress['add_State']) .
-                    ", India – " .
-                    ($shippingAddress['shipping_add_Pincode'] ?? $billingAddress['add_Pincode']) .
-                    "</p>
+            ($shippingAddress['shipping_add_City'] ?? $billingAddress['add_City']) . ", " .
+            ($shippingAddress['shipping_add_State'] ?? $billingAddress['add_State']) .
 
+
+            "</p>
+                <p class='m-0'>" . ($shippingAddress['shipping_add_Country'] ?? $billingAddress['add_Country']) . ", " .
+                    ($shippingAddress['shipping_add_Pincode'] ?? $billingAddress['add_Pincode']) .
+                "</p>
                 <br>
 
                 <p class='m-0'><strong>Phone:</strong></p>
@@ -552,7 +559,15 @@ class OrderDetails extends Controller
 
         return $this->response->setJSON([
             'status' => 'success',
-            'message' => 'Order placed successfully'
+            'message' => 'Order placed successfully',
+            'redirect' => base_url(' '),
+            // 'redirect' => base_url('payment/success'),
+            // 'data' => [
+            //     'order_number' => $orderNumber,
+            //     'amount' => $totalAmount,
+            //     'payment_method' => 'Razorpay',
+            //     'products' => $products
+            // ]
         ]);
     }
 

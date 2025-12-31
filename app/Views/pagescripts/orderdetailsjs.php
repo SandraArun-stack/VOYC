@@ -269,20 +269,31 @@
             //                     data: formData,
             //                     dataType: "json",
             //                     success: function (response) {
-            //                         if (response.status === 'success') {
-            //                             showMessage(response.message, 'success');
-            //                             setTimeout(() => {
-            //                                 window.location.href = "<?= base_url('') ?>";
-            //                             }, 2000);
-            //                         } else {
-            //                             showMessage(response.message, 'error');
-            //                         }
+
+            //                         sessionStorage.setItem(
+            //                             'paymentData',
+            //                             JSON.stringify(response.data || {})
+            //                         );
+
+            //                         window.location.href = response.redirect;
+            //                     },
+            //                     error: function () {
+            //                         window.location.href = "<?= base_url('payment/failure') ?>";
             //                     }
             //                 });
             //             }
             //         };
 
             //         var rzp = new Razorpay(options);
+
+            //         rzp.on('payment.failed', function (err) {
+            //             sessionStorage.setItem('paymentData', JSON.stringify({
+            //                 order_id: err.error.metadata.order_id || '',
+            //                 amount: finalOrderTotal
+            //             }));
+            //             window.location.href = "<?= base_url('payment/failure') ?>";
+            //         });
+
             //         rzp.open();
             //     }
             // });
@@ -642,7 +653,7 @@
 
             shippingNewCollapse?.show();
             shippingExistingCollapse?.hide();
-            
+
             $('#addShippingToggle').addClass('active');
             $('#existingShippingToggle').removeClass('active');
 

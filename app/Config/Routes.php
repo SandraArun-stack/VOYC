@@ -195,10 +195,13 @@ $routes->get('myredemption', 'Userleaderboard::myredemption');
 
 //payments
 $routes->post('payment/createRazorpayOrder', 'PaymentController::createRazorpayOrder');
-//errior handling
+$routes->get('payment/success', 'PaymentController::success_payment');
+$routes->get('payment/failure', 'PaymentController::failure_payment');
+
+//errior handling 
 $routes->get('404', 'ErrorWeb::show404');
-//
-// --------------------------------ADMIN----------------------------------------//
+
+// -------------------------------- ADMIN ---------------------------------------- //
 
 
 // $routes->group('admin', ['namespace' => 'App\Controllers\admin'], function($routes) {
