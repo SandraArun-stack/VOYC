@@ -8,7 +8,8 @@
                     <a href="<?= base_url('cart'); ?>">
                         Cart
                     </a>
-                    <a href="<?= base_url(' '); ?>">Checkout</a>
+                    <span>Checkout</span>
+                    <!-- <a href="<?= base_url(' '); ?>">Checkout</a> -->
                 </div>
             </div>
         </div>
@@ -72,7 +73,7 @@
                                             <div class="address-radio">
                                                 <input
                                                     type="radio"
-                                                    name="selected_address"
+                                                    name="billing_address_id"
                                                     class="form-check-input select-address-radio "
                                                     value="<?= esc($address['add_Id']) ?>">
                                             </div>
@@ -84,8 +85,6 @@
 
                             </div>
                             <?php endif; ?>
-
-
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
@@ -152,19 +151,18 @@
                                     
                                     </div>
                                 </div>
-                            <div class="row">
-                                <div class="col-lg-12 d-flex  justify-content-between  mb-3">
-                                    <div class="d-flex w-100">
-                                        <input type="checkbox" id="same_as_shipping" name="same_as_shipping " class="same-shipping-checkbox" checked> &nbsp;
-                                        <span class="text-center align-items-center justify-content-center d-flex">Billing address is same as shipping address?</span>
+                                <div class="row">
+                                    <div class="col-lg-12 d-flex  justify-content-between  mb-3">
+                                        <div class="d-flex w-100">
+                                            <input type="checkbox" id="same_as_shipping" name="same_as_shipping" class="same-shipping-checkbox" checked> &nbsp;
+                                            <span class="text-center align-items-center justify-content-center d-flex">Billing address is same as shipping address?</span>
+                                        </div>
+                                        <div class="add_shipping_address">
+                                                <button type="button" class="text-white black btn-sm" id="add_shipping_address_btn">
+                                                    <span class="plus_shipping_text">Add Shipping Address</span>
+                                        </div>                                   
                                     </div>
-                                    <div class="add_shipping_address">
-                                            <button type="button" class="text-white black btn-sm" id="add_shipping_address_btn">
-                                                <span class="plus_shipping_text">Add Shipping Address</span>
-                                    </div>
-                                    
                                 </div>
-                            </div>
                         </div>
                         
                         <div class="col-lg-12 d-none" id="shipping_address_section" >
@@ -175,17 +173,17 @@
                                 <?php if ($hasAddress): ?>
                                 <div class="col-lg-12 mb-2">
                                     <h5 class="section-toggle d-flex justify-content-between align-items-center cursor-pointer active"
-                                        id="existingShippingAddressToggle"
+                                        id="existingShippingToggle"
                                         data-bs-toggle="collapse"
                                         data-bs-target="#existingAddressSection"
                                         aria-expanded="true">
-                                        Select A Shipping Address
+                                        Select A Existing Shipping Address
                                         <i class="bi bi-chevron-down toggle-icon rotate"></i>
                                     </h5>
 
                                     <div id="existingShippingAddressSection" class="shipping-section collapse show">
                                         <?php foreach ($existingshippingAddress as $address): ?>
-                                            <div class="border p-3 mb-2 rounded existingShippingAddress address-box d-flex justify-content-between">
+                                            <div class="border p-3 mb-2 rounded existingShippingAddress address-box-shipping d-flex justify-content-between">
 
                                                 <div class="address-content w-100 pe-2">
                                                     <p>
@@ -210,8 +208,8 @@
                                                 <div class="address-radio">
                                                     <input
                                                         type="radio"
-                                                        name="selected_address"
-                                                        class="form-check-input select-address-radio "
+                                                        name="shipping_address_id"
+                                                        class="form-check-input select-address-shipping-radio"
                                                         value="<?= esc($address['shipping_add_Id']) ?>">
                                                 </div>
 
@@ -230,59 +228,61 @@
                                         + Add New Shipping detail
                                         <i class="bi bi-chevron-down toggle-icon"></i>
                                     </h5>
-
-                                    <div class="row shipping-section d-none" id="newShippingAddressSection">
-                                        <div class="col-lg-6 col-md-6 col-sm-6">
-                                            <div class="checkout__form__input">
-                                                <p>First Name <span>*</span></p>
-                                                <input type="text" name="shipping_add_Name" placeholder="Full Name">
+                                    <div class="shipping-section d-none"  id="newShippingAddressSection">
+                                        <div class="row ">
+                                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                                <div class="checkout__form__input">
+                                                    <p>First Name <span>*</span></p>
+                                                    <input type="text" name="shipping_add_Name" placeholder="Full Name">
+                                                </div>
                                             </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                                <div class="checkout__form__input">
+                                                    <p>Last Name <span>*</span></p>
+                                                    <input type="text" name="shipping_add_LastName">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                
+                                                <div class="checkout__form__input">
+                                                    <p>Address <span>*</span></p>
+                                                    <input type="text" name="shipping_add_Street" placeholder="Street Address">
+                                                    <input type="text" name="shipping_add_Landmark"
+                                                        placeholder="Apartment, Suite, Unit, etc. (optional)">
+                                                </div>
+                                                <div class="checkout__form__input">
+                                                    <p>Town/City <span>*</span></p>
+                                                    <input type="text" name="shipping_add_City" placeholder="City">
+                                                </div>
+                                                <div class="checkout__form__input">
+                                                    <p>State <span>*</span></p>
+                                                    <input type="text" name="shipping_add_State" placeholder="State">
+                                                </div>
+                                                <div class="checkout__form__input">
+                                                    <p>Country <span>*</span></p>
+                                                    <input type="text" name="shipping_add_Country">
+                                                </div>
+                                                <div class="checkout__form__input">
+                                                    <p>Postcode/Zip <span>*</span></p>
+                                                    <input type="text" name="shipping_add_Pincode" placeholder="Zipcode">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                                <div class="checkout__form__input">
+                                                    <p>Phone <span>*</span></p>
+                                                    <input type="text" name="shipping_add_Phone" placeholder="Phone">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                                <div class="checkout__form__input">
+                                                    <p>Email <span>*</span></p>
+                                                    <input type="text" name="shipping_add_Email" placeholder="abc@gmail.com">
+                                                </div>
+                                            </div>
+                                        
                                         </div>
-                                        <div class="col-lg-6 col-md-6 col-sm-6">
-                                            <div class="checkout__form__input">
-                                                <p>Last Name <span>*</span></p>
-                                                <input type="text" name="shipping_add_LastName">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            
-                                            <div class="checkout__form__input">
-                                                <p>Address <span>*</span></p>
-                                                <input type="text" name="shipping_add_Street" placeholder="Street Address">
-                                                <input type="text" name="shipping_add_Landmark"
-                                                    placeholder="Apartment, Suite, Unit, etc. (optional)">
-                                            </div>
-                                            <div class="checkout__form__input">
-                                                <p>Town/City <span>*</span></p>
-                                                <input type="text" name="shipping_add_City" placeholder="City">
-                                            </div>
-                                            <div class="checkout__form__input">
-                                                <p>State <span>*</span></p>
-                                                <input type="text" name="shipping_add_State" placeholder="State">
-                                            </div>
-                                            <div class="checkout__form__input">
-                                                <p>Country <span>*</span></p>
-                                                <input type="text" name="shipping_add_Country">
-                                            </div>
-                                            <div class="checkout__form__input">
-                                                <p>Postcode/Zip <span>*</span></p>
-                                                <input type="text" name="shipping_add_Pincode" placeholder="Zipcode">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6 col-sm-6">
-                                            <div class="checkout__form__input">
-                                                <p>Phone <span>*</span></p>
-                                                <input type="text" name="shipping_add_Phone" placeholder="Phone">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6 col-sm-6">
-                                            <div class="checkout__form__input">
-                                                <p>Email <span>*</span></p>
-                                                <input type="text" name="shipping_add_Email" placeholder="abc@gmail.com">
-                                            </div>
-                                        </div>
-                                    
                                     </div>
+                                    
                                 </div>
                             </div>
                             
