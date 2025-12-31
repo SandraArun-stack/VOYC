@@ -212,15 +212,21 @@ class ProductImage extends BaseController
             }
 
             // --- Upload new files (reuse helper) ---
-            $thumbnailUploaded = $this->uploadFiles($_FILES, $colorIndex, 'images', ['jpg', 'jpeg', 'png', 'webp','avif']);
-            $sideUploaded = $this->uploadFiles($_FILES, $colorIndex, 'side_image', ['jpg', 'jpeg', 'png', 'webp','avif']);
-            $sleeveUploaded = $this->uploadFiles($_FILES, $colorIndex, 'sleev_image', ['jpg', 'jpeg', 'png', 'webp','avif']);
-            $RSleeve_Img = $this->uploadFiles($_FILES, $colorIndex, 'RSleeve_Img', ['jpg', 'jpeg', 'png', 'webp','avif']);
-            $LSleeve_Img = $this->uploadFiles($_FILES, $colorIndex, 'LSleeve_Img', ['jpg', 'jpeg', 'png', 'webp','avif']);
-           $videoUploaded = $this->uploadFiles($_FILES, $colorIndex, 'video', ['mp4','mov','avi','mkv'], true);
+            try {
+                $thumbnailUploaded = $this->uploadFiles($_FILES, $colorIndex, 'images', ['jpg','jpeg','png','webp','avif']);
+                $sideUploaded = $this->uploadFiles($_FILES, $colorIndex, 'side_image', ['jpg','jpeg','png','webp','avif']);
+                $sleeveUploaded = $this->uploadFiles($_FILES, $colorIndex, 'sleev_image', ['jpg','jpeg','png','webp','avif']);
+                $RSleeve_Img = $this->uploadFiles($_FILES, $colorIndex, 'RSleeve_Img', ['jpg','jpeg','png','webp','avif']);
+                $LSleeve_Img = $this->uploadFiles($_FILES, $colorIndex, 'LSleeve_Img', ['jpg','jpeg','png','webp','avif']);
+                $videoUploaded = $this->uploadFiles($_FILES, $colorIndex, 'videos', ['mp4','avi','mov','mkv','webm'], true);
 
+            } catch (\RuntimeException $e) {
 
-
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'msg' => $e->getMessage()
+                ]);
+            }
             // --- Preserve existing data if nothing new uploaded ---
             if (empty($thumbnailUploaded) && !empty($existingData['pri_Thumbnail'])) {
                 $thumbnailUploaded[] = $existingData['pri_Thumbnail'];

@@ -18,8 +18,8 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <div class="shop__cart__table text-center">
-                    <table>
+                <div class="shop__cart__table text-center table-responsive">
+                    <table class="table">
                         <?php if (!empty($cartItems)): ?>
                             <thead>
                                 <tr>

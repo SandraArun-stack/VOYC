@@ -73,8 +73,8 @@
                                                         <!-- <th>Product Name</th> -->
                                                         <th>Size</th>
                                                         <th>Color</th>
-                                                        <th>Stock</th>
-                                                        <th>Reset Stock</th>
+                                                        <!-- <th>Stock</th>
+                                                        <th>Reset Stock</th> -->
                                                         <th>Price</th>
                                                         <th>Status</th>
                                                         <th>Action</th>
