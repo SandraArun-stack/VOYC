@@ -87,8 +87,8 @@ $userId = session()->get('user_id');
 
             <div class="col-lg-6">
                 <div class="product__details__text">
-                    <h3><?= esc($product['pr_Name']) ?>
-                        <!-- <span>Description: <?= esc($product['pr_Description']); ?></span> -->
+                    <h3>
+                        <?= nl2br(wordwrap(esc($product['pr_Name']), 30, "\n", true)) ?>
                     </h3>
                     <div class="rating">
                         <?php
