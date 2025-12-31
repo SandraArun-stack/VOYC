@@ -159,6 +159,7 @@
                                 $(this).addClass('d-none');
                             });
                         }, 3000);
+                        $block.find('.review-input').val('');
 
                         $block.addClass('d-none');
                     } else {
