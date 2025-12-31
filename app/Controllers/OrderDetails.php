@@ -113,11 +113,11 @@ class OrderDetails extends Controller
     public function placeOrder()
     {
 
-        $isSameAsShipping   = $this->request->getPost('same_as_shipping');
-        $userId             = $this->session->get('user_id');
-        $lbId               = $this->request->getPost('lb_Id');
-        $billingAddId       = $this->request->getPost('billing_address_id');
-        $shippingAddId      = $this->request->getPost('shipping_address_id') ?? '';
+        $isSameAsShipping = $this->request->getPost('same_as_shipping');
+        $userId = $this->session->get('user_id');
+        $lbId = $this->request->getPost('lb_Id');
+        $billingAddId = $this->request->getPost('billing_address_id');
+        $shippingAddId = $this->request->getPost('shipping_address_id') ?? '';
         // print_r($shippingAddId );exit();
 
         if (empty($userId)) {
@@ -300,7 +300,7 @@ class OrderDetails extends Controller
         $orderNumber = 'VOYC-' . date('Ymd') . '-' . $nextNumber;
 
         $productRows = "";
-            $totalAmount = 0;
+        $totalAmount = 0;
 
         foreach ($products as $item) {
 
@@ -369,6 +369,7 @@ class OrderDetails extends Controller
             </tr>";
         }
 
+        
         $productTable = "
             <table style='width:100%;border-collapse:collapse;margin-top:20px;font-size:14px;'>
                 <thead>
@@ -405,7 +406,7 @@ class OrderDetails extends Controller
         $formattedBillingAddress = "
             <div style='line-height:0.2'>
                 <p class='m-0'><strong>Name:</strong></p>
-                <p class='m-0'>{$billingAddress['add_Name']}</p>
+                <p class='m-0'>{$billingAddress['add_Name']} {$billingAddress['add_LastName']}</p>
 
                 <br>
 
@@ -426,6 +427,35 @@ class OrderDetails extends Controller
             </div>
         ";
 
+        $formattedShippingAddress = "
+            <div style='line-height:0.2'>
+                <p class='m-0'><strong>Name:</strong></p>
+                <p class='m-0'>" . ($shippingAddress['shipping_add_Name'] ?? $billingAddress['add_Name']) . "</p>
+
+                <br>
+
+                <p class='m-0'><strong>Address:</strong></p>
+                <p class='m-0'>" . ($shippingAddress['shipping_add_Street'] ?? $billingAddress['add_Street']) . "</p>
+                <p class='m-0'>" . ($shippingAddress['shipping_add_Landmark'] ?? $billingAddress['add_Landmark']) . "</p>
+                <p class='m-0'>" .
+                    ($shippingAddress['shipping_add_City'] ?? $billingAddress['add_City']) . ", " .
+                    ($shippingAddress['shipping_add_State'] ?? $billingAddress['add_State']) .
+                    ", India – " .
+                    ($shippingAddress['shipping_add_Pincode'] ?? $billingAddress['add_Pincode']) .
+                    "</p>
+
+                <br>
+
+                <p class='m-0'><strong>Phone:</strong></p>
+                <p class='m-0'>+91 " . ($shippingAddress['shipping_add_Phone'] ?? $billingAddress['add_Phone']) . "</p>
+
+                <br>
+
+                <p class='m-0'><strong>Email:</strong></p>
+                <p class='m-0'>" . ($shippingAddress['shipping_add_Email'] ?? $billingAddress['add_Email']) . "</p>
+            </div>
+        ";
+
 
 
         // ============================
@@ -438,9 +468,20 @@ class OrderDetails extends Controller
 
         <h3>Order Summary:</h3>
         {$productTable}
+        <table width='100%' cellpadding='0' cellspacing='0' style='margin-top:20px;'>
+            <tr>
+                <td width='50%' valign='top' style='padding-right:10px;'>
+                    <h3>Billing Address</h3>
+                    {$formattedBillingAddress}
+                </td>
 
-        <h3 >Shipping Address:</h3>
-        <p class='my-0'>{$formattedBillingAddress}</p>
+                <td width='50%' valign='top' style='padding-left:10px;'>
+                    <h3>Shipping Address</h3>
+                    {$formattedShippingAddress}
+                </td>
+            </tr>
+        </table>
+       
         <br/>
         <p class='my-0' style='font-size:14px;'>Best Regards,<br><b>Voyc Team</b></p>
     ";
@@ -465,8 +506,19 @@ class OrderDetails extends Controller
         <h3>Products:</h3>
         {$productTable}
 
-        <h3>Billing Address:</h3>
-       <p class='my-0'>{$formattedBillingAddress}</p>
+       <table width='100%' cellpadding='0' cellspacing='0' style='margin-top:20px;'>
+            <tr>
+                <td width='50%' valign='top' style='padding-right:10px;'>
+                    <h3>Billing Address</h3>
+                    {$formattedBillingAddress}
+                </td>
+
+                <td width='50%' valign='top' style='padding-left:10px;'>
+                    <h3>Shipping Address</h3>
+                    {$formattedShippingAddress}
+                </td>
+            </tr>
+        </table>
         <br/>
 
         <p>Order Time: " . date('d M Y, h:i A') . "</p>
@@ -512,6 +564,7 @@ class OrderDetails extends Controller
         }
 
         $addressData = [
+            'add_Name' => $this->request->getPost('add_Name'),
             'add_Name' => $this->request->getPost('add_Name'),
             'add_Landmark' => $this->request->getPost('add_Landmark'),
             'add_Street' => $this->request->getPost('add_Street'),

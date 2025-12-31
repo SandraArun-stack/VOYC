@@ -64,7 +64,7 @@
             //  Step 1: Validation before placing order
             let isValid = true;
             let message = '';
-            
+
             if (!hasExistingBillingSelected) {
                 const requiredFields = [
                     { name: 'add_Name', label: 'First Name' },
@@ -614,21 +614,35 @@
             $('.address-box').removeClass('active');
         });
 
-        const shippingExistingCollapse = new bootstrap.Collapse(
-            document.getElementById('existingShippingAddressSection'),
-            { toggle: false }
-        );
+        // const shippingExistingCollapse = new bootstrap.Collapse(
+        //     document.getElementById('existingShippingAddressSection'),
+        //     { toggle: false }
+        // );
 
-        const shippingNewCollapse = new bootstrap.Collapse(
-            document.getElementById('newShippingAddressSection'),
-            { toggle: false }
-        );
+        // const shippingNewCollapse = new bootstrap.Collapse(
+        //     document.getElementById('newShippingAddressSection'),
+        //     { toggle: false }
+        // );
+
+        const existingShippingEl = document.getElementById('existingShippingAddressSection');
+        const newShippingEl = document.getElementById('newShippingAddressSection');
+
+        const shippingExistingCollapse = existingShippingEl
+            ? new bootstrap.Collapse(existingShippingEl, { toggle: false })
+            : null;
+
+        const shippingNewCollapse = newShippingEl
+            ? new bootstrap.Collapse(newShippingEl, { toggle: false })
+            : null;
 
         // Add New Shipping
         $('#addShippingToggle').on('click', function () {
-            shippingNewCollapse.show();
-            shippingExistingCollapse.hide();
+            // shippingNewCollapse.show();
+            // shippingExistingCollapse.hide();
 
+            shippingNewCollapse?.show();
+            shippingExistingCollapse?.hide();
+            
             $('#addShippingToggle').addClass('active');
             $('#existingShippingToggle').removeClass('active');
 

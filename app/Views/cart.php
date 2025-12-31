@@ -33,7 +33,13 @@
                             <tbody>
 
                                 <?php foreach ($cartItems as $item): ?>
+                                    <?php
+                                    $hasDesign = !empty($item['design_Id']) && $item['design_Id'] != 0;
 
+                                    $displayPrice = $hasDesign
+                                        ? $item['cart_Price']
+                                        : $item['prv_price'];
+                                    ?>
                                     <tr data-cartid="<?= esc($item['cart_Id']) ?>" class=" clickable-row"
                                         data-url="<?= base_url('productdetails/' . $item['pr_Id'] . '/' . $item['pri_Id']); ?>">
                                         <td class="cart__product__item">
@@ -104,7 +110,7 @@
                                             </div>
                                         </td>
                                         <td class="cart__price">₹
-                                            <?= !empty($item['prv_price']) ? esc($item['prv_price']) : '0' ?>
+                                           <?= esc($displayPrice ?? 0) ?>
                                         </td>
 
                                         <td class="cart__quantity">
@@ -112,7 +118,7 @@
                                                 <input type="text" value="<?= esc($item['cart_Quantity']) ?>">
                                             </div>
                                         </td>
-                                        <td class="cart__total" data-price="<?= esc($item['prv_price']) ?>"
+                                        <td class="cart__total" data-price="<?= esc($displayPrice ?? 0) ?>"
                                             data-quantity="<?= esc($item['cart_Quantity']) ?>">₹0.00</td>
 
                                         <td class="cart__close">

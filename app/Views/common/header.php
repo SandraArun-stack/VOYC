@@ -131,12 +131,12 @@
                                     <span class="icon-label">Design</span>
                                 </a>
                             </li>
-                            <li>
+                            <!-- <li>
                                 <a href="#" id="leader_board" class="icon-with-text">
                                     <i class="bi bi-award-fill"></i>
                                     <span class="icon-label">Winners</span>
                                 </a>
-                            </li>
+                            </li> -->
                         </ul>
 
                         <div class="header__right__auth">
