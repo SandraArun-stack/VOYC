@@ -102,8 +102,8 @@
                         pr_Name: item.pr_Name,
                         size: size,
                         color: color,
-                        stock: stocks[i] || '-',
-                        reset_stock: reset[i] || '-',
+                        // stock: stocks[i] || '-',
+                        // reset_stock: reset[i] || '-',
                         price: prices[i] || '-',
                         status_switch: item.status_switch,
                         actions: item.actions
@@ -116,7 +116,7 @@
                     expandedData.push(...combined);
                 });
 
-                // 🔥 FIX: Update the REAL total counts BEFORE Datatables uses it
+                //  FIX: Update the REAL total counts BEFORE Datatables uses it
                 json.data = expandedData;
                 json.recordsTotal = expandedData.length;
                 json.recordsFiltered = expandedData.length;
@@ -144,14 +144,14 @@
                     return `<span title="${color}" style="display:inline-block;width:25px;height:25px;background:${color};border:1px solid #ccc;margin-right:5px;"></span>`;
                 }
             },
-            { data: 'stock' },
-            { data: 'reset_stock' },
+            // { data: 'stock' },
+            // { data: 'reset_stock' },
             { data: 'price' },
             { data: 'status_switch' },
             { data: 'actions' }
         ],
         columnDefs: [
-            { targets: [1, 2, 3, 4, 5, 6, 7], orderable: false, searchable: false }
+            { targets: [1, 2, 3, 4, 5], orderable: false, searchable: false }
         ]
     });
 
@@ -529,6 +529,43 @@
             this.value = ""; // Clear the selected files
         } else {
             errorBox.text(""); // Remove error if valid
+        }
+    });
+
+
+    $(document).on('change', "input[type='file']", function () {
+
+        let files = this.files;
+        const allowedImages = ['jpg','jpeg','png','webp','avif'];
+        const allowedVideos = ['mp4','avi','mov','mkv','webm'];
+
+        let isVideo = $(this).attr('accept')?.includes("video");
+        let allowed = isVideo ? allowedVideos : allowedImages;
+
+        for (let f of files) {
+
+            let ext = f.name.split('.').pop().toLowerCase();
+
+            if (!allowed.includes(ext)) {
+
+                $('#messageBox')
+                    .removeClass('alert-success alert-warning')
+                    .addClass('alert-danger')
+                    .text("Please Select Valid Formats " + allowed.join(', '))
+                    .show();
+
+                $('html, body').animate({ scrollTop: 0 }, 'fast');
+
+                // SAME AS AJAX (Auto Hide after 3 sec)
+                setTimeout(() => {
+                    $('#messageBox').fadeOut('slow', function () {
+                        $(this).empty().hide();
+                    });
+                }, 3000);
+
+                $(this).val("");   // reset invalid file
+                return false;
+            }
         }
     });
 
