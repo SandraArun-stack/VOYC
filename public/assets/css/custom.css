@@ -3071,6 +3071,33 @@ input[type="date"] {
     }
 
     .product__item__pic {
-        height: 200px !important;
+        height: 305px !important;
+    }
+
+    .sidebar__sizes .size__list label {
+        font-size: 14px;
+    }
+
+    #shopSidebar {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 85%;
+        height: 100%;
+        background: #fff;
+        z-index: 1050;
+        overflow-y: auto;
+        padding: 15px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #shopSidebar.show {
+        display: block;
+    }
+
+    #closeFilterBtn {
+        font-size: 23px;
+        color: #808080;
     }
 }
