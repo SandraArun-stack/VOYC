@@ -153,7 +153,8 @@ class Orders extends BaseController
         $status = $first->od_Status;
         $customer = $model->getCustomer($first->cus_Id);
         $address = $model->getAddress($first->add_Id);
-
+        $billingAddress = $first->od_Billing_Address;
+        $shippingAddress = $first->od_Shipping_Address;
        
         if (!$this->request->isAJAX()) {
             $data = [
@@ -161,7 +162,9 @@ class Orders extends BaseController
                 'orders' => $orders,
                 'customer' => $customer,
                 'address' => $address,
-                'status'    => $status 
+                'billing_address' => $billingAddress,
+                'shipping_address' => $shippingAddress,
+                'status'    => $status
                 // 'designs' => $designs
             ];
 
@@ -179,6 +182,8 @@ class Orders extends BaseController
                 'orders' => $orders,
                 'customer' => $customer,
                 'address' => $address,
+                'billing_address' => $billingAddress,
+                'shipping_address' => $shippingAddress
                 // 'designs' => $designs
             ]
         ]);

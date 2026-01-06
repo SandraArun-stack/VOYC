@@ -114,7 +114,7 @@
 
                                 <div class="card-block">
                                     <div class="table-responsive">
-                                        <table class="table table-hover">
+                                        <table class="table table-hover w-100">
                                             <thead>
                                                 <tr>
                                                     <th>Order Number</th>
@@ -150,7 +150,8 @@
                                                                     '1' => 'New',
                                                                     '2' => 'Confirmed',
                                                                     '3' => 'Packed',
-                                                                    '4' => 'Dispatched'
+                                                                    '4' => 'Dispatched',
+                                                                    '5' => 'Delivered'
                                                                 ];
                                                                 $statusText = $statusLabels[$order->od_Status] ?? 'New';
                                                                 ?>
@@ -190,7 +191,7 @@
                             </div>
                             <div class="card-block">
                                 <div class="table-responsive">
-                                    <table class="table table-hover">
+                                    <table class="table table-hover w-100">
                                         <thead>
                                             <tr>
                                                 <th>Sl No</th>

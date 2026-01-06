@@ -85,6 +85,8 @@
                     const orders = res.data.orders;
                     const customer = res.data.customer;
                     const address = res.data.address;
+                    const billingAddress = res.data.billing_address;
+                    const shippingAddress = res.data.shipping_address;
 
                     // ----------------------------
                     // PRODUCT TABLE
@@ -169,23 +171,66 @@
                 `);
 
                     // ----------------------------
-                    // DELIVERY ADDRESS
+                    // Billing ADDRESS
                     // ----------------------------
-                    $('#delivery-details').html(`
-                    <p><strong>Name:</strong> ${address.add_Name}</p>
-                    <p>
-                        ${address.add_BuildingNo || ''} ${address.add_Street || ''},<br>
-                        ${address.add_Landmark || ''},<br>
-                        ${address.add_City || ''}, ${address.add_State || ''},<br>
-                        ${address.add_Pincode || ''}
-                    </p>
-                    <p><strong>Phone:</strong> ${address.add_Phone}</p>
-                    <p><strong>Email:</strong> ${address.add_Email}</p>
-                `);
+                    // $('#billing-details').html(`
+                    // <p><strong>Name:</strong> ${address.add_Name}</p>
+                    // <p>
+                    //     ${address.add_BuildingNo || ''} ${address.add_Street || ''},<br>
+                    //     ${address.add_Landmark || ''},<br>
+                    //     ${address.add_City || ''}, ${address.add_State || ''},<br>
+                    //     ${address.add_Pincode || ''}
+                    // </p>
+                    // <p><strong>Phone:</strong> ${address.add_Phone}</p>
+                    // <p><strong>Email:</strong> ${address.add_Email}</p>
+
+                    // `);
+                    $('#billing-details').html(
+                        formatAddress(billingAddress)
+                    );
+                    $('#shipping-details').html(
+                        formatAddress(shippingAddress)
+                    );
                 }
             }
         });
     });
+
+    function toTitleCase(str) {
+        return str
+            .toLowerCase()
+            .split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+    }
+
+    function formatAddress(addressStr) {
+        if (!addressStr) return '';
+
+        const parts = addressStr.split(',').map(p => p.trim());
+
+        // Name → first 2
+        const name = toTitleCase(parts[0] + ' ' + parts[1]);
+
+        // Last 2 → phone & email
+        const phone = parts[parts.length - 2];
+        const email = parts[parts.length - 1];
+
+        // Address parts
+        const addressParts = parts.slice(2, parts.length - 2);
+
+        // Extract pincode
+        const pincode = addressParts.pop();
+
+        const addressText = toTitleCase(addressParts.join(', ')) + ' - ' + pincode;
+
+        return `
+        <p><strong>Name:</strong><br>${name}</p>
+        <p><strong>Address:</strong><br>${addressText}</p>
+        <p><strong>Phone:</strong> ${phone}</p>
+        <p><strong>Email:</strong> ${email.toLowerCase()}</p>
+    `;
+    }
 
 
 

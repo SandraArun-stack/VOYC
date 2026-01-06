@@ -1042,7 +1042,7 @@ ol {
 	font-size: 15px;
 	font-weight: 500;
 	/* color: #888888; */
-	color:#000;
+	color: #000;
 	display: inline-block;
 }
 
@@ -1562,9 +1562,9 @@ ol {
 .sidebar__color .size__list label {
 	display: block;
 	padding-left: 10px;
-	font-size: 14px;
+	font-size: 18px;
 	text-transform: uppercase;
-	color: #444444;
+	color: #000000;
 	position: relative;
 	cursor: pointer;
 }
@@ -3363,6 +3363,7 @@ ol {
 	}
 
 	.offcanvas-menu-wrapper.active {
+		top:60px;
 		opacity: 1;
 		left: 0;
 	}
@@ -3497,6 +3498,10 @@ ol {
 		display: none;
 	}
 
+	.search-wrapper {
+		display: none !important;
+	}
+
 	.header__right {
 		display: none;
 	}
@@ -3507,11 +3512,11 @@ ol {
 @media only screen and (max-width: 767px) {
 	.canvas__open {
 		display: block;
-		font-size: 22px;
+		font-size: 20px;
 		color: #fff;
-		height: 35px;
-		width: 35px;
-		line-height: 35px;
+		height: 30px;
+		width: 30px;
+		line-height: 30px;
 		text-align: center;
 		border: 1px solid #fff;
 		border-radius: 2px;
@@ -3557,6 +3562,7 @@ ol {
 	}
 
 	.offcanvas-menu-wrapper.active {
+		top: 60px;
 		opacity: 1;
 		left: 0;
 	}
@@ -3689,6 +3695,10 @@ ol {
 
 	.header__menu {
 		display: none;
+	}
+
+	.search-wrapper {
+		display: none !important;
 	}
 
 	.header__right {

@@ -37,7 +37,7 @@
                                 <div class="card-block">
 
                                     <div class="table-responsive">
-                                        <table class="table table-hover" id="UserWalletTable">
+                                        <table class="table table-hover w-100" id="UserWalletTable">
                                             <thead>
                                                 <tr>
                                                     <th>Sl.No.</th>

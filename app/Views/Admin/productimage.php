@@ -66,7 +66,7 @@
                                     <div class="card-block table-border-style">
                                         <input type="hidden" id="pr_id" value="<?= isset($pr_id) ? $pr_id : '' ?>">
                                         <div class="table-responsive">
-                                            <table class="table table-hover" id="productList">
+                                            <table class="table table-hover  w-100" id="productList">
                                                 <thead>
                                                     <tr>
                                                         <th>Slno</th>

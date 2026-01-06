@@ -151,9 +151,7 @@
                                 </div>
                            
                            
-                                  <div class="g-recaptcha" data-sitekey="6Le-VXcrAAAAAFdEqJLtM5DxM6GoGl7cJdV6hknL"></div>
-
-                         
+                                  <div class="g-recaptcha" data-sitekey="6Le-VXcrAAAAAFdEqJLtM5DxM6GoGl7cJdV6hknL"></div>                       
 <br>
                                   
                                 <div class="row m-t-30">

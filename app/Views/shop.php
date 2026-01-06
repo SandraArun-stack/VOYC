@@ -16,7 +16,7 @@
 <section class="shop spad">
     <div class="container">
         <div class="row">
-            <div class="col-lg-3 col-md-3">
+            <div class="col-lg-3 col-md-3 col-sm-6 col-12">
                 <div class="shop__sidebar">
                     <div class="sidebar__categories">
                         <div class="section-title">
@@ -80,42 +80,10 @@
                             </div>
                         </div>
                         <div class="filter__price">
-                            <!-- <a href= "#">Filter</a> -->
-                            <!-- <button type="button" id="filterPriceBtn">Filter</button> -->
+                           
                         </div>
                     </div>
-                    <!-- <div class="sidebar__sizes">
-                        <div class="section-title">
-                            <h4>Shop by size</h4>
-                        </div>
-                        <div class="size__list">
-                            <label for="s">
-                                S
-                                <input type="checkbox" id="s">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label for="m">
-                                M
-                                <input type="checkbox" id="m">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label for="ml">
-                                L
-                                <input type="checkbox" id="ml">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label for="l">
-                                XL
-                                <input type="checkbox" id="l">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label for="xl">
-                                XXL
-                                <input type="checkbox" id="xl">
-                                <span class="checkmark"></span>
-                            </label>
-                        </div>
-                    </div> -->
+                   
                     <div class="sidebar__sizes">
                         <div class="section-title">
                             <h4>Shop by Size</h4>
@@ -158,12 +126,12 @@
                 </div>
             </div>
             
-            <div class="col-lg-9 col-md-9">
+            <div class="col-lg-9 col-md-9 col-sm-6 col-12">
                 <div class="row product-list">
                     <?php if (!empty($display_item)): ?>
 
                         <?php foreach ($display_item as $item): ?>
-                            <div class="col-lg-3 col-md-6 mb-4 product__card" style="opacity:1;">
+                            <div class="col-lg-3 col-md-6 col-4 mb-4 product__card" style="opacity:1;">
                                 <div class="product__item"
                                     data-url="<?= base_url('productdetails/' . $item['pr_Id'] . '/' . $item['pri_Id']); ?>">
                                     <div class="product__item">

@@ -56,7 +56,7 @@ $selectedPrvId = $_GET['prvId'] ?? null;
                             </div>
 
                             <!-- Upload View -->
-                            <div id="view-upload" class="view-section d-none p-4">
+                            <!-- <div id="view-upload" class="view-section d-none p-4">
                                 <h2 class="mb-4">Choose File to Upload</h2>
                                 <div class="d-flex justify-content-center">
                                     <div class="upload__image text-center">
@@ -70,8 +70,8 @@ $selectedPrvId = $_GET['prvId'] ?? null;
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
+                            </div> -->
+                            <input type="file" id="uploadImage" multiple accept="image/*" hidden>
                             <div id="view-spec-upload-image" class="view-section d-none p-2">
                                 <p>Image Properties</p>
                                 <div class="spec_Image">

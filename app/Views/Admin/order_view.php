@@ -84,18 +84,36 @@
 
                         </div>
                         <div class="col-md-6">
+                            <div class="card h-100">
 
-                            <div class="card">
+                                <!-- Card Header -->
                                 <div class="card-header">
+                                    <h5 class="mb-0">Address Details</h5>
+                                </div>
+
+                                <!-- Card Body -->
+                                <div class="card-body">
                                     <div class="row">
-                                        <div class="col">
-                                            <h5>Delivery Address</h5>
+
+                                        <!-- Billing Address -->
+                                        <div class="col-md-6">
+                                            <h6 class="border-bottom pb-2">Billing Address</h6>
+                                            <div id="billing-details"></div>
                                         </div>
+
+                                        <!-- Shipping Address -->
+                                        <div class="col-md-6">
+                                            <h6 class="border-bottom pb-2">Shipping Address</h6>
+                                            <div id="shipping-details"></div>
+                                        </div>
+
                                     </div>
                                 </div>
-                                <div class="card-block" id="delivery-details"></div>
+
                             </div>
                         </div>
+
+
                     </div>
 
 

@@ -56,7 +56,7 @@
                                         <div class="card-block table-border-style">
                                         <div id="messageBox" class="alert" style="display: none;"></div>
                                             <div class="table-responsive">
-                                                <table class="table table-hover" id="categoryList">
+                                                <table class="table table-hover w-100" id="categoryList">
                                                     <thead>
                                                         <tr>
                                                             <th>Slno</th>
