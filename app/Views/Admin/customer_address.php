@@ -32,7 +32,7 @@
 						<div class="col-md-12 d-flex justify-content-between">
 							<div class="text-delivery-heading">
 								<?php if (!empty($user)): ?>
-									<h5>Delivery Address By <?= esc($user[0]['cust_Name']); ?></h5>
+									<h5>Billing Address By <?= esc($user[0]['cust_Name']); ?></h5>
 								<?php endif; ?>
 							</div>
 							<div class="back-to-list-customer">

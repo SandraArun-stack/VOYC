@@ -60,6 +60,19 @@
 
             const isSameAsShipping =
                 $('#same_as_shipping').is(':checked');
+            const hasBillingAddresses =
+                $('input[name="billing_address_id"]').length > 0;
+
+            const hasSelectedBilling =
+                $('input[name="billing_address_id"]:checked').length > 0;
+            // 🔴 PRIORITY 1: Existing billing addresses but none selected
+            if (hasBillingAddresses && !hasSelectedBilling) {
+                showMessage('Please Select a Billing Address.', 'error');
+                $('html, body').animate({
+                    scrollTop: $('#billingDetailsSection').offset().top - 300
+                }, 500);
+                return false;
+            }
 
             //  Step 1: Validation before placing order
             let isValid = true;
@@ -304,6 +317,7 @@
 
         $('#checkout__form__free_tee').on('submit', function (e) {
             e.preventDefault();
+
 
             // 1️⃣ VALIDATION
             let isValid = true;
