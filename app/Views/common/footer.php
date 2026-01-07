@@ -41,6 +41,7 @@
                     <ul>
                         <li><a href="<?= base_url('myprofile'); ?>">My Account</a></li>
                         <li><a href="<?= base_url('cart'); ?>">My Cart</a></li>
+                        <li><a href="<?= base_url('my_orders') ?>">My Orders</a></li>
                         <li><a href="<?= base_url('contact') ?>">Contact</a></li>
                         <!-- <li><a href="#">Checkout</a></li> -->
                         <!-- <li><a href="#">Wishlist</a></li> -->
