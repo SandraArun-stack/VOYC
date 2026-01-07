@@ -40,8 +40,10 @@
                                         ? $item['cart_Price']
                                         : $item['prv_price'];
                                     ?>
-                                    <tr data-cartid="<?= esc($item['cart_Id']) ?>" class=" clickable-row"
+                                    <tr data-cartid="<?= esc($item['cart_Id']) ?>" data-status="<?= esc($item['pr_Status']) ?>"
+                                        class="clickable-row"
                                         data-url="<?= base_url('productdetails/' . $item['pr_Id'] . '/' . $item['pri_Id']); ?>">
+
                                         <td class="cart__product__item">
                                             <?php
                                             $designImage = !empty($item['front_Image']) ? $item['front_Image'] : null;
@@ -110,7 +112,7 @@
                                             </div>
                                         </td>
                                         <td class="cart__price">₹
-                                           <?= esc($displayPrice ?? 0) ?>
+                                            <?= esc($displayPrice ?? 0) ?>
                                         </td>
 
                                         <td class="cart__quantity">
@@ -150,7 +152,9 @@
             <?php if (!empty($cartCount) && $cartCount > 0): ?>
                 <div class="col-lg-4 offset-lg-2">
                     <div class="cart__total__procced">
+
                         <h6>Cart total</h6>
+                        <div class="alert alert-danger d-none"></div>
                         <?php
                         $calculatedTotal = 0;
                         if (!empty($cartItems)) {

@@ -125,7 +125,7 @@
 
                         <ul class="header__right__widget">
                             <?php if ($session->get('isLoggedIn')): ?>
-                            <!-- <li>
+                                <!-- <li>
                                  <?php $userId = $session->get('user_id');
                                  $userSubscription = $session->get('user_subscription'); ?>
                                 <a href="<?= base_url('mywallet'); ?>" class="icon-with-text"><i class="bi bi-wallet2"></i>
@@ -213,25 +213,28 @@
                         </div>
                     </div>
                 </div>
-                <div class="mobile-header-icons">
-                    <?php if ($session->get('isLoggedIn')): ?>
-                        <?php $userId = $session->get('user_id'); ?>
-                        <a href="<?= base_url('cart/' . $userId); ?>" class="icon-with-text">
-                            <i class="bi bi-cart cart__mobile"></i>
-                            <div class="tip" id="cartCount">
-                                <?= $cartCount ?? 0 ?>
-                            </div>
+                <div class="mob">
+                    <div class="mobile-header-icons">
+                        <?php if ($session->get('isLoggedIn')): ?>
+                            <?php $userId = $session->get('user_id'); ?>
+                            <a href="<?= base_url('cart/' . $userId); ?>" class="icon-with-text">
+                                <i class="bi bi-cart cart__mobile"></i>
+                                <div class="tip" id="cartCount">
+                                    <?= $cartCount ?? 0 ?>
+                                </div>
+                            </a>
+                        <?php endif; ?>
+
+                        <a href="<?= base_url('allCustomizableProducts'); ?>" class="icon-with-text">
+                            <i class="custom-icon-customisation"></i>
                         </a>
-                    <?php endif; ?>
+                    </div>
 
-                    <a href="<?= base_url('allCustomizableProducts'); ?>" class="icon-with-text">
-                        <i class="custom-icon-customisation"></i>
-                    </a>
+                    <div class="canvas__open">
+                        <i class="fa fa-bars"></i>
+                    </div>
                 </div>
 
-                <div class="canvas__open">
-                    <i class="fa fa-bars"></i>
-                </div>
             </div>
 
         </div>

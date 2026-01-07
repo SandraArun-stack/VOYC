@@ -51,7 +51,7 @@
             const qty = parseInt($qtyInput.val(), 10) || 1;
 
             // Update price cell (visible)
-            $row.find('.cart__price').text('₹ ' + cartPrice.toFixed(2));
+            $row.find('.cart__price').text('₹ ' + cartPrice);
 
             // Update cart__total: set text, attr and jQuery data for price & quantity
             const total = cartPrice * qty;
@@ -94,9 +94,9 @@
         $(document).on('click', '.cart-remove', function (e) {
             e.stopPropagation();
             e.preventDefault();
-           const cartId = $(this).attr('data-cart-id');
+            const cartId = $(this).attr('data-cart-id');
 
-            
+
             const row = $(this).closest('tr');
 
             $.ajax({
@@ -197,46 +197,61 @@
             $.post("<?= base_url('cart/updateQuantity') ?>", { cart_id: cartId, quantity: newVal });
         });
 
-        // $(document).on('click', '.cart-remove', function () {
-        //     var $row = $(this).closest('tr');
-        //     var cartId = $row.data('cartid');
 
-        //     $.post("<?= base_url('cart/remove') ?>", { cart_id: cartId }, function (res) {
-        //         if (res.status === 'success') {
-        //             $row.remove();
-        //             recalcCartTotal();
-        //         } else {
-        //             alert(res.message || 'Failed to remove item');
-        //         }
-        //     }, 'json');
+
+        // $('#proceedCheckout').click(function (e) {
+        //     e.preventDefault();
+
+        //     let totalAmount = $('#total-amount').text().replace('₹', '').trim();
+
+        //     // put total into hidden field
+        //     $('#hiddenTotal').val(totalAmount);
+
+        //     // submit form via POST
+        //     $('#goCheckoutForm').submit();
         // });
-
-        $('#proceedCheckout').click(function (e) {
+        $('#proceedCheckout').on('click', function (e) {
             e.preventDefault();
 
+            let unavailableProducts = [];
+
+            $('tbody tr[data-status!="1"]').each(function () {
+                const productName = $(this).find('.cart__product__item__title h6').text().trim();
+                if (productName) {
+                    unavailableProducts.push(productName);
+                }
+            });
+
+            if (unavailableProducts.length > 0) {
+                const $alert = $('.cart__total__procced .alert');
+
+                let message = unavailableProducts.length === 1
+                    ? `${unavailableProducts[0]} is Unavailable. Remove It to Proceed.`
+                    : `${unavailableProducts.join(', ')} are Unavailable. Remove Them to Proceed.`;
+
+                $alert.removeClass('d-none').text(message);
+
+                // Auto-hide after 3 seconds
+                setTimeout(function () {
+                    $alert.addClass('d-none').text('');
+                }, 3000);
+
+                return;
+            }
+
+            $('.cart__total__procced .alert').addClass('d-none').text('');
+
             let totalAmount = $('#total-amount').text().replace('₹', '').trim();
-
-            // put total into hidden field
             $('#hiddenTotal').val(totalAmount);
-
-            // submit form via POST
             $('#goCheckoutForm').submit();
         });
 
-        // $(".clickable-row").on("click", function (e) {
 
-        //     if (
-        //         $(e.target).closest(".cart-size-dropdown").length ||
-        //         $(e.target).closest(".cart-remove").length ||
-        //         $(e.target).closest(".show-preview").length ||
-        //         e.target.tagName === "SELECT" ||
-        //         e.target.tagName === "OPTION"
-        //     ) {
-        //         return; // Skip redirect
-        //     }
+        $(function () {
+            $('tbody tr[data-status!="1"]').addClass('unavailable-row');
+        });
 
-        //     window.location.href = $(this).data("url");
-        // });
+
 
     });
 

@@ -2610,6 +2610,42 @@ input[type="date"] {
     display: none !important;
 }
 
+/* Apply relative positioning ONLY to first td */
+tbody tr.unavailable-row>td:first-child {
+    position: relative;
+}
+
+/* White overlay */
+tbody tr.unavailable-row>td:first-child::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    /* prevents border gaps */
+    background: rgba(255, 255, 255, 0.75);
+    z-index: 2;
+}
+
+/* Centered text */
+tbody tr.unavailable-row>td:first-child::after {
+    content: "Product Not Available";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    font-weight: 600;
+    color: #dc3545;
+    font-size: 18px;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+/* Disable interaction */
+tbody tr.unavailable-row>td:first-child * {
+    pointer-events: none;
+}
+
+
 @media only screen and (max-width: 991px) {
     .main__icon {
         display: flex !important;
@@ -3099,5 +3135,83 @@ input[type="date"] {
     #closeFilterBtn {
         font-size: 23px;
         color: #808080;
+    }
+
+    .customisation__summary__all__container {
+        margin: 16px;
+    }
+
+    .customisation__price {
+        padding: 0 !important;
+    }
+
+    .customisation__summary_header h4 {
+        font-size: 18px !important;
+    }
+
+    /* MOBILE VIEW ONLY */
+
+
+}
+
+@media (max-width: 767px) {
+
+    /* Thumbnails container → row */
+    #imageContainer .thumbs {
+        flex-direction: row !important;
+        align-items: flex-start !important;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 8px;
+    }
+
+    /* Each image + label → column */
+    #imageContainer .thum-with-name {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 80px;
+        /* adjust if needed */
+    }
+
+    /* Thumbnail image */
+    #imageContainer .shirt-thumb {
+        width: 70px;
+        height: auto;
+        cursor: pointer;
+    }
+
+    /* Image name below */
+    #imageContainer .thum-with-name small {
+        display: block;
+        margin-top: 4px;
+        font-size: 12px;
+        text-align: center;
+    }
+
+    /* Sleeve images row */
+    #sleeveContainer {
+        flex-direction: row !important;
+        gap: 12px;
+        /* margin-top: 8px; */
+    }
+
+    /* Add sleeve button full width */
+    #addSleeveBtn {
+        width: 100px;
+        height: 100px;
+    }
+
+    .main-content {
+        margin: 10px;
+    }
+
+    #customize_main_ui {
+        padding-left: 0 !important;
+    }
+
+    .custome_design_heading b {
+        padding: 10px;
     }
 }
