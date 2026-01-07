@@ -41,6 +41,7 @@
 
 
 <body>
+    <?php $session = session(); ?>
     <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
@@ -52,40 +53,46 @@
         <div class="offcanvas__close">+</div>
         <ul class="offcanvas__widget">
             <li><span class="icon_search search-switch"></span></li>
-            <li><a href="#"><span class="icon_heart_alt"></span>
+            <!-- <li><a href="#"><span class="icon_heart_alt"></span>
                     <div class="tip">2</div>
                 </a></li>
             <li><a href="#"><span class="icon_bag_alt"></span>
                     <div class="tip">2</div>
                 </a></li>
             <li><a href="#"><i class="bi bi-award"></i>
-                    <!-- <div class="tip">2</div> -->
-                </a></li>
+                    <div class="tip">2</div>
+                </a></li> -->
         </ul>
         <div class="offcanvas__logo">
             <a href="<?= base_url(' '); ?>"><img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg"
                     alt=""></a>
         </div>
         <div id="mobile-menu-wrap"></div>
-        <div class="offcanvas__auth">
-            <a>Login/</a>
-            <a>Register</a>
-        </div>
+        <?php
+        $userId = $session->get('user_id');
+        if (empty($userId)): ?>
+            <div class="offcanvas__auth">
+                <a class="login-link">Login</a>
+                <a class="register-link">Register</a>
+            </div>
+        <?php endif; ?>
+
+
     </div>
 
     <header class="header show-after">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-xl-2 col-lg-2 col-2">
+                <div class="col-xl-2 col-lg-2 col-6">
                     <a href="<?= base_url(' '); ?>">
                         <div class="header__logo"></div>
                     </a>
 
                 </div>
-                <div class="col-8 mt-4 main__icon">
-                    <!-- <a href="#"><i class="bi bi-controller"></i></a> -->
+                <!-- <div class="mt-4 main__icon">
+                    <a href="#"><i class="bi bi-controller"></i></a>
                     <a href="<?= base_url('tshirt_Customisation'); ?>" class="design_icon"></a>
-                </div>
+                </div> -->
                 <div class="col-xl-7 col-lg-7 d-flex align-items-center justify-content-center text-center">
                     <nav class="header__menu">
                         <ul>
@@ -94,6 +101,15 @@
                             <li><a href="<?= base_url('men'); ?>" id="men">Men’s</a></li>
                             <!-- <li><a href="<?= base_url('game_arena'); ?>" id="game_arena">Game Arena</a></li> -->
                             <li><a href="<?= base_url('contact'); ?>" id="contact">Contact</a></li>
+                            <?php if ($session->get('isLoggedIn')): ?>
+                                <?php $userId = $session->get('user_id'); ?>
+                                <li class="header__hided__item"><a href="<?= base_url('myprofile'); ?>"
+                                        id="profile">Profile</a></li>
+                                <li class="header__hided__item"><a href="<?= base_url('my_orders'); ?>" id="profile">My
+                                        Orders</a></li>
+                                <li class="header__hided__item logoutBtn"><a href="<?= base_url(''); ?>" id="profile">Log
+                                        Out</a></li>
+                            <?php endif; ?>
                         </ul>
                     </nav>
 
@@ -103,8 +119,8 @@
                         <input type="text" id="search-bar" placeholder="Search..." />
                     </div>
                 </div>
-                <?php $session = session(); ?>
-                <div class="col-lg-3 col-2">
+
+                <div class="col-lg-3 col-6">
                     <div class="header__right">
 
                         <ul class="header__right__widget">
@@ -171,7 +187,7 @@
                                                         href="<?= base_url('subscription_plans'); ?>">Subscription Plans</a>
                                                 </li> -->
                                                 <li>
-                                                    <a class="dropdown-item drop-profile text-danger" href="#"
+                                                    <a class="dropdown-item drop-profile text-danger logoutBtn" href="#"
                                                         id="logoutBtn">Logout</a>
                                                 </li>
                                             </ul>
@@ -181,8 +197,8 @@
                                 <?php else: ?>
 
                                     <!--  Login/Register -->
-                                    <a class="text-decoration-none icon-with-text" href="javascript:void(0)" id="login-link"
-                                        role="button">
+                                    <a class="text-decoration-none icon-with-text login-link" href="javascript:void(0)"
+                                        id="login-link" role="button">
                                         <i class="bi bi-person-square profile-person"></i>
                                         <span class="icon-label">Login / Register</span>
                                     </a>
@@ -197,10 +213,30 @@
                         </div>
                     </div>
                 </div>
+                <div class="mob">
+                    <div class="mobile-header-icons">
+                        <?php if ($session->get('isLoggedIn')): ?>
+                            <?php $userId = $session->get('user_id'); ?>
+                            <a href="<?= base_url('cart/' . $userId); ?>" class="icon-with-text">
+                                <i class="bi bi-cart cart__mobile"></i>
+                                <div class="tip" id="cartCount">
+                                    <?= $cartCount ?? 0 ?>
+                                </div>
+                            </a>
+                        <?php endif; ?>
+
+                        <a href="<?= base_url('allCustomizableProducts'); ?>" class="icon-with-text">
+                            <i class="custom-icon-customisation"></i>
+                        </a>
+                    </div>
+
+                    <div class="canvas__open">
+                        <i class="fa fa-bars"></i>
+                    </div>
+                </div>
+
             </div>
-            <div class="canvas__open">
-                <i class="fa fa-bars"></i>
-            </div>
+
         </div>
     </header>
     <!-- Auth Modal -->
@@ -227,6 +263,7 @@
                         <form id="loginForm">
 
                             <label>Email</label><span>&nbsp;*</span>
+
                             <input type="text" name="login_email" class="form-control mb-3"
                                 placeholder="Enter Your Email" required>
 
@@ -277,8 +314,12 @@
                             <input type="text" name="fullname" class="form-control mb-3"
                                 placeholder="Enter Your Full Name" required>
                             <label>Date Of Birth</label>
-                            <input type="date" name="dob_cust" class="form-control mb-3"
-                                placeholder="Enter Your Full Name" required>
+                            <div class="calender__icon___for  mb-3">
+                                <input type="text" id="dob" name="dob_cust" class="form-control"
+                                    placeholder="dd-mm-yyyy" required>
+                                <i class="bi bi-calendar calender__icon" data-target="#dob"></i>
+                            </div>
+
                             <label>Email</label><span>&nbsp;*</span>
                             <input type="email" name="email" class="form-control mb-3" placeholder="Enter the Email"
                                 required>

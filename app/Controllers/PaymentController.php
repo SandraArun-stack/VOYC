@@ -35,4 +35,12 @@ class PaymentController extends BaseController
             'key'     => env('RAZORPAY_KEY_ID')
         ]);
     }
+
+    public function success_payment(){
+        return view('payment_success');
+    }
+     public function failure_payment(){
+        return view('payment_failure');
+    }
 }
+

@@ -377,7 +377,7 @@
         if ($activeSize.length) {
             selectedPrvId = $activeSize.data('prv-id');
         }
-        
+
         $(document).on('click', '.size-box-customisation', function () {
             $('.size-box-customisation').removeClass('active');
             $(this).addClass('active');
@@ -825,6 +825,12 @@
             canvas.renderAll();
             updateImageDimensionsUI(img);
         }
+        // Trigger upload on BOTH sidebar & option click
+        $('[data-view="upload"]').on('click', function (e) {
+            e.preventDefault();
+            $('#uploadImage').trigger('click');
+        });
+
 
         $("#uploadImage").on("change", function (e) {
             const files = e.target.files;

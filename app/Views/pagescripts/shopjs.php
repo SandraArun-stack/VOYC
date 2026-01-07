@@ -69,7 +69,7 @@
 
                     response.filtered_products.forEach(item => {
                         html += `
-                            <div class="col-lg-3 col-md-6 mb-4 product__card">
+                            <div class="col-lg-3 col-md-6 col-6 mb-4 product__card">
                                 <div class="product__item" data-url="<?= base_url('productdetails'); ?>/${item.pr_Id}/${item.pri_Id}">
                                     <div class="product__item__pic set-bg"
                                         data-setbg="<?= base_url('uploads/productmedia/'); ?>/${item.pri_Thumbnail}">
@@ -206,7 +206,7 @@
                             let html = '';
                             response.filtered_products.forEach(item => {
                                 html += `
-                                    <div class="col-lg-3 col-md-6 mb-4 product__card" style="opacity:1;">
+                                    <div class="col-lg-3 col-md-6 col-6 mb-4 product__card" style="opacity:1;">
                                         <div class="product__item" data-url="<?= base_url('productdetails'); ?>/${item.pr_Id}/${item.pri_Id}">
                                             <div class="product__item__pic set-bg"
                                                 data-setbg="<?= base_url('uploads/productmedia/'); ?>/${item.pri_Thumbnail}">
@@ -246,7 +246,24 @@
 
         }, 1000);
 
+        $("#mobileFilterBtn").on("click", function () {
+            $("#shopSidebar").addClass("show");
+        });
 
+        // Close filter (button)
+        $("#closeFilterBtn").on("click", function () {
+            $("#shopSidebar").removeClass("show");
+        });
+
+        // Optional: close when clicking outside
+        $(document).on("click", function (e) {
+            if (
+                !$(e.target).closest("#shopSidebar, #mobileFilterBtn").length &&
+                $("#shopSidebar").hasClass("show")
+            ) {
+                $("#shopSidebar").removeClass("show");
+            }
+        });
 
         // $("#filterPriceBtn").on("click", function () {
         //     var minPriceValue = parseFloat(minamount.val().replace('₹', '').trim());

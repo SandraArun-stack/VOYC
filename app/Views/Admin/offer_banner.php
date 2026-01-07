@@ -56,7 +56,7 @@
 										<div id="message" style="display:none;"></div>
 											<div id="messageBox" class="alert" style="display: none;"></div>
                                             <div class="table-responsive">
-                                               <table class="table table-hover" id="productList" style="width:100%">
+                                               <table class="table table-hover w-100" id="productList" style="width:100%">
 													<thead>
 														<tr>
 															<th>#</th>

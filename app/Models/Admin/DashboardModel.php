@@ -113,8 +113,8 @@ class DashboardModel extends Model
             ->select('
                 od.od_Number,
                 SUM(od.od_Quantity) AS total_quantity,
-                MAX(od.od_Grand_Total) AS total_grand,
-                MAX(od.od_Status) AS od_Status,
+                SUM(od.od_Grand_Total) AS total_grand,
+                MIN(od.od_Status) AS od_Status,
                 MAX(od.od_createdon) AS created_on,
                 c.cust_Name AS customer_name
             ')

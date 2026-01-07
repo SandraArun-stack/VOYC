@@ -56,7 +56,7 @@ $selectedPrvId = $_GET['prvId'] ?? null;
                             </div>
 
                             <!-- Upload View -->
-                            <div id="view-upload" class="view-section d-none p-4">
+                            <!-- <div id="view-upload" class="view-section d-none p-4">
                                 <h2 class="mb-4">Choose File to Upload</h2>
                                 <div class="d-flex justify-content-center">
                                     <div class="upload__image text-center">
@@ -70,8 +70,8 @@ $selectedPrvId = $_GET['prvId'] ?? null;
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
+                            </div> -->
+                            <input type="file" id="uploadImage" multiple accept="image/*" hidden>
                             <div id="view-spec-upload-image" class="view-section d-none p-2">
                                 <p>Image Properties</p>
                                 <div class="spec_Image">
@@ -250,14 +250,20 @@ $selectedPrvId = $_GET['prvId'] ?? null;
                                 <div class="col-md-2 text-center px-0" id="imageContainer">
                                     <div class="thumbs d-flex flex-column align-items-center">
                                         <?php if (isset($cust_image) && !empty($cust_image)): ?>
-                                            <img src="<?= base_url('uploads/productmedia/' . $cust_image['pri_Thumbnail']); ?>"
-                                                data-src="<?= base_url('uploads/productmedia/' . $cust_image['pri_Thumbnail']); ?>"
-                                                data-view="front" class="shirt-thumb" />
-                                            <small>Front View</small>
-                                            <img src="<?= base_url('uploads/productmedia/' . $cust_image['pri_File_Name'][0]); ?>"
-                                                data-src="<?= base_url('uploads/productmedia/' . $cust_image['pri_File_Name'][0]); ?>"
-                                                data-view="back" class="shirt-thumb" />
-                                            <small>Back View</small>
+                                            <div class="thum-with-name">
+                                                <img src="<?= base_url('uploads/productmedia/' . $cust_image['pri_Thumbnail']); ?>"
+                                                    data-src="<?= base_url('uploads/productmedia/' . $cust_image['pri_Thumbnail']); ?>"
+                                                    data-view="front" class="shirt-thumb" />
+                                                <small>Front View</small>
+                                            </div>
+
+                                            <div class="thum-with-name">
+                                                <img src="<?= base_url('uploads/productmedia/' . $cust_image['pri_File_Name'][0]); ?>"
+                                                    data-src="<?= base_url('uploads/productmedia/' . $cust_image['pri_File_Name'][0]); ?>"
+                                                    data-view="back" class="shirt-thumb" />
+                                                <small>Back View</small>
+                                            </div>
+
 
                                             <div id="addSleeveBtn"
                                                 class="border rounded py-2 px-3 mt-2 mb-2 text-center bg-light fw-semibold"
@@ -266,14 +272,20 @@ $selectedPrvId = $_GET['prvId'] ?? null;
                                                     Design</small>
                                             </div>
                                             <div id="sleeveContainer" class="d-none flex-column align-items-center">
-                                                <img src="<?= base_url('uploads/productmedia/' . $cust_image['RSleeve_Img']); ?>"
-                                                    data-src="<?= base_url('uploads/productmedia/' . $cust_image['RSleeve_Img']); ?>"
-                                                    data-view="RSleeve_Img" class="shirt-thumb" />
-                                                <small>Right Sleeve</small>
-                                                <img src="<?= base_url('uploads/productmedia/' . $cust_image['LSleeve_Img']); ?>"
-                                                    data-src="<?= base_url('uploads/productmedia/' . $cust_image['LSleeve_Img']); ?>"
-                                                    data-view="LSleeve_Img" class="shirt-thumb" />
-                                                <small>Left Sleeve</small>
+                                                <div class="thum-with-name">
+                                                    <img src="<?= base_url('uploads/productmedia/' . $cust_image['RSleeve_Img']); ?>"
+                                                        data-src="<?= base_url('uploads/productmedia/' . $cust_image['RSleeve_Img']); ?>"
+                                                        data-view="RSleeve_Img" class="shirt-thumb" />
+                                                    <small>Right Sleeve</small>
+                                                </div>
+
+                                                <div class="thum-with-name">
+                                                    <img src="<?= base_url('uploads/productmedia/' . $cust_image['LSleeve_Img']); ?>"
+                                                        data-src="<?= base_url('uploads/productmedia/' . $cust_image['LSleeve_Img']); ?>"
+                                                        data-view="LSleeve_Img" class="shirt-thumb" />
+                                                    <small>Left Sleeve</small>
+                                                </div>
+
                                             </div>
                                         <?php else: ?>
                                             <p>No images found for this product.</p>
@@ -293,7 +305,7 @@ $selectedPrvId = $_GET['prvId'] ?? null;
     <div class="container">
         <div class="row">
             <div class="col-md-12 p-0">
-                <div class="card shadow-sm border-0 rounded-4">
+                <div class="card shadow-sm border-0 rounded-4 customisation__summary__all__container">
                     <div class="card-header customisation__summary_header">
                         <h4 class="fw-bolb">
                             Customization Summary
@@ -310,7 +322,7 @@ $selectedPrvId = $_GET['prvId'] ?? null;
                             </div>
                             <div class="col-md-6">
                                 <p class="mb-2 d-flex align-items-center gap__custom">
-                                    <strong class=" ">Size:</strong>
+                                    <strong class=" ">Available Size:</strong>
 
                                     <?php if (!empty($variantIds)): ?>
                                         <span class="size-row-customisation">

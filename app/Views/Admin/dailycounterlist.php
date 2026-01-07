@@ -37,7 +37,7 @@
                                             <div id="message" class="alert" style="display:none;"></div>
                                             <div id="messageBox" class="alert" style="display: none;"></div>
                                             <div class="table-responsive">
-                                                <table class="table table-hover" id="counterList">
+                                                <table class="table table-hover w-100" id="counterList">
                                                     <thead>
                                                         <tr>
                                                             <th>Sl.No.</th>

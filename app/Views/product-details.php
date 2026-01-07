@@ -1,5 +1,6 @@
 <?php
 $userId = session()->get('user_id');
+$pr_for = strtolower($product['pr_for']);
 ?>
 <div class="breadcrumb-option">
     <div class="container">
@@ -7,7 +8,7 @@ $userId = session()->get('user_id');
             <div class="col-lg-12">
                 <div class="breadcrumb__links">
                     <a href="<?= base_url(' '); ?>"><i class="fa fa-home"></i>Home</a>
-                    <a href="#"><?= esc($product['pr_for']) ?> </a>
+                    <a href="<?= base_url($pr_for) ?>"><?= esc($product['pr_for']) ?> </a>
                     <span><?= esc($product['pr_Name']) ?></span>
                 </div>
             </div>
@@ -206,7 +207,7 @@ $userId = session()->get('user_id');
                     <div class="tab-content">
                         <div class="tab-pane active" id="tabs-1" role="tabpanel">
                             <h6>Description</h6>
-                            <p><?= esc($product['pr_Description']) ?></p>
+                             <p><?= nl2br(esc($product['pr_Description'])) ?></p>
                         </div>
                         <div class="tab-pane" id="tabs-2" role="tabpanel">
                             <h6>Specification</h6>

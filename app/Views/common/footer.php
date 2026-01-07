@@ -26,7 +26,9 @@
                 <div class="footer__widget">
                     <h6>Quick links</h6>
                     <ul>
-                        <li><a href="<?= base_url(' '); ?>">Game Arena</a></li>
+                        <!-- <li><a href="<?= base_url(' '); ?>">Game Arena</a></li> -->
+                          <li><a href="<?= base_url('men'); ?>">Men's</a></li>
+                          <li><a href="<?= base_url('men'); ?>">Women's</a></li>
                         <li><a href="<?= base_url('allCustomizableProducts'); ?>">Customization</a></li>
                         <li><a href="<?= base_url('contact'); ?>">About</a></li>
 

@@ -92,7 +92,7 @@ $(document).ready(function () {
         keyboard: true
     });
 
-    $('#login-link').on('click', function (e) {
+    $('.login-link').on('click', function (e) {
         e.preventDefault();
         $('#registerView').hide();
         $('#forgotPassView').hide();
@@ -100,7 +100,7 @@ $(document).ready(function () {
         authModal.show();
     });
 
-    $('#register-link').on('click', function (e) {
+    $('.register-link').on('click', function (e) {
         e.preventDefault();
         $('#loginView').hide();
         $('#forgotPassView').hide();
@@ -329,7 +329,7 @@ $(document).ready(function () {
         authModal.hide();
     });
     // show logout modal pop up
-    $('#logoutBtn').on('click', function (e) {
+    $('.logoutBtn').on('click', function (e) {
         e.preventDefault();
         $('#logoutModal').modal('show');
     });
@@ -524,8 +524,14 @@ $(document).ready(function () {
         $("#dob").datepicker({
             changeMonth: true,
             changeYear: true,
-            yearRange: "1950:2025",
-            dateFormat: "yy-mm-dd"
+            yearRange: (new Date().getFullYear() - 100) + ":" + new Date().getFullYear(),
+            dateFormat: "dd-mm-yy",
+            showOn: "focus",
+            maxDate: 0
+        });
+        $(".calender__icon").on("click", function () {
+            const targetInput = $($(this).data("target"));
+            targetInput.datepicker("show");
         });
     });
 

@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>404 - Page Not Found | Voyc</title>
+    <link rel="icon" href="<?= base_url() . ASSET_PATH; ?>assets/img/favicon.ico" type="image/x-icon">
+    
     <style>
         /* Reset */
         * {

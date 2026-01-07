@@ -63,7 +63,7 @@
                                                         <option value="5">Delivered</option>
                                                     </select>
                                                 </div>
-                                                <table class="table table-hover" id="orderList">
+                                                <table class="table table-hove w-100r" id="orderList">
                                                     <thead>
                                                         <tr>
                                                             <th>Sl.No.</th>

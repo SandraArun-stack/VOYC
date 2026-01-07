@@ -43,8 +43,8 @@ class Product extends BaseController
             // Default fallbacks
             $row['pr_Name'] = $row['pr_Name'] ?? 'N/A';
             $row['pr_Code'] = $row['pr_Code'] ?? 'N/A';
-           
-          
+
+
 
 
             // Status toggle switch
@@ -56,9 +56,9 @@ class Product extends BaseController
 			<label class="form-check-label pl-0 label-check"
 				   for="statusSwitch-' . $row['pr_Id'] . '"></label>
 		</div>';
-           
+
             // Action buttons
-           $row['actions'] = '
+            $row['actions'] = '
     <img class="img-size"
         src="' . base_url(ASSET_PATH . 'Admin/assets/images/image_add.ico') . '"
         alt="Image-add"
@@ -128,7 +128,7 @@ class Product extends BaseController
     // Product save
     public function saveProduct()
     {
-       
+
         $pr_id = $this->input->getPost('pr_id');
         $sub_id = $this->input->getPost('sub_id');
         $cat_id = $this->input->getPost('cat_id');
@@ -143,19 +143,23 @@ class Product extends BaseController
         //                                     ucfirst(strtolower(trim($product_description))));
         $product_description = $this->input->getPost('product_description');
         $product_description = preg_replace('/[\x{200E}\x{200F}\x{202A}-\x{202E}\x{2066}-\x{2069}]/u', '', $product_description);
-        $product_description = trim($product_description);
-        $product_description = ucfirst($product_description);
-
+        $product_description = rtrim($product_description);
+        // $product_description = ucfirst($product_description);
+        $product_description = preg_replace_callback(
+            '/^\s*([a-z])/',
+            fn($m) => strtoupper($m[1]),
+            $product_description
+        );
         // $product_stock = $this->input->getPost('product_stock');
         // $reset_stock = $this->input->getPost('reset_stock');
-        $sleeve_style   = ucwords(strtolower(trim($this->request->getPost('sleeve_style'))));
-        $fabric   = ucwords(strtolower(trim($this->request->getPost('fabric'))));
-        $stitching   = ucwords(strtolower(trim($this->request->getPost('stitching'))));
+        $sleeve_style = ucwords(strtolower(trim($this->request->getPost('sleeve_style'))));
+        $fabric = ucwords(strtolower(trim($this->request->getPost('fabric'))));
+        $stitching = ucwords(strtolower(trim($this->request->getPost('stitching'))));
         $pr_for = $this->input->getPost('pr_for');
         $pr_custom = $this->input->getPost('pr_custom');
-        
-        $DisCountFrom = 0;     
-        
+
+        $DisCountFrom = 0;
+
         if (empty($cat_id) || empty($product_name) || empty($product_code)) {
             return $this->response->setJSON([
                 'status' => 'error',
@@ -163,21 +167,21 @@ class Product extends BaseController
             ]);
         }
         if (!preg_match('/^[a-zA-Z0-9 _-]+$/', $product_name)) {
-    return $this->response->setJSON([
-        'status' => 'error',
-        'field' => 'product_name',
-        'message' => 'Invalid Product Name.'
-    ]);
-}
-if (!preg_match('/^[a-zA-Z0-9 _\-()\/\\\\]+$/', $product_code)) {
-    return $this->response->setJSON([
-        'status' => 'error',
-        'field' => 'product_code',
-        'message' => 'Invalid Product Code'
-    ]);
-}
+            return $this->response->setJSON([
+                'status' => 'error',
+                'field' => 'product_name',
+                'message' => 'Invalid Product Name.'
+            ]);
+        }
+        if (!preg_match('/^[a-zA-Z0-9 _\-()\/\\\\]+$/', $product_code)) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'field' => 'product_code',
+                'message' => 'Invalid Product Code'
+            ]);
+        }
 
-// if (!ctype_digit($product_stock)) {
+        // if (!ctype_digit($product_stock)) {
 //     return $this->response->setJSON([
 //         'status' => 'error',
 //         'field' => 'product_stock',
@@ -185,7 +189,7 @@ if (!preg_match('/^[a-zA-Z0-9 _\-()\/\\\\]+$/', $product_code)) {
 //     ]);
 // }
 
-// Validate reset_stock
+        // Validate reset_stock
 // if (!ctype_digit($reset_stock)) {
 //     return $this->response->setJSON([
 //         'status' => 'error',
@@ -194,53 +198,53 @@ if (!preg_match('/^[a-zA-Z0-9 _\-()\/\\\\]+$/', $product_code)) {
 //     ]);
 // }
 
-$allowedPattern = '/^[a-zA-Z0-9\s\-\&\/()]+$/';
-if(!empty($sleeve_style)){
-if (!preg_match($allowedPattern, $sleeve_style)) {
-    return $this->response->setJSON([
-        'status' => 'error',
-        'field' => 'sleeve_style',
-        'message' => 'Invalid Sleeve Style.'
-    ]);
-}
-}
-if(!empty($fabric)){
-if (!preg_match($allowedPattern, $fabric)) {
-    return $this->response->setJSON([
-        'status' => 'error',
-        'field' => 'fabric',
-        'message' => 'Invalid Fabric Name.'
-    ]);
-}
-}
+        $allowedPattern = '/^[a-zA-Z0-9\s\-\&\/()]+$/';
+        if (!empty($sleeve_style)) {
+            if (!preg_match($allowedPattern, $sleeve_style)) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'field' => 'sleeve_style',
+                    'message' => 'Invalid Sleeve Style.'
+                ]);
+            }
+        }
+        if (!empty($fabric)) {
+            if (!preg_match($allowedPattern, $fabric)) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'field' => 'fabric',
+                    'message' => 'Invalid Fabric Name.'
+                ]);
+            }
+        }
 
 
-if(!empty($stitching)){
+        if (!empty($stitching)) {
 
-if (!preg_match($allowedPattern, $stitching)) {
-    return $this->response->setJSON([
-        'status' => 'error',
-        'field' => 'stitching',
-        'message' => 'Invalid Stitching Style.'
-    ]);
-}
-    }
+            if (!preg_match($allowedPattern, $stitching)) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'field' => 'stitching',
+                    'message' => 'Invalid Stitching Style.'
+                ]);
+            }
+        }
 
-    if (empty($pr_for)) {
-    return $this->response->setJSON([
-        'status' => 'error',
-        'field' => 'pr_for',
-        'message' => 'Please select Product For (Men or Women).'
-    ]);
-}
+        if (empty($pr_for)) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'field' => 'pr_for',
+                'message' => 'Please select Product For (Men or Women).'
+            ]);
+        }
 
-if ($pr_custom === null || $pr_custom === '') {
-    return $this->response->setJSON([
-        'status' => 'error',
-        'field' => 'pr_custom',
-        'message' => 'Please select Customisation type.'
-    ]);
-}
+        if ($pr_custom === null || $pr_custom === '') {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'field' => 'pr_custom',
+                'message' => 'Please select Customisation type.'
+            ]);
+        }
 
         // Check if product name already exists (excluding current ID)
         if ($this->productModel->isProductExists($product_name, $pr_id)) {
@@ -281,7 +285,7 @@ if ($pr_custom === null || $pr_custom === '') {
         ];
 
         if (empty($pr_id)) {
-            $data['pr_Status'] = 1; 
+            $data['pr_Status'] = 1;
             $data['pr_createdon'] = date("Y-m-d H:i:s");
             $data['pr_createdby'] = $this->session->get('ad_uid');
 
@@ -573,22 +577,22 @@ if ($pr_custom === null || $pr_custom === '') {
 
     //View Product
 
-    public function viewProduct($pr_Id,$pri_Id)
-{
-    if (!$this->session->get('ad_uid')) {
-        return redirect()->to(base_url('admin'));
+    public function viewProduct($pr_Id, $pri_Id)
+    {
+        if (!$this->session->get('ad_uid')) {
+            return redirect()->to(base_url('admin'));
+        }
+
+        $product = $this->productModel->getProductByIdFull($pr_Id, $pri_Id);
+        $data['product'] = $product;
+
+        $template = view('Admin/common/header');
+        $template .= view('Admin/common/leftmenu');
+        $template .= view('Admin/product_view', $data);
+        $template .= view('Admin/common/footer');
+
+        return $template;
     }
-
-    $product = $this->productModel->getProductByIdFull($pr_Id, $pri_Id);
-    $data['product'] = $product;
-
-    $template = view('Admin/common/header');
-    $template .= view('Admin/common/leftmenu');
-    $template .= view('Admin/product_view', $data);
-    $template .= view('Admin/common/footer');
-
-    return $template;
-}
 
 
 }

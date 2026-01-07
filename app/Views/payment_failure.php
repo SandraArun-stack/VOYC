@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Payment Failed</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="<?= base_url() . ASSET_PATH; ?>assets/css/bootstrap.min.css" type="text/css">
 
+    <link rel="icon" href="<?= base_url() . ASSET_PATH; ?>assets/img/favicon.ico" type="image/x-icon">
     <style>
         body {
             margin: 0;
@@ -18,7 +21,7 @@
             background: #fff;
             border-radius: 12px;
             padding: 24px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
         }
 
         .icon {
@@ -79,21 +82,33 @@
         }
     </style>
 </head>
+
 <body>
 
-<div class="container">
-    <div class="icon">❌</div>
-    <h1>Payment Failed</h1>
-    <p class="error-text">Something went wrong. Your payment could not be processed.</p>
+    <script>
+        const data = JSON.parse(sessionStorage.getItem('paymentData'));
+    </script>
 
-    <div class="order-info">
-        <p>Order ID <span>#DRS10245</span></p>
-        <p>Dress Name <span>Floral Summer Dress</span></p>
-        <p>Total Amount <span>₹2,499</span></p>
+    <div class="container">
+        <div class="icon">❌</div>
+        <h1>Payment Failed</h1>
+        <p class="error-text">Something went wrong.</p>
+
+        <div class="order-info">
+            <p>Order ID <span id="orderId"></span></p>
+            <p>Total Amount <span id="amount"></span></p>
+        </div>
+
+        <a href="<?= base_url('checkout') ?>" class="btn">Retry Payment</a>
     </div>
 
-    <a href="checkout.html" class="btn">Retry Payment</a>
-</div>
+    <script>
+        if (data) {
+            document.getElementById('orderId').innerText = data.order_id ?? 'N/A';
+            document.getElementById('amount').innerText = '₹' + (data.amount ?? 0);
+        }
+    </script>
 
 </body>
+
 </html>

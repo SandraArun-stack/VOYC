@@ -55,7 +55,7 @@
 											<div id="message" style="display:none;"></div>
 											<div id="messageBox" class="alert" style="display: none;"></div>
                                                 <div class="table-responsive">
-                                                    <table class="table table-hover" id="staffList">
+                                                    <table class="table table-hover w-100" id="staffList">
                                                         <thead>
                                                         <tr>
                                                             <th>Sl.No.</th>

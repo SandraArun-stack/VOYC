@@ -29,7 +29,7 @@
                     <div class="card">
                         <div class="card-block table-border-style">
                             <div class="table-responsive">
-                                <table class="table table-hover" id="userSubList">
+                                <table class="table table-hover w-100" id="userSubList">
                                     <thead>
                                         <tr>
                                             <th>Sl.No.</th>
