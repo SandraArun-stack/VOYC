@@ -1414,7 +1414,7 @@ input[type="file"] {
     display: inline-flex;
     align-items: center;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 5px;
     overflow: hidden;
     /* margin-left: 10px; */
 }
@@ -3557,6 +3557,79 @@ tbody tr.unavailable-row>td:first-child * {
 }
 
 @media only screen and (max-width: 479px) {
+    #customize_main_ui .options .option img {
+        width: 36px;
+        height: 36px;
+    }
+
+    .customize_main_ui h2 {
+        font-size: 21px;
+    }
+
+    .customisation__price h5 b {
+        font-size: 14px;
+    }
+
+    .custom_design {
+        padding-bottom: 0;
+    }
+
+    #view-add_text h3 {
+        font-size: 16px;
+    }
+
+    #view-add_text label {
+        font-size: 12px;
+    }
+
+    #addText,
+    #openFontPicker {
+        width: 74px !important;
+        font-size: 12px;
+    }
+
+    .resp__text__custom {
+        margin-top: 0;
+    }
+
+    #textColor.form-control-color {
+        width: 75px;
+        height: 29px;
+    }
+
+    #fontSize.form-range {
+        width: 75px;
+    }
+
+    .preview-section .selected-items .text-center p {
+        font-size: 11px;
+    }
+
+    .customisation__price span {
+        font-size: 12px;
+    }
+
+    .design-option label {
+        font-size: 12px;
+    }
+
+    .customisation__summary__all__container strong {
+        font-size: 12px;
+    }
+
+    .customisation__summary__all__container span {
+        font-size: 12px;
+    }
+
+    .size-box-customisation {
+        padding: 1px 6px;
+    }
+
+    .qty-btn-custom {
+        padding: 1px 6px;
+        font-size: 12px;
+    }
+
     .canvas__open {
         font-size: 19px;
         height: 28px;

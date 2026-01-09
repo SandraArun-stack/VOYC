@@ -118,7 +118,7 @@
 <script src="<?= base_url() . ASSET_PATH; ?>assets/js/fabric.min.js"></script>
 <script src="<?= base_url() . ASSET_PATH; ?>assets/js/custom.js"></script>
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script> -->
 
 
 </body>

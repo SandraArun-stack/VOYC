@@ -179,12 +179,12 @@ $selectedPrvId = $_GET['prvId'] ?? null;
                             <!-- Add Text View -->
                             <div id="view-add_text" class="view-section pt-2 pl-2 w-100 d-none">
                                 <h3 class="mb-2">Customize Text</h3>
-                                <div class="d-flex justify-content-between mt-2">
+                                <div class="d-flex justify-content-between mt-2 resp__text__custom">
                                     <label class="mb-1">Enter the Text on selected Box</label>
                                     <button id="addText" class="btn btn-dark">+ Add Text</button>
                                 </div>
 
-                                <div class="d-flex justify-content-between mt-2">
+                                <div class="d-flex justify-content-between mt-2 resp__text__custom">
                                     <label for="fontFamily" class="form-label fw-semibold text-center">Choose Font
                                         Style</label>
                                     <button id="openFontPicker" class="btn btn-outline-secondary ">Fonts</button>
@@ -196,16 +196,16 @@ $selectedPrvId = $_GET['prvId'] ?? null;
                                     </div>
                                 </div>
 
-                                <div class="d-flex flex-wrap justify-content-between mt-2">
+                                <div class="d-flex flex-wrap justify-content-between mt-2 resp__text__custom">
                                     <label class="form-label">Choose Text Color </label>
                                     <input type="color" id="textColor" value="#000000"
                                         class="form-control form-control-color" title="Choose your color">
                                 </div>
-                                <div class="d-flex flex-wrap justify-content-between mt-2">
+                                <div class="d-flex flex-wrap justify-content-between mt-2 resp__text__custom">
                                     <label for="fontSize" class="form-label">Font Size &nbsp; </label>
                                     <input type="range" id="fontSize" class="form-range" min="10" max="80" value="20">
                                 </div>
-                                <div class="mb-3 d-flex justify-content-between text__spec mt-2">
+                                <div class="mb-3 d-flex justify-content-between text__spec mt-2 resp__text__custom">
                                     <div class="form-check w-100 pl-0">
                                         <label class="form-check-label fw-semibold" for="boldToggle">
                                             Bold
@@ -213,7 +213,7 @@ $selectedPrvId = $_GET['prvId'] ?? null;
                                         <input class="form-check-input" type="checkbox" id="boldToggle">
                                     </div>
                                 </div>
-                                <div class="mb-3 d-flex justify-content-between text__spec mt-2">
+                                <div class="mb-3 d-flex justify-content-between text__spec mt-2 resp__text__custom">
                                     <div class="form-check w-100 pl-0">
                                         <label class="form-check-label fw-semibold" for="italicToggle">
                                             Italic
