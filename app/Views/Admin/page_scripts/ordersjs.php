@@ -79,15 +79,15 @@
                     return getStatusBadge(data);
                 }
 
-            },
-            {
-                data: 'actions',
-                orderable: false,
-                searchable: false
             }
+            // {
+            //     data: 'actions',
+            //     orderable: false,
+            //     searchable: false
+            // }
         ],
         columnDefs: [
-            { targets: [6, 7], orderable: false, searchable: false }
+            { targets: [5, 6], orderable: false, searchable: false }
         ],
         createdRow: function (row, data) {
 

@@ -8,6 +8,7 @@ use App\Models\Admin\LeaderboardModel;
 use App\Models\Admin\PlayersModel;
 use App\Models\Admin\GameMappingModel;
 use App\Models\Admin\UserSubscriptionsModel;
+use App\Models\CommonTableModel;
 class Home extends BaseController
 {
     protected $HomeModel;
@@ -25,6 +26,7 @@ class Home extends BaseController
         $this->PlayersModel = new PlayersModel();
         $this->GameMappingModel = new GameMappingModel();
         $this->UserSubscriptionsModel = new UserSubscriptionsModel();
+        $this->CommonTableModel = new CommonTableModel();
     }
 
     public function index()
@@ -51,6 +53,9 @@ class Home extends BaseController
         $todayLimit = intval($todayLimit);
 
         $result = $this->PlayersModel->getTodayPlayers($today, $todayLimit, session()->get('user_id'));
+
+        $data['shipping_charge'] = $this->CommonTableModel->getShippingCharge();
+
 
         return view('common/header', [
             'cartCount' => $cartCount,
@@ -149,7 +154,19 @@ class Home extends BaseController
             return $this->response->setJSON(['status' => 'error', 'message' => 'Please Fill in All Required Fields.']);
         }
 
-        $secretKey = '6Le-VXcrAAAAAKSXShzC3A8GxolszKELxQ1S-9q9';
+        // ✅ ADD: captcha empty check (small but important)
+        if (empty($captchaResponse)) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Please complete captcha verification.'
+            ]);
+        }
+
+        // ✅ FIX: use helper instead of non-existing method
+        $recaptcha = recaptcha_keys();   // 👈 THIS IS THE FIX
+        $secretKey = $recaptcha['secret'];
+
+
         $verifyResponse = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret={$secretKey}&response={$captchaResponse}");
         $responseData = json_decode($verifyResponse);
 

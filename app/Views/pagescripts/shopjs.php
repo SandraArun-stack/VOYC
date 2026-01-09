@@ -248,22 +248,25 @@
 
         $("#mobileFilterBtn").on("click", function () {
             $("#shopSidebar").addClass("show");
+            $("#filterOverlay").show();
         });
 
-        // Close filter (button)
+        // Close button
         $("#closeFilterBtn").on("click", function () {
-            $("#shopSidebar").removeClass("show");
+            closeFilter();
         });
 
-        // Optional: close when clicking outside
-        $(document).on("click", function (e) {
-            if (
-                !$(e.target).closest("#shopSidebar, #mobileFilterBtn").length &&
-                $("#shopSidebar").hasClass("show")
-            ) {
-                $("#shopSidebar").removeClass("show");
-            }
+        // Overlay click
+        $("#filterOverlay").on("click", function (e) {
+            e.stopPropagation();
+            closeFilter();
         });
+
+        // Reusable close function
+        function closeFilter() {
+            $("#shopSidebar").removeClass("show");
+            $("#filterOverlay").hide();
+        }
 
         // $("#filterPriceBtn").on("click", function () {
         //     var minPriceValue = parseFloat(minamount.val().replace('₹', '').trim());

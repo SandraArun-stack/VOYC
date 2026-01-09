@@ -104,7 +104,7 @@
 
 
                             <div class="product__item" data-url="<?= base_url("productdetails/$prId/$priId"); ?>">
-                                <div class="product__item__pic">
+                                <div class="">
                                     <?php if ($firstImage): ?>
                                         <img class="product-img"
                                             src="<?= base_url('uploads/productmedia/' . ($firstImage ?: 'default.jpg')); ?>"
@@ -300,7 +300,7 @@
                     <div class="services__item">
                         <i class="fa fa-car"></i>
                         <h6>Free Shipping</h6>
-                        <p>For all oder over ₹499</p>
+                        <p>For all order over ₹<?= esc($shipping_charge ?? 500); ?></p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6">

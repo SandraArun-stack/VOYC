@@ -53,8 +53,8 @@ class Orders extends BaseController
             'product.pr_Code',
             'order_detail.od_Quantity',
             'order_detail.od_createdon',
-            'order_detail.od_Status',
-            null
+            'order_detail.od_Status'
+            // null
         ];
         $orderBy = $columnMap[$orderColumnIndex] ?? 'order_detail.od_Id';
 
@@ -85,7 +85,7 @@ class Orders extends BaseController
                 'add_Phone' => $row->add_Phone ?? 'N/A',
                 'od_createdon' => !empty($row->od_createdon) ? date('d M Y', strtotime($row->od_createdon)) : 'N/A',
                 'od_Status' => $model->getStatusByOrderNumber($row->od_number),
-                'actions' => '<a href="' . base_url('admin/orders/view/' . $row->od_number) . '"><i class="fa fa-eye"></i></a>',
+                // 'actions' => '<a href="' . base_url('admin/orders/view/' . $row->od_number) . '"><i class="fa fa-eye"></i></a>',
                 'design_Id' => $row->design_Id ?? 0
             ];
         }

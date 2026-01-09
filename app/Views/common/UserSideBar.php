@@ -24,7 +24,7 @@
                 <div class="shop__sidebar">
                     <div class="sidebar__categories">
                         <div class="section-title">
-                            <h4>Over View</h4>
+                            <h4 class="over__view">Over View</h4>
                         </div>
                         <div class="dashboard_side_bar">
                             <div class="main_dashboard_items">
