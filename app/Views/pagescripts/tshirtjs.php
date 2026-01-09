@@ -18,7 +18,8 @@
         preserveObjectStacking: true,
         selectable: false
     });
-
+    canvas.selection = false;
+    canvas.skipTargetFind = false;
     const canvasStates = {
         front: { objects: [], overlay: '<?= base_url('uploads/productmedia/' . $cust_image['pri_Thumbnail']); ?>' },
         back: { objects: [], overlay: '<?= base_url('uploads/productmedia/' . $cust_image['pri_File_Name'][0]); ?>' },

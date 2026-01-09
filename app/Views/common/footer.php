@@ -5,9 +5,14 @@
             <div class="col-lg-4 col-md-6 col-sm-7">
                 <div class="footer__about">
                     <div class="footer__logo">
-                         <a href="<?= base_url('/'); ?>"><img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo.jpg" alt=""></a>
+                        <a href="<?= base_url('/'); ?>"><img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo.jpg"
+                                alt=""></a>
                     </div>
                     <p>Location</p>
+                    <span class="Location__text__footer"> The Praveen Mills,</span>
+                        <span class="Location__text__footer">12, A.K Nagar, Seiyankadu,</span>
+                        <span class="Location__text__footer">Karumarampalayam, Mannarai P.O,</span>
+                       <span class="Location__text__footer"> Tiruppur, Tamil Nadu - 641607</span>
                     <!-- <div class="footer__payment">
                         <a href="#"><img src="<?= base_url() . ASSET_PATH; ?>assets/img/payment/payment-1.png"
                                 alt=""></a>
@@ -27,8 +32,8 @@
                     <h6>Quick links</h6>
                     <ul>
                         <!-- <li><a href="<?= base_url(' '); ?>">Game Arena</a></li> -->
-                          <li><a href="<?= base_url('men'); ?>">Men's</a></li>
-                          <li><a href="<?= base_url('men'); ?>">Women's</a></li>
+                        <li><a href="<?= base_url('men'); ?>">Men's</a></li>
+                        <li><a href="<?= base_url('men'); ?>">Women's</a></li>
                         <li><a href="<?= base_url('allCustomizableProducts'); ?>">Customization</a></li>
                         <li><a href="<?= base_url('contact'); ?>">About</a></li>
 
@@ -41,6 +46,7 @@
                     <ul>
                         <li><a href="<?= base_url('myprofile'); ?>">My Account</a></li>
                         <li><a href="<?= base_url('cart'); ?>">My Cart</a></li>
+                        <li><a href="<?= base_url('my_orders') ?>">My Orders</a></li>
                         <li><a href="<?= base_url('contact') ?>">Contact</a></li>
                         <!-- <li><a href="#">Checkout</a></li> -->
                         <!-- <li><a href="#">Wishlist</a></li> -->
@@ -92,7 +98,7 @@
 
 
 <!-- Js Plugins -->
- 
+
 <script src="<?= base_url() . ASSET_PATH; ?>assets/js/jquery-3.3.1.min.js"></script>
 <!-- datatable-->
 <script src="<?= base_url() . ASSET_PATH; ?>assets/js/jquery.dataTables.min.js"></script>
@@ -112,14 +118,9 @@
 <script src="<?= base_url() . ASSET_PATH; ?>assets/js/fabric.min.js"></script>
 <script src="<?= base_url() . ASSET_PATH; ?>assets/js/custom.js"></script>
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-<script>
-    // $(document).ready(function () {
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script> -->
 
-    //     // read flashdata sent from PHP
-       
-    // });
 
-</script>
 </body>
 
 </html>

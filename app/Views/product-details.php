@@ -118,7 +118,7 @@ $pr_for = strtolower($product['pr_for']);
                             <div class="customise__btn">
                                 <button class="btn  customise__Tee" id="customizeTshirtBtn">
                                     <i class="bi bi-palette-fill"></i>
-                                    Customize Tee >>
+                                    Customize Tee
                                 </button>
                             </div>
                         </div>

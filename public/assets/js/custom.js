@@ -417,6 +417,28 @@ $(document).ready(function () {
             }
         }
     });
+    $("#mobileSearchToggle").on("click", function () {
+        $(".mobile-search-wrapper").addClass("active");
+        $("#mobile-search-bar").focus();
+    });
+
+    $("#mobile-search-bar").on("keypress", function (e) {
+        if (e.which === 13) {
+            const searchTerm = $(this).val().trim();
+            if (searchTerm.length > 0) {
+                window.location.href =
+                    base_url + "/shop?search=" + encodeURIComponent(searchTerm);
+            }
+        }
+    });
+
+    // Close when clicking outside
+    $(document).on("click", function (e) {
+        if (!$(e.target).closest(".mobile-search-wrapper").length) {
+            $(".mobile-search-wrapper").removeClass("active");
+        }
+    });
+
 
     $('#btn_forgot_password').on('click', function (e) {
         e.preventDefault();
@@ -424,6 +446,8 @@ $(document).ready(function () {
         var forgotUrl = $(this).data('url');
         var email = $('input[name="forgot_email"]').val();
         var alertBox = $('#forgotalert');
+         var form = $('#forgotPassForm');
+
 
         alertBox.addClass('d-none').removeClass('alert-success alert-danger').text('');
 
@@ -435,6 +459,7 @@ $(document).ready(function () {
             success: function (res) {
                 // Show alert with success or error message
                 if (res.status === 'success') {
+                    form[0].reset();  
                     alertBox
                         .removeClass('d-none')
                         .addClass('alert-success')

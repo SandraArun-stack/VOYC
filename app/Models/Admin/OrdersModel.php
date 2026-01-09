@@ -91,7 +91,7 @@ class OrdersModel extends Model
         $filtered = $filteredBuilder->countAllResults(false);
 
         // Order by od_Status in custom order, then by createdon
-        $builder->orderBy("FIELD(order_detail.od_Status, 1, 2, 3, 4)", 'ASC', false);
+        $builder->orderBy("FIELD(order_detail.od_Status, 1, 2, 3, 4,5)", 'ASC', false);
         $builder->orderBy('order_detail.od_createdon', 'DESC');
 
         // Pagination
@@ -155,7 +155,8 @@ class OrdersModel extends Model
             ->where('od_number', $od_number)
             ->update([
                 'od_Status' => $status,
-                'od_modifyon' => date('Y-m-d H:i:s')
+                'od_modifyon' => date('Y-m-d H:i:s'),
+                'od_modifyby' => session()->get('ad_uid')
             ]);
     }
     public function getCustomisedImage($designId)

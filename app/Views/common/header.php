@@ -50,10 +50,10 @@
     <!-- Offcanvas Menu Begin -->
     <div class="offcanvas-menu-overlay"></div>
     <div class="offcanvas-menu-wrapper">
-        <div class="offcanvas__close">+</div>
-        <ul class="offcanvas__widget">
+        <!-- <div class="offcanvas__close">+</div> -->
+        <!-- <ul class="offcanvas__widget">
             <li><span class="icon_search search-switch"></span></li>
-            <!-- <li><a href="#"><span class="icon_heart_alt"></span>
+            <li><a href="#"><span class="icon_heart_alt"></span>
                     <div class="tip">2</div>
                 </a></li>
             <li><a href="#"><span class="icon_bag_alt"></span>
@@ -61,13 +61,30 @@
                 </a></li>
             <li><a href="#"><i class="bi bi-award"></i>
                     <div class="tip">2</div>
-                </a></li> -->
-        </ul>
-        <div class="offcanvas__logo">
+                </a></li>
+        </ul> -->
+        <!-- <div class="offcanvas__logo">
             <a href="<?= base_url(' '); ?>"><img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo-black.jpg"
                     alt=""></a>
+        </div> -->
+        <div class="person">
+            <div class="offcanvas-profile">
+                <div class="profile-avatar">
+                    <i class="bi bi-person"></i>
+                </div>
+                <div class="profile-info">
+                    <h6>
+                        <?= esc($session->get('user_name') ?? 'Guest'); ?>
+                    </h6>
+                    <span>My Account</span>
+                </div>
+            </div>
         </div>
-        <div id="mobile-menu-wrap"></div>
+        <div id="mobile-menu-wrap">
+            <!-- hai -->
+        </div>
+
+
         <?php
         $userId = $session->get('user_id');
         if (empty($userId)): ?>
@@ -101,6 +118,8 @@
                             <li><a href="<?= base_url('men'); ?>" id="men">Men’s</a></li>
                             <!-- <li><a href="<?= base_url('game_arena'); ?>" id="game_arena">Game Arena</a></li> -->
                             <li><a href="<?= base_url('contact'); ?>" id="contact">Contact</a></li>
+                            <li class="header__hided__item"><a href="<?= base_url('allCustomizableProducts'); ?>"
+                                    id="customised_items">Customisation</a></li>
                             <?php if ($session->get('isLoggedIn')): ?>
                                 <?php $userId = $session->get('user_id'); ?>
                                 <li class="header__hided__item"><a href="<?= base_url('myprofile'); ?>"
@@ -213,27 +232,53 @@
                         </div>
                     </div>
                 </div>
-                <div class="mob">
-                    <div class="mobile-header-icons">
+                <!-- Mobile Search (Centered) -->
+                <!-- <div class="col-6 d-flex justify-content-center align-items-center d-lg-none">
+                    <div class="mobile-header-actions">
+
+                        <div class="mobile-search-wrapper">
+                            <i class="bi bi-search mobile-search-icon"></i>
+                            <input type="text" id="mobile-search-bar" class="mobile-search-input"
+                                placeholder="Search..." />
+                        </div>
+
                         <?php if ($session->get('isLoggedIn')): ?>
                             <?php $userId = $session->get('user_id'); ?>
-                            <a href="<?= base_url('cart/' . $userId); ?>" class="icon-with-text">
-                                <i class="bi bi-cart cart__mobile"></i>
-                                <div class="tip" id="cartCount">
+                            <a href="<?= base_url('cart/' . $userId); ?>" class="mobile-cart-icon">
+                                <i class="bi bi-cart"></i>
+                                <span class="tip">
                                     <?= $cartCount ?? 0 ?>
-                                </div>
+                                </span>
                             </a>
                         <?php endif; ?>
 
-                        <a href="<?= base_url('allCustomizableProducts'); ?>" class="icon-with-text">
-                            <i class="custom-icon-customisation"></i>
-                        </a>
                     </div>
+                </div> -->
 
-                    <div class="canvas__open">
-                        <i class="fa fa-bars"></i>
+
+                <div class="mob d-lg-none">
+                    <div class="mobile-header-right">
+
+                        <!-- Search -->
+                        <div class="mobile-search-wrapper">
+                            <i class="bi bi-search mobile-search-icon"></i>
+                            <input type="text" class="mobile-search-input"  id="mobile-search-bar" placeholder="Search..." />
+                        </div>
+
+                        <!-- Cart -->
+                        <a href="<?= base_url('cart/' . $userId); ?>" class="mobile-cart-icon">
+                            <i class="bi bi-cart"></i>
+                            <span class="tip"><?= $cartCount ?? 0 ?></span>
+                        </a>
+
+                        <!-- Hamburger -->
+                        <div class="canvas__open">
+                            <i class="fa fa-bars"></i>
+                        </div>
+
                     </div>
                 </div>
+
 
             </div>
 
@@ -242,7 +287,7 @@
     <!-- Auth Modal -->
     <div class="modal fade" id="authModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content p-2">
+            <div class="modal-content modal-content-header p-2">
                 <div id="loginView">
                     <div class="modal-header border-0 position-relative p-2">
                         <button type="button" class="btn border-0 bg-transparent position-absolute login_close"
@@ -276,7 +321,12 @@
                             </div>
 
                             <label>Verification</label>
-                            <div class="g-recaptcha mb-3" data-sitekey="6Le-VXcrAAAAAFdEqJLtM5DxM6GoGl7cJdV6hknL"></div>
+                            <!-- <div class="g-recaptcha mb-3" data-sitekey="6Le-VXcrAAAAAFdEqJLtM5DxM6GoGl7cJdV6hknL"></div> -->
+                            <?php $recaptcha = recaptcha_keys(); ?>
+
+                            <div class="g-recaptcha mb-3" data-sitekey="<?= esc($recaptcha['site']) ?>">
+                            </div>
+
                             <button type="button" id="btn_login" class="btn btn-primary w-100"
                                 data-url="<?= base_url('loginUser') ?>">Sign In</button>
                         </form>

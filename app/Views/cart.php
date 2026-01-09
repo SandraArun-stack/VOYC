@@ -227,9 +227,9 @@
 <!-- Design Preview Modal -->
 <div class="modal fade" id="designPreviewModal" tabindex="-1" aria-labelledby="designPreviewLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
+        <div class="modal-content modal-content-cart">
             <div class="modal-header">
-                <h5 class="modal-title">Design Preview</h5>
+                <h5 class="modal-title modal-title-cart-custom">Design Preview</h5>
 
                 <button type="button" class="btn btn-sm close-preview"
                     style="font-size: 25px; background:none; border:none;" data-bs-dismiss="modal">
@@ -238,20 +238,20 @@
             </div>
 
 
-            <div class="modal-body text-center row">
-                <div class="col-md-3">
+            <div class="modal-body text-center row cart__custom__design__images">
+                <div class="col-md-3 col-lg-3 col-6">
                     <p class="mb-1 mt-2">Front View</p>
                     <img id="previewFront" src="" alt="Front" class="img-fluid border rounded" />
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 col-lg-3  col-6">
                     <p class="mb-1 mt-2">Back View</p>
                     <img id="previewBack" src="" alt="Back" class="img-fluid border rounded" />
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 col-lg-3 col-6">
                     <p class="mb-1 mt-2">Right Sleeve View</p>
                     <img id="previewRSleeve" src="" alt="RSleeve" class="img-fluid border rounded" />
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 col-lg-3 col-6">
                     <p class="mb-1 mt-2">Left Sleeve View</p>
                     <img id="previewLSleeve" src="" alt="LSleeve" class="img-fluid border rounded" />
                 </div>

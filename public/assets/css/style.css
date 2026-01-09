@@ -106,7 +106,7 @@ ol {
 }
 
 .spad {
-	padding-top: 100px;
+	/* padding-top: 100px; */
 	padding-bottom: 100px;
 }
 
@@ -764,7 +764,7 @@ ol {
 -----------------------*/
 
 .services {
-	padding-top: 80px;
+	/* padding-top: 80px; */
 	padding-bottom: 50px;
 }
 
@@ -1663,7 +1663,7 @@ ol {
 
 .product__details__pic__left {
 	width: 22%;
-	max-height: 517px;
+	max-height: 570px;
 	float: left;
 	overflow-y: auto;
 }
@@ -1708,14 +1708,15 @@ ol {
 }
 
 .product__details__pic__slider {
-	width: 412px;
-	height: 100px;
+	/* width: 412px;
+	height: 100px; */
 }
 
 .product__details__pic__slider.owl-carousel .owl-nav button {
 	position: absolute;
 	left: 10px;
-	bottom: -150px;
+	top: 300px;
+	/* bottom: -150px; */
 	font-size: 22px;
 	color: #111111;
 	width: 40px;
@@ -2175,6 +2176,7 @@ ol {
 	overflow: hidden;
 	padding-top: 23px;
 	text-align: left;
+	vertical-align: middle;
 }
 
 .shop__cart__table tbody tr .cart__product__item .cart__product__item__title h6 {
@@ -2194,11 +2196,13 @@ ol {
 	font-weight: 600;
 	width: 190px;
 	text-align: left;
+	vertical-align: middle;
 }
 
 .shop__cart__table tbody tr .cart__quantity {
 	width: 190px;
 	text-align: left;
+	vertical-align: middle;
 }
 
 .shop__cart__table tbody tr .cart__quantity .pro-qty {
@@ -2223,10 +2227,12 @@ ol {
 	font-weight: 600;
 	width: 150px;
 	text-align: left;
+	vertical-align: middle;
 }
 
 .shop__cart__table tbody tr .cart__close {
 	text-align: right;
+	vertical-align: middle;
 }
 
 .shop__cart__table tbody tr .cart__close span {
@@ -3217,6 +3223,10 @@ ol {
 	.header {
 		padding: 0 85px;
 	}
+
+	.product__details__pic__left {
+		max-height: 571px !important;
+	}
 }
 
 @media only screen and (min-width: 1200px) and (max-width: 1599px) {
@@ -3256,6 +3266,25 @@ ol {
 
 	.nav::after {
 		width: 240px;
+	}
+
+	.product__details__pic__left {
+		max-height: 413px !important;
+	}
+
+	.product__details__pic__slider.owl-carousel .owl-nav button {
+		position: absolute !important;
+		left: 10px;
+		top: 306px !important;
+		font-size: 22px;
+		color: #111111;
+		width: 40px;
+		height: 40px;
+		background: rgba(255, 255, 255, 0.7);
+		border-radius: 50%;
+		line-height: 44px;
+		text-align: center;
+		margin-top: -20px;
 	}
 }
 
@@ -3363,7 +3392,7 @@ ol {
 	}
 
 	.offcanvas-menu-wrapper.active {
-		top:60px;
+		top: 20px;
 		opacity: 1;
 		left: 0;
 	}
@@ -3562,7 +3591,7 @@ ol {
 	}
 
 	.offcanvas-menu-wrapper.active {
-		top: 60px;
+		top: 20px;
 		opacity: 1;
 		left: 0;
 	}
@@ -3750,7 +3779,7 @@ ol {
 
 	.shop__cart__table tbody tr .cart__product__item img {
 		float: none;
-		margin-right: 0;
+		margin-right: 45px;
 	}
 
 	.cart__btn {

@@ -262,6 +262,13 @@
                     return;
                 }
 
+                if (!userId) {
+                    $('#registerView').hide();
+                    $("#forgotPassView").addClass("d-none");
+                    $('#loginView').show();
+                    authModal.show();
+                    return;
+                }
                 // if (!sizeSelected) {
                 //     showClickPopup('Select a Size', e);
                 //     return;

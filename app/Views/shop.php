@@ -86,8 +86,8 @@
                             <div class="range-slider">
                                 <div class="price-input">
                                     <p>Price:</p>
-                                    <input type="text" id="minamount">
-                                    <input type="text" id="maxamount">
+                                    <input type="text" id="minamount" readonly>
+                                    <input type="text" id="maxamount" readonly>
                                 </div>
                             </div>
                         </div>
@@ -190,5 +190,6 @@
             </div>
         </div>
     </div>
+    <div id="filterOverlay"></div>
 </section>
 <!-- Shop Section End -->

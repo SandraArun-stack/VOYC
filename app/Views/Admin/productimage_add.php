@@ -301,13 +301,13 @@
                                                             </div>
                                                             <div class="mt-3 d-flex flex-column ">
                                                                 <label class="form-label upload__Image ">Upload Front Image <span style="color:red;">*</span></label>
-                                                                <small class="d-block mb-2 text-primary">Please Upload Only One Image</small>
+                                                                <small class="d-block mb-2 text-warning">Please Upload Only One Image</small>
                                                                 <input type="file" class="form-control image-input" name="colors[0][images][]" multiple>
                                                                 <div class="image-error text-danger small mt-1 d-block"></div>
                                                             </div>
                                                             <div class="mt-3 d-flex flex-column">
                                                                 <label class="form-label upload__Image">Upload Back Image <span style="color:red;">*</span></label>
-                                                                <small class="d-block mb-2 text-primary">Please Upload Only One Image</small>
+                                                                <small class="d-block mb-2 text-warning">Please Upload Only One Image</small>
                                                                 <input type="file" class="form-control image-input" name="colors[0][side_image][]" multiple>
                                                                 <div class="image-error text-danger small mt-1 d-block"></div>
                                                             </div>
@@ -315,13 +315,13 @@
                                                             <?php if (!empty($pr_custom['pr_custom']) && $pr_custom['pr_custom'] == 1): ?>
                                                             <div class="mt-3 d-flex flex-column">
                                                                 <label class="form-label upload__Image">Right Sleeve Image <span style="color:red;">*</span></label>
-                                                                <small class="d-block mb-2 text-primary">Please Upload Only One Image</small>
+                                                                <small class="d-block mb-2 text-warning">Please Upload Only One Image</small>
                                                                 <input type="file" class="form-control image-input" name="colors[0][RSleeve_Img][]" >
                                                                 <div class="image-error text-danger small mt-1 d-block"></div>
                                                             </div>
                                                             <div class="mt-3 d-flex flex-column">
                                                                 <label class="form-label upload__Image">Left Sleeve Image <span style="color:red;">*</span></label>
-                                                                <small class="d-block mb-2 text-primary">Please Upload Only One Image</small>
+                                                                <small class="d-block mb-2 text-warning">Please Upload Only One Image</small>
                                                                 <input type="file" class="form-control image-input" name="colors[0][LSleeve_Img][]" >
                                                                 <div class="image-error text-danger small mt-1 d-block"></div>
                                                             </div>

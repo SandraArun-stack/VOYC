@@ -24,8 +24,16 @@ class DashboardModel extends Model
 
     public function getTotalOrderCount()
     {
-        return $this->db->table('order_detail')->countAllResults();
+        return $this->db->table('order_detail')
+            ->select('COUNT(DISTINCT od_number) AS total_orders')
+            ->get()
+            ->getRow()
+            ->total_orders;
     }
+    //  public function getTotalOrderCount()
+//     {
+//         return $this->db->table('order_detail')->countAllResults();
+//     }
 
     public function getTotalCustomerCount()
     {
@@ -207,7 +215,7 @@ class DashboardModel extends Model
             ->limit(10)
             ->get()
             ->getResult();
-            
+
         $sizes = ['S', 'M', 'L', 'XL', 'XXL'];
 
         foreach ($products as &$product) {
@@ -246,10 +254,23 @@ class DashboardModel extends Model
         $today = date('Y-m-d 23:59:59');
 
         return $this->db->table('order_detail')
+            ->select('COUNT(DISTINCT od_number) AS total_orders')
             ->where('od_createdon >=', $sevenDaysAgo)
             ->where('od_createdon <=', $today)
-            ->countAllResults();
+            ->get()
+            ->getRow()
+            ->total_orders;
     }
+    // public function getLast7DaysOrdersCount()
+    // {
+    //     $sevenDaysAgo = date('Y-m-d 00:00:00', strtotime('-7 days'));
+    //     $today = date('Y-m-d 23:59:59');
+
+    //     return $this->db->table('order_detail')
+    //         ->where('od_createdon >=', $sevenDaysAgo)
+    //         ->where('od_createdon <=', $today)
+    //         ->countAllResults();
+    // }
 
 
 

@@ -22,7 +22,7 @@
                         <?php foreach ($my_orders as $order): ?>
 
                             <div class="card mb-3">
-                                <div class="card-header d-flex justify-content-between align-items-center">
+                                <div class="card-header d-flex justify-content-between align-items-center my_orders_status">
                                     <span class="order-status" data-status="<?= esc($order['od_Status']) ?>">
                                         <!-- <i class="bi bi-truck me-2"></i> -->
                                         <img src="<?= base_url() . ASSET_PATH; ?>assets/img/order/truck.png"
@@ -54,7 +54,7 @@
                                             ?>
 
                                         </div>
-                                        <div class="col-md-9">
+                                        <div class="col-md-9 order__description__container">
                                             <div class="row mb-2 my_order_details">
                                                 <div class="col-12 mt-2">
                                                     <p class="mb-2"><b><?= esc($order['od_number']) ?></b></p>
@@ -62,6 +62,28 @@
                                                     <p class="mb-2"><?= esc($order['pr_Name']) ?></p>
                                                     <p class="mb-2">Size: <?= esc($order['od_Size']) ?></p>
                                                     <p class="mb-2">Quantity: <?= esc($order['od_Quantity']) ?></p>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="row mb-2 my_order_details">
+                                                <div class="col-12 mt-2">
+
+                                                    <p class="mb-2"><i
+                                                            class="bi bi-geo-alt-fill location-my-orders"></i>Shipping Address
+                                                    </p>
+                                                    <?php
+                                                    $addressParts = explode(',', $order['od_Shipping_Address']);
+                                                    $formattedAddress = '';
+
+                                                    foreach (array_chunk($addressParts, 2) as $pair) {
+                                                        $formattedAddress .= esc(implode(', ', array_map('trim', $pair))) . '<br>';
+                                                    }
+                                                    ?>
+
+                                                    <p><?= $formattedAddress ?></p>
+
+                                                    </p>
                                                 </div>
                                             </div>
 
@@ -128,26 +150,6 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row mb-2 my_order_details">
-                                                <div class="col-12 mt-2">
-
-                                                    <p class="mb-2"><i
-                                                            class="bi bi-geo-alt-fill location-my-orders"></i>Shipping Address
-                                                    </p>
-                                                    <?php
-                                                    $addressParts = explode(',', $order['od_Shipping_Address']);
-                                                    $formattedAddress = '';
-
-                                                    foreach (array_chunk($addressParts, 2) as $pair) {
-                                                        $formattedAddress .= esc(implode(', ', array_map('trim', $pair))) . '<br>';
-                                                    }
-                                                    ?>
-
-                                                    <p><?= $formattedAddress ?></p>
-
-                                                    </p>
-                                                </div>
-                                            </div>
 
                                         </div>
                                     </div>
