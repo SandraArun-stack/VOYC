@@ -22,7 +22,7 @@ class Leaderboard extends BaseController
         }
         $template = view('Admin/common/header');
 		$template .= view('Admin/common/leftmenu');
-        $template .= view('Admin/transactionslist');
+        $template .= view('Admin/leaderboardlist');
 		$template .= view('Admin/common/footer');
 		$template .= view('Admin/page_scripts/leaderboardjs');
         return $template;

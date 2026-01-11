@@ -2741,7 +2741,7 @@ tbody tr.unavailable-row>td:first-child * {
 }
 
 #shopSidebar {
-    z-index: 999;
+    z-index: 11;
 }
 
 /* Mobile header wrapper */
