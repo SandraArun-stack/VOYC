@@ -2741,7 +2741,7 @@ tbody tr.unavailable-row>td:first-child * {
 }
 
 #shopSidebar {
-    z-index: 999;
+    z-index: 11;
 }
 
 /* Mobile header wrapper */
@@ -2835,6 +2835,11 @@ tbody tr.unavailable-row>td:first-child * {
 
 .Location__text__footer {
     color: #ffffff;
+}
+
+.delivery, .termsandcondition, .privacy {
+    padding-top: 35px;
+    padding-bottom: 80px;
 }
 
 /* Desktop hidden */

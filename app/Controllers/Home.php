@@ -218,6 +218,78 @@ class Home extends BaseController
 
         return $this->response->setJSON(['status' => 'success', 'message' => 'Logged out successfully']);
     }
+    public function privacy_policy(){
+         $session = session();
+        $userId = $session->get('user_id');
+        $cartCount = $this->CartModel->getCartItemCount($userId);
+
+        //leaderboard Count
+        $today = date('Y-m-d');
+        $todayLimit = $this->GameMappingModel->getTodayLeaderboardCount($today);
+        $todayLimit = intval($todayLimit);
+
+        $result = $this->PlayersModel->getTodayPlayers($today, $todayLimit, session()->get('user_id'));
+
+
+        $data = [
+            'cartCount' => $cartCount,
+            'players' => $result['players'],     
+            'lastPlayer' => $result['lastPlayer']
+        ];
+
+
+        return view('common/header', $data)
+            . view('privacy_policy')
+            . view('common/footer');
+    }
+     public function delivery_policy(){
+         $session = session();
+        $userId = $session->get('user_id');
+        $cartCount = $this->CartModel->getCartItemCount($userId);
+
+        //leaderboard Count
+        $today = date('Y-m-d');
+        $todayLimit = $this->GameMappingModel->getTodayLeaderboardCount($today);
+        $todayLimit = intval($todayLimit);
+
+        $result = $this->PlayersModel->getTodayPlayers($today, $todayLimit, session()->get('user_id'));
+
+
+        $data = [
+            'cartCount' => $cartCount,
+            'players' => $result['players'],     
+            'lastPlayer' => $result['lastPlayer']
+        ];
+
+
+        return view('common/header', $data)
+            . view('delivery_policy')
+            . view('common/footer');
+    }
+     public function terms_and_condition(){
+         $session = session();
+        $userId = $session->get('user_id');
+        $cartCount = $this->CartModel->getCartItemCount($userId);
+
+        //leaderboard Count
+        $today = date('Y-m-d');
+        $todayLimit = $this->GameMappingModel->getTodayLeaderboardCount($today);
+        $todayLimit = intval($todayLimit);
+
+        $result = $this->PlayersModel->getTodayPlayers($today, $todayLimit, session()->get('user_id'));
+
+
+        $data = [
+            'cartCount' => $cartCount,
+            'players' => $result['players'],     
+            'lastPlayer' => $result['lastPlayer']
+        ];
+
+
+        return view('common/header', $data)
+            . view('terms_and_condition')
+            . view('common/footer');
+    }
 
 
 

@@ -99,6 +99,9 @@ $routes->get('subcategory/loadMoreSubcategoryProducts/(:num)/(:num)', 'Subcatego
 $routes->get('getSizesByColor/(:num)', 'ProductDetail::getSizesByColor/$1');
 
 $routes->match(['get', 'post'], 'weblogin/create', 'Weblogin::createnew');
+$routes->get('privacy_policy', 'Home::privacy_policy');
+$routes->get('delivery_policy', 'Home::delivery_policy');
+$routes->get('terms_and_condition', 'Home::terms_and_condition');
 
 
 
