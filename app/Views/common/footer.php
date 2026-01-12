@@ -8,7 +8,7 @@
                         <a href="<?= base_url('/'); ?>"><img src="<?= base_url() . ASSET_PATH; ?>assets/img/logo.jpg"
                                 alt=""></a>
                     </div>
-                    <p>Location</p>
+                    <!-- <p>Location</p> -->
                     <span class="Location__text__footer"> The Praveen Mills,</span>
                         <span class="Location__text__footer">12, A.K Nagar, Seiyankadu,</span>
                         <span class="Location__text__footer">Karumarampalayam, Mannarai P.O,</span>
@@ -34,8 +34,10 @@
                         <!-- <li><a href="<?= base_url(' '); ?>">Game Arena</a></li> -->
                         <li><a href="<?= base_url('men'); ?>">Men's</a></li>
                         <li><a href="<?= base_url('men'); ?>">Women's</a></li>
-                        <li><a href="<?= base_url('allCustomizableProducts'); ?>">Customization</a></li>
+                        <!-- <li><a href="<?= base_url('allCustomizableProducts'); ?>">Customization</a></li> -->
                         <li><a href="<?= base_url('contact'); ?>">About</a></li>
+                        <li><a href="<?= base_url('delivery_policy'); ?>">Delivery Policy</a></li>
+                        <li><a href="<?= base_url('privacy_policy'); ?>">Privacy Policy</a></li>
 
                     </ul>
                 </div>
@@ -48,6 +50,7 @@
                         <li><a href="<?= base_url('cart'); ?>">My Cart</a></li>
                         <li><a href="<?= base_url('my_orders') ?>">My Orders</a></li>
                         <li><a href="<?= base_url('contact') ?>">Contact</a></li>
+                         <li><a href="<?= base_url('terms_and_condition') ?>">Terms and Condition</a></li>
                         <!-- <li><a href="#">Checkout</a></li> -->
                         <!-- <li><a href="#">Wishlist</a></li> -->
                     </ul>

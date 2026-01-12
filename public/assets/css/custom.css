@@ -2837,6 +2837,11 @@ tbody tr.unavailable-row>td:first-child * {
     color: #ffffff;
 }
 
+.delivery, .termsandcondition, .privacy {
+    padding-top: 35px;
+    padding-bottom: 80px;
+}
+
 /* Desktop hidden */
 @media (min-width: 992px) {
     .mobile-search-wrapper {
