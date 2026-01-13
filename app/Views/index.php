@@ -300,7 +300,7 @@
                     <div class="services__item">
                         <i class="fa fa-car"></i>
                         <h6>Free Shipping</h6>
-                        <p>For all order over ₹<?= esc($shipping_charge ?? 500); ?></p>
+                        <p>For all order over ₹<?= esc($minimum_amount_for_shipping_charge ?? 500); ?></p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6">

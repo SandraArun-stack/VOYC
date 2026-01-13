@@ -54,7 +54,7 @@ class Home extends BaseController
 
         $result = $this->PlayersModel->getTodayPlayers($today, $todayLimit, session()->get('user_id'));
 
-        $data['shipping_charge'] = $this->CommonTableModel->getShippingCharge();
+        $data['minimum_amount_for_shipping_charge'] = $this->CommonTableModel->get_minimum_amount_for_shipping_charge();
 
 
         return view('common/header', [

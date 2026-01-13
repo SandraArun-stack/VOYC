@@ -9,9 +9,9 @@ class CommonTableModel extends Model
     protected $primaryKey = 'common_table_Id';
     protected $allowedFields = ['field', 'value'];
 
-    public function getShippingCharge()
+    public function get_minimum_amount_for_shipping_charge()
     {
-        $row = $this->where('field', 'shipping_charge')->first();
+        $row = $this->where('field', 'minimum_amount_for_shipping_charge')->first();
 
         return (!empty($row) && is_numeric($row['value']))
             ? $row['value']
